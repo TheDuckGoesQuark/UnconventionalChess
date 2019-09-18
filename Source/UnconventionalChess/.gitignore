@@ -1,0 +1,14 @@
+# Intellij
+.idea/
+*.iml
+*.iws
+out
+
+# Maven
+log/
+target/
+
+# JADE
+APDescription.txt
+MTPs-Main-Container.txt
+
