@@ -30,3 +30,6 @@ out/
 
 ### VS Code ###
 .vscode/
+
+### JS bundle
+src/main/resources/static/built/bundle.js
