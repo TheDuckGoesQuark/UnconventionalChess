@@ -14,5 +14,7 @@ public class HelloWorldAgent extends Agent {
                 System.out.println("" + arg);
             }
         }
+
+
     }
 }
