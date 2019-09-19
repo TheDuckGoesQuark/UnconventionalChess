@@ -33,21 +33,42 @@ The project has obvious benefits for game development: introducing humour and pe
 
 \section*{Objectives}
 
+\subsection*{Primary}
 \begin{enumerate}
-		\descitem{Design and implementation of the game infrastructure} 
-		Easy to use and well tested, with the source having a clear and logical structure. 
+		\descitem{Base infrastructure composed of agents representing pieces, which communicate between each other to choose the next move.}
+		The agents are capable of reaching some consensus on what which piece is to move next and each move is made visible through some form of graphical interface.
 
-		\descitem{Design and implementation of a decision-making model for agents with personalities that produces humorous behaviour.} 
-		Altering initial conditions (e.g. personality traits of pieces) should produce novel and entertaining results, whilst still providing some challenge to the user. The focus is not on creating a winning AI, but a level of skill is expected.
+		\descitem{Agent decisions are driven by some form of 'personality'}
+		Possibly a set of static weightings that push them to have certain desires and be more likely to propose certain actions over others.
 
-		\descitem {Design and implementation of human understandable dialogue constructed from agent interactions and intentions.} 
-		A human player should be able to follow the interactions between pieces in the form of textual dialogue and understand why its opposition is making certain moves. 
+		\descitem{Dialogue is generated related to the discussions between agents}
+		Human-readable dialogue is generated to describe the discussions taking place between agents.
+
+		\descitem{Humour is achieved through either the human-readable dialogue, or from the actions of agents}
+		For example, agents break from 'expected' behaviour to produce funny situations, or conversations between agents contain satirical comments related to the current state of the game.
+
+\end{enumerate}
+
+\subsection*{Secondary}
+
+\begin{enumerate}
+		\descitem{Personalities and behaviours change over time in reaction to the actions of other agents or the current state of the game}
+		The weightings that drive individual agent decisions are affected by factors such as how cooperative other agents are being, or how often this piece is threatened.
+
+		\descitem{Dialogue continues throughout game, not just during the main decision making process.}
+		The agents will constantly produce dialogue even when not making decisions. This could be in reaction to the move just made, or be directed at the player.
+
+		\descitem{The 'hierarchical' nature of chess pieces is accounted for during the decision making process between agents}
+		For example, actions suggested by bishops and knights will be more likely to be accepted compared to that of a pawn. This hierarchy could also be dynamic, and make agents in more powerful positions (for example, a rook cornering the enemy king) also have more weighting during the decision making process.
+
+		\descitem{Thorough evaluation by human users}
+		The game is tested by a number of users, and feedback is collected as to how well the game achieves its goal of being entertaining. This feedback is used to describe possible next steps for the project.
 
 \end{enumerate}
 
 \section*{Ethics}
 
-This project does not require any ethical considerations. Some human testers may be employed to determine the success of the project, and if so the necessary procedures for approval will be taken.
+Some short feedback tests will be run with volunteers to evaluate the success of the project. Because of this, the preliminary self-assessment form and the artifact evaluation form will also be submitted to cover these limited tests.
 
 \section*{Resources}
 
