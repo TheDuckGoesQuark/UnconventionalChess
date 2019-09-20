@@ -20,9 +20,9 @@ public class WebSocketConfig extends AbstractWebSocketMessageBrokerConfigurer {
     @Override
     public void configureMessageBroker(MessageBrokerRegistry config) {
         // creates in-memory broker for sending messsages to clients
-        config.enableSimpleBroker("/topic");
+        config.enableSimpleBroker("/topics");
         // set prefix for websocket endpoints to '/app'
-        config.setApplicationDestinationPrefixes("/app");
+        config.setApplicationDestinationPrefixes("/ws");
     }
 
     @Override
