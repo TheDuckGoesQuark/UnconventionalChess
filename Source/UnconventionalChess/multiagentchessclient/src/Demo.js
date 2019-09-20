@@ -6,7 +6,7 @@ import WithMoveValidation from "./integrations/WithMoveValidation";
 class Demo extends Component {
 
     sendMessage = (msg) => {
-        this.clientRef.sendMessage('/topics/all', msg)
+        this.clientRef.sendMessage('/app/chat.sendMessage', msg)
     };
 
     render() {
@@ -15,13 +15,15 @@ class Demo extends Component {
                 <div style={boardsContainer}>
                     <WithMoveValidation/>
                 </div>
-                <SockJsClient url='http://localhost:8080/ws' topics={['/topics/chess']}
+                <SockJsClient url='/ws' topics={['/topic/chess']}
                               onMessage={(msg) => {
                                   console.log(msg)
                               }}
                               ref={(client) => {
                                   this.clientRef = client
-                              }}/>
+                              }}
+                              debug={true}
+                />
                 <button onClick={()=>this.sendMessage("hello world")}>Press me!</button>
             </div>
         );

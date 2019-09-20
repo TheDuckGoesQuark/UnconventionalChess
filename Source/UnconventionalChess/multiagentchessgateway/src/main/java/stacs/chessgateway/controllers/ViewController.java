@@ -11,7 +11,7 @@ public class ViewController {
 
     private static final Logger logger = LoggerFactory.getLogger(ViewController.class);
 
-    @RequestMapping(value = "/")
+    @RequestMapping(value = "/index")
     public String getApp() {
         logger.trace("Received request for application.");
 
