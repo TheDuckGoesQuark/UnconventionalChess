@@ -3,19 +3,19 @@
 ## Client
 
 - Create game creation menu
-- Add websocket connection for message passing
 - Add conversation view
 - Add piece dialogue component
 
 ## Gateway
 
-- Add websocket endpoint
-- Add JADE gateway
+- Add game creation endpoint
+- Forward game creation via JadeGateway
 
 ## Agents
 
-- Design agent relationships
+- Design agents
 - Implement game agent for creating and handling games
+- Implement decision making algorithm
 
 ## NLG
 

@@ -24,7 +24,7 @@ class Demo extends Component {
                               }}
                               debug={true}
                 />
-                <button onClick={()=>this.sendMessage("hello world")}>Press me!</button>
+                <button onClick={() => this.sendMessage("hello world")}>Press me!</button>
             </div>
         );
     }
