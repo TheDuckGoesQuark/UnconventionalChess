@@ -12,19 +12,20 @@ class App extends Component {
     render() {
         return (
             <div>
-                <div style={boardsContainer}>
-                    <WithMoveValidation/>
-                </div>
-                <SockJsClient url='/ws' topics={['/topic/chess']}
-                              onMessage={(msg) => {
-                                  console.log(msg)
-                              }}
-                              ref={(client) => {
-                                  this.clientRef = client
-                              }}
-                              debug={true}
-                />
-                <button onClick={() => this.sendMessage("hello world")}>Press me!</button>
+                {/*<div style={boardsContainer}>*/}
+                {/*    <WithMoveValidation/>*/}
+                {/*</div>*/}
+                {/*<SockJsClient url='/ws' topics={['/topic/chess']}*/}
+                {/*              onMessage={(msg) => {*/}
+                {/*                  console.log(msg)*/}
+                {/*              }}*/}
+                {/*              ref={(client) => {*/}
+                {/*                  this.clientRef = client*/}
+                {/*              }}*/}
+                {/*              debug={true}*/}
+                {/*/>*/}
+                {/*<button onClick={() => this.sendMessage("hello world")}>Press me!</button>*/}
+                <GameContainer />
             </div>
         );
     }
