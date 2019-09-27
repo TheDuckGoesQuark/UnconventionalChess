@@ -3,7 +3,7 @@ import SockJsClient from 'react-stomp';
 
 import WithMoveValidation from "./integrations/WithMoveValidation";
 
-class Demo extends Component {
+class App extends Component {
 
     sendMessage = (msg) => {
         this.clientRef.sendMessage('/app/chat.sendMessage', msg)
@@ -30,7 +30,7 @@ class Demo extends Component {
     }
 }
 
-export default Demo;
+export default App;
 
 const boardsContainer = {
     display: "flex",

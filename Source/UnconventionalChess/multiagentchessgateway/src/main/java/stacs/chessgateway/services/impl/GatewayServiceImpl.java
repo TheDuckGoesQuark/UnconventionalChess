@@ -13,6 +13,8 @@ import stacs.chessgateway.config.GatewayProperties;
 import stacs.chessgateway.services.GatewayService;
 import stacs.chessgateway.util.MainContainerAgentsRetriever;
 
+import java.util.Arrays;
+
 @Service
 public class GatewayServiceImpl implements GatewayService {
 
@@ -51,7 +53,8 @@ public class GatewayServiceImpl implements GatewayService {
                 }
             }
         } catch (Exception e) {
-            e.printStackTrace();
+            logger.error("Unable to connect to JADE Container");
+            logger.trace(Arrays.toString(e.getStackTrace()));
         }
     }
 }
