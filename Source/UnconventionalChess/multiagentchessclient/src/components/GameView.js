@@ -3,7 +3,8 @@ import React, {Component} from "react";
 import WithMoveValidation from "../integrations/WithMoveValidation";
 import SockJsClient from "react-stomp";
 import PropTypes from "prop-types";
-import InitialConfiguration from "../config/InitialConfiguration";
+import InitialConfiguration from "../commons/InitialConfiguration";
+import BoardContainer from "./BoardContainer";
 
 class GameView extends Component {
 
@@ -21,9 +22,7 @@ class GameView extends Component {
     render() {
         return (
             <div>
-                <div style={boardsContainer}>
-                    <WithMoveValidation/>
-                </div>
+                <BoardContainer/>
                 <SockJsClient url='/ws' topics={['/topic/chess']}
                               onMessage={(msg) => {
                                   console.log(msg)
@@ -39,14 +38,5 @@ class GameView extends Component {
     }
 }
 
-const boardsContainer = {
-    display: "flex",
-    justifyContent: "space-around",
-    alignItems: "center",
-    flexWrap: "wrap",
-    width: "100vw",
-    marginTop: 30,
-    marginBottom: 50
-};
 
 export default GameView;

@@ -1,7 +1,6 @@
 import React, {Component} from "react";
 import PropTypes from "prop-types";
 import Chess from "chess.js";
-
 import Chessboard from "chessboardjsx";
 
 class HumanVsHuman extends Component {

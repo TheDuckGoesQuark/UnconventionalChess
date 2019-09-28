@@ -1,6 +1,6 @@
 import React, {Component} from "react";
 import PropTypes from "prop-types";
-import InitialConfiguration from "../config/InitialConfiguration";
+import InitialConfiguration from "../commons/InitialConfiguration";
 
 class ConfigView extends Component {
 
