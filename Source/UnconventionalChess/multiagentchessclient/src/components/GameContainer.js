@@ -1,5 +1,8 @@
 import React, {Component} from "react";
 
+import ConfigView from "./ConfigView";
+import GameView from "./GameView";
+
 class GameContainer extends Component {
 
     state = {
@@ -21,12 +24,10 @@ class GameContainer extends Component {
         const {initialConfig} = this.state;
 
         const configView = <ConfigView onConfirmation={this.onConfirmation}/>;
-        const gameView = <GameView onExit={this.onGameExit}/>;
-        const view = initialConfig ? gameView : configView;
+        const gameView = <GameView initialConfig={initialConfig} onExit={this.onGameExit}/>;
 
-        // TODO place ternary operator in return (couldn't remember syntax)
         return (
-            {view}
+            initialConfig ? gameView : configView
         );
     }
 }
