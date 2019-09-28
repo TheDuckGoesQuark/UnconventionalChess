@@ -1,10 +1,11 @@
 import React, {Component} from "react";
 
-import WithMoveValidation from "../integrations/WithMoveValidation";
-import SockJsClient from "react-stomp";
 import PropTypes from "prop-types";
 import InitialConfiguration from "../commons/InitialConfiguration";
 import BoardContainer from "./BoardContainer";
+import ChatContainer from "./ChatContainer";
+import WebsocketMiddleware from "./WebsocketMiddleware";
+import DialogueBox from "./DialogueBox";
 
 class GameView extends Component {
 
@@ -15,28 +16,37 @@ class GameView extends Component {
         onExit: PropTypes.func
     };
 
-    sendMessage = (msg) => {
+    state = {
+        timeOrderedMessages: []
+    };
+
+    // TODO allow board to send move via websocket client
+    sendMove = (msg) => {
         this.clientRef.sendMessage('/app/chat.sendMessage', msg)
     };
 
+    handleReceivedMessage = (message) => {
+        const appendedMessageList = [...this.state.timeOrderedMessages, message];
+        this.setState({timeOrderedMessages: appendedMessageList})
+    };
+
     render() {
+        const {onExit, initialConfig} = this.props;
+        const {timeOrderedMessages} = this.state;
+
         return (
             <div>
-                <BoardContainer/>
-                <SockJsClient url='/ws' topics={['/topic/chess']}
-                              onMessage={(msg) => {
-                                  console.log(msg)
-                              }}
-                              ref={(client) => {
-                                  this.clientRef = client
-                              }}
-                              debug={true}
+                <WebsocketMiddleware
+                    onMessage={this.handleReceivedMessage}
+                    initialConfig={initialConfig}
                 />
-                <button onClick={() => this.sendMessage("hello world")}>Press me!</button>
+                <BoardContainer initialConfig={initialConfig} onMove={this.sendMove}/>
+                <ChatContainer timeOrderedMessages={timeOrderedMessages}/>
+                <DialogueBox message={timeOrderedMessages.last}/>
+                <button onClick={onExit}>Exit Game</button>
             </div>
         );
     }
 }
-
 
 export default GameView;

@@ -1,8 +1,15 @@
 import React, {Component} from "react";
+import PropTypes from "prop-types";
 
 import WithMoveValidation from "../integrations/WithMoveValidation";
+import InitialConfiguration from "../commons/InitialConfiguration";
 
 class BoardContainer extends Component {
+    static propTypes = {
+        onMove: PropTypes.func,
+        initialConfig: PropTypes.instanceOf(InitialConfiguration)
+    };
+
     render() {
         return (
             <div style={boardsContainer}>

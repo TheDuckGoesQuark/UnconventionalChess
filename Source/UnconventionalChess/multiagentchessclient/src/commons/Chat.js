@@ -1,12 +1,12 @@
 // Base message that can be rendered
-class TranscriptMessage {
+export class TranscriptMessage {
     constructor(timestamp) {
         this.timestamp = timestamp;
     }
 }
 
 // Chat message
-class Message extends TranscriptMessage {
+export class Message extends TranscriptMessage {
     constructor(timestamp, fromId, messageBody) {
         super(timestamp);
         this.fromId = fromId;
@@ -15,7 +15,7 @@ class Message extends TranscriptMessage {
 }
 
 // Record of move made
-class Move extends TranscriptMessage {
+export class Move extends TranscriptMessage {
     constructor(timestamp, pieceId, fromCoords, toCoords) {
         super(timestamp);
         this.pieceId = pieceId;

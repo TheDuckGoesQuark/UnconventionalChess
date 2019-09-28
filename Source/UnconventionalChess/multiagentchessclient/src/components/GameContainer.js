@@ -16,9 +16,9 @@ class GameContainer extends Component {
     };
 
     // On game exit, clear the configuration
-    onGameExit() {
+    onGameExit = () => {
         this.setState({initialConfig: undefined})
-    }
+    };
 
     render() {
         const {initialConfig} = this.state;
