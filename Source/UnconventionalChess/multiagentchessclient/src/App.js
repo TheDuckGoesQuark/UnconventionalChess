@@ -2,6 +2,7 @@ import React, {Component} from "react";
 import SockJsClient from 'react-stomp';
 
 import WithMoveValidation from "./integrations/WithMoveValidation";
+import GameContainer from "./components/GameContainer";
 
 class App extends Component {
 
