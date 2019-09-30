@@ -8,6 +8,12 @@ class WebsocketMiddleware extends Component {
     static propTypes = {
         initialConfig: PropTypes.instanceOf(InitialConfiguration),
         onMessage: PropTypes.func,
+        clientRef: PropTypes.func
+    };
+
+    bubbleUpClient = (client) => {
+        const {clientRef} = this.props;
+        if (clientRef) clientRef(client);
     };
 
     render() {
@@ -22,7 +28,7 @@ class WebsocketMiddleware extends Component {
             // Handler for incoming message from subscribed topics
             onMessage={onMessage}
             // passes up websocket client
-            ref={(client) => {this.clientRef = client}}
+            ref={this.bubbleUpClient}
             // configures logging level
             debug={true}
         />);

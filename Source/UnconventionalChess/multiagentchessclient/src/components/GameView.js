@@ -6,6 +6,7 @@ import BoardContainer from "./BoardContainer";
 import ChatContainer from "./ChatContainer";
 import WebsocketMiddleware from "./WebsocketMiddleware";
 import DialogueBox from "./DialogueBox";
+import Spinner from "./Spinner";
 
 class GameView extends Component {
 
@@ -17,17 +18,28 @@ class GameView extends Component {
     };
 
     state = {
-        timeOrderedMessages: []
+        timeOrderedMessages: [],
+        clientRef: undefined
     };
 
-    // TODO allow board to send move via websocket client
+    isConnected = () => {
+        const {clientRef} = this.state.clientRef;
+
+        return clientRef !== undefined && clientRef.isConnected();
+    };
+
     sendMove = (msg) => {
-        this.clientRef.sendMessage('/app/chat.sendMessage', msg)
+        this.state.clientRef.sendMessage('/app/chat.sendMessage', msg)
+    };
+
+    registerClient = (client) => {
+        this.setState((prevState) => ({clientRef: client}))
     };
 
     handleReceivedMessage = (message) => {
-        const appendedMessageList = [...this.state.timeOrderedMessages, message];
-        this.setState({timeOrderedMessages: appendedMessageList})
+        this.setState(prevState => ({
+            timeOrderedMessages: [...prevState.timeOrderedMessages, message]
+        }));
     };
 
     render() {
@@ -39,11 +51,18 @@ class GameView extends Component {
                 <WebsocketMiddleware
                     onMessage={this.handleReceivedMessage}
                     initialConfig={initialConfig}
-                />
-                <BoardContainer initialConfig={initialConfig} onMove={this.sendMove}/>
-                <ChatContainer timeOrderedMessages={timeOrderedMessages}/>
-                <DialogueBox message={timeOrderedMessages.last}/>
-                <button onClick={onExit}>Exit Game</button>
+                    clientRef={this.registerClient}
+                >
+                    {this.isConnected() ?
+                        <div>
+                            <button onClick={onExit}>Exit Game</button>
+                            < BoardContainer initialConfig={initialConfig} onMove={this.sendMove}/>
+                            <ChatContainer timeOrderedMessages={timeOrderedMessages}/>
+                            <DialogueBox message={timeOrderedMessages.last}/>
+                        </div>
+                        : <Spinner name={"Connection"} loadingImage={""}/>
+                    }
+                </WebsocketMiddleware>
             </div>
         );
     }
