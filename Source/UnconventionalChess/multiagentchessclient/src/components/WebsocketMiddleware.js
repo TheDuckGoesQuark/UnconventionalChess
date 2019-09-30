@@ -28,7 +28,7 @@ class WebsocketMiddleware extends Component {
     };
 
     render() {
-        const {onMessage} = this.props;
+        const {onMessage, children} = this.props;
 
         // TODO on connect, send initial configuration
         return (<SockJsClient
@@ -45,7 +45,7 @@ class WebsocketMiddleware extends Component {
             ref={this.bubbleUpClient}
             // configures logging level
             debug={true}
-        />);
+        >{children}</SockJsClient>);
     }
 }
 

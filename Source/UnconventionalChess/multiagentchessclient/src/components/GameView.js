@@ -50,7 +50,7 @@ class GameView extends Component {
 
         return (<div>
             <button onClick={onExit}>Exit Game</button>
-            < BoardContainer initialConfig={initialConfig} onMove={this.sendMove}/>
+            <BoardContainer initialConfig={initialConfig} onMove={this.sendMove}/>
             <ChatContainer timeOrderedMessages={timeOrderedMessages}/>
             <DialogueBox message={timeOrderedMessages.last}/>
         </div>);
@@ -63,6 +63,7 @@ class GameView extends Component {
     render() {
         const {initialConfig} = this.props;
         const {connected} = this.state;
+        console.log(`rendering ${connected}`);
 
         return (
             <div>
