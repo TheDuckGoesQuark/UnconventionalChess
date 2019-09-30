@@ -8,12 +8,23 @@ class WebsocketMiddleware extends Component {
     static propTypes = {
         initialConfig: PropTypes.instanceOf(InitialConfiguration),
         onMessage: PropTypes.func,
+        onConnectionChange: PropTypes.func,
         clientRef: PropTypes.func
     };
 
     bubbleUpClient = (client) => {
         const {clientRef} = this.props;
         if (clientRef) clientRef(client);
+    };
+
+    onConnect = () => {
+        const {onConnectionChange} = this.props;
+        onConnectionChange(true);
+    };
+
+    onDisconnect = () => {
+        const {onConnectionChange} = this.props;
+        onConnectionChange(false);
     };
 
     render() {
@@ -27,6 +38,9 @@ class WebsocketMiddleware extends Component {
             topics={['/topic/chess']}
             // Handler for incoming message from subscribed topics
             onMessage={onMessage}
+            // Handlers for connection and disconnection events
+            onConnect={this.onConnect}
+            onDisconnect={this.onDisconnect}
             // passes up websocket client
             ref={this.bubbleUpClient}
             // configures logging level

@@ -18,14 +18,16 @@ class GameView extends Component {
     };
 
     state = {
+        // messages received so far
         timeOrderedMessages: [],
-        clientRef: undefined
+        // reference to websocket client
+        clientRef: undefined,
+        // current connection status
+        connected: false,
     };
 
-    isConnected = () => {
-        const {clientRef} = this.state.clientRef;
-
-        return clientRef !== undefined && clientRef.isConnected();
+    handleConnectionChange = (isConnected) => {
+        this.setState({connected: isConnected})
     };
 
     sendMove = (msg) => {
@@ -33,7 +35,7 @@ class GameView extends Component {
     };
 
     registerClient = (client) => {
-        this.setState((prevState) => ({clientRef: client}))
+        this.setState({clientRef: client})
     };
 
     handleReceivedMessage = (message) => {
@@ -42,26 +44,35 @@ class GameView extends Component {
         }));
     };
 
-    render() {
+    renderGame = () => {
         const {onExit, initialConfig} = this.props;
         const {timeOrderedMessages} = this.state;
+
+        return (<div>
+            <button onClick={onExit}>Exit Game</button>
+            < BoardContainer initialConfig={initialConfig} onMove={this.sendMove}/>
+            <ChatContainer timeOrderedMessages={timeOrderedMessages}/>
+            <DialogueBox message={timeOrderedMessages.last}/>
+        </div>);
+    };
+
+    renderSpinner = () => {
+        return <Spinner name={"Connection"} loadingImage={""}/>
+    };
+
+    render() {
+        const {initialConfig} = this.props;
+        const {connected} = this.state;
 
         return (
             <div>
                 <WebsocketMiddleware
                     onMessage={this.handleReceivedMessage}
+                    onConnectionChange={this.handleConnectionChange}
                     initialConfig={initialConfig}
                     clientRef={this.registerClient}
                 >
-                    {this.isConnected() ?
-                        <div>
-                            <button onClick={onExit}>Exit Game</button>
-                            < BoardContainer initialConfig={initialConfig} onMove={this.sendMove}/>
-                            <ChatContainer timeOrderedMessages={timeOrderedMessages}/>
-                            <DialogueBox message={timeOrderedMessages.last}/>
-                        </div>
-                        : <Spinner name={"Connection"} loadingImage={""}/>
-                    }
+                    {connected ? this.renderGame() : this.renderSpinner()}
                 </WebsocketMiddleware>
             </div>
         );
