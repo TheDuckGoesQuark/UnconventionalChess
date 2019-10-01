@@ -3,7 +3,7 @@ import PropTypes from "prop-types";
 import Chess from "chess.js";
 import Chessboard from "chessboardjsx";
 
-class HumanVsHuman extends Component {
+class HumanVsComputer extends Component {
     static propTypes = {children: PropTypes.func};
 
     state = {
@@ -150,9 +150,10 @@ class HumanVsHuman extends Component {
 }
 
 export default function WithMoveValidation() {
+    // TODO relative width of board?
     return (
         <div>
-            <HumanVsHuman>
+            <HumanVsComputer>
                 {({
                       position,
                       onDrop,
@@ -166,7 +167,7 @@ export default function WithMoveValidation() {
                   }) => (
                     <Chessboard
                         id="humanVsHuman"
-                        width={320}
+                        width={"400"}
                         position={position}
                         onDrop={onDrop}
                         onMouseOverSquare={onMouseOverSquare}
@@ -182,7 +183,7 @@ export default function WithMoveValidation() {
                         onSquareRightClick={onSquareRightClick}
                     />
                 )}
-            </HumanVsHuman>
+            </HumanVsComputer>
         </div>
     );
 }

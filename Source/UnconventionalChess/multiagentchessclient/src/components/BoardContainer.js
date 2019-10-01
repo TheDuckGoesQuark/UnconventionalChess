@@ -11,9 +11,11 @@ class BoardContainer extends Component {
     };
 
     render() {
+        const {initialConfig} = this.props;
+
         return (
             <div style={boardsContainer}>
-                <WithMoveValidation/>
+                <WithMoveValidation initialConfig={initialConfig}/>
             </div>
         )
     }
