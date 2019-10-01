@@ -45,7 +45,7 @@ class WebsocketMiddleware extends Component {
             ref={this.bubbleUpClient}
             // configures logging level
             debug={true}
-        >{children}</SockJsClient>);
+        />);
     }
 }
 

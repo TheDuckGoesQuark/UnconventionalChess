@@ -63,7 +63,6 @@ class GameView extends Component {
     render() {
         const {initialConfig} = this.props;
         const {connected} = this.state;
-        console.log(`rendering ${connected}`);
 
         return (
             <div>
@@ -72,9 +71,8 @@ class GameView extends Component {
                     onConnectionChange={this.handleConnectionChange}
                     initialConfig={initialConfig}
                     clientRef={this.registerClient}
-                >
-                    {connected ? this.renderGame() : this.renderSpinner()}
-                </WebsocketMiddleware>
+                />
+                {connected ? this.renderGame() : this.renderSpinner()}
             </div>
         );
     }
