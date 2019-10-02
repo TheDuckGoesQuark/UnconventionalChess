@@ -1,6 +1,6 @@
 import React, {Component} from "react";
 import PropTypes from "prop-types";
-import {ChatMessage} from "../commons/Chat";
+import {ChatMessage} from "../../commons/Chat";
 
 class DialogueBox extends Component {
     static propTypes = {

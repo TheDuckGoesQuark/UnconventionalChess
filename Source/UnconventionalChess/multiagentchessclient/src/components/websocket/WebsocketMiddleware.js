@@ -1,7 +1,7 @@
 import React, {Component} from "react";
 import SockJsClient from "react-stomp";
 import PropTypes from "prop-types";
-import InitialConfiguration from "../commons/InitialConfiguration";
+import InitialConfiguration from "../../commons/InitialConfiguration";
 
 class WebsocketMiddleware extends Component {
 

@@ -1,18 +1,10 @@
-import React, {Component} from "react";
+import React from "react";
 import {Provider} from "react-redux";
 import {createStore} from "redux";
-import GameContainer from "./components/GameContainer";
+import GameContainer from "./components/view/ViewRouter";
+import rootReducer from "./components/rootReducer";
 
-const initialState = {
-    timeOrderedMessages: []
-};
-
-function reducer(state = initialState, action) {
-    console.log('reducer', state, action);
-    return state;
-}
-
-const store = createStore(reducer);
+const store = createStore(rootReducer, window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__());
 
 const App = () => (
     <Provider store={store}>
