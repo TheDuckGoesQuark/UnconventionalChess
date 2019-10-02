@@ -1,6 +1,6 @@
 import React from "react";
 import {connect} from "react-redux";
-import {submitConfig, setHumanPlaysFirst} from "./ConfigActions";
+import {setIsConfigured, setHumanPlaysFirst} from "./ConfigActions";
 
 
 const ConfigView = (props) => (
@@ -25,7 +25,7 @@ function mapStateToProps(state) {
 
 const mapDispatchToProps = {
     setHumanPlaysFirst: setHumanPlaysFirst,
-    submitConfig: submitConfig
+    submitConfig: () => setIsConfigured(true)
 };
 
 const chosenButton = {

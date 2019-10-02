@@ -10,7 +10,7 @@ const ViewRouter = (props) => (
 
 function mapStateToProps(state) {
     return {
-        started: state.started,
+        started: state.configReducer.configured,
     }
 }
 

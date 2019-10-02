@@ -1,4 +1,4 @@
-import {CONFIG_HUMAN_PLAYS_FIRST_SET, CONFIG_SUBMITTED} from "./ConfigActions";
+import {CONFIG_HUMAN_PLAYS_FIRST_SET, CONFIG_IS_SET} from "./ConfigActions";
 
 const initialState = {
     humanPlaysFirst: true,
@@ -13,10 +13,10 @@ export default function configReducer(state = initialState, action) {
                 ...state,
                 humanPlaysFirst: action.payload.humanPlaysFirst
             };
-        case CONFIG_SUBMITTED:
+        case CONFIG_IS_SET:
             return {
                 ...state,
-                configured: true,
+                configured: action.payload.isConfigured,
             };
         default:
             return state;

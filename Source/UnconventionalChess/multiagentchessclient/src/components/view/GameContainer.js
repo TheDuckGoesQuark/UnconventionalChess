@@ -1,16 +1,17 @@
-import React, {Component} from "react";
+import React from "react";
 
 import BoardContainer from "../board/BoardContainer";
 import ChatContainer from "../chat/ChatContainer";
 import WebsocketMiddleware from "../websocket/WebsocketMiddleware";
 import DialogueBox from "../chat/DialogueBox";
 import {connect} from "react-redux";
+import {setIsConfigured} from "../config/ConfigActions";
 
 const GameContainer = (props) => (
     <div>
         <WebsocketMiddleware/>
         <div style={gameViewStyle}>
-            <button style={exitButtonStyle} onClick={()=>console.log("waddup")}>Exit Game</button>
+            <button style={exitButtonStyle} onClick={props.exit}>Exit Game</button>
             <div style={boardContainerStyle}>
                 <BoardContainer/>
             </div>
@@ -62,10 +63,14 @@ const chatContainerStyle = {
     boxSizing: "border-box"
 };
 
+const mapDispatchToProps = {
+    exit: () => setIsConfigured(false)
+};
+
 function mapStateToProps(state) {
     return {
-        connected: state.started,
+        configured: state.configReducer.configured,
     }
 }
 
-export default connect(mapStateToProps)(GameContainer);
+export default connect(mapStateToProps, mapDispatchToProps)(GameContainer);
