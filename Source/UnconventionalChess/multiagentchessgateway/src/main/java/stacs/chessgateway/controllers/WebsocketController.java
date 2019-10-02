@@ -6,6 +6,11 @@ import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.handler.annotation.Payload;
 import org.springframework.messaging.handler.annotation.SendTo;
 import org.springframework.web.bind.annotation.RestController;
+import stacs.chessgateway.models.ChatMessage;
+import stacs.chessgateway.models.BaseMessage;
+import stacs.chessgateway.models.MoveMessage;
+
+import java.time.Instant;
 
 @RestController
 public class WebsocketController {
@@ -14,9 +19,24 @@ public class WebsocketController {
 
     @MessageMapping("/chat.sendMessage")
     @SendTo("/topic/chess")
-    public String handleMessage(@Payload final String message) {
+    public BaseMessage handleMessage(@Payload final BaseMessage message) {
         logger.info("Websocket endpoint hit!");
-        return message + " received!";
+
+        final BaseMessage response;
+        switch (message.getType()) {
+            case ChatMessage.MESSAGE_TYPE:
+                response = new ChatMessage(Instant.now(), "the-server", "got your message bucko");
+                break;
+            case MoveMessage.MESSAGE_TYPE:
+                MoveMessage request = (MoveMessage) message;
+                response = new MoveMessage(Instant.now(), request.getPieceId(), request.getFromCoords(), request.getToCoords());
+                break;
+            default:
+                response = new ChatMessage(Instant.now(), "the-server", "Didn't understand that?");
+                break;
+        }
+
+        return response;
     }
 
 }

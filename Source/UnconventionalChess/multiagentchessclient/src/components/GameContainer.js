@@ -1,35 +1,17 @@
-import React, {Component} from "react";
+import React from "react";
+import {connect} from "react-redux";
 
 import ConfigView from "./ConfigView";
 import GameView from "./GameView";
 
-class GameContainer extends Component {
+const GameContainer = (props) => (
+    props.initialConfig ? <GameView/> : <ConfigView/>
+);
 
-    state = {
-        // initial configuration for game (player, agent configs)
-        initialConfig: undefined
-    };
-
-    // On config confirmation, apply new configuration
-    onConfirmation = (initialConfig) => {
-        this.setState(({initialConfig: initialConfig}));
-    };
-
-    // On game exit, clear the configuration
-    onGameExit = () => {
-        this.setState({initialConfig: undefined})
-    };
-
-    render() {
-        const {initialConfig} = this.state;
-
-        const configView = <ConfigView onConfirmation={this.onConfirmation}/>;
-        const gameView = <GameView initialConfig={initialConfig} onExit={this.onGameExit}/>;
-
-        return (
-            initialConfig ? gameView : configView
-        );
+function mapStateToProps(state) {
+    return {
+        initialConfig: state.initialConfig
     }
 }
 
-export default GameContainer;
+export default connect(mapStateToProps)(GameContainer);

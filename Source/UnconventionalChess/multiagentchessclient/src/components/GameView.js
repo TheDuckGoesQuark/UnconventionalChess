@@ -7,6 +7,8 @@ import ChatContainer from "./ChatContainer";
 import WebsocketMiddleware from "./WebsocketMiddleware";
 import DialogueBox from "./DialogueBox";
 import Spinner from "./Spinner";
+import {ChatMessage, TranscriptMessage} from "../commons/Chat";
+
 
 class GameView extends Component {
 
@@ -26,23 +28,9 @@ class GameView extends Component {
         connected: false,
     };
 
-    handleConnectionChange = (isConnected) => {
-        this.setState({connected: isConnected})
-    };
-
-    sendMove = (msg) => {
-        this.state.clientRef.sendMessage('/app/chat.sendMessage', msg)
-    };
-
-    registerClient = (client) => {
-        this.setState({clientRef: client})
-    };
-
-    handleReceivedMessage = (message) => {
-        this.setState(prevState => ({
-            timeOrderedMessages: [...prevState.timeOrderedMessages, message]
-        }));
-    };
+    componentDidMount() {
+        setInterval(() => this.sendMessage(new ChatMessage(new Date(), "the-client", "hey server!")), 5000);
+    }
 
     renderGame = () => {
         const {onExit, initialConfig} = this.props;
@@ -51,7 +39,7 @@ class GameView extends Component {
         return (<div style={gameViewStyle}>
             <button style={exitButtonStyle} onClick={onExit}>Exit Game</button>
             <div style={boardContainerStyle}>
-                <BoardContainer initialConfig={initialConfig} onMove={this.sendMove}/>
+                <BoardContainer initialConfig={initialConfig} onMove={this.sendMessage}/>
             </div>
             <div style={dialogBoxContainerStyle}>
                 <DialogueBox message={timeOrderedMessages.last}/>
@@ -67,17 +55,11 @@ class GameView extends Component {
     };
 
     render() {
-        const {initialConfig} = this.props;
         const {connected} = this.state;
 
         return (
             <div>
-                <WebsocketMiddleware
-                    onMessage={this.handleReceivedMessage}
-                    onConnectionChange={this.handleConnectionChange}
-                    initialConfig={initialConfig}
-                    clientRef={this.registerClient}
-                />
+                <WebsocketMiddleware/>
                 {connected ? this.renderGame() : this.renderSpinner()}
             </div>
         );
