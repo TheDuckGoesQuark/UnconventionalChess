@@ -8,7 +8,7 @@ import {
     SQUARE_RIGHT_CLICK
 } from "./BoardActions";
 import Chess from "chess.js"
-import {squareStyling} from "./WithMoveValidation";
+import {squareStyling} from "./GameBoard";
 
 const initialState = {
     whiteTurn: true,
@@ -140,6 +140,8 @@ const handlePieceDropped = (state, action) => {
         promotion: "q" // always promote to a queen for example simplicity
     });
 
+    console.log(move);
+
     // illegal move
     if (move === null) return state;
     else return {
@@ -182,9 +184,7 @@ export default function boardReducer(state = initialState, action) {
         case MOUSE_OVER_SQUARE :
             return handleMouseOverSquare(state, action);
         case PIECE_DROPPED :
-            return {
-                ...state,
-            };
+            return handlePieceDropped(state, action);
         default:
             return state;
     }

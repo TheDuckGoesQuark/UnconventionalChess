@@ -1,10 +1,10 @@
 import React, {Component} from "react";
 
-import WithMoveValidation from "./WithMoveValidation";
+import GameBoard from "./GameBoard";
 
 const BoardContainer = () => (
     <div style={boardContainerStyle}>
-        <WithMoveValidation/>
+        <GameBoard/>
     </div>
 );
 
