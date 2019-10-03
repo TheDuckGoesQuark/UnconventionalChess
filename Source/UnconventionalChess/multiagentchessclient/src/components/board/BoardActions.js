@@ -47,7 +47,7 @@ export const mouseOutSquare = (square) => ({
     payload: {square}
 });
 
-export const pieceDropped  = (sourceSquare, targetSquare) => ({
+export const pieceDropped = ({sourceSquare, targetSquare}) => ({
     type: PIECE_DROPPED,
     payload: {sourceSquare, targetSquare}
 });

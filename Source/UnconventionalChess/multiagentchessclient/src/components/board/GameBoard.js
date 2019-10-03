@@ -10,13 +10,12 @@ import {
     squareRightClicked
 } from "./BoardActions";
 
-
 const GameBoard = (props) => (
     <Chessboard
         id="humanVsAgents"
         width={"350"}
         position={props.position}
-        onDrop={props.onDrop}
+        onDrop={(move) => props.onDrop(move)}
         onMouseOverSquare={props.onMouseOverSquare}
         onMouseOutSquare={props.onMouseOutSquare}
         boardStyle={{
