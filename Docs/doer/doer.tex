@@ -36,16 +36,16 @@ The project has obvious benefits for game development: introducing humour and pe
 \subsection*{Primary}
 \begin{enumerate}
 		\descitem{Base infrastructure composed of agents representing pieces, which communicate between each other to choose the next move.}
-		The agents are capable of reaching some consensus on what which piece is to move next and each move is made visible through some form of graphical interface.
+		The agents are capable of identifying optional moves at a point in the game, reaching a consensus on what piece is to move next, and each move reaches some form of textual interface.
 
-		\descitem{Agent decisions are driven by some form of 'personality'}
+		\descitem{Agent decisions are driven by some form of 'personality' model.}
 		Possibly a set of static weightings that push them to have certain desires and be more likely to propose certain actions over others.
 
-		\descitem{Dialogue is generated related to the discussions between agents}
+		\descitem{Dialogue is generated related to the discussions between agents.}
 		Human-readable dialogue is generated to describe the discussions taking place between agents.
 
-		\descitem{Humour is achieved through either the human-readable dialogue, or from the actions of agents}
-		For example, agents break from 'expected' behaviour to produce funny situations, or conversations between agents contain satirical comments related to the current state of the game.
+		\descitem{Humour is achieved through either the human-readable dialogue, or from the actions of agents.}
+		A fixed set of rules inspired by computational models of humour that define how a character should behave in consecutive dialogues. For example, agents break from 'expected' behaviour to produce funny situations, or conversations between agents contain satirical comments related to the current state of the game.
 
 \end{enumerate}
 
@@ -58,11 +58,20 @@ The project has obvious benefits for game development: introducing humour and pe
 		\descitem{Dialogue continues throughout game, not just during the main decision making process.}
 		The agents will constantly produce dialogue even when not making decisions. This could be in reaction to the move just made, or be directed at the player.
 
+		\descitem{Thorough evaluation by human users}
+		The game is tested by a number of users, and feedback is collected as to how well the game achieves its goal of being entertaining. This feedback is used to describe possible next steps for the project.
+
+\end{enumerate}
+
+\subsection*{Tertiary}
+
+\begin{enumerate}
+
 		\descitem{The 'hierarchical' nature of chess pieces is accounted for during the decision making process between agents}
 		For example, actions suggested by bishops and knights will be more likely to be accepted compared to that of a pawn. This hierarchy could also be dynamic, and make agents in more powerful positions (for example, a rook cornering the enemy king) also have more weighting during the decision making process.
 
-		\descitem{Thorough evaluation by human users}
-		The game is tested by a number of users, and feedback is collected as to how well the game achieves its goal of being entertaining. This feedback is used to describe possible next steps for the project.
+		\descitem{Detailed Graphical Interface}
+		The game has high quality visuals that reflect the state of the game, animations, and other aesthetic properties that make it more enjoyable to play.
 
 \end{enumerate}
 
@@ -75,3 +84,4 @@ Some short feedback tests will be run with volunteers to evaluate the success of
 This project will only require lab machines for development and testing purposes.
 
 \end{document}
+
