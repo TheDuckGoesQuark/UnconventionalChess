@@ -1,6 +1,18 @@
-import React, {Component} from "react";
+import React from "react";
 import SockJsClient from "react-stomp";
 import {connect} from "react-redux";
+import {receiveChatMessage} from "../chat/ChatActions";
+import {moveReceive} from "../board/BoardActions";
+import {wsConnected, wsDisconnected} from "./WebsocketActions";
+import {ChatMessage, MoveMessage} from "../../models/Chat";
+
+const handleMessage = (message, handlerByType) => {
+    if (message.type && handlerByType[message.type]) {
+        handlerByType[message.type](message);
+    } else {
+        throw new TypeError("Unknown message type received");
+    }
+};
 
 // TODO on connect, send initial configuration
 const WebsocketMiddleware = (props) => (
@@ -9,8 +21,11 @@ const WebsocketMiddleware = (props) => (
         url='/ws'
         // Topics to subscribe to
         topics={['/topic/chess']}
-        // Handler for incoming message from subscribed topics
-        onMessage={props.onMessage}
+        // Message handlers
+        onMessage={(message) => handleMessage(message, {
+            [ChatMessage.TYPE]: props.receiveChatMessage,
+            [MoveMessage.TYPE]: props.receiveMoveMessage,
+        })}
         // Handlers for connection and disconnection events
         onConnect={props.onConnect}
         onDisconnect={props.onDisconnect}
@@ -20,9 +35,10 @@ const WebsocketMiddleware = (props) => (
 );
 
 const mapDispatchToProps = {
-    onDisconnect: null,
-    onConnect: null,
-    onMessage: null,
+    onDisconnect: wsDisconnected,
+    onConnect: wsConnected,
+    receiveChatMessage: receiveChatMessage,
+    receiveMoveMessage: moveReceive
 };
 
 export default connect(null, mapDispatchToProps)(WebsocketMiddleware);

@@ -1,27 +1,14 @@
 import React, {Component} from "react";
-import PropTypes from "prop-types";
 
-import WithMoveValidation from "../../integrations/WithMoveValidation";
-import InitialConfiguration from "../../commons/InitialConfiguration";
+import WithMoveValidation from "./WithMoveValidation";
 
-class BoardContainer extends Component {
-    static propTypes = {
-        onMove: PropTypes.func,
-        initialConfig: PropTypes.instanceOf(InitialConfiguration)
-    };
+const BoardContainer = () => (
+    <div style={boardContainerStyle}>
+        <WithMoveValidation/>
+    </div>
+);
 
-    render() {
-        const {initialConfig} = this.props;
-
-        return (
-            <div style={boardsContainer}>
-                <WithMoveValidation initialConfig={initialConfig}/>
-            </div>
-        )
-    }
-}
-
-const boardsContainer = {
+const boardContainerStyle = {
     display: "flex",
     justifyContent: "space-around",
     alignItems: "center",

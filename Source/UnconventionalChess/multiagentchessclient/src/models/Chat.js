@@ -22,7 +22,7 @@ export class ChatMessage extends TranscriptMessage {
         this.messageBody = messageBody;
     }
 
-    getType() {
+    static get TYPE() {
         return "ChatMessage";
     }
 }
@@ -36,7 +36,7 @@ export class MoveMessage extends TranscriptMessage {
         this.toCoords = toCoords;
     }
 
-    getType() {
+    static get TYPE() {
         return "MoveMessage";
     }
 }

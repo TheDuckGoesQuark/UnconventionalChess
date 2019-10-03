@@ -2,7 +2,7 @@ import React from "react";
 import {Provider} from "react-redux";
 import {createStore} from "redux";
 import GameContainer from "./components/view/ViewRouter";
-import rootReducer from "./components/rootReducer";
+import rootReducer from "./components/RootReducer";
 
 const store = createStore(rootReducer, window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__());
 
