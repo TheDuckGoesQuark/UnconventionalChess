@@ -31,6 +31,8 @@ const WebsocketMiddleware = (props) => (
         onDisconnect={props.onDisconnect}
         // configures logging level
         debug={true}
+        // store client reference to send messages
+        ref={props.socketEstablished}
     />
 );
 
@@ -38,7 +40,8 @@ const mapDispatchToProps = {
     onDisconnect: wsDisconnected,
     onConnect: wsConnected,
     receiveChatMessage: receiveChatMessage,
-    receiveMoveMessage: moveReceive
+    receiveMoveMessage: moveReceive,
+    socketEstablished: socketEstablished
 };
 
 export default connect(null, mapDispatchToProps)(WebsocketMiddleware);

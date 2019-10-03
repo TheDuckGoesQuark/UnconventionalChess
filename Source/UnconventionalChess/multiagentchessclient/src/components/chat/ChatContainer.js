@@ -1,22 +1,27 @@
-import React, {Component} from "react";
-import PropTypes from "prop-types";
-import {TranscriptMessage} from "../../models/Chat"
+import React from "react";
+import {connect} from "react-redux";
 
+const mapMessageToComponent = (message) => {
+    return <div style={messageStyle}>{message}</div>
+};
 
-class ChatContainer extends Component {
-    static propTypes = {
-        // List of messages so far
-        timeOrderedMessages: PropTypes.arrayOf(PropTypes.instanceOf(TranscriptMessage))
-    };
-
-    render() {
-        return (<div>I'm a chat container!</div>);
-    }
-}
+const ChatContainer = ({timeOrderedMessages}) => (
+    <div>
+        {timeOrderedMessages.length > 0
+            ? timeOrderedMessages.map(mapMessageToComponent)
+            : mapMessageToComponent("no message to show")}
+    </div>
+);
 
 const messageStyle = {
     backgroundColor: "grey",
     fontcolor: "white",
 };
 
-export default ChatContainer;
+function mapStateToProps(state) {
+    return {
+        timeOrderedMessages: state.chatReducer.timeOrderedMessages,
+    }
+}
+
+export default connect(mapStateToProps)(ChatContainer);

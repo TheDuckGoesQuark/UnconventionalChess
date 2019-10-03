@@ -130,7 +130,6 @@ const handleMouseOverSquare = (state, action) => {
 };
 
 const handlePieceDropped = (state, action) => {
-    console.log(action);
     const {game, pieceSquare, history} = state;
     const {sourceSquare, targetSquare, piece} = action.payload;
 
@@ -152,7 +151,6 @@ const handlePieceDropped = (state, action) => {
 };
 
 export default function boardReducer(state = initialState, action) {
-    console.log(action.type);
     switch (action.type) {
         case MOVE_RECEIVE:
             return {
@@ -184,7 +182,6 @@ export default function boardReducer(state = initialState, action) {
         case MOUSE_OVER_SQUARE :
             return handleMouseOverSquare(state, action);
         case PIECE_DROPPED :
-            console.log(action.type);
             return handlePieceDropped(state, action);
         default:
             return state;
