@@ -13,7 +13,7 @@ export const moveSend = (move) => ({
     payload: {move}
 });
 
-export const moveReceive = (move) => ({
+export const receiveMove = (move) => ({
     type: MOVE_RECEIVE,
     payload: {move}
 });

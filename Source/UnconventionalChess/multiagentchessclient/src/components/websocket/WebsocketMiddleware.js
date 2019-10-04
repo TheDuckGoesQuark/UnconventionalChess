@@ -2,8 +2,8 @@ import React from "react";
 import SockJsClient from "react-stomp";
 import {connect} from "react-redux";
 import {receiveChatMessage} from "../chat/ChatActions";
-import {moveReceive} from "../board/BoardActions";
-import {wsConnected, wsDisconnected} from "./WebsocketActions";
+import {receiveMove} from "../board/BoardActions";
+import {wsConnected, wsDisconnected, wsInitialised} from "./WebsocketActions";
 import {ChatMessage, MoveMessage} from "../../models/Chat";
 
 const handleMessage = (message, handlerByType) => {
@@ -40,8 +40,8 @@ const mapDispatchToProps = {
     onDisconnect: wsDisconnected,
     onConnect: wsConnected,
     receiveChatMessage: receiveChatMessage,
-    receiveMoveMessage: moveReceive,
-    socketEstablished: socketEstablished
+    receiveMoveMessage: receiveMove,
+    socketEstablished: wsInitialised
 };
 
 export default connect(null, mapDispatchToProps)(WebsocketMiddleware);

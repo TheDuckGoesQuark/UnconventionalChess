@@ -1,7 +1,21 @@
-import {WS_CONNECTED, WS_DISCONNECTED} from "./WebsocketActions";
+import {WS_CONNECTED, WS_DISCONNECTED, WS_INITIALISED} from "./WebsocketActions";
+import {MOVE_SEND} from "../board/BoardActions";
+import {MoveMessage} from "../../models/Chat";
 
 const initialState = {
     connected: false,
+    clientRef: null,
+};
+
+const sendMove = (state, action) => {
+    const {clientRef} = state;
+    const {sourceSquare, targetSquare, piece} = action.payload.move;
+
+    if (!clientRef) return state;
+
+    clientRef.sendMessage("/app/chess.move", JSON.stringify(new MoveMessage(Date.now(), piece, sourceSquare, targetSquare)));
+
+    return state;
 };
 
 export default function websocketReducer(state = initialState, action) {
@@ -15,6 +29,13 @@ export default function websocketReducer(state = initialState, action) {
             return {
                 ...state,
                 connected: false
+            };
+        case MOVE_SEND:
+            return sendMove(state, action);
+        case WS_INITIALISED:
+            return {
+                ...state,
+                clientRef: action.payload.clientRef,
             };
         default:
             return state;

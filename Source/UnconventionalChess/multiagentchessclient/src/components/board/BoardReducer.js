@@ -11,9 +11,6 @@ import Chess from "chess.js"
 import {squareStyling} from "./GameBoard";
 
 const initialState = {
-    whiteTurn: true,
-    waitingOnMoveSuccess: false,
-
     fen: "start",
     // square styles for active drop square
     dropSquareStyle: {},
@@ -130,8 +127,12 @@ const handleMouseOverSquare = (state, action) => {
 };
 
 const handlePieceDropped = (state, action) => {
+    return state;
+};
+
+const handleReceivedMove = (state, action) => {
     const {game, pieceSquare, history} = state;
-    const {sourceSquare, targetSquare, piece} = action.payload;
+    const {sourceSquare, targetSquare} = action.payload;
 
     // see if the move is legal
     let move = game.move({
@@ -153,16 +154,7 @@ const handlePieceDropped = (state, action) => {
 export default function boardReducer(state = initialState, action) {
     switch (action.type) {
         case MOVE_RECEIVE:
-            return {
-                ...state,
-                whiteTurn: !state.whiteTurn,
-                waitingOnMoveSuccess: false
-            };
-        case MOVE_SEND:
-            return {
-                ...state,
-                waitingOnMoveSuccess: true
-            };
+            return handleReceivedMove(state, action);
         case GAME_START:
             return {
                 ...state,
