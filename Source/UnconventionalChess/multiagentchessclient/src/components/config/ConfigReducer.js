@@ -8,7 +8,6 @@ const initialState = {
 export default function configReducer(state = initialState, action) {
     switch (action.type) {
         case CONFIG_HUMAN_PLAYS_FIRST_SET:
-            console.log(action);
             return {
                 ...state,
                 humanPlaysFirst: action.payload.humanPlaysFirst

@@ -7,8 +7,6 @@ import {wsConnected, wsDisconnected, wsInitialised} from "./WebsocketActions";
 import {ChatMessage, MoveMessage} from "../../models/Chat";
 
 const handleMessage = (message, handlerByType) => {
-    console.log("Handling message", message);
-
     if (message.type && handlerByType[message.type]) {
         handlerByType[message.type](message);
     } else {

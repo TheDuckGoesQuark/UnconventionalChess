@@ -132,7 +132,7 @@ const handlePieceDropped = (state, action) => {
 
 const handleReceivedMove = (state, action) => {
     const {game, pieceSquare, history} = state;
-    const {sourceSquare, targetSquare} = action.payload;
+    const {sourceSquare, targetSquare} = action.payload.move;
 
     // see if the move is legal
     let move = game.move({

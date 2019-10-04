@@ -2,17 +2,13 @@ import React from "react";
 import {connect} from "react-redux";
 
 const mapMessageToComponent = (message) => {
-    if (!message) return (<div>SAD</div>);
-    return <div key={message.timestamp ? message.timestamp : "key"} style={messageStyle}>{message}</div>
+    return <div key={message.timestamp ? message.timestamp : "key"} style={messageStyle}>{message.toString()}</div>
 };
 
 const ChatContainer = ({timeOrderedMessages}) => (
     <div>
         {timeOrderedMessages.length > 0
-            ? timeOrderedMessages.map((message)=>{
-                console.log(message);
-                return mapMessageToComponent(message)
-            })
+            ? timeOrderedMessages.map((message) => mapMessageToComponent(message))
             : mapMessageToComponent("no message to show")}
     </div>
 );
