@@ -15,12 +15,12 @@ export default function chatReducer(state = initialState, action) {
         case CHAT_MESSAGE_RECEIVE:
             return {
                 ...state,
-                timeOrderedMessages: [...state.timeOrderedMessages, action.message]
+                timeOrderedMessages: [...state.timeOrderedMessages, action.payload.message]
             };
         case MOVE_RECEIVE:
             return {
                 ...state,
-                timeOrderedMessages: [...state.timeOrderedMessages, action.message]
+                timeOrderedMessages: [...state.timeOrderedMessages, action.payload.move]
             };
         default:
             return state;

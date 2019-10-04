@@ -19,7 +19,7 @@ public class WebsocketController {
     @SendTo("/topic/chess")
     public MoveMessage handleMessage(@Payload final MoveMessage move) {
         logger.info("Websocket move endpoint hit!");
-        return new MoveMessage(Instant.now(), move.getPieceId(), move.getFromCoords(), move.getToCoords());
+        return new MoveMessage(Instant.now(), move.getPiece(), move.getSourceSquare(), move.getTargetSquare());
     }
 
 }

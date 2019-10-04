@@ -29,11 +29,11 @@ export class ChatMessage extends TranscriptMessage {
 
 // Record of move made
 export class MoveMessage extends TranscriptMessage {
-    constructor(timestamp, pieceId, fromCoords, toCoords) {
+    constructor(timestamp, sourceSquare, targetSquare, piece) {
         super(timestamp);
-        this.pieceId = pieceId;
-        this.fromCoords = fromCoords;
-        this.toCoords = toCoords;
+        this.piece = piece;
+        this.sourceSquare = sourceSquare;
+        this.targetSquare = targetSquare;
     }
 
     static get TYPE() {

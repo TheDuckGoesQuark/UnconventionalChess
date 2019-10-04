@@ -13,7 +13,7 @@ const sendMove = (state, action) => {
 
     if (!clientRef) return state;
 
-    clientRef.sendMessage("/app/chess.move", JSON.stringify(new MoveMessage(Date.now(), piece, sourceSquare, targetSquare)));
+    clientRef.sendMessage("/app/chess.move", JSON.stringify(new MoveMessage(Date.now(), sourceSquare, targetSquare, piece)));
 
     return state;
 };
