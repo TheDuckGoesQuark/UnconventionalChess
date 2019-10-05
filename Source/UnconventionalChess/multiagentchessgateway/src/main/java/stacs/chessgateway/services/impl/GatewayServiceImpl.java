@@ -1,17 +1,22 @@
 package stacs.chessgateway.services.impl;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import jade.core.AID;
 import jade.core.Profile;
-import jade.util.leap.List;
+import jade.core.behaviours.OneShotBehaviour;
+import jade.lang.acl.ACLMessage;
 import jade.util.leap.Properties;
+import jade.wrapper.ControllerException;
 import jade.wrapper.gateway.JadeGateway;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import stacs.chessgateway.config.GatewayProperties;
+import stacs.chessgateway.exceptions.GatewayFailureException;
+import stacs.chessgateway.models.MoveMessage;
 import stacs.chessgateway.services.GatewayService;
-import stacs.chessgateway.util.MainContainerAgentsRetriever;
 
 import java.util.Arrays;
 
@@ -21,40 +26,48 @@ public class GatewayServiceImpl implements GatewayService {
     private static final Logger logger = LoggerFactory.getLogger(GatewayServiceImpl.class);
 
     private final GatewayProperties gatewayProperties;
+    private final ObjectMapper objectMapper;
 
     @Autowired
-    public GatewayServiceImpl(GatewayProperties gatewayProperties) {
+    public GatewayServiceImpl(GatewayProperties gatewayProperties, ObjectMapper objectMapper) {
         this.gatewayProperties = gatewayProperties;
+        this.objectMapper = objectMapper;
 
         logger.debug(this.gatewayProperties.toString());
 
         // Initialize the JadeGateway to connect to the running JADE-based system.
-        // In this example we assume the Main Container of the JADE-based system we want to connect
+        // Assuming the main container is the one we want to use currently
         // to is running in the local host and is using the default port 1099
         Properties pp = new Properties();
         pp.setProperty(Profile.MAIN_HOST, this.gatewayProperties.getMainContainerHostName());
         pp.setProperty(Profile.MAIN_PORT, Integer.toString(this.gatewayProperties.getMainContainerPort()));
-        JadeGateway.init(null, pp);
 
-        // Now retrieve all agents active in the Main Container by running (through the JadeGateway)
-        // a behaviour that requests that information to the AMS. This behaviour will be executed
-        // by the Gateway Agent inside the JadeGateway. As soon as the execution completes the execute() method
-        // will return.
+        // Override default gateway agent with custom class
+        JadeGateway.init(null, pp);
+    }
+
+
+    @Override
+    public void sendMove(MoveMessage move) throws GatewayFailureException {
+        logger.info("Sending move to agent");
         try {
-            MainContainerAgentsRetriever retriever = new MainContainerAgentsRetriever();
-            JadeGateway.execute(retriever);
-            // At this point the retriever behaviour has been fully executed --> the list of
-            // agents running in the Main Container is available: get it and print it
-            List agents = retriever.getAgents();
-            if (agents != null) {
-                System.out.println("Agents living in the Main Container: ");
-                for (int i = 0; i < agents.size(); ++i) {
-                    System.out.println("- " + ((AID) agents.get(i)).getLocalName());
+            JadeGateway.execute(new OneShotBehaviour() {
+                @Override
+                public void action() {
+                    try {
+                        final ACLMessage message = new ACLMessage(ACLMessage.REQUEST);
+                        final AID pingAgent = new AID("PingAgent@chess-platform", true);
+                        message.addReceiver(pingAgent);
+                        message.setConversationId("sending-move");
+                        message.setContent(objectMapper.writeValueAsString(move));
+                        myAgent.send(message);
+                    } catch (JsonProcessingException e) {
+                        e.printStackTrace();
+                    }
                 }
-            }
-        } catch (Exception e) {
-            logger.error("Unable to connect to JADE Container");
-            logger.trace(Arrays.toString(e.getStackTrace()));
+            });
+        } catch (ControllerException | InterruptedException e) {
+            throw new GatewayFailureException(Arrays.toString(e.getStackTrace()));
         }
     }
 }
