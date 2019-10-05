@@ -9,6 +9,5 @@ public class MoveProcessorAgent extends Agent  {
     protected void setup() {
         super.setup();
         addBehaviour(new ProcessMove());
-        System.out.println(getAID());
     }
 }
