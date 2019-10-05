@@ -8,6 +8,7 @@ import jade.core.behaviours.OneShotBehaviour;
 import jade.lang.acl.ACLMessage;
 import jade.util.leap.Properties;
 import jade.wrapper.ControllerException;
+import jade.wrapper.StaleProxyException;
 import jade.wrapper.gateway.JadeGateway;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -17,6 +18,7 @@ import org.springframework.stereotype.Service;
 import stacs.chessgateway.config.GatewayProperties;
 import stacs.chessgateway.exceptions.GatewayFailureException;
 import stacs.chessgateway.gatewaybehaviours.ReceiveMove;
+import stacs.chessgateway.gatewaybehaviours.SendMove;
 import stacs.chessgateway.models.MoveMessage;
 import stacs.chessgateway.services.GatewayService;
 
@@ -32,16 +34,14 @@ public class GatewayServiceImpl implements GatewayService {
 
     private static final Logger logger = LoggerFactory.getLogger(GatewayServiceImpl.class);
 
+    private final ScheduledExecutorService executorService = Executors.newSingleThreadScheduledExecutor();
     private final GatewayProperties gatewayProperties;
     private final ObjectMapper objectMapper;
-    private final ScheduledExecutorService executorService = Executors.newSingleThreadScheduledExecutor();
-    private final SimpMessagingTemplate messagingTemplate;
 
     @Autowired
     public GatewayServiceImpl(GatewayProperties gatewayProperties, ObjectMapper objectMapper, SimpMessagingTemplate messagingTemplate) {
         this.gatewayProperties = gatewayProperties;
         this.objectMapper = objectMapper;
-        this.messagingTemplate = messagingTemplate;
 
         // Initialize the JadeGateway to connect to the running JADE-based system.
         // Assuming the main container is the one we want to use
@@ -52,7 +52,7 @@ public class GatewayServiceImpl implements GatewayService {
         // Override default gateway agent with custom class
         JadeGateway.init(null, pp);
 
-        // Submit listening behaviour
+        // Start listening for moves
         executorService.scheduleWithFixedDelay(() -> {
             try {
                 JadeGateway.execute(new ReceiveMove(logger, objectMapper, messagingTemplate));
@@ -64,26 +64,11 @@ public class GatewayServiceImpl implements GatewayService {
 
     @Override
     public void sendMove(MoveMessage move) throws GatewayFailureException {
-        logger.info("Sending move to agent");
         try {
-            JadeGateway.execute(new OneShotBehaviour() {
-                @Override
-                public void action() {
-                    try {
-                        final ACLMessage message = new ACLMessage(ACLMessage.PROPOSE);
-                        final AID pingAgent = new AID("PingAgent@chess-platform", true);
-                        message.addReceiver(pingAgent);
-                        message.setConversationId("sending-move");
-                        message.setContent(objectMapper.writeValueAsString(move));
-                        myAgent.send(message);
-                    } catch (JsonProcessingException e) {
-                        e.printStackTrace();
-                    }
-                }
-            });
-        } catch (ControllerException | InterruptedException e) {
+            final String jsonMove = objectMapper.writeValueAsString(move);
+            JadeGateway.execute(new SendMove(jsonMove));
+        } catch (JsonProcessingException | InterruptedException | ControllerException e) {
             throw new GatewayFailureException(Arrays.toString(e.getStackTrace()));
         }
-        logger.info("Move sent to agent");
     }
 }

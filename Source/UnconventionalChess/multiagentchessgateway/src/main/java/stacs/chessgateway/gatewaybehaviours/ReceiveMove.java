@@ -2,7 +2,6 @@ package stacs.chessgateway.gatewaybehaviours;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import jade.core.behaviours.CyclicBehaviour;
-import jade.core.behaviours.OneShotBehaviour;
 import jade.lang.acl.ACLMessage;
 import org.slf4j.Logger;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
