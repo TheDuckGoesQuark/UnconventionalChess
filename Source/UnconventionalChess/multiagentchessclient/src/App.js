@@ -1,10 +1,16 @@
 import React from "react";
 import {Provider} from "react-redux";
-import {createStore} from "redux";
+import {createStore, compose, applyMiddleware} from "redux";
 import GameContainer from "./components/view/ViewRouter";
 import rootReducer from "./components/RootReducer";
+import gameService from "./components/middleware/gameService";
 
-const store = createStore(rootReducer, window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__());
+const composedEnhancer = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
+
+const store = createStore(
+    rootReducer,
+    composedEnhancer(applyMiddleware(gameService))
+);
 
 const App = () => (
     <Provider store={store}>

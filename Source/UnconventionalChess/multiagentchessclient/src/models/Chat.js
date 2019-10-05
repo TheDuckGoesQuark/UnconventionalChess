@@ -17,7 +17,7 @@ export class TranscriptMessage extends BaseMessage {
 // Chat message
 export class ChatMessage extends TranscriptMessage {
     constructor(timestamp, fromId, messageBody) {
-        super(timestamp);
+        super(timestamp, ChatMessage.TYPE);
         this.fromId = fromId;
         this.messageBody = messageBody;
     }

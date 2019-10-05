@@ -1,4 +1,3 @@
-
 class BaseMessage {
     constructor(type) {
         this.type = type

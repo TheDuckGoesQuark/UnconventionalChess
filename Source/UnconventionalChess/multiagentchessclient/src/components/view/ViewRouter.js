@@ -5,12 +5,12 @@ import ConfigView from "../config/ConfigView";
 import GameContainer from "./GameContainer";
 
 const ViewRouter = (props) => (
-    props.started ? <GameContainer/> : <ConfigView/>
+    props.gameReady ? <GameContainer/> : <ConfigView/>
 );
 
 function mapStateToProps(state) {
     return {
-        started: state.configReducer.configured,
+        gameReady: state.configReducer.gameId !== undefined,
     }
 }
 

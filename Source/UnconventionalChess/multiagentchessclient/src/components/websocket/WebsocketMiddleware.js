@@ -14,7 +14,6 @@ const handleMessage = (message, handlerByType) => {
     }
 };
 
-// TODO on connect, send initial configuration
 const WebsocketMiddleware = (props) => (
     <SockJsClient
         // Base URL for websocket connections

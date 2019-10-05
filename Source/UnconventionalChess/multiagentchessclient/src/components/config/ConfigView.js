@@ -1,35 +1,53 @@
 import React from "react";
 import {connect} from "react-redux";
-import {setIsConfigured, setHumanPlaysFirst} from "./ConfigActions";
-
+import {submitConfig, setHumanPlaysAsWhite, setHumanPlays} from "./ConfigActions";
+import BooleanButton from "../BooleanButton";
 
 const ConfigView = (props) => (
-    <div>
-        <h1>Hey you're looking at the config view, good on you buddy!</h1>
+    <div style={configStyle}>
+        <h3>Choose Game Mode:</h3>
+        <BooleanButton
+            callback={props.setHumanPlays}
+            trueText={"Play against agents"}
+            falseText={"Watch agents"}
+            isTrue={props.humanPlays}
+        />
+
         <h3>Who do you want to play as:</h3>
-        <button style={props.humanPlaysFirst ? chosenButton : null}
-                onClick={() => props.setHumanPlaysFirst(true)}>White
+        <BooleanButton
+            disabled={!props.humanPlays}
+            callback={props.setHumanPlaysAsWhite}
+            trueText={"White"}
+            falseText={"Black"}
+            isTrue={props.humanPlaysAsWhite}
+        />
+
+        <button onClick={() => props.submitCurrentConfig({
+            humanPlaysAsWhite: props.humanPlaysAsWhite,
+            humanPlays: props.humanPlays,
+        })}>
+            Submit
         </button>
-        <button style={!props.humanPlaysFirst ? chosenButton : null}
-                onClick={() => props.setHumanPlaysFirst(false)}>Black
-        </button>
-        <button onClick={() => props.submitConfig()}>Submit</button>
     </div>
 );
 
 function mapStateToProps(state) {
     return {
-        humanPlaysFirst: state.configReducer.humanPlaysFirst,
+        humanPlaysAsWhite: state.configReducer.humanPlaysAsWhite,
+        humanPlays: state.configReducer.humanPlays,
     };
 }
 
 const mapDispatchToProps = {
-    setHumanPlaysFirst: setHumanPlaysFirst,
-    submitConfig: () => setIsConfigured(true)
+    setHumanPlaysAsWhite: setHumanPlaysAsWhite,
+    setHumanPlays: setHumanPlays,
+    submitCurrentConfig: (config) => submitConfig(config)
 };
 
-const chosenButton = {
-    backgroundColor: "green"
+const configStyle = {
+    alignItems: "center",
+    justifyContent: "center",
+    display: "flex",
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(ConfigView)
