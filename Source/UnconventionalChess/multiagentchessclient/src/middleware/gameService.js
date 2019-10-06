@@ -41,7 +41,6 @@ const sendMove = (move, state) => {
     const message = new Message(MoveMessage.TYPE, moveMessage);
 
     const json = JSON.stringify(message);
-    console.log(json);
 
     clientRef.sendMessage(`/app/game.${gameId}.move`, json);
 };

@@ -3,6 +3,7 @@ package stacs.chessgateway.controllers;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.messaging.handler.annotation.DestinationVariable;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.handler.annotation.Payload;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -36,7 +37,7 @@ public class GameController {
      * @throws GatewayFailureException if unable to forward to move to agents
      */
     @MessageMapping("/game.{gameId}.move")
-    public void handleMoveMessage(@Payload final Message<MoveMessage> move, @PathVariable final int gameId) throws GatewayFailureException {
+    public void handleMoveMessage(@Payload final Message<MoveMessage> move, @DestinationVariable final int gameId) throws GatewayFailureException {
         logger.info("Websocket move endpoint hit for game id " + gameId + "!");
         gatewayService.sendMoveToGameAgents(move, gameId);
     }

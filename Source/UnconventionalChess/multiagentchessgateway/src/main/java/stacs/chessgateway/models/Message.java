@@ -34,4 +34,12 @@ public class Message<T> {
     public void setBody(T body) {
         this.body = body;
     }
+
+    @Override
+    public String toString() {
+        return "Message{" +
+                "type=" + type +
+                ", body=" + body +
+                '}';
+    }
 }

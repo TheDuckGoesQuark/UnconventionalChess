@@ -24,6 +24,8 @@ import java.util.Arrays;
 import java.util.Queue;
 import java.util.concurrent.*;
 
+import static stacs.chessgateway.models.MessageType.MOVE_MESSAGE;
+
 @Component
 public class GatewayPollingDaemon implements GatewayListener, Runnable {
 
@@ -86,25 +88,13 @@ public class GatewayPollingDaemon implements GatewayListener, Runnable {
 
     private void forwardMessage(ACLMessage received) throws IOException {
         final String content = received.getContent();
-        final String senderName = received.getSender().getName();
+        final String senderName = received.getSender().getLocalName();
 
-        logger.info("Received message from agent " + senderName);
+        final MoveMessage moveMessage = objectMapper.readValue(content, MoveMessage.class);
 
-        final MessageType type = objectMapper.readValue(content, Message.class).getType();
-
-        switch (type) {
-            case CHAT_MESSAGE:
-                gatewayService.handleAgentMessage(
-                        objectMapper.convertValue(content, ChatMessage.TYPE_REFERENCE),
-                        senderName
-                );
-                break;
-            case MOVE_MESSAGE:
-                gatewayService.handleAgentMessage(
-                        objectMapper.convertValue(content, MoveMessage.TYPE_REFERENCE),
-                        senderName
-                );
-                break;
-        }
+        gatewayService.handleAgentMessage(
+                new Message<>(MOVE_MESSAGE, moveMessage),
+                senderName
+        );
     }
 }

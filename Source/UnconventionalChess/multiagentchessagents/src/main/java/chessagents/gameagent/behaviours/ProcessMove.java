@@ -1,4 +1,4 @@
-package chessagents.moveprocessor.behaviours;
+package chessagents.gameagent.behaviours;
 
 import jade.core.behaviours.CyclicBehaviour;
 import jade.lang.acl.ACLMessage;
@@ -10,7 +10,6 @@ public class ProcessMove extends CyclicBehaviour {
 
     @Override
     public void action() {
-        messageTemplate = MessageTemplate.MatchConversationId("sending-move");
         ACLMessage message = myAgent.receive();
 
         if (message != null && message.getPerformative() == ACLMessage.PROPOSE) {

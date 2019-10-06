@@ -70,11 +70,9 @@ public class GatewayServiceImpl implements GatewayService {
 
     @Override
     public void handleAgentMessage(Message message, String agentId) {
-        switch (message.getType()) {
-            case MOVE_MESSAGE:
-            case CHAT_MESSAGE:
-                websocketService.sendMessageToClient(message, gameAgentMapper.getGameIdByAgent(agentId));
-                break;
-        }
+        websocketService.sendMessageToClient(
+                message,
+                gameAgentMapper.getGameIdByAgent(agentId)
+        );
     }
 }
