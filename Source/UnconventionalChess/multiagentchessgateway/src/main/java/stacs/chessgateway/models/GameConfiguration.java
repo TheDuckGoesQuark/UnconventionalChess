@@ -32,4 +32,13 @@ public class GameConfiguration {
     public void setGameId(int gameId) {
         this.gameId = gameId;
     }
+
+    @Override
+    public String toString() {
+        return "GameConfiguration{" +
+                "humanPlays=" + humanPlays +
+                ", humanPlaysAsWhite=" + humanPlaysAsWhite +
+                ", gameId=" + gameId +
+                '}';
+    }
 }

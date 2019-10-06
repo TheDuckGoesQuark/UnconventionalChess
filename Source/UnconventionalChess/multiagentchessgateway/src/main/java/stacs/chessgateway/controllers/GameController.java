@@ -7,6 +7,7 @@ import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.handler.annotation.Payload;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 import stacs.chessgateway.exceptions.GatewayFailureException;
 import stacs.chessgateway.models.GameConfiguration;
@@ -48,7 +49,9 @@ public class GameController {
      * @throws GatewayFailureException if unable to create the game agents
      */
     @PostMapping("/game")
-    public Message<GameConfiguration> createGame(@Payload final Message<GameConfiguration> gameConfiguration) throws GatewayFailureException {
+    public Message<GameConfiguration> createGame(@RequestBody final Message<GameConfiguration> gameConfiguration) throws GatewayFailureException {
+        logger.info(gameConfiguration.toString());
         return gatewayService.createGame(gameConfiguration.getBody());
     }
+
 }

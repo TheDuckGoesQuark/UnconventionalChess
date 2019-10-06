@@ -4,11 +4,11 @@ import {connect} from "react-redux";
 import {receiveChatMessage} from "../chat/ChatActions";
 import {receiveMove} from "../board/BoardActions";
 import {wsConnected, wsDisconnected, wsInitialised} from "./WebsocketActions";
-import {ChatMessage, MoveMessage} from "../../models/Chat";
+import {ChatMessage, MoveMessage} from "../../models/Message";
 
 const handleMessage = (message, handlerByType) => {
     if (message.type && handlerByType[message.type]) {
-        handlerByType[message.type](message);
+        handlerByType[message.type](message.body);
     } else {
         throw new TypeError("Unknown message type received");
     }

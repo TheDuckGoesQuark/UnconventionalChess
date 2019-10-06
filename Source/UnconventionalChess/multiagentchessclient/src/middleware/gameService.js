@@ -1,17 +1,31 @@
 import {CONFIG_SUBMITTED, gameReady} from "../components/config/ConfigActions"
+import {GameConfigurationMessage, Message} from "../models/Message";
 
 const createGame = (config) => {
-    fetch('/api/game', {
+    const configurationMessage = new GameConfigurationMessage(
+        config.humanPlays,
+        config.humanPlaysAsWhite,
+        0,
+    );
+    const message = new Message(
+        GameConfigurationMessage.TYPE,
+        0,
+        configurationMessage
+    );
+
+    const body = JSON.stringify(message);
+
+    fetch('/game', {
         method: 'POST',
         headers: {
             'Accept': 'application/json',
             'Content-Type': 'application/json',
         },
-        body: JSON.stringify(config)
+        body: body
     }).then(response => {
         return response.json()
     }).then(result => {
-        next(gameReady(result.gameId))
+        next(gameReady(result.body.gameId))
     }).catch(err => {
         console.error("Request failed", err);
     });

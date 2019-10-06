@@ -58,8 +58,7 @@ public class GatewayServiceImpl implements GatewayService {
 
             gameAgentMapper.addMapping(gameId, agentId);
 
-            return new Message<>(MessageType.CONFIGURATION_MESSAGE, gameId, gameConfiguration);
-
+            return new Message<>(MessageType.GAME_CONFIGURATION_MESSAGE, gameId, gameConfiguration);
         } catch (InterruptedException | ControllerException e) {
             throw new GatewayFailureException(Arrays.toString(e.getStackTrace()));
         }

@@ -16,7 +16,7 @@ import {
  * @param game chess instance
  * @param sendMoveCallback dispatch function for move
  */
-const handleMove = (move, game, sendMoveCallback) => {
+const handleMove = (move, game, sendMoveCallback, gameId) => {
     const {sourceSquare, targetSquare} = move;
 
     // see if the move is legal
@@ -31,6 +31,7 @@ const handleMove = (move, game, sendMoveCallback) => {
         // move game back in case as server is source of truth
         game.undo();
         // dispatch move
+        move.gameId = gameId;
         sendMoveCallback(move);
     }
 };
@@ -40,7 +41,7 @@ const GameBoard = (props) => (
         id="humanVsAgents"
         width={"350"}
         position={props.position}
-        onDrop={(move) => handleMove(move, props.game, props.sendMove)}
+        onDrop={(move) => handleMove(move, props.game, props.sendMove, props.gameId)}
         onMouseOverSquare={props.onMouseOverSquare}
         onMouseOutSquare={props.onMouseOutSquare}
         boardStyle={{
@@ -66,6 +67,7 @@ const mapDispatchToProps = {
 
 function mapStateToProps(state) {
     return {
+        gameId: state.configReducer.gameId,
         game: state.boardReducer.game,
         position: state.boardReducer.fen,
         squareStyles: state.boardReducer.squareStyles,

@@ -3,6 +3,12 @@ package chessagents.gameagent;
 import jade.core.Agent;
 
 public class GameAgent extends Agent {
-    public GameAgent(GameAgentProperties gameAgentProperties) {
+
+    private GameAgentProperties properties;
+
+    @Override
+    protected void setup() {
+        super.setup();
+        properties = (GameAgentProperties) getArguments()[0];
     }
 }

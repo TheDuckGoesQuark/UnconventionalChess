@@ -1,6 +1,6 @@
 import {WS_CONNECTED, WS_DISCONNECTED, WS_INITIALISED} from "./WebsocketActions";
 import {MOVE_SEND} from "../board/BoardActions";
-import {MoveMessage} from "../../models/Chat";
+import {Message, MoveMessage} from "../../models/Message";
 
 const initialState = {
     connected: false,
@@ -8,12 +8,14 @@ const initialState = {
 };
 
 const sendMove = (state, action) => {
-    const {clientRef, gameId} = state;
-    const {sourceSquare, targetSquare, piece} = action.payload.move;
+    const {clientRef} = state;
+    const {sourceSquare, targetSquare, piece, gameId} = action.payload.move;
 
     if (!clientRef) return state;
 
-    clientRef.sendMessage(`/app/game.${gameId}.move`, JSON.stringify(new MoveMessage(sourceSquare, targetSquare, piece)));
+    const move = new MoveMessage(sourceSquare, targetSquare, piece);
+    const message = new Message(MoveMessage.TYPE, gameId, move);
+    clientRef.sendMessage(`/game.${gameId}.move`, JSON.stringify(message));
 
     return state;
 };

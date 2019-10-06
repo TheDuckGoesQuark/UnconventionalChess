@@ -64,7 +64,7 @@ const chatContainerStyle = {
 };
 
 const mapDispatchToProps = {
-    exit: () => submitConfig(false)
+    exit: (config) => submitConfig(config)
 };
 
 function mapStateToProps(state) {

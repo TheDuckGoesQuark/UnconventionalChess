@@ -7,10 +7,12 @@ public class ChatMessage {
 
     public static final TypeReference TYPE_REFERENCE = new TypeReference<Message<ChatMessage>>() {};
     private final String fromId;
+    private final String toId;
     private final String messageBody;
 
-    public ChatMessage(String fromId, String messageBody) {
+    public ChatMessage(String fromId, String toId, String messageBody) {
         this.fromId = fromId;
+        this.toId = toId;
         this.messageBody = messageBody;
     }
 
@@ -22,4 +24,7 @@ public class ChatMessage {
         return messageBody;
     }
 
+    public String getToId() {
+        return toId;
+    }
 }
