@@ -6,7 +6,6 @@ plugins {
 
 group = 'stacs'
 version = '0.0.1-SNAPSHOT'
-sourceCompatibility = '1.8'
 
 repositories {
     mavenCentral()
@@ -20,6 +19,7 @@ dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-websocket'
     implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
     implementation 'org.springframework.boot:spring-boot-configuration-processor'
+    implementation project("multiagentchessagents")
     implementation group: 'com.tilab.jade', name: 'jade', version: '4.5.0'
 
     testImplementation 'org.springframework.boot:spring-boot-starter-test'

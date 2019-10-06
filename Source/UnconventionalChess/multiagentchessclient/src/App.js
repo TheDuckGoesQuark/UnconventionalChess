@@ -3,7 +3,7 @@ import {Provider} from "react-redux";
 import {createStore, compose, applyMiddleware} from "redux";
 import GameContainer from "./components/view/ViewRouter";
 import rootReducer from "./components/RootReducer";
-import gameService from "./components/middleware/gameService";
+import gameService from "./middleware/gameService";
 
 const composedEnhancer = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
 

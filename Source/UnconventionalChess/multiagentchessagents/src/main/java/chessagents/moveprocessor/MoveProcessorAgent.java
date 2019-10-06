@@ -1,10 +1,9 @@
-package moveprocessor;
+package chessagents.moveprocessor;
 
 import jade.core.Agent;
-import moveprocessor.behaviours.ProcessMove;
+import chessagents.moveprocessor.behaviours.ProcessMove;
 
 public class MoveProcessorAgent extends Agent  {
-
     @Override
     protected void setup() {
         super.setup();

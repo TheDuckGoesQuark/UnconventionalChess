@@ -1,16 +1,17 @@
 package stacs.chessgateway.models;
 
-import java.time.Instant;
+import com.fasterxml.jackson.core.type.TypeReference;
 
-public class MoveMessage extends TranscriptMessage {
+public class MoveMessage {
 
-    public static final String MESSAGE_TYPE = "MoveMessage";
+    public static final TypeReference TYPE_REFERENCE = new TypeReference<Message<MoveMessage>>() {
+    };
+
     private final String piece;
     private final String sourceSquare;
     private final String targetSquare;
 
-    public MoveMessage(Instant timestamp, String piece, String sourceSquare, String targetSquare) {
-        super(timestamp);
+    public MoveMessage(String piece, String sourceSquare, String targetSquare) {
         this.piece = piece;
         this.sourceSquare = sourceSquare;
         this.targetSquare = targetSquare;
@@ -26,10 +27,5 @@ public class MoveMessage extends TranscriptMessage {
 
     public String getTargetSquare() {
         return targetSquare;
-    }
-
-    @Override
-    public String getType() {
-        return MESSAGE_TYPE;
     }
 }

@@ -19,7 +19,7 @@ const WebsocketMiddleware = (props) => (
         // Base URL for websocket connections
         url='/ws'
         // Topics to subscribe to
-        topics={['/topic/chess']}
+        topics={[`/topic/game.${props.gameId}`]}
         // Message handlers
         onMessage={(message) => handleMessage(message, {
             [ChatMessage.TYPE]: props.receiveChatMessage,
@@ -35,6 +35,12 @@ const WebsocketMiddleware = (props) => (
     />
 );
 
+function mapStateToProps(state) {
+    return {
+        gameId: state.configReducer.gameId
+    }
+}
+
 const mapDispatchToProps = {
     onDisconnect: wsDisconnected,
     onConnect: wsConnected,
@@ -43,4 +49,4 @@ const mapDispatchToProps = {
     socketEstablished: wsInitialised
 };
 
-export default connect(null, mapDispatchToProps)(WebsocketMiddleware);
+export default connect(mapStateToProps, mapDispatchToProps)(WebsocketMiddleware);

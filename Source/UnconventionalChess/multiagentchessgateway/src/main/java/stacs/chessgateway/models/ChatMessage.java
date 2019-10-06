@@ -1,16 +1,15 @@
 package stacs.chessgateway.models;
 
-import java.time.Instant;
 
-public class ChatMessage extends TranscriptMessage {
+import com.fasterxml.jackson.core.type.TypeReference;
 
-    public static final String MESSAGE_TYPE = "ChatMessage";
+public class ChatMessage {
 
+    public static final TypeReference TYPE_REFERENCE = new TypeReference<Message<ChatMessage>>() {};
     private final String fromId;
     private final String messageBody;
 
-    public ChatMessage(Instant timestamp, String fromId, String messageBody) {
-        super(timestamp);
+    public ChatMessage(String fromId, String messageBody) {
         this.fromId = fromId;
         this.messageBody = messageBody;
     }
@@ -23,8 +22,4 @@ public class ChatMessage extends TranscriptMessage {
         return messageBody;
     }
 
-    @Override
-    public String getType() {
-        return MESSAGE_TYPE;
-    }
 }

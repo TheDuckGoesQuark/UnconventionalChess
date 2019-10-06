@@ -1,4 +1,4 @@
-package moveprocessor.behaviours;
+package chessagents.moveprocessor.behaviours;
 
 import jade.core.behaviours.CyclicBehaviour;
 import jade.lang.acl.ACLMessage;

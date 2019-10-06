@@ -2,67 +2,76 @@ package stacs.chessgateway.services.impl;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import jade.core.Profile;
-import jade.util.leap.Properties;
 import jade.wrapper.ControllerException;
 import jade.wrapper.gateway.JadeGateway;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Service;
-import stacs.chessgateway.config.GatewayProperties;
 import stacs.chessgateway.exceptions.GatewayFailureException;
-import stacs.chessgateway.gatewaybehaviours.ReceiveMove;
-import stacs.chessgateway.gatewaybehaviours.SendMove;
+import stacs.chessgateway.gateway.behaviours.CreateGame;
+import stacs.chessgateway.gateway.behaviours.SendMove;
+import stacs.chessgateway.models.GameConfiguration;
+import stacs.chessgateway.models.Message;
+import stacs.chessgateway.models.MessageType;
 import stacs.chessgateway.models.MoveMessage;
 import stacs.chessgateway.services.GatewayService;
+import stacs.chessgateway.services.WebsocketService;
+import stacs.chessgateway.util.GameAgentMapper;
 
 import java.util.Arrays;
-import java.util.concurrent.Executors;
-import java.util.concurrent.ScheduledExecutorService;
-import java.util.concurrent.TimeUnit;
 
 @Service
 public class GatewayServiceImpl implements GatewayService {
 
     private static final Logger logger = LoggerFactory.getLogger(GatewayServiceImpl.class);
 
-    private final ScheduledExecutorService executorService = Executors.newSingleThreadScheduledExecutor();
-    private final GatewayProperties gatewayProperties;
+    private final GameAgentMapper gameAgentMapper;
+    private final WebsocketService websocketService;
     private final ObjectMapper objectMapper;
 
     @Autowired
-    public GatewayServiceImpl(GatewayProperties gatewayProperties, ObjectMapper objectMapper, SimpMessagingTemplate messagingTemplate) {
-        this.gatewayProperties = gatewayProperties;
+    public GatewayServiceImpl(GameAgentMapper gameAgentMapper, WebsocketService websocketService, ObjectMapper objectMapper) {
+        this.gameAgentMapper = gameAgentMapper;
+        this.websocketService = websocketService;
         this.objectMapper = objectMapper;
-
-        // Initialize the JadeGateway to connect to the running JADE-based system.
-        // Assuming the main container is the one we want to use
-        Properties pp = new Properties();
-        pp.setProperty(Profile.MAIN_HOST, this.gatewayProperties.getMainContainerHostName());
-        pp.setProperty(Profile.MAIN_PORT, Integer.toString(this.gatewayProperties.getMainContainerPort()));
-
-        // Override default gateway agent with custom class
-        JadeGateway.init(null, pp);
-
-        // Start listening for moves
-        executorService.scheduleWithFixedDelay(() -> {
-            try {
-                JadeGateway.execute(new ReceiveMove(logger, objectMapper, messagingTemplate));
-            } catch (ControllerException | InterruptedException e) {
-                e.printStackTrace();
-            }
-        }, 1, 1, TimeUnit.MILLISECONDS);
     }
 
     @Override
-    public void sendMove(MoveMessage move) throws GatewayFailureException {
+    public void sendMoveToGameAgents(Message<MoveMessage> move) throws GatewayFailureException {
         try {
-            final String jsonMove = objectMapper.writeValueAsString(move);
-            JadeGateway.execute(new SendMove(jsonMove));
+            final String jsonMove = objectMapper.writeValueAsString(move.getBody());
+            final String agentId = gameAgentMapper.getAgentByGameId(move.getGameId());
+            JadeGateway.execute(new SendMove(jsonMove, agentId));
         } catch (JsonProcessingException | InterruptedException | ControllerException e) {
             throw new GatewayFailureException(Arrays.toString(e.getStackTrace()));
+        }
+    }
+
+    @Override
+    public Message<GameConfiguration> createGame(GameConfiguration gameConfiguration) throws GatewayFailureException {
+        try {
+            int gameId = gameAgentMapper.size() + 1;
+            final String agentId = "GameAgent-" + gameId;
+
+            JadeGateway.execute(new CreateGame(gameConfiguration, agentId));
+
+            gameAgentMapper.addMapping(gameId, agentId);
+
+            return new Message<>(MessageType.CONFIGURATION_MESSAGE, gameId, gameConfiguration);
+
+        } catch (InterruptedException | ControllerException e) {
+            throw new GatewayFailureException(Arrays.toString(e.getStackTrace()));
+        }
+    }
+
+    @Override
+    public void handleAgentMessage(Message message) {
+        switch (message.getType()) {
+            case MOVE_MESSAGE:
+            case CHAT_MESSAGE:
+                websocketService.sendMessageToClient(message);
+                break;
         }
     }
 }

@@ -8,12 +8,12 @@ const initialState = {
 };
 
 const sendMove = (state, action) => {
-    const {clientRef} = state;
+    const {clientRef, gameId} = state;
     const {sourceSquare, targetSquare, piece} = action.payload.move;
 
     if (!clientRef) return state;
 
-    clientRef.sendMessage("/app/chess.move", JSON.stringify(new MoveMessage(Date.now(), sourceSquare, targetSquare, piece)));
+    clientRef.sendMessage(`/app/game.${gameId}.move`, JSON.stringify(new MoveMessage(sourceSquare, targetSquare, piece)));
 
     return state;
 };

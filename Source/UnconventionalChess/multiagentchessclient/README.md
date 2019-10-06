@@ -92,7 +92,7 @@ You can find the most recent version of this guide [here](https://github.com/fac
   - [Now](#now)
   - [S3 and CloudFront](#s3-and-cloudfront)
   - [Surge](#surge)
-- [Advanced Configuration](#advanced-configuration)
+- [Advanced Configuration](#advanced-gameConfiguration)
 - [Troubleshooting](#troubleshooting)
   - [`npm start` doesn’t detect changes](#npm-start-doesnt-detect-changes)
   - [`npm test` hangs on macOS Sierra](#npm-test-hangs-on-macos-sierra)
@@ -192,9 +192,9 @@ See the section about [deployment](#deployment) for more information.
 
 **Note: this is a one-way operation. Once you `eject`, you can’t go back!**
 
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+If you aren’t satisfied with the build tool and gameConfiguration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
 
-Instead, it will copy all the configuration files and the transitive dependencies (Webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
+Instead, it will copy all the gameConfiguration files and the transitive dependencies (Webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
 
 You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
 
@@ -284,7 +284,7 @@ Then add the block below to your `launch.json` file and put it inside the `.vsco
   }]
 }
 ```
->Note: the URL may be different if you've made adjustments via the [HOST or PORT environment variables](#advanced-configuration).
+>Note: the URL may be different if you've made adjustments via the [HOST or PORT environment variables](#advanced-gameConfiguration).
 
 Start your app by running `npm start`, and start debugging in VS Code by pressing `F5` or by clicking the green debug icon. You can now write code, set breakpoints, make changes to the code, and debug your newly modified code—all from your editor.
 
@@ -294,9 +294,9 @@ Having problems with VS Code Debugging? Please see their [troubleshooting guide]
 
 You would need to have [WebStorm](https://www.jetbrains.com/webstorm/) and [JetBrains IDE Support](https://chrome.google.com/webstore/detail/jetbrains-ide-support/hmhgeddbohgjknpmjagkdomcpobmllji) Chrome extension installed.
 
-In the WebStorm menu `Run` select `Edit Configurations...`. Then click `+` and select `JavaScript Debug`. Paste `http://localhost:3000` into the URL field and save the configuration.
+In the WebStorm menu `Run` select `Edit Configurations...`. Then click `+` and select `JavaScript Debug`. Paste `http://localhost:3000` into the URL field and save the gameConfiguration.
 
->Note: the URL may be different if you've made adjustments via the [HOST or PORT environment variables](#advanced-configuration).
+>Note: the URL may be different if you've made adjustments via the [HOST or PORT environment variables](#advanced-gameConfiguration).
 
 Start your app by running `npm start`, then press `^D` on macOS or `F9` on Windows and Linux or click the green debug icon to start debugging in WebStorm.
 
@@ -812,7 +812,7 @@ To add Flow to a Create React App project, follow these steps:
 
 1. Run `npm install --save flow-bin` (or `yarn add flow-bin`).
 2. Add `"flow": "flow"` to the `scripts` section of your `package.json`.
-3. Run `npm run flow init` (or `yarn flow init`) to create a [`.flowconfig` file](https://flowtype.org/docs/advanced-configuration.html) in the root directory.
+3. Run `npm run flow init` (or `yarn flow init`) to create a [`.flowconfig` file](https://flowtype.org/docs/advanced-gameConfiguration.html) in the root directory.
 4. Add `// @flow` to any files you want to type check (for example, to `src/App.js`).
 
 Now you can run `npm run flow` (or `yarn flow`) to check the files for type errors.
@@ -1110,7 +1110,7 @@ We don’t recommend this approach.
 >Note: this feature is available with `react-scripts@1.0.0` and higher.
 
 If the `proxy` option is **not** flexible enough for you, you can specify an object in the following form (in `package.json`).<br>
-You may also specify any configuration value [`http-proxy-middleware`](https://github.com/chimurai/http-proxy-middleware#options) or [`http-proxy`](https://github.com/nodejitsu/node-http-proxy#options) supports.
+You may also specify any gameConfiguration value [`http-proxy-middleware`](https://github.com/chimurai/http-proxy-middleware#options) or [`http-proxy`](https://github.com/nodejitsu/node-http-proxy#options) supports.
 ```js
 {
   // ...
@@ -1247,7 +1247,7 @@ There are also opportunities to use this outside of static hosting, to take the 
 
 The primary benefit of pre-rendering is that you get the core content of each page _with_ the HTML payload—regardless of whether or not your JavaScript bundle successfully downloads. It also increases the likelihood that each route of your application will be picked up by search engines.
 
-You can read more about [zero-configuration pre-rendering (also called snapshotting) here](https://medium.com/superhighfives/an-almost-static-stack-6df0a2791319).
+You can read more about [zero-gameConfiguration pre-rendering (also called snapshotting) here](https://medium.com/superhighfives/an-almost-static-stack-6df0a2791319).
 
 ## Injecting Data from the Server into the Page
 
@@ -1459,7 +1459,7 @@ const localStorageMock = {
 global.localStorage = localStorageMock
 ```
 
->Note: Keep in mind that if you decide to "eject" before creating `src/setupTests.js`, the resulting `package.json` file won't contain any reference to it, so you should manually create the property `setupTestFrameworkScriptFile` in the configuration for Jest, something like the following:
+>Note: Keep in mind that if you decide to "eject" before creating `src/setupTests.js`, the resulting `package.json` file won't contain any reference to it, so you should manually create the property `setupTestFrameworkScriptFile` in the gameConfiguration for Jest, something like the following:
 
 >```js
 >"jest": {
@@ -1475,7 +1475,7 @@ Similarly, `fit()` lets you focus on a specific test without running any other t
 
 ### Coverage Reporting
 
-Jest has an integrated coverage reporter that works well with ES6 and requires no configuration.<br>
+Jest has an integrated coverage reporter that works well with ES6 and requires no gameConfiguration.<br>
 Run `npm test -- --coverage` (note extra `--` in the middle) to include a coverage report like this:
 
 ![coverage report](http://i.imgur.com/5bFhnTS.png)
@@ -1484,13 +1484,13 @@ Note that tests run much slower with coverage so it is recommended to run it sep
 
 #### Configuration
 
-The default Jest coverage configuration can be overriden by adding any of the following supported keys to a Jest config in your package.json.
+The default Jest coverage gameConfiguration can be overriden by adding any of the following supported keys to a Jest config in your package.json.
 
 Supported overrides:
- - [`collectCoverageFrom`](https://facebook.github.io/jest/docs/en/configuration.html#collectcoveragefrom-array)
- - [`coverageReporters`](https://facebook.github.io/jest/docs/en/configuration.html#coveragereporters-array-string)
- - [`coverageThreshold`](https://facebook.github.io/jest/docs/en/configuration.html#coveragethreshold-object)
- - [`snapshotSerializers`](https://facebook.github.io/jest/docs/en/configuration.html#snapshotserializers-array-string)
+ - [`collectCoverageFrom`](https://facebook.github.io/jest/docs/en/gameConfiguration.html#collectcoveragefrom-array)
+ - [`coverageReporters`](https://facebook.github.io/jest/docs/en/gameConfiguration.html#coveragereporters-array-string)
+ - [`coverageThreshold`](https://facebook.github.io/jest/docs/en/gameConfiguration.html#coveragethreshold-object)
+ - [`snapshotSerializers`](https://facebook.github.io/jest/docs/en/gameConfiguration.html#snapshotserializers-array-string)
 
 Example package.json:
 
@@ -1666,7 +1666,7 @@ After opening that link, the Chrome Developer Tools will be displayed. Select `i
 
 Debugging Jest tests is supported out of the box for [Visual Studio Code](https://code.visualstudio.com).
 
-Use the following [`launch.json`](https://code.visualstudio.com/docs/editor/debugging#_launch-configurations) configuration file:
+Use the following [`launch.json`](https://code.visualstudio.com/docs/editor/debugging#_launch-configurations) gameConfiguration file:
 ```
 {
   "version": "0.2.0",
@@ -1787,7 +1787,7 @@ Progressive Web Apps are faster and more reliable than traditional web pages, an
  * On mobile devices, your app can be added directly to the user's home screen, app icon and all. You can also re-engage users using web **push notifications**. This eliminates the need for the app store.
 
 The [`sw-precache-webpack-plugin`](https://github.com/goldhand/sw-precache-webpack-plugin)
-is integrated into production configuration,
+is integrated into production gameConfiguration,
 and it will take care of generating a service worker file that will automatically
 precache all of your local assets and keep them up to date as you deploy updates.
 The service worker will use a [cache-first strategy](https://developers.google.com/web/fundamentals/instant-and-offline/offline-cookbook/#cache-falling-back-to-network)
@@ -1871,7 +1871,7 @@ option in the `SWPrecacheWebpackPlugin` section of
 
 ### Progressive Web App Metadata
 
-The default configuration includes a web app manifest located at
+The default gameConfiguration includes a web app manifest located at
 [`public/manifest.json`](public/manifest.json), that you can customize with
 details specific to your web application.
 
@@ -2002,9 +2002,9 @@ service worker navigation routing can be configured or disabled by
 [`eject`ing](#npm-run-eject) and then modifying the
 [`navigateFallback`](https://github.com/GoogleChrome/sw-precache#navigatefallback-string)
 and [`navigateFallbackWhitelist`](https://github.com/GoogleChrome/sw-precache#navigatefallbackwhitelist-arrayregexp)
-options of the `SWPreachePlugin` [configuration](../config/webpack.config.prod.js).
+options of the `SWPreachePlugin` [gameConfiguration](../config/webpack.config.prod.js).
 
-When users install your app to the homescreen of their device the default configuration will make a shortcut to `/index.html`. This may not work for client-side routers which expect the app to be served from `/`. Edit the web app manifest at [`public/manifest.json`](public/manifest.json) and change `start_url` to match the required URL scheme, for example:
+When users install your app to the homescreen of their device the default gameConfiguration will make a shortcut to `/index.html`. This may not work for client-side routers which expect the app to be served from `/`. Edit the web app manifest at [`public/manifest.json`](public/manifest.json) and change `start_url` to match the required URL scheme, for example:
 
 ```js
   "start_url": ".",
@@ -2083,7 +2083,7 @@ Then run the `firebase init` command from your project’s root. You need to cho
     ? Configure as a single-page app (rewrite all urls to /index.html)? Yes
     ✔  Wrote build/index.html
 
-    i  Writing configuration info to firebase.json...
+    i  Writing gameConfiguration info to firebase.json...
     i  Writing project information to .firebaserc...
 
     ✔  Firebase initialization complete!
@@ -2222,7 +2222,7 @@ If, when deploying, you get `/dev/tty: No such a device or address` or a similar
 ### [Heroku](https://www.heroku.com/)
 
 Use the [Heroku Buildpack for Create React App](https://github.com/mars/create-react-app-buildpack).<br>
-You can find instructions in [Deploying React with Zero Configuration](https://blog.heroku.com/deploying-react-with-zero-configuration).
+You can find instructions in [Deploying React with Zero Configuration](https://blog.heroku.com/deploying-react-with-zero-gameConfiguration).
 
 #### Resolving Heroku Deployment Errors
 
@@ -2289,7 +2289,7 @@ When you build the project, Create React App will place the `public` folder cont
 
 ### [Now](https://zeit.co/now)
 
-Now offers a zero-configuration single-command deployment. You can use `now` to deploy your app for free.
+Now offers a zero-gameConfiguration single-command deployment. You can use `now` to deploy your app for free.
 
 1. Install the `now` command-line tool either via the recommended [desktop tool](https://zeit.co/download) or via node with `npm install -g now`.
 
@@ -2437,7 +2437,7 @@ In the future, we might start automatically compiling incompatible third-party m
 
 ## Alternatives to Ejecting
 
-[Ejecting](#npm-run-eject) lets you customize anything, but from that point on you have to maintain the configuration and scripts yourself. This can be daunting if you have many similar projects. In such cases instead of ejecting we recommend to *fork* `react-scripts` and any other packages you need. [This article](https://auth0.com/blog/how-to-configure-create-react-app/) dives into how to do it in depth. You can find more discussion in [this issue](https://github.com/facebookincubator/create-react-app/issues/682).
+[Ejecting](#npm-run-eject) lets you customize anything, but from that point on you have to maintain the gameConfiguration and scripts yourself. This can be daunting if you have many similar projects. In such cases instead of ejecting we recommend to *fork* `react-scripts` and any other packages you need. [This article](https://auth0.com/blog/how-to-configure-create-react-app/) dives into how to do it in depth. You can find more discussion in [this issue](https://github.com/facebookincubator/create-react-app/issues/682).
 
 ## Something Missing?
 
