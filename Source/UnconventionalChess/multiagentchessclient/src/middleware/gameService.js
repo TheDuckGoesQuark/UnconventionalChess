@@ -43,7 +43,7 @@ const sendMove = (move, state) => {
     const json = JSON.stringify(message);
     console.log(json);
 
-    clientRef.sendMessage(`/game.${gameId}.move`, json);
+    clientRef.sendMessage(`/app/game.${gameId}.move`, json);
 };
 
 const gameService = store => next => action => {
