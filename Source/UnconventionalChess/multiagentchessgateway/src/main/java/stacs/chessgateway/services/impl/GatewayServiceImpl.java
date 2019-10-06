@@ -38,10 +38,13 @@ public class GatewayServiceImpl implements GatewayService {
     }
 
     @Override
-    public void sendMoveToGameAgents(Message<MoveMessage> move) throws GatewayFailureException {
+    public void sendMoveToGameAgents(Message<MoveMessage> move, int gameId) throws GatewayFailureException {
         try {
             final String jsonMove = objectMapper.writeValueAsString(move.getBody());
-            final String agentId = gameAgentMapper.getAgentByGameId(move.getGameId());
+            final String agentId = gameAgentMapper.getAgentByGameId(gameId);
+
+            logger.info("Sending move to agent " + agentId + ": " + jsonMove);
+
             JadeGateway.execute(new SendMove(jsonMove, agentId));
         } catch (JsonProcessingException | InterruptedException | ControllerException e) {
             throw new GatewayFailureException(Arrays.toString(e.getStackTrace()));
@@ -53,23 +56,24 @@ public class GatewayServiceImpl implements GatewayService {
         try {
             int gameId = gameAgentMapper.size() + 1;
             final String agentId = "GameAgent-" + gameId;
+            gameConfiguration.setGameId(gameId);
 
             JadeGateway.execute(new CreateGame(gameConfiguration, agentId));
 
             gameAgentMapper.addMapping(gameId, agentId);
 
-            return new Message<>(MessageType.GAME_CONFIGURATION_MESSAGE, gameId, gameConfiguration);
+            return new Message<>(MessageType.GAME_CONFIGURATION_MESSAGE, gameConfiguration);
         } catch (InterruptedException | ControllerException e) {
             throw new GatewayFailureException(Arrays.toString(e.getStackTrace()));
         }
     }
 
     @Override
-    public void handleAgentMessage(Message message) {
+    public void handleAgentMessage(Message message, String agentId) {
         switch (message.getType()) {
             case MOVE_MESSAGE:
             case CHAT_MESSAGE:
-                websocketService.sendMessageToClient(message);
+                websocketService.sendMessageToClient(message, gameAgentMapper.getGameIdByAgent(agentId));
                 break;
         }
     }

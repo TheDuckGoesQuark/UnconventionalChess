@@ -10,9 +10,10 @@ public interface GatewayService {
     /**
      * Sends the given move to the agents
      *
-     * @param move move to send
+     * @param move   move to send
+     * @param gameId
      */
-    void sendMoveToGameAgents(Message<MoveMessage> move) throws GatewayFailureException;
+    void sendMoveToGameAgents(Message<MoveMessage> move, int gameId) throws GatewayFailureException;
 
     /**
      * Initialises game using the given configuration and returns
@@ -28,6 +29,6 @@ public interface GatewayService {
      *
      * @param message message received from an agent
      */
-    void handleAgentMessage(Message message);
+    void handleAgentMessage(Message message, String agentId);
 
 }

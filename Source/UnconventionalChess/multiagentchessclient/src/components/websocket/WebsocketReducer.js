@@ -7,19 +7,6 @@ const initialState = {
     clientRef: null,
 };
 
-const sendMove = (state, action) => {
-    const {clientRef} = state;
-    const {sourceSquare, targetSquare, piece, gameId} = action.payload.move;
-
-    if (!clientRef) return state;
-
-    const move = new MoveMessage(sourceSquare, targetSquare, piece);
-    const message = new Message(MoveMessage.TYPE, gameId, move);
-    clientRef.sendMessage(`/game.${gameId}.move`, JSON.stringify(message));
-
-    return state;
-};
-
 export default function websocketReducer(state = initialState, action) {
     switch (action.type) {
         case WS_CONNECTED:
@@ -33,7 +20,7 @@ export default function websocketReducer(state = initialState, action) {
                 connected: false
             };
         case MOVE_SEND:
-            return sendMove(state, action);
+            return state;
         case WS_INITIALISED:
             return {
                 ...state,

@@ -38,7 +38,7 @@ public class GameController {
     @MessageMapping("/game.{gameId}.move")
     public void handleMoveMessage(@Payload final Message<MoveMessage> move, @PathVariable final int gameId) throws GatewayFailureException {
         logger.info("Websocket move endpoint hit for game id " + gameId + "!");
-        gatewayService.sendMoveToGameAgents(move);
+        gatewayService.sendMoveToGameAgents(move, gameId);
     }
 
     /**
@@ -50,7 +50,7 @@ public class GameController {
      */
     @PostMapping("/game")
     public Message<GameConfiguration> createGame(@RequestBody final Message<GameConfiguration> gameConfiguration) throws GatewayFailureException {
-        logger.info(gameConfiguration.toString());
+        logger.info("Received request to create game");
         return gatewayService.createGame(gameConfiguration.getBody());
     }
 

@@ -17,7 +17,7 @@ public class WebsocketServiceImpl implements WebsocketService {
     }
 
     @Override
-    public void sendMessageToClient(Message message) {
-        messagingTemplate.convertAndSend("/topic/chess." + message.getGameId());
+    public void sendMessageToClient(Message message, int gameId) {
+        messagingTemplate.convertAndSend("/topic/chess." + gameId);
     }
 }

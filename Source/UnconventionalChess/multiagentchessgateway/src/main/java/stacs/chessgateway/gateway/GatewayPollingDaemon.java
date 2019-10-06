@@ -86,14 +86,24 @@ public class GatewayPollingDaemon implements GatewayListener, Runnable {
 
     private void forwardMessage(ACLMessage received) throws IOException {
         final String content = received.getContent();
+        final String senderName = received.getSender().getName();
+
+        logger.info("Received message from agent " + senderName);
+
         final MessageType type = objectMapper.readValue(content, Message.class).getType();
 
         switch (type) {
             case CHAT_MESSAGE:
-                gatewayService.handleAgentMessage(objectMapper.convertValue(content, ChatMessage.TYPE_REFERENCE));
+                gatewayService.handleAgentMessage(
+                        objectMapper.convertValue(content, ChatMessage.TYPE_REFERENCE),
+                        senderName
+                );
                 break;
             case MOVE_MESSAGE:
-                gatewayService.handleAgentMessage(objectMapper.convertValue(content, MoveMessage.TYPE_REFERENCE));
+                gatewayService.handleAgentMessage(
+                        objectMapper.convertValue(content, MoveMessage.TYPE_REFERENCE),
+                        senderName
+                );
                 break;
         }
     }

@@ -33,12 +33,4 @@ public class GameConfiguration {
         this.gameId = gameId;
     }
 
-    @Override
-    public String toString() {
-        return "GameConfiguration{" +
-                "humanPlays=" + humanPlays +
-                ", humanPlaysAsWhite=" + humanPlaysAsWhite +
-                ", gameId=" + gameId +
-                '}';
-    }
 }

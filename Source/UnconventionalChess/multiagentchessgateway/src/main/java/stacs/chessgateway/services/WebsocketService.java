@@ -9,5 +9,5 @@ public interface WebsocketService {
      *
      * @param message message to send
      */
-    void sendMessageToClient(Message message);
+    void sendMessageToClient(Message message, int gameId);
 }

@@ -1,11 +1,9 @@
 export class Message {
     type;
-    gameId;
     body;
 
-    constructor(type, gameId, body) {
+    constructor(type, body) {
         this.type = type;
-        this.gameId = gameId;
         this.body = body;
     }
 }
