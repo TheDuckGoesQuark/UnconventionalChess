@@ -5,7 +5,7 @@ import ChatContainer from "../chat/ChatContainer";
 import WebsocketMiddleware from "../websocket/WebsocketMiddleware";
 import DialogueBox from "../chat/DialogueBox";
 import {connect} from "react-redux";
-import {submitConfig} from "../config/ConfigActions";
+import {resetConfig, submitConfig} from "../config/ConfigActions";
 
 const GameContainer = (props) => (
     <div>
@@ -64,7 +64,7 @@ const chatContainerStyle = {
 };
 
 const mapDispatchToProps = {
-    exit: (config) => submitConfig(config)
+    exit: resetConfig
 };
 
 function mapStateToProps(state) {

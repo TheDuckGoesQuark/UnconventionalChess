@@ -2,7 +2,7 @@ import {
     CONFIG_HUMAN_PLAYS_AS_WHITE_SET,
     CONFIG_HUMAN_PLAYS_SET,
     CONFIG_GAME_READY,
-    CONFIG_SUBMITTED,
+    CONFIG_SUBMITTED, CONFIG_RESET,
 } from "./ConfigActions";
 
 const initialState = {
@@ -34,6 +34,8 @@ export default function configReducer(state = initialState, action) {
                 ...state,
                 configSubmitted: true
             };
+        case CONFIG_RESET:
+            return initialState;
         default:
             return state;
     }

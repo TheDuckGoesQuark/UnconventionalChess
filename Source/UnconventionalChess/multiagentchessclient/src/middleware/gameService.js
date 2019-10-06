@@ -24,7 +24,6 @@ const createGame = (config, dispatch) => {
     }).then(response => {
         return response.json()
     }).then(result => {
-        console.log("result", result);
         dispatch(gameReady(result.body.gameId));
     }).catch(err => {
         console.error("Request failed", err);
@@ -32,7 +31,6 @@ const createGame = (config, dispatch) => {
 };
 
 const sendMove = (move, state) => {
-    console.log(state);
     const {clientRef} = state.websocketReducer;
     const {gameId} = state.configReducer;
     const {sourceSquare, targetSquare, piece} = move;
@@ -40,9 +38,12 @@ const sendMove = (move, state) => {
     if (!clientRef) return state;
 
     const moveMessage = new MoveMessage(sourceSquare, targetSquare, piece);
-    const message = new Message(MoveMessage.TYPE, gameId, moveMessage);
+    const message = new Message(MoveMessage.TYPE, moveMessage);
 
-    clientRef.sendMessage(`/game.${gameId}.move`, JSON.stringify(message));
+    const json = JSON.stringify(message);
+    console.log(json);
+
+    clientRef.sendMessage(`/game.${gameId}.move`, json);
 };
 
 const gameService = store => next => action => {
@@ -54,7 +55,7 @@ const gameService = store => next => action => {
             createGame(action.payload.config, next);
             break;
         case MOVE_SEND:
-            sendMove(action.payload, store.getState());
+            sendMove(action.payload.move, store.getState());
             break;
         default:
             break;

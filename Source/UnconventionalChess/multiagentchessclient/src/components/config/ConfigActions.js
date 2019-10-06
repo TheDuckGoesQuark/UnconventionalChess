@@ -2,6 +2,7 @@ export const CONFIG_HUMAN_PLAYS_SET = "CONFIG_HUMAN_PLAYS_SET";
 export const CONFIG_HUMAN_PLAYS_AS_WHITE_SET = "HUMAN_PLAYS_AS_WHITE_SET";
 export const CONFIG_SUBMITTED = "CONFIG_SUBMITTED";
 export const CONFIG_GAME_READY = "CONFIG_GAME_READY";
+export const CONFIG_RESET = "CONFIG_RESET";
 
 /**
  * Set whether human should play as white
@@ -40,4 +41,12 @@ export const setHumanPlays = (humanPlays) => ({
 export const gameReady = (gameId) => ({
     type: CONFIG_GAME_READY,
     payload: {gameId}
+});
+
+/**
+ * Clear current configuration
+ * @returns {{type: *}}
+ */
+export const resetConfig = () => ({
+    type: CONFIG_RESET,
 });
