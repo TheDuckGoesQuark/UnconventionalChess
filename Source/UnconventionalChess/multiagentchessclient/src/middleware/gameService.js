@@ -1,7 +1,7 @@
 import {CONFIG_SUBMITTED, gameReady} from "../components/config/ConfigActions"
 import {GameConfigurationMessage, Message} from "../models/Message";
 
-const createGame = (config) => {
+const createGame = (config, dispatch) => {
     const configurationMessage = new GameConfigurationMessage(
         config.humanPlays,
         config.humanPlaysAsWhite,
@@ -25,7 +25,7 @@ const createGame = (config) => {
     }).then(response => {
         return response.json()
     }).then(result => {
-        next(gameReady(result.body.gameId))
+        dispatch(gameReady(result.body.gameId));
     }).catch(err => {
         console.error("Request failed", err);
     });
@@ -37,7 +37,7 @@ const gameService = store => next => action => {
 
     switch (action.type) {
         case CONFIG_SUBMITTED:
-            createGame(action.payload.config);
+            createGame(action.payload.config, next);
             break;
         default:
             break;
