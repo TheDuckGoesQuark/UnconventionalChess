@@ -2,11 +2,8 @@ package chessagents.gameagent.behaviours;
 
 import jade.core.behaviours.CyclicBehaviour;
 import jade.lang.acl.ACLMessage;
-import jade.lang.acl.MessageTemplate;
 
 public class ProcessMove extends CyclicBehaviour {
-
-    private MessageTemplate messageTemplate;
 
     @Override
     public void action() {

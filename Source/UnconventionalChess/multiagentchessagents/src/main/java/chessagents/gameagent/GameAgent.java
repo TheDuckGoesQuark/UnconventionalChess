@@ -12,5 +12,7 @@ public class GameAgent extends Agent {
         super.setup();
         addBehaviour(new ProcessMove());
         properties = (GameAgentProperties) getArguments()[0];
+
+
     }
 }
