@@ -1,5 +1,6 @@
 package chessagents.agents.gameagent;
 
+import chessagents.agents.ChessAgent;
 import chessagents.agents.gameagent.behaviours.ProcessMove;
 import chessagents.agents.pieceagent.*;
 import chessagents.ontology.ChessOntology;
@@ -28,22 +29,18 @@ import java.util.stream.Stream;
  * * forwarding moves and messages to the client
  * * initialising the piece agents
  */
-public class GameAgent extends Agent {
+public class GameAgent extends ChessAgent {
 
     private Logger logger = Logger.getMyLogger(this.getClass().getName());
     private GameAgentProperties properties;
-    private Codec codec = new SLCodec();
-    private Ontology ontology = ChessOntology.getInstance();
     private Board board;
 
     @Override
     protected void setup() {
         super.setup();
+
         addBehaviour(new ProcessMove(board));
         properties = (GameAgentProperties) getArguments()[0];
-
-        getContentManager().registerLanguage(codec);
-        getContentManager().registerOntology(ontology);
 
         setupGame();
     }

@@ -19,6 +19,8 @@ public class ChessOntology extends Ontology {
     // Concepts
     public static final String PIECE = "Piece";
     public static final String PIECE_AGENT = "Agent";
+    public static final String PIECE_TYPE = "Type";
+    public static final String PIECE_COLOUR = "Colour";
 
     public static final String POSITION = "Position";
     private static final String POSITION_COORDINATES = "Coordinates";
@@ -58,6 +60,8 @@ public class ChessOntology extends Ontology {
             // Concepts
             final ConceptSchema pieceSchema = new ConceptSchema(PIECE);
             pieceSchema.add(PIECE_AGENT, (ConceptSchema) getSchema(BasicOntology.AID));
+            pieceSchema.add(PIECE_TYPE, (PrimitiveSchema) getSchema(BasicOntology.STRING));
+            pieceSchema.add(PIECE_COLOUR, (ConceptSchema) getSchema(COLOUR));
             add(pieceSchema, Piece.class);
 
             final ConceptSchema positionSchema = new ConceptSchema(POSITION);
