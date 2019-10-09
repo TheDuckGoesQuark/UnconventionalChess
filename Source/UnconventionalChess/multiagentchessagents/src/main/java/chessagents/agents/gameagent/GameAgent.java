@@ -2,25 +2,24 @@ package chessagents.agents.gameagent;
 
 import chessagents.agents.ChessAgent;
 import chessagents.agents.gameagent.behaviours.ProcessMove;
+import chessagents.agents.gameagent.behaviours.ReceiveMessages;
 import chessagents.agents.pieceagent.*;
-import chessagents.ontology.ChessOntology;
+import chessagents.ontology.schemas.concepts.Move;
 import com.github.bhlangonijr.chesslib.*;
-import jade.content.lang.Codec;
 import jade.content.lang.sl.SLCodec;
-import jade.content.onto.Ontology;
 import jade.content.onto.basic.Action;
-import jade.core.Agent;
 import jade.core.ContainerID;
 import jade.domain.FIPANames;
 import jade.domain.JADEAgentManagement.CreateAgent;
 import jade.domain.JADEAgentManagement.JADEManagementOntology;
 import jade.lang.acl.ACLMessage;
 import jade.proto.AchieveREInitiator;
-import jade.security.Credentials;
 import jade.util.Logger;
 import jade.wrapper.ControllerException;
 
+import java.util.HashSet;
 import java.util.Optional;
+import java.util.Set;
 import java.util.stream.Stream;
 
 /**
@@ -38,16 +37,14 @@ public class GameAgent extends ChessAgent {
     @Override
     protected void setup() {
         super.setup();
-
-        addBehaviour(new ProcessMove(board));
         properties = (GameAgentProperties) getArguments()[0];
+        board = new Board();
 
         setupGame();
+        addBehaviour(new ReceiveMessages(board));
     }
 
     private void setupGame() {
-        board = new Board();
-
         if (!properties.isHumanPlays()) {
             spawnPieceAgentsForSide(Side.WHITE);
             spawnPieceAgentsForSide(Side.BLACK);
