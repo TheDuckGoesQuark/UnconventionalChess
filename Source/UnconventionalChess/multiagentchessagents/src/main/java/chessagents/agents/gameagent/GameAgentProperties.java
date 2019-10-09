@@ -1,4 +1,4 @@
-package chessagents.gameagent;
+package chessagents.agents.gameagent;
 
 public class GameAgentProperties {
 

@@ -1,4 +1,4 @@
-package chessagents.gameagent.behaviours;
+package chessagents.agents.gameagent.behaviours;
 
 import jade.core.behaviours.CyclicBehaviour;
 import jade.lang.acl.ACLMessage;

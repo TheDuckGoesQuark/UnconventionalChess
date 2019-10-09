@@ -4,12 +4,12 @@ import jade.core.behaviours.OneShotBehaviour;
 import jade.wrapper.AgentController;
 import jade.wrapper.ContainerController;
 import jade.wrapper.StaleProxyException;
-import chessagents.gameagent.GameAgentProperties;
+import chessagents.agents.gameagent.GameAgentProperties;
 import stacs.chessgateway.models.GameConfiguration;
 
 public class CreateGame extends OneShotBehaviour {
 
-    private static final String GAME_AGENT_CLASS = "chessagents.gameagent.GameAgent";
+    private static final String GAME_AGENT_CLASS = "chessagents.agents.gameagent.GameAgent";
     private final GameConfiguration gameConfiguration;
     private final String gameAgentId;
 

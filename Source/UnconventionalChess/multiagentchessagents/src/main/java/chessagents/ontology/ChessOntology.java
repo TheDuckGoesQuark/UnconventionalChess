@@ -27,6 +27,9 @@ public class ChessOntology extends Ontology {
     public static final String MOVE_SOURCE = "Source";
     public static final String MOVE_TARGET = "Target";
 
+    public static final String COLOUR = "Colour";
+    public static final String COLOUR_COLOUR = "Colour";
+
     // Predicates
     public static final String CAN_MOVE = "Can Move";
     public static final String CAN_MOVE_PIECE = "Piece";
@@ -54,7 +57,7 @@ public class ChessOntology extends Ontology {
         try {
             // Concepts
             final ConceptSchema pieceSchema = new ConceptSchema(PIECE);
-            pieceSchema.add(PIECE_AGENT, (PrimitiveSchema) getSchema(BasicOntology.AID));
+            pieceSchema.add(PIECE_AGENT, (ConceptSchema) getSchema(BasicOntology.AID));
             add(pieceSchema, Piece.class);
 
             final ConceptSchema positionSchema = new ConceptSchema(POSITION);
