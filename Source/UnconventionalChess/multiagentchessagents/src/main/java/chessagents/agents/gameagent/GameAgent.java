@@ -20,6 +20,7 @@ import jade.wrapper.ControllerException;
 
 import java.util.Objects;
 import java.util.Optional;
+import java.util.stream.IntStream;
 import java.util.stream.Stream;
 
 public class GameAgent extends Agent {
@@ -59,10 +60,13 @@ public class GameAgent extends Agent {
 
     private void spawnPieceAgentsForSide(Side colour) {
         Stream.of(Square.values())
-                .map(sq -> board.getPiece(sq))
-                .filter(piece -> !piece.equals(Piece.NONE))
-                .filter(piece -> piece.getPieceSide().equals(colour))
-                .forEach(this::spawnPieceAgent);
+                .filter(sq -> !board.getPiece(sq).equals(Piece.NONE))
+                .filter(sq -> board.getPiece(sq).getPieceSide().equals(colour))
+                .forEach(sq -> spawnPieceAgent(board.getPiece(sq), sq));
+    }
+
+    private String generatePieceAgentName(Piece piece, Square startingSquare) {
+        return startingSquare.value() + "-" + piece.getPieceSide().name() + "-" + piece.getPieceType().name();
     }
 
     private Optional<String> getPieceClassname(Piece piece) {
@@ -85,9 +89,9 @@ public class GameAgent extends Agent {
         }
     }
 
-    private void spawnPieceAgent(Piece piece) {
+    private void spawnPieceAgent(Piece piece, Square startingSquare) {
         final CreateAgent createAgent = new CreateAgent();
-        final String agentName = piece.getPieceSide().name() + "-" + piece.getPieceType().name();
+        final String agentName = generatePieceAgentName(piece, startingSquare);
         final String agentClassName = getPieceClassname(piece)
                 .orElseThrow(IllegalArgumentException::new);
 
