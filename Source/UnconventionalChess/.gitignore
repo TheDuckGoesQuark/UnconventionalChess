@@ -8,6 +8,9 @@ out
 log/
 target/
 
+# Gradle
+build/
+
 # JADE
 APDescription.txt
 MTPs-Main-Container.txt
