@@ -1,9 +1,16 @@
 package chessagents.agents.gameagent.behaviours;
 
+import com.github.bhlangonijr.chesslib.Board;
 import jade.core.behaviours.CyclicBehaviour;
 import jade.lang.acl.ACLMessage;
 
 public class ProcessMove extends CyclicBehaviour {
+
+    private Board board;
+
+    public ProcessMove(Board board) {
+        this.board = board;
+    }
 
     @Override
     public void action() {

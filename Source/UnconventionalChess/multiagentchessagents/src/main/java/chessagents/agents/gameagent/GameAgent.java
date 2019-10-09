@@ -15,14 +15,19 @@ import jade.domain.JADEAgentManagement.CreateAgent;
 import jade.domain.JADEAgentManagement.JADEManagementOntology;
 import jade.lang.acl.ACLMessage;
 import jade.proto.AchieveREInitiator;
+import jade.security.Credentials;
 import jade.util.Logger;
 import jade.wrapper.ControllerException;
 
-import java.util.Objects;
 import java.util.Optional;
-import java.util.stream.IntStream;
 import java.util.stream.Stream;
 
+/**
+ * Game agent is responsible for acting as the single source of truth
+ * for the current state of the board, as well as :
+ * * forwarding moves and messages to the client
+ * * initialising the piece agents
+ */
 public class GameAgent extends Agent {
 
     private Logger logger = Logger.getMyLogger(this.getClass().getName());
@@ -34,7 +39,7 @@ public class GameAgent extends Agent {
     @Override
     protected void setup() {
         super.setup();
-        addBehaviour(new ProcessMove());
+        addBehaviour(new ProcessMove(board));
         properties = (GameAgentProperties) getArguments()[0];
 
         getContentManager().registerLanguage(codec);
@@ -90,7 +95,6 @@ public class GameAgent extends Agent {
     }
 
     private void spawnPieceAgent(Piece piece, Square startingSquare) {
-        final CreateAgent createAgent = new CreateAgent();
         final String agentName = generatePieceAgentName(piece, startingSquare);
         final String agentClassName = getPieceClassname(piece)
                 .orElseThrow(IllegalArgumentException::new);
@@ -103,12 +107,15 @@ public class GameAgent extends Agent {
             containerName = "chess-container";
         }
 
+        final CreateAgent createAgent = new CreateAgent();
         createAgent.setAgentName(agentName);
         createAgent.setClassName(agentClassName);
         createAgent.setContainer(new ContainerID(containerName, null));
-        Action requestAction = new Action(getAMS(), createAgent);
-        ACLMessage request = new ACLMessage(ACLMessage.REQUEST);
+        createAgent.addArguments(startingSquare.name());
+        createAgent.addArguments(piece.getPieceSide().name());
 
+        final Action requestAction = new Action(getAMS(), createAgent);
+        final ACLMessage request = new ACLMessage(ACLMessage.REQUEST);
         request.addReceiver(getAMS());
         request.setOntology(JADEManagementOntology.getInstance().getName());
 
