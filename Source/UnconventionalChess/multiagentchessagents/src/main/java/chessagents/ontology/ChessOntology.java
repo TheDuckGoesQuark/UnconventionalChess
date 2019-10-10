@@ -3,14 +3,10 @@ package chessagents.ontology;
 import chessagents.ontology.schemas.actions.MakeMove;
 import chessagents.ontology.schemas.concepts.*;
 import chessagents.ontology.schemas.predicates.*;
-import jade.content.Concept;
 import jade.content.onto.BasicOntology;
 import jade.content.onto.Ontology;
 import jade.content.onto.OntologyException;
-import jade.content.schema.AgentActionSchema;
-import jade.content.schema.ConceptSchema;
-import jade.content.schema.PredicateSchema;
-import jade.content.schema.PrimitiveSchema;
+import jade.content.schema.*;
 
 public class ChessOntology extends Ontology {
 

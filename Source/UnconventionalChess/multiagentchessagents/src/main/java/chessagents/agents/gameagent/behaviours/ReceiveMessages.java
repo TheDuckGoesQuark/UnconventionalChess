@@ -31,16 +31,16 @@ public class ReceiveMessages extends CyclicBehaviour {
         }
 
         ContentManager contextManager = myAgent.getContentManager();
-        MoveAction action = ((MoveAction) contextManager.extractContent(msg));
-
-        switch(msg.getPerformative()) {
-            case ACLMessage.REQUEST:
-                replyWithAvailableMoves(msg, action);
-                break;
-            case ACLMessage.PROPOSE:
-                considerProposedMove(msg, action);
-                break;
-        }
+//        MoveAction action = ((MoveAction) contextManager.extractContent(msg));
+//
+//        switch(msg.getPerformative()) {
+//            case ACLMessage.REQUEST:
+//                replyWithAvailableMoves(msg, action);
+//                break;
+//            case ACLMessage.PROPOSE:
+//                considerProposedMove(msg, action);
+//                break;
+//        }
     }
 
     private void considerProposedMove(ACLMessage msg, MoveAction action) {

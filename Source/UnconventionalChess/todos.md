@@ -2,20 +2,16 @@
 
 ## Client
 
-- Create game creation menu
-- Add conversation view
 - Add piece dialogue component
 
 ## Gateway
 
-- Add game creation endpoint
-- Forward game creation via JadeGateway
-
 ## Agents
 
-- Design agents
-- Implement game agent for creating and handling games
 - Implement decision making algorithm
+- GameAgent is single source of truth for current board state. Individual agents can plan next moves 
+and try convince others to follow their suggestion. Cooperation increases trust, and the opposite. Personality types
+dicate how quickly they accept new proposals, follow current promises, etc
 
 ## NLG
 
