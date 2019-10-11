@@ -7,7 +7,6 @@ import com.github.bhlangonijr.chesslib.Square;
 import com.github.bhlangonijr.chesslib.move.Move;
 import com.github.bhlangonijr.chesslib.move.MoveGenerator;
 import com.github.bhlangonijr.chesslib.move.MoveGeneratorException;
-import com.github.bhlangonijr.chesslib.move.MoveList;
 import jade.content.lang.Codec;
 import jade.content.onto.OntologyException;
 import jade.content.onto.basic.Action;
@@ -23,19 +22,32 @@ public class ChooseMove extends CyclicBehaviour {
     private Random random = new Random();
     private Colour myColour;
     private AID gameAgentAid = new AID("GameAgent-0", false);
+    private boolean moveSent = false;
 
     public ChooseMove(Board board, Colour myColour) {
         this.board = board;
         this.myColour = myColour;
     }
 
+    private boolean myTurn() {
+        return board.getSideToMove().value().equals(myColour.getColour());
+    }
+
     @Override
     public void action() {
-        if (board.getSideToMove().value().equals(myColour.getColour())) {
-            sendRandomMove();
+        if (myTurn()) {
+            if (moveSent) {
+                receiveMove();
+            } else {
+                // wait for choice of move to come back
+                sendRandomMove();
+            }
+        } else {
+            // wait for other side to move
+            receiveMove();
+            moveSent = false;
         }
 
-        receiveMove();
         block();
     }
 
@@ -51,6 +63,9 @@ public class ChooseMove extends CyclicBehaviour {
                         Square.valueOf(move.getMove().getSource().getCoordinates()),
                         Square.valueOf(move.getMove().getTarget().getCoordinates()))
                 );
+
+                // prepare to make another move
+                if (myTurn()) moveSent = false;
             } catch (Codec.CodecException | OntologyException e) {
                 e.printStackTrace();
             }
@@ -67,7 +82,7 @@ public class ChooseMove extends CyclicBehaviour {
             ACLMessage moveMessage = new ACLMessage(ACLMessage.PROPOSE);
             moveMessage.addReceiver(gameAgentAid);
             myAgent.getContentManager().fillContent(moveMessage, makeMoveAction);
-
+            moveSent = true;
         } catch (MoveGeneratorException | Codec.CodecException | OntologyException e) {
             e.printStackTrace();
         }

@@ -1,7 +1,7 @@
 package chessagents.agents.gameagent;
 
 import chessagents.agents.ChessAgent;
-import chessagents.agents.gameagent.behaviours.InformPossibleMoves;
+import chessagents.agents.gameagent.behaviours.ProcessMove;
 import chessagents.agents.pieceagent.*;
 import com.github.bhlangonijr.chesslib.*;
 import jade.content.lang.sl.SLCodec;
@@ -37,7 +37,7 @@ public class GameAgent extends ChessAgent {
         board = new Board();
 
         setupGame();
-        addBehaviour(new InformPossibleMoves(board));
+        addBehaviour(new ProcessMove(board));
     }
 
     private void setupGame() {
