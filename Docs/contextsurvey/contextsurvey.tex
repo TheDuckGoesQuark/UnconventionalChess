@@ -41,10 +41,16 @@ Often, developers and users will anthropomorphise these agents when describing t
 
 \section{Survey}
 
-\subsection{Multiagent Systems}
+\subsection{Multiagent Systems in Entertainment}
+
+Many modern video games involve the user managing multiple characters to achieve some goal, such as producing in-game resources or defending against an opponent. This sort of problem lends itself easily to multiagent systems. Instead of having one artificial intelligence engine driving the actions of all the characters, developers can create agents with a limited set of actions and some concept of progress towards their goals and allow emergent behaviour find a solution to the problem, sometimes in surprising ways. 
+\cite{sandboxmas} discuss how multiagent systems can be applied to create more realistic worlds in sandbox games. By implementing the environment, objects, and non-playable characters (NPCs) as agents, developers can create a world that reacts and adapts the player, but also operates in isolation from the character to provide a realistic setting. The concept of personalities is also mentioned as a way of allowing similiar NPCs to exhibit different slightly different behaviours, such as having aggressive or relaxed driving styles.
+
+Even in games with very simple rules and logic, multiagent systems can find interesting and complex solutions. OpenAI implemented hide-and-seek using agents \cite{openaiemergent}, where hiders avoid the line-of-sight of the seekers. The game was played in a world with randomly generated walls and objects such as ramps (for climbing over walls) and blocks (for forming barricades). What made this fascinating is that the agents were not incentivised to use these objects, but after repeatedly playing and learning, both the hiders and seekers created strategies such as blocking each other in a safe area, and even removing the objects from the other team before hiding.
 
 \subsection{Models of Personality}
-\cite{maven}
+
+
 
 \subsection{Computational Humour and Natural Language Generation}
 
