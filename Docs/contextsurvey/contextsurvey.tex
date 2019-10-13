@@ -38,7 +38,8 @@
 
 Multiagent systems are the next step to increase the level of autonomy that can be provided by technology. Agents that are able to learn, adapt, and negotiate with other agents to achieve their goals allow for complex problems to be solved or modelled, such as monitoring and maintaining national power grids \cite{archon}. 
 
-Often, developers and users will anthropomorphise these agents when describing their behaviour. This project aims to encourage this by implementing agents with a model of personality that affects their choice of actions, by rendering the negotiations between agents in a natural language, and by using models of humour to make the interactions between agents entertaining.
+Often, developers and users will anthropomorphise these agents when describing their behaviour. This project aims to encourage this by implementing agents with a model of personality that affects their choice of actions, by rendering the negotiations between agents in a natural language, and by using models of humour to make the interactions between agents entertaining. 
+
 
 \section{Survey}
 
@@ -80,11 +81,23 @@ Generic frameworks have also been created that are not based strictly on ontolog
 
 \subsection{Computational Humour}
 
-Simply reading the discussion between agents would certainly not make for an entertaining game, and so adjusting the dialogue or agent behaviour is required. Given humour is an incredibly contextual and culture driven concept, it is no surprise that computational humour is both well researched yet still not 'solved'. Jason Rutter describes why using artificial intelligence for humour is particularly challenging:
+Simply reading the discussion between agents would certainly not make for an entertaining game, and so adjusting the dialogue or agent behaviour is required. However, artificial humour also has benefits for everyday computing: a smartphone that is able to sympathise with the user when it is unable to connect to a weak WiFi network or cheer them up with a joke when they miss their bus is one that the user is more likely to enjoy using. 
+
+Unfortunately, given humour is an incredibly contextual and culture driven concept, it is no surprise that computational humour is well researched yet still not 'solved'. Jason Rutter describes why using artificial intelligence for humour is particularly challenging:
 
 \begin{displayquote}
 "Humour is a very interesting way to look at artificial intelligence because at some point something has to have two meanings, which is not easy to do with a computer." \cite{jasonrutter}
 \end{displayquote}
+
+There are three main theories of humour that are used for computational humour: superiority theory (laugh about the misfortune of others), relief theory (using taboo subjects to release tension), and incongruity theory (using lexical and structural ambiguity). The last theory is currently the most popular, and was used during the development of JAPE \cite{jape}. JAPE identifies features such as homophones to produce jokes such as:
+
+\begin{displayquote}
+	"What is the difference between leaves and a car? One you brush and rake, the other you rush and brake."
+\end{displayquote}
+
+However, JAPE does not allow for much user interaction, and most textual humour generation takes the form of simple puns and riddles. Our agents could instead generate situational humour by surprising the user by diverting unexpectedly from expected behaviour. The Suslov Model of humour accounts for the fact that we subconsciously predict expected conclusions to situations and phrases, and that contradictions in what is the most likely direction for a conversation or situation to what was previously predicted can create a humour response \cite{suslov}.
+
+These probabilistic models currently appear more hopeful than the rule based models used by older implementations such as JAPE. Instead, \cite{humourrnn} used an existing corpus of jokes and a recurrent neural network to produce a system capable of generating jokes and even anti-jokes (jokes without an actual punchline).
 
 \bibliographystyle{unsrt}
 \bibliography{mybib}
