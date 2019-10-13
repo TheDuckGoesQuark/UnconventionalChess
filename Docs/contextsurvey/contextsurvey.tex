@@ -1,6 +1,7 @@
 \documentclass[conference]{IEEEtran}
 \IEEEoverridecommandlockouts
 \usepackage{cite}
+\usepackage[hyphens,spaces,obeyspaces]{url}
 \usepackage{amsmath,amssymb,amsfonts}
 \usepackage{algorithmic}
 \usepackage{graphicx}
@@ -55,7 +56,7 @@ Knowing that multi-agent autocurricula can realise strategies not considered by 
 
 Creating a truly immersive video game requires characters that the player can empathise with. Robots have been shown to be able to influence human behaviour as an authority figure \cite{bossrobot} and when begging not to be turned off \cite{turnoffrobot} by expressing emotions. \cite{personalitymodel} created and demonstrated a model of personality and emotion that would allow agents to react differently to the same stimulation. For example, when a agent with an 'introverted' personality is offered help, they are less likely to accept it due to the prolonged interaction it would entail. 
 
-	\cite{skyrim} also created a model that would use personality, emotion, and social relationships to determine the behaviour of NPCs in a video game. The frequency and tone of interactions between NPCs as well as the NPC and the player were accounted for when choosing facial expressions and tone of voice during conversations. Test subjects described feeling especially attached to the NPCs that utilised this model showing.
+\cite{skyrim} also created a model that would use personality, emotion, and social relationships to determine the behaviour of NPCs in a video game. The frequency and tone of interactions between NPCs as well as the NPC and the player were accounted for when choosing facial expressions and tone of voice during conversations. Test subjects described feeling especially attached to the NPCs that utilised this model showing.
 
 A useful aspect of multiagent systems is that agents can be developed in isolation but still interact (e.g. an agent that searches for cheap transport options and an agent responsible for auctioning train tickets could be developed separately with no knowledge of the logic being used by the other). \cite{hetrogenousagents} discuss how developing heterogeneous agent systems using personalities and social structures could help when dealing with third-party agents that have been constructed to lie and exhibit selfish or uncooperative behaviour.
 
@@ -71,16 +72,22 @@ Specifically, they were able to create a framework for multiple parties to discu
 
 The overhead of argumentation required in multiagent systems can be a quick filter to determine which problems it is a suitable solution for. For example, \cite{argumentationcontext} investigated how quickly agents that used collaborative argumentation to achieve global consistency in a time-constrained task (i.e. escaping a burning building) performed. Their results suggest that optimisations or different approaches to the protocol design would likely be necessary for a real-time strategy game, but it could depend on many factors such as the number of agents, the distribution of knowledge, and more.
 
-\subsection{Naturual Language Generation}
+\subsection{Natural Language Generation}
 
-// TODO
+In order to make the discussions between agents more entertaining and user-friendly to observe, our project involves using natural language generation (NLG) methods to translate the messages to plain English. \cite{owlnlg} built an NLG system for a particular ontology language (W3C Ontology Language a.k.a. OWL), which is able to construct texts corresponding to objects and their properties in the ontology in English and Greek. \cite{rdfnlg} achieved similar results for one of the other Semantic Web Formalisms (RDF) and were able to produce instructions for cooking recipes from a corpus of data in a far less human-friendly format. They were even able to adjust the level of technical jargon in the resulting text to accommodate for the readers familiarity with cooking. The ontology allowed for optimised searching of the parse trees but they also required a domain corpus (i.e. existing textual recipes) in order to properly train their natural language generator. 
+
+Generic frameworks have also been created that are not based strictly on ontologies which may also be useful. For example, SimpleNLG \cite{simplenlg} is an NLG engine that allows for valid English phrases to be constructed through a very simple Java API. 
 
 \subsection{Computational Humour}
 
-// TODO
+Simply reading the discussion between agents would certainly not make for an entertaining game, and so adjusting the dialogue or agent behaviour is required. Given humour is an incredibly contextual and culture driven concept, it is no surprise that computational humour is both well researched yet still not 'solved'. Jason Rutter describes why using artificial intelligence for humour is particularly challenging:
+
+\begin{displayquote}
+"Humour is a very interesting way to look at artificial intelligence because at some point something has to have two meanings, which is not easy to do with a computer." \cite{jasonrutter}
+\end{displayquote}
 
 \bibliographystyle{unsrt}
-\bibliography{mybib}		
+\bibliography{mybib}
 
 \vspace{12pt}
 
