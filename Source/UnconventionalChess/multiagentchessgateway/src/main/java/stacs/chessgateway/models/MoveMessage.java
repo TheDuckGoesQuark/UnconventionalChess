@@ -28,4 +28,13 @@ public class MoveMessage {
     public String getTargetSquare() {
         return targetSquare;
     }
+
+    @Override
+    public String toString() {
+        return "MoveMessage{" +
+                "piece='" + piece + '\'' +
+                ", sourceSquare='" + sourceSquare + '\'' +
+                ", targetSquare='" + targetSquare + '\'' +
+                '}';
+    }
 }

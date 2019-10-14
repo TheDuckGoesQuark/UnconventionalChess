@@ -12,10 +12,8 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import stacs.chessgateway.config.GatewayProperties;
-import stacs.chessgateway.gateway.behaviours.ReceiveMessage;
-import stacs.chessgateway.models.ChatMessage;
+import chessagents.agents.gatewayagent.behaviours.ReceiveMessageIntoQueue;
 import stacs.chessgateway.models.Message;
-import stacs.chessgateway.models.MessageType;
 import stacs.chessgateway.models.MoveMessage;
 import stacs.chessgateway.services.GatewayService;
 
@@ -30,6 +28,7 @@ import static stacs.chessgateway.models.MessageType.MOVE_MESSAGE;
 public class GatewayPollingDaemon implements GatewayListener, Runnable {
 
     private static final Logger logger = LoggerFactory.getLogger(GatewayPollingDaemon.class);
+    private static final String GATEWAY_AGENT_CLASS_NAME = "chessagents.agents.gatewayagent.ChessGatewayAgent";
 
     private final ExecutorService executorService = Executors.newSingleThreadExecutor();
     private final Queue<ACLMessage> messageQueue = new LinkedBlockingQueue<>();
@@ -50,7 +49,7 @@ public class GatewayPollingDaemon implements GatewayListener, Runnable {
         pp.setProperty(Profile.MAIN_PORT, Integer.toString(gatewayProperties.getMainContainerPort()));
 
         // Override default gateway agent with custom class
-        JadeGateway.init(null, pp);
+        JadeGateway.init(GATEWAY_AGENT_CLASS_NAME, pp);
 
         // Register self as event listener
         JadeGateway.addListener(this);
@@ -73,7 +72,7 @@ public class GatewayPollingDaemon implements GatewayListener, Runnable {
         while (JadeGateway.isGatewayActive()) {
             logger.info("Listening for messages from gateway");
             try {
-                JadeGateway.execute(new ReceiveMessage(messageQueue));
+                JadeGateway.execute(new ReceiveMessageIntoQueue(messageQueue));
                 final ACLMessage received = messageQueue.poll();
 
                 if (received != null) {

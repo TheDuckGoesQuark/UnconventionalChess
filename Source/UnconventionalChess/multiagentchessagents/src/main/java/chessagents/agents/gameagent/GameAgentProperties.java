@@ -1,5 +1,8 @@
 package chessagents.agents.gameagent;
 
+/**
+ * Initialisation properties for game agent
+ */
 public class GameAgentProperties {
 
     private final boolean humanPlays;

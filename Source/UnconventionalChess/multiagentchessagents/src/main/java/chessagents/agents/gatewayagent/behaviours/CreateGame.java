@@ -1,28 +1,21 @@
-package stacs.chessgateway.gateway.behaviours;
+package chessagents.agents.gatewayagent.behaviours;
 
 import jade.core.behaviours.OneShotBehaviour;
 import jade.wrapper.AgentController;
 import jade.wrapper.ContainerController;
 import jade.wrapper.StaleProxyException;
 import chessagents.agents.gameagent.GameAgentProperties;
-import stacs.chessgateway.models.GameConfiguration;
 
 public class CreateGame extends OneShotBehaviour {
 
     private static final String GAME_AGENT_CLASS = "chessagents.agents.gameagent.GameAgent";
-    private final GameConfiguration gameConfiguration;
+
+    private final GameAgentProperties properties;
     private final String gameAgentId;
 
-    public CreateGame(GameConfiguration gameConfiguration, String gameAgentId) {
-        this.gameConfiguration = gameConfiguration;
+    public CreateGame(GameAgentProperties properties, String gameAgentId) {
+        this.properties = properties;
         this.gameAgentId = gameAgentId;
-    }
-
-    private GameAgentProperties createProperties() {
-        return new GameAgentProperties(
-                gameConfiguration.isHumanPlays(),
-                gameConfiguration.isHumanPlaysAsWhite()
-        );
     }
 
     private AgentController createGameAgent(GameAgentProperties properties) throws StaleProxyException {
@@ -37,8 +30,6 @@ public class CreateGame extends OneShotBehaviour {
 
     @Override
     public void action() {
-        final GameAgentProperties properties = createProperties();
-
         try {
             final AgentController agentController = createGameAgent(properties);
             agentController.start();
