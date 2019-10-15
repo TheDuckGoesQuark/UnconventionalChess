@@ -1,11 +1,14 @@
 package chessagents.agents.gameagent.behaviours;
 
+import chessagents.agents.gameagent.GameAgentProperties;
 import chessagents.agents.pieceagent.*;
+import com.github.bhlangonijr.chesslib.Board;
 import com.github.bhlangonijr.chesslib.Piece;
 import com.github.bhlangonijr.chesslib.Side;
 import com.github.bhlangonijr.chesslib.Square;
 import jade.content.lang.sl.SLCodec;
 import jade.content.onto.basic.Action;
+import jade.core.AID;
 import jade.core.ContainerID;
 import jade.core.behaviours.OneShotBehaviour;
 import jade.domain.FIPANames;
@@ -13,14 +16,28 @@ import jade.domain.JADEAgentManagement.CreateAgent;
 import jade.domain.JADEAgentManagement.JADEManagementOntology;
 import jade.lang.acl.ACLMessage;
 import jade.proto.AchieveREInitiator;
+import jade.util.Logger;
 import jade.wrapper.ControllerException;
 
 import java.util.HashSet;
+import java.util.Map;
 import java.util.Optional;
+import java.util.Set;
 import java.util.stream.Stream;
 
-// TODO this
 public class SetupGame extends OneShotBehaviour {
+
+    private static final Logger logger = Logger.getMyLogger(SetupGame.class.getName());
+    private GameAgentProperties properties;
+    private Map<Side, Set<AID>> agentsBySide;
+    private Board board;
+
+    public SetupGame(GameAgentProperties properties, Map<Side, Set<AID>> agentsBySide, Board board) {
+        this.properties = properties;
+        this.agentsBySide = agentsBySide;
+        this.board = board;
+    }
+
     @Override
     public void action() {
         if (!properties.isHumanPlays()) {
@@ -37,6 +54,7 @@ public class SetupGame extends OneShotBehaviour {
 
     private void spawnPieceAgentsForSide(Side colour) {
         agentsBySide.put(colour, new HashSet<>());
+        logger.info("Spawning agents for side " + colour.value());
         Stream.of(Square.values())
                 .filter(sq -> !board.getPiece(sq).equals(Piece.NONE))
                 .filter(sq -> board.getPiece(sq).getPieceSide().equals(colour))
@@ -74,7 +92,7 @@ public class SetupGame extends OneShotBehaviour {
 
         String containerName;
         try {
-            containerName = getContainerController().getContainerName();
+            containerName = myAgent.getContainerController().getContainerName();
         } catch (ControllerException e) {
             logger.warning("Unable to get current container name, using default. Reason: " + e.getMessage());
             containerName = "chess-container";
@@ -87,33 +105,33 @@ public class SetupGame extends OneShotBehaviour {
         createAgent.addArguments(startingSquare.name());
         createAgent.addArguments(piece.getPieceSide().name());
 
-        final Action requestAction = new Action(getAMS(), createAgent);
+        final Action requestAction = new Action(myAgent.getAMS(), createAgent);
         final ACLMessage request = new ACLMessage(ACLMessage.REQUEST);
-        request.addReceiver(getAMS());
+        request.addReceiver(myAgent.getAMS());
         request.setOntology(JADEManagementOntology.getInstance().getName());
 
-        getContentManager().registerLanguage(new SLCodec(),
+        myAgent.getContentManager().registerLanguage(new SLCodec(),
                 FIPANames.ContentLanguage.FIPA_SL);
 
-        getContentManager().registerOntology(JADEManagementOntology.getInstance());
+        myAgent.getContentManager().registerOntology(JADEManagementOntology.getInstance());
 
         request.setLanguage(FIPANames.ContentLanguage.FIPA_SL);
         request.setProtocol(FIPANames.InteractionProtocol.FIPA_REQUEST);
         try {
-            getContentManager().fillContent(request, requestAction);
-            addBehaviour(new AchieveREInitiator(this, request) {
+            myAgent.getContentManager().fillContent(request, requestAction);
+            myAgent.addBehaviour(new AchieveREInitiator(myAgent, request) {
                 protected void handleInform(ACLMessage inform) {
                     logger.info("Agent " + agentName + "successfully created");
-                    agentsBySide.get(piece.getPieceSide()).add(agentName);
+                    agentsBySide.get(piece.getPieceSide()).add(new AID(agentName, false));
                 }
 
                 protected void handleFailure(ACLMessage failure) {
-                    logger.warning("Error creating agent " + agentName + ".");
+                    logger.warning("Error creating agent " + agentName + ":" + failure.getContent());
                     // TODO inform user of failure, cancel game creation and cleanup
                 }
             });
         } catch (Exception e) {
-            e.printStackTrace();
+            logger.warning("Error creating agent " + agentName + ":" + e.getMessage());
         }
     }
 }

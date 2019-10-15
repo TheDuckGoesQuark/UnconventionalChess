@@ -24,7 +24,7 @@ public class CreateGame extends OneShotBehaviour {
         return container.createNewAgent(
                 gameAgentId,
                 GAME_AGENT_CLASS,
-                new Object[]{properties}
+                new Object[]{properties, myAgent.getName()}
         );
     }
 
