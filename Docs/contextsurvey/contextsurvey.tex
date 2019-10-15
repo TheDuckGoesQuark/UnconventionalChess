@@ -52,6 +52,14 @@ Even in games with very simple rules and logic, multiagent systems can find inte
 
 Knowing that multi-agent autocurricula can realise strategies not considered by humans, \cite{masboardgames} discuss how they can be applied to strategy board games such as Diplomacy and Risk. They describe a generic framework for supporting agent-based competitive bots for board games and then implement bots for the aforementioned games. Their research suggests that for games with a large number of units and a large action space, a multi-agent approach can identify effective strategies quicker than the exhaustive methods used for chess engines. 
 
+\subsection{Multiagent System Frameworks}
+
+Most multiagent systems have similar requirements, and so several frameworks have been developed to bootstrap their development. \cite{massurvey} provide a very thorough survey of the frameworks currently in use today and highlight various features and drawbacks in their implementation. 
+
+The most popular is the Java Agent Development Framework (JADE) \cite{jade}. It conforms to the FIPA standard, which is a protocol for agent communication that involves defining performatives (e.g. request, inform), language name, and other message meta-data during communication. The benefit of systems that abide this standard is that they are able to interact regardless of the technology used to implement them. JADE provides other important features such as base classes for agent functionality called behaviours, a directory facilitator (DF) agent implementation to allow agents to find each other, and an Agent Management Service that manages and tracks the lifecycle of agents and allows them to move between containers (which can exist on multiple hosts). To aid during development, JADE also incldues a GUI for debugging and manually interacting with agents.
+
+Other frameworks provide APIs that encourage certain design patterns. For example, Jason was built to support the belief-desire-intention (BDI) design model which attempts to seperate the processing of choosing a plan from the execution of the chosen plan \cite{jason}. Jason provides many of the same functionalities as JADE, but the latter was chosen due to being slightly more flexible.
+
 \subsection{Models of Personality and Emotion}
 
 Creating a truly immersive video game requires characters that the player can empathise with. Robots have been shown to be able to influence human behaviour as an authority figure \cite{bossrobot} and when begging not to be turned off \cite{turnoffrobot} by expressing emotions. \cite{personalitymodel} created and demonstrated a model of personality and emotion that would allow agents to react differently to the same stimulation. For example, when a agent with an 'introverted' personality is offered help, they are less likely to accept it due to the prolonged interaction it would entail. 
@@ -68,7 +76,7 @@ Knowledge is distributed in a multiagent system therefore specialist agents need
 	In the current circumstance R, we should perform action A, which will result in new circumstances S, which will realise goal G, which will promote some value V.
 \end{displayquote}
 
-Specifically, they were able to create a framework for multiple parties to discuss and collaborate which could greatly affect the design of multiagent systems that utilise it. By producing an ontology which any agents involved in the discussion understand, goals and circumstances can be conveyed through the use of predicates and concepts. Conveniently, the Java Agent Developement Framework (JADE) already provides an API for creating ontologies \cite{jade}.
+Specifically, they were able to create a framework for multiple parties to discuss and collaborate which could greatly affect the design of multiagent systems that utilise it. By producing an ontology which any agents involved in the discussion understand, goals and circumstances can be conveyed through the use of predicates and concepts. Conveniently, JADE already provides an API for creating ontologies.
 
 The overhead of argumentation required in multiagent systems can be a quick filter to determine which problems it is a suitable solution for. For example, \cite{argumentationcontext} investigated how quickly agents that used collaborative argumentation to achieve global consistency in a time-constrained task (i.e. escaping a burning building) performed. Their results suggest that optimisations or different approaches to the protocol design would likely be necessary for a real-time strategy game, but it could depend on many factors such as the number of agents, the distribution of knowledge, and more.
 
