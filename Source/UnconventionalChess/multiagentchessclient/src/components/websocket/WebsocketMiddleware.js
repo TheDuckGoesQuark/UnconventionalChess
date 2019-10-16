@@ -14,6 +14,12 @@ const handleMessage = (message, handlerByType) => {
     }
 };
 
+const reformatMoveMessage = (move) => {
+    move.sourceSquare = move.sourceSquare.toLowerCase();
+    move.targetSquare = move.targetSquare.toLowerCase();
+    return move;
+};
+
 const WebsocketMiddleware = (props) => (
     <SockJsClient
         // Base URL for websocket connections
@@ -23,7 +29,7 @@ const WebsocketMiddleware = (props) => (
         // Message handlers
         onMessage={(message) => handleMessage(message, {
             [ChatMessage.TYPE]: props.receiveChatMessage,
-            [MoveMessage.TYPE]: props.receiveMoveMessage,
+            [MoveMessage.TYPE]: (message) => props.receiveMoveMessage(reformatMoveMessage(message)),
         })}
         // Handlers for connection and disconnection events
         onConnect={props.onConnect}

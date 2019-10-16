@@ -39,7 +39,7 @@ public class GameAgent extends ChessAgent {
     /**
      * AID of gateway agent to report to
      */
-    private AID gatewayAgentAID;
+    private Set<AID> gatewayAgents;
     /**
      * Game board
      */
@@ -62,7 +62,11 @@ public class GameAgent extends ChessAgent {
     private void parseArguments() {
         final Object[] arguments = getArguments();
         properties = (GameAgentProperties) arguments[0];
-        gatewayAgentAID = arguments.length >= 2 ? new AID((String) arguments[1], true) : null;
+        gatewayAgents = new HashSet<>();
+
+        if (arguments.length > 1) {
+            gatewayAgents.add(new AID((String) arguments[1], true));
+        }
     }
 
     /**
@@ -94,7 +98,7 @@ public class GameAgent extends ChessAgent {
      * @return true if the AID belongs to the human player gateway agent
      */
     private boolean isHumanAgent(final AID sender) {
-        return sender.equals(gatewayAgentAID);
+        return gatewayAgents.contains(sender);
     }
 
     /**
@@ -137,7 +141,11 @@ public class GameAgent extends ChessAgent {
     private void handleMove(Move move, ACLMessage message) {
         if (board.isValidMove(move.getSource().getCoordinates(), move.getTarget().getCoordinates())) {
             board.makeMove(move.getSource().getCoordinates(), move.getTarget().getCoordinates());
-            addBehaviour(new BroadcastMadeMove(message.getConversationId(), move, pieceAgents));
+
+            final Set<AID> relevantAgents = new HashSet<>();
+            relevantAgents.addAll(pieceAgents);
+            relevantAgents.addAll(gatewayAgents);
+            addBehaviour(new BroadcastMadeMove(message.getConversationId(), move, relevantAgents));
         } else {
             addBehaviour(new Reply(message, ACLMessage.REFUSE));
         }
@@ -151,7 +159,7 @@ public class GameAgent extends ChessAgent {
      */
     private Optional<Move> extractMove(ACLMessage message) {
         try {
-            final MakeMove makeMove = (MakeMove) ((Action) getContentManager().extractAbsContent(message)).getAction();
+            final MakeMove makeMove = (MakeMove) ((Action) getContentManager().extractContent(message)).getAction();
             return Optional.ofNullable(makeMove.getMove());
         } catch (Codec.CodecException | OntologyException e) {
             logger.warning("Unable to extract move from message");
@@ -163,7 +171,7 @@ public class GameAgent extends ChessAgent {
      * @return true if human is next to move
      */
     private boolean isHumansTurn() {
-        if (properties.isHumanPlays())
+        if (!properties.isHumanPlays())
             return false;
 
         final String humanSide = properties.isHumanPlaysAsWhite() ? Side.WHITE.value() : Side.BLACK.value();

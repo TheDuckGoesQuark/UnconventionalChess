@@ -3,10 +3,8 @@ package chessagents.agents.gameagent.behaviours;
 import chessagents.agents.gameagent.GameAgentProperties;
 import chessagents.agents.pieceagent.*;
 import chessagents.chess.BoardWrapper;
-import com.github.bhlangonijr.chesslib.Board;
-import com.github.bhlangonijr.chesslib.Piece;
-import com.github.bhlangonijr.chesslib.Side;
-import com.github.bhlangonijr.chesslib.Square;
+import chessagents.ontology.schemas.concepts.Colour;
+import com.github.bhlangonijr.chesslib.PieceType;
 import jade.content.lang.sl.SLCodec;
 import jade.content.onto.basic.Action;
 import jade.core.AID;
@@ -21,53 +19,29 @@ import jade.util.Logger;
 import jade.wrapper.ControllerException;
 
 import java.util.HashSet;
-import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
-import java.util.stream.Stream;
 
 public class SetupGame extends OneShotBehaviour {
 
     private static final Logger logger = Logger.getMyLogger(SetupGame.class.getName());
-    private GameAgentProperties properties;
-    private Map<Side, Set<AID>> agentsBySide;
-    private Board board;
+    private final GameAgentProperties properties;
+    private final Set<AID> pieceAgents;
+    private final BoardWrapper board;
 
-    public SetupGame(GameAgentProperties properties, Set<AID> agentsBySide, BoardWrapper board) {
+    public SetupGame(GameAgentProperties properties, Set<AID> pieceAgents, BoardWrapper board) {
         this.properties = properties;
-        this.agentsBySide = agentsBySide;
+        this.pieceAgents = pieceAgents;
         this.board = board;
     }
 
-    @Override
-    public void action() {
-        if (!properties.isHumanPlays()) {
-            spawnPieceAgentsForSide(Side.WHITE);
-            spawnPieceAgentsForSide(Side.BLACK);
-        } else {
-            if (properties.isHumanPlaysAsWhite()) {
-                spawnPieceAgentsForSide(Side.BLACK);
-            } else {
-                spawnPieceAgentsForSide(Side.WHITE);
-            }
-        }
+    private static String generatePieceAgentName(String pieceType, String colour, String startingSquare) {
+        return startingSquare + "-" + colour + "-" + pieceType;
     }
 
-    private void spawnPieceAgentsForSide(Side colour) {
-        agentsBySide.put(colour, new HashSet<>());
-        logger.info("Spawning agents for side " + colour.value());
-        Stream.of(Square.values())
-                .filter(sq -> !board.getPiece(sq).equals(Piece.NONE))
-                .filter(sq -> board.getPiece(sq).getPieceSide().equals(colour))
-                .forEach(sq -> spawnPieceAgent(board.getPiece(sq), sq));
-    }
-
-    private String generatePieceAgentName(Piece piece, Square startingSquare) {
-        return startingSquare.value() + "-" + piece.getPieceSide().name() + "-" + piece.getPieceType().name();
-    }
-
-    private Optional<String> getPieceClassname(Piece piece) {
-        switch (piece.getPieceType()) {
+    private static Optional<String> mapPieceTypeToAgentClass(String type) {
+        final PieceType pieceType = PieceType.valueOf(type);
+        switch (pieceType) {
             case PAWN:
                 return Optional.ofNullable(PawnAgent.class.getName());
             case KNIGHT:
@@ -86,9 +60,34 @@ public class SetupGame extends OneShotBehaviour {
         }
     }
 
-    private void spawnPieceAgent(Piece piece, Square startingSquare) {
-        final String agentName = generatePieceAgentName(piece, startingSquare);
-        final String agentClassName = getPieceClassname(piece)
+    @Override
+    public void action() {
+        final Set<String> agentColours = new HashSet<>(2);
+
+        // Determine colours to generate agents for
+        if (!properties.isHumanPlays()) {
+            agentColours.add(Colour.WHITE);
+            agentColours.add(Colour.BLACK);
+        } else {
+            if (properties.isHumanPlaysAsWhite()) {
+                agentColours.add(Colour.BLACK);
+            } else {
+                agentColours.add(Colour.WHITE);
+            }
+        }
+
+        agentColours.forEach(this::spawnPieceAgentsForSide);
+    }
+
+    private void spawnPieceAgentsForSide(String colour) {
+        logger.info("Spawning agents for side " + colour);
+        board.getPositionsOfAllPiecesForColour(colour)
+                .forEach(sq -> spawnPieceAgent(sq, colour, board.getPieceTypeAtSquare(sq)));
+    }
+
+    private void spawnPieceAgent(String startingSquare, String colour, String type) {
+        final String agentName = generatePieceAgentName(type, colour, startingSquare);
+        final String agentClassName = mapPieceTypeToAgentClass(type)
                 .orElseThrow(IllegalArgumentException::new);
 
         String containerName;
@@ -103,8 +102,8 @@ public class SetupGame extends OneShotBehaviour {
         createAgent.setAgentName(agentName);
         createAgent.setClassName(agentClassName);
         createAgent.setContainer(new ContainerID(containerName, null));
-        createAgent.addArguments(startingSquare.name());
-        createAgent.addArguments(piece.getPieceSide().name());
+        createAgent.addArguments(startingSquare);
+        createAgent.addArguments(colour);
 
         final Action requestAction = new Action(myAgent.getAMS(), createAgent);
         final ACLMessage request = new ACLMessage(ACLMessage.REQUEST);
@@ -123,7 +122,7 @@ public class SetupGame extends OneShotBehaviour {
             myAgent.addBehaviour(new AchieveREInitiator(myAgent, request) {
                 protected void handleInform(ACLMessage inform) {
                     logger.info("Agent " + agentName + "successfully created");
-                    agentsBySide.get(piece.getPieceSide()).add(new AID(agentName, false));
+                    pieceAgents.add(new AID(agentName, false));
                 }
 
                 protected void handleFailure(ACLMessage failure) {
@@ -135,4 +134,5 @@ public class SetupGame extends OneShotBehaviour {
             logger.warning("Error creating agent " + agentName + ":" + e.getMessage());
         }
     }
+
 }

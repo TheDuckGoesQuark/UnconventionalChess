@@ -33,11 +33,11 @@ const createGame = (config, dispatch) => {
 const sendMove = (move, state) => {
     const {clientRef} = state.websocketReducer;
     const {gameId} = state.configReducer;
-    const {sourceSquare, targetSquare, piece} = move;
+    const {sourceSquare, targetSquare} = move;
 
     if (!clientRef) return state;
 
-    const moveMessage = new MoveMessage(sourceSquare, targetSquare, piece);
+    const moveMessage = new MoveMessage(sourceSquare.toUpperCase(), targetSquare.toUpperCase());
     const message = new Message(MoveMessage.TYPE, moveMessage);
 
     const json = JSON.stringify(message);

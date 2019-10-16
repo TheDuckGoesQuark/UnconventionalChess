@@ -3,6 +3,7 @@ package chessagents.agents.gatewayagent.behaviours;
 import chessagents.ontology.ChessOntology;
 import chessagents.ontology.schemas.actions.MakeMove;
 import jade.content.onto.OntologyException;
+import jade.content.onto.basic.Action;
 import jade.core.AID;
 import jade.core.behaviours.OneShotBehaviour;
 import jade.lang.acl.ACLMessage;
@@ -30,7 +31,8 @@ public class SendMoveToGameAgent extends OneShotBehaviour {
         message.setOntology(ONTOLOGY_NAME);
         message.setLanguage(myAgent.getContentManager().getLanguageNames()[0]);
 
-        myAgent.getContentManager().fillContent(message, move);
+        final Action action = new Action(myAgent.getAID(), move);
+        myAgent.getContentManager().fillContent(message, action);
     }
 
     @Override

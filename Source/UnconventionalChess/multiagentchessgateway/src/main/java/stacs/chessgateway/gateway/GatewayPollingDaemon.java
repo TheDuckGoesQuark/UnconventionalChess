@@ -1,6 +1,5 @@
 package stacs.chessgateway.gateway;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import jade.core.Profile;
 import jade.lang.acl.ACLMessage;
 import jade.util.leap.Properties;
@@ -16,6 +15,7 @@ import chessagents.agents.gatewayagent.behaviours.ReceiveMessageIntoQueue;
 import stacs.chessgateway.models.Message;
 import stacs.chessgateway.models.MoveMessage;
 import stacs.chessgateway.services.GatewayService;
+import stacs.chessgateway.util.OntologyTranslator;
 
 import java.io.IOException;
 import java.util.Arrays;
@@ -32,15 +32,15 @@ public class GatewayPollingDaemon implements GatewayListener, Runnable {
 
     private final ExecutorService executorService = Executors.newSingleThreadExecutor();
     private final Queue<ACLMessage> messageQueue = new LinkedBlockingQueue<>();
-    private final ObjectMapper objectMapper;
     private final GatewayService gatewayService;
+    private final OntologyTranslator ontologyTranslator;
 
     private Future task;
 
     @Autowired
-    public GatewayPollingDaemon(ObjectMapper objectMapper, GatewayProperties gatewayProperties, GatewayService gatewayService) {
-        this.objectMapper = objectMapper;
+    public GatewayPollingDaemon(GatewayProperties gatewayProperties, GatewayService gatewayService, OntologyTranslator ontologyTranslator) {
         this.gatewayService = gatewayService;
+        this.ontologyTranslator = ontologyTranslator;
 
         // Initialize the JadeGateway to connect to the running JADE-based system.
         // Assuming the main container is the one we want to use
@@ -78,22 +78,18 @@ public class GatewayPollingDaemon implements GatewayListener, Runnable {
                 if (received != null) {
                     forwardMessage(received);
                 }
-            } catch (ControllerException | InterruptedException | IOException e) {
+            } catch (ControllerException | InterruptedException e) {
                 logger.error("Exception when listening for messages from gateway");
                 logger.error(Arrays.toString(e.getStackTrace()));
             }
         }
     }
 
-    private void forwardMessage(ACLMessage received) throws IOException {
-        final String content = received.getContent();
+    private void forwardMessage(ACLMessage received) {
         final String senderName = received.getSender().getLocalName();
 
-        final MoveMessage moveMessage = objectMapper.readValue(content, MoveMessage.class);
-
-        gatewayService.handleAgentMessage(
-                new Message<>(MOVE_MESSAGE, moveMessage),
-                senderName
-        );
+        ontologyTranslator.translateFromOntology(received)
+                .map(moveMessage -> new Message<>(MOVE_MESSAGE, moveMessage))
+                .ifPresent(moveMessage -> gatewayService.handleAgentMessage(moveMessage, senderName));
     }
 }

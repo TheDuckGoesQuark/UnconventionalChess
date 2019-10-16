@@ -1,12 +1,16 @@
 package chessagents.agents.gameagent.behaviours;
 
+import chessagents.ontology.ChessOntology;
 import chessagents.ontology.schemas.actions.MakeMove;
 import chessagents.ontology.schemas.concepts.Move;
 import jade.content.lang.Codec;
 import jade.content.onto.OntologyException;
+import jade.content.onto.basic.Action;
 import jade.core.AID;
 import jade.core.behaviours.OneShotBehaviour;
+import jade.domain.FIPANames;
 import jade.lang.acl.ACLMessage;
+import jade.lang.acl.MessageTemplate;
 import jade.util.Logger;
 
 import java.util.Set;
@@ -37,9 +41,14 @@ public class BroadcastMadeMove extends OneShotBehaviour {
     private ACLMessage constructMessage() throws Codec.CodecException, OntologyException {
         final ACLMessage message = new ACLMessage(ACLMessage.INFORM);
         message.setSender(myAgent.getAID());
+        message.setLanguage(FIPANames.ContentLanguage.FIPA_SL);
+        message.setOntology(ChessOntology.ONTOLOGY_NAME);
         message.setConversationId(conversationId);
-        myAgent.getContentManager().fillContent(message, move);
         agents.forEach(message::addReceiver);
+
+        final Action action = new Action(myAgent.getAID(), move);
+        myAgent.getContentManager().fillContent(message, action);
+
         return message;
     }
 

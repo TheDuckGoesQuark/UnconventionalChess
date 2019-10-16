@@ -27,12 +27,10 @@ export class ChatMessage {
 
 // Record of move made
 export class MoveMessage {
-    piece;
     sourceSquare;
     targetSquare;
 
-    constructor(sourceSquare, targetSquare, piece) {
-        this.piece = piece;
+    constructor(sourceSquare, targetSquare) {
         this.sourceSquare = sourceSquare;
         this.targetSquare = targetSquare;
     }
