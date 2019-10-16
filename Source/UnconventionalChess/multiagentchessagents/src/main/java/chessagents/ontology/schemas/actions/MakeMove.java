@@ -7,6 +7,13 @@ public class MakeMove implements AgentAction {
 
     private Move move;
 
+    public MakeMove() {
+    }
+
+    public MakeMove(Move move) {
+        this.move = move;
+    }
+
     public Move getMove() {
         return move;
     }

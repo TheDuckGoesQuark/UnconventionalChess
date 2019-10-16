@@ -7,18 +7,20 @@ import jade.lang.acl.ACLMessage;
 /**
  * Simple behaviour for replying not understood to any message
  */
-public class ReplyNotUnderstood extends OneShotBehaviour {
+public class Reply extends OneShotBehaviour {
 
     private final ACLMessage message;
+    private final int performative;
 
-    public ReplyNotUnderstood(ACLMessage message) {
+    public Reply(ACLMessage message, int performative) {
         this.message = message;
+        this.performative = performative;
     }
 
     @Override
     public void action() {
         final ACLMessage reply = message.createReply();
-        reply.setPerformative(ACLMessage.NOT_UNDERSTOOD);
+        reply.setPerformative(performative);
         myAgent.send(reply);
     }
 }

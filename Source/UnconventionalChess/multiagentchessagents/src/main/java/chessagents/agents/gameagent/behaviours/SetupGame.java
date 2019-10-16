@@ -2,6 +2,7 @@ package chessagents.agents.gameagent.behaviours;
 
 import chessagents.agents.gameagent.GameAgentProperties;
 import chessagents.agents.pieceagent.*;
+import chessagents.chess.BoardWrapper;
 import com.github.bhlangonijr.chesslib.Board;
 import com.github.bhlangonijr.chesslib.Piece;
 import com.github.bhlangonijr.chesslib.Side;
@@ -32,7 +33,7 @@ public class SetupGame extends OneShotBehaviour {
     private Map<Side, Set<AID>> agentsBySide;
     private Board board;
 
-    public SetupGame(GameAgentProperties properties, Map<Side, Set<AID>> agentsBySide, Board board) {
+    public SetupGame(GameAgentProperties properties, Set<AID> agentsBySide, BoardWrapper board) {
         this.properties = properties;
         this.agentsBySide = agentsBySide;
         this.board = board;
