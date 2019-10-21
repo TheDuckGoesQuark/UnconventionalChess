@@ -2,6 +2,7 @@ package chessagents.agents.gameagent.behaviours;
 
 import chessagents.agents.gameagent.GameAgent;
 import chessagents.agents.gameagent.GameStatus;
+import chessagents.ontology.ChessOntology;
 import chessagents.ontology.schemas.actions.CreateGame;
 import chessagents.ontology.schemas.concepts.Game;
 import chessagents.ontology.schemas.predicates.BeingCreated;
@@ -21,14 +22,20 @@ import jade.lang.acl.MessageTemplate;
 import jade.proto.SimpleAchieveREResponder;
 import jade.util.Logger;
 
+import java.util.concurrent.CompletableFuture;
+
 /**
  *
  */
 public class HandleGameCreationRequests extends SimpleAchieveREResponder {
 
     private static final Logger LOGGER = Logger.getMyLogger(HandleGameCreationRequests.class.getName());
-    private static final MessageTemplate mt = MessageTemplate.MatchOntology(FIPANames.InteractionProtocol.FIPA_REQUEST);
+    private static final MessageTemplate mt = MessageTemplate.and(
+            MessageTemplate.MatchProtocol(FIPANames.InteractionProtocol.FIPA_REQUEST),
+            MessageTemplate.MatchOntology(ChessOntology.ONTOLOGY_NAME)
+    );
     private GameStatus gameStatus = GameStatus.NOT_EXIST;
+    private CompletableFuture<Game> gameReady;
 
     public HandleGameCreationRequests(GameAgent gameAgent) {
         super(gameAgent, mt);
@@ -53,6 +60,8 @@ public class HandleGameCreationRequests extends SimpleAchieveREResponder {
             case NOT_EXIST:
                 LOGGER.info("Agreeing to request to create game");
                 createAgreeResponse(action, reply);
+                game = ((CreateGame) (action.getAction())).getGame();
+                gameReady = ((GameAgent) myAgent).createGame(game);
                 gameStatus = GameStatus.BEING_CREATED;
                 break;
             case BEING_CREATED:
@@ -150,12 +159,10 @@ public class HandleGameCreationRequests extends SimpleAchieveREResponder {
             throw new FailureException(e.getACLMessage());
         }
 
-        var game = ((CreateGame) action.getAction()).getGame();
-        var result = ((GameAgent) myAgent).createGame(game);
-
-        if (result.isPresent()) {
+        if (gameReady.isDone()) {
             createSuccessResponse(action, resultReply);
         } else {
+            LOGGER.warning("Game was not ready when sending result?");
             resultReply.setPerformative(ACLMessage.FAILURE);
             throw new FailureException(resultReply);
         }
@@ -174,6 +181,7 @@ public class HandleGameCreationRequests extends SimpleAchieveREResponder {
         var contentList = new ContentElementList();
         var done = new Done(a);
         contentList.add(done);
+        response.setPerformative(ACLMessage.INFORM);
 
         try {
             myAgent.getContentManager().fillContent(response, contentList);

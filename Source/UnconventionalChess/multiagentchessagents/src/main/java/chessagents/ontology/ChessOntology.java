@@ -30,16 +30,9 @@ public class ChessOntology extends Ontology {
     public static final String COLOUR_COLOUR = "Colour";
 
     public static final String GAME = "Game";
-    public static final String GAME_ID = "ID";
+    public static final String GAME_ID = "GameId";
 
     // Predicates
-    public static final String CAN_MOVE = "Can Move";
-    public static final String CAN_MOVE_PIECE = "Piece";
-
-    public static final String CAN_MAKE_MOVE = "Can Make Move";
-    public static final String CAN_MAKE_MOVE_PIECE = "Piece";
-    public static final String CAN_MAKE_MOVE_MOVE = "Move";
-
     public static final String CAN_CAPTURE = "Can Capture";
     public static final String CAN_CAPTURE_ATTACKER = "Attacker";
     public static final String CAN_CAPTURE_VICTIM = "Victim";
@@ -55,6 +48,7 @@ public class ChessOntology extends Ontology {
     public static final String MAKE_MOVE_MOVE = "Move";
 
     public static final String CREATE_GAME = "Create Game";
+    public static final String CREATE_GAME_GAME = "Game";
 
     private static final ChessOntology instance = new ChessOntology();
 
@@ -63,6 +57,10 @@ public class ChessOntology extends Ontology {
 
         try {
             // Concepts
+            final ConceptSchema colourSchema = new ConceptSchema(COLOUR);
+            colourSchema.add(COLOUR_COLOUR, (PrimitiveSchema) getSchema(BasicOntology.STRING));
+            add(colourSchema, Colour.class);
+
             final ConceptSchema pieceSchema = new ConceptSchema(PIECE);
             pieceSchema.add(PIECE_AGENT, (ConceptSchema) getSchema(BasicOntology.AID));
             pieceSchema.add(PIECE_TYPE, (PrimitiveSchema) getSchema(BasicOntology.STRING));
@@ -79,14 +77,10 @@ public class ChessOntology extends Ontology {
             add(moveSchema, Move.class);
 
             final ConceptSchema gameSchema = new ConceptSchema(GAME);
-            gameSchema.add(GAME_ID, (ConceptSchema) getSchema(BasicOntology.INTEGER));
+            gameSchema.add(GAME_ID, (PrimitiveSchema) getSchema(BasicOntology.INTEGER));
             add(gameSchema, Game.class);
 
             // Predicates
-            final PredicateSchema canMoveSchema = new PredicateSchema(CAN_MOVE);
-            canMoveSchema.add(CAN_MOVE_PIECE, getSchema(PIECE));
-            add(canMoveSchema, CanMove.class);
-
             final PredicateSchema canCaptureSchema = new PredicateSchema(CAN_CAPTURE);
             canCaptureSchema.add(CAN_CAPTURE_ATTACKER, getSchema(PIECE));
             canCaptureSchema.add(CAN_CAPTURE_VICTIM, getSchema(PIECE));
@@ -106,7 +100,7 @@ public class ChessOntology extends Ontology {
             add(makeMoveSchema, MakeMove.class);
 
             final AgentActionSchema createGameSchema = new AgentActionSchema(CREATE_GAME);
-            createGameSchema.add(GAME, (ConceptSchema) getSchema(GAME));
+            createGameSchema.add(CREATE_GAME_GAME, (ConceptSchema) getSchema(GAME));
             add(createGameSchema, CreateGame.class);
 
         } catch (OntologyException e) {

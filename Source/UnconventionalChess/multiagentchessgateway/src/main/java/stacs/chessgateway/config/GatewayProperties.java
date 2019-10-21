@@ -9,6 +9,7 @@ public class GatewayProperties {
 
     private String mainContainerHostName;
     private int mainContainerPort;
+    private String platformName;
 
     public String getMainContainerHostName() {
         return mainContainerHostName;
@@ -26,11 +27,11 @@ public class GatewayProperties {
         this.mainContainerPort = mainContainerPort;
     }
 
-    @Override
-    public String toString() {
-        return "GatewayProperties{" +
-                "mainContainerHostName='" + mainContainerHostName + '\'' +
-                ", mainContainerPort=" + mainContainerPort +
-                '}';
+    public String getPlatformName() {
+        return platformName;
+    }
+
+    public void setPlatformName(String platformName) {
+        this.platformName = platformName;
     }
 }

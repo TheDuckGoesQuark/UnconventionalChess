@@ -4,7 +4,7 @@ import jade.content.Concept;
 
 public class Game implements Concept {
 
-    int gameId;
+    private int gameId;
 
     public Game() {
     }

@@ -2,7 +2,6 @@ package chessagents.agents.gameagent;
 
 import chessagents.agents.ChessAgent;
 import chessagents.agents.commonbehaviours.Reply;
-import chessagents.agents.gameagent.behaviours.BroadcastMadeMove;
 import chessagents.agents.gameagent.behaviours.HandleGameCreationRequests;
 import chessagents.agents.gameagent.behaviours.SpawnPieceAgents;
 import chessagents.chess.BoardWrapper;
@@ -18,6 +17,7 @@ import jade.lang.acl.ACLMessage;
 import jade.util.Logger;
 
 import java.util.*;
+import java.util.concurrent.CompletableFuture;
 
 /**
  * Game agent is responsible for acting as the single source of truth
@@ -60,7 +60,7 @@ public class GameAgent extends ChessAgent {
             gatewayAgents.add(new AID((String) arguments[1], true));
         }
 
-        addBehaviour(new HandleGameCreationRequests(this, pieceAgents, properties, board));
+        addBehaviour(new HandleGameCreationRequests(this));
     }
 
     /**
@@ -90,7 +90,7 @@ public class GameAgent extends ChessAgent {
             final Set<AID> relevantAgents = new HashSet<>();
             relevantAgents.addAll(pieceAgents);
             relevantAgents.addAll(gatewayAgents);
-            addBehaviour(new BroadcastMadeMove(message.getConversationId(), move, relevantAgents));
+            // TODO tell everyone
         } else {
             addBehaviour(new Reply(message, ACLMessage.REFUSE));
         }
@@ -124,8 +124,10 @@ public class GameAgent extends ChessAgent {
         return board.isSideToGo(humanSide);
     }
 
-    public Optional<Game> createGame(Game game) {
-        var b = new SpawnPieceAgents(properties, pieceAgents, board, game);
+    public CompletableFuture<Game> createGame(Game game) {
+        var gameReadyFuture = new CompletableFuture<Game>();
+        var b = new SpawnPieceAgents(properties, pieceAgents, board, game, gameReadyFuture);
         this.addBehaviour(b);
+        return gameReadyFuture;
     }
 }

@@ -2,8 +2,7 @@ package chessagents.agents.pieceagent;
 
 import chessagents.agents.ChessAgent;
 import chessagents.agents.pieceagent.behaviours.Play;
-import chessagents.agents.pieceagent.behaviours.PopulatePieceAgentList;
-import chessagents.agents.pieceagent.behaviours.RequestCreateGame;
+//import chessagents.agents.pieceagent.behaviours.PopulatePieceAgentList;
 import chessagents.chess.BoardWrapper;
 import chessagents.ontology.schemas.concepts.Colour;
 import chessagents.ontology.schemas.concepts.Position;
@@ -29,8 +28,7 @@ public class PieceAgent extends ChessAgent {
         final AID gameAgent = new AID((String) args[2], true);
 
         final SequentialBehaviour states = new SequentialBehaviour();
-        states.addSubBehaviour(new RequestCreateGame(this, gameAgent));
-        states.addSubBehaviour(new PopulatePieceAgentList(this, pieceAgents, myColour, gameAgent));
+//        states.addSubBehaviour(new PopulatePieceAgentList(this, pieceAgents, myColour, gameAgent));
         states.addSubBehaviour(new Play(board, myColour, pieceAgents, gameAgent));
         addBehaviour(states);
     }

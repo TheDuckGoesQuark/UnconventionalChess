@@ -8,7 +8,9 @@ import jade.wrapper.gateway.JadeGateway;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
+import stacs.chessgateway.config.GatewayProperties;
 import stacs.chessgateway.exceptions.GatewayFailureException;
 import chessagents.agents.gatewayagent.behaviours.CreateGameAgent;
 import chessagents.agents.gatewayagent.behaviours.SendMoveToGameAgent;
@@ -31,12 +33,14 @@ public class GatewayServiceImpl implements GatewayService {
     private final GameAgentMapper gameAgentMapper;
     private final WebsocketService websocketService;
     private final OntologyTranslator ontologyTranslator;
+    private final String platformName;
 
     @Autowired
-    public GatewayServiceImpl(GameAgentMapper gameAgentMapper, WebsocketService websocketService, OntologyTranslator ontologyTranslator) {
+    public GatewayServiceImpl(GameAgentMapper gameAgentMapper, WebsocketService websocketService, OntologyTranslator ontologyTranslator, GatewayProperties properties) {
         this.gameAgentMapper = gameAgentMapper;
         this.websocketService = websocketService;
         this.ontologyTranslator = ontologyTranslator;
+        this.platformName = properties.getPlatformName();
     }
 
     @Override
@@ -57,7 +61,7 @@ public class GatewayServiceImpl implements GatewayService {
     public Message<GameConfiguration> createGame(GameConfiguration gameConfiguration) throws GatewayFailureException {
         try {
             var gameId = gameAgentMapper.size() + 1;
-            var agentId = new AID("GameAgent-" + gameId, false);
+            var agentId = new AID("GameAgent-" + gameId + "@" + platformName, true);
 
             var gameAgentProperties = new GameAgentProperties(
                     gameConfiguration.isHumanPlays(),

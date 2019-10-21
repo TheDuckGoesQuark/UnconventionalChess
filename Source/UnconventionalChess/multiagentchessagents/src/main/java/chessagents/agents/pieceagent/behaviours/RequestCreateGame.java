@@ -2,10 +2,13 @@ package chessagents.agents.pieceagent.behaviours;
 
 import chessagents.ontology.ChessOntology;
 import chessagents.ontology.schemas.actions.CreateGame;
+import chessagents.ontology.schemas.concepts.Game;
+import jade.content.abs.AbsContentElementList;
 import jade.content.abs.AbsPredicate;
 import jade.content.lang.Codec;
 import jade.content.onto.OntologyException;
 import jade.content.onto.basic.Action;
+import jade.content.onto.basic.Done;
 import jade.core.AID;
 import jade.core.Agent;
 import jade.domain.FIPANames;
@@ -33,13 +36,14 @@ public class RequestCreateGame extends SimpleAchieveREInitiator {
         request.addReceiver(gameAgent);
         request.setLanguage(FIPANames.ContentLanguage.FIPA_SL);
         request.setOntology(ChessOntology.ONTOLOGY_NAME);
+        request.setProtocol(FIPANames.InteractionProtocol.FIPA_REQUEST);
         populateContents(request);
         return request;
     }
 
     private void populateContents(ACLMessage request) {
         try {
-            var createGame = new CreateGame(gameId);
+            var createGame = new CreateGame(new Game(gameId));
             var action = new Action(gameAgent, createGame);
             myAgent.getContentManager().fillContent(request, action);
         } catch (Codec.CodecException | OntologyException e) {
@@ -60,10 +64,12 @@ public class RequestCreateGame extends SimpleAchieveREInitiator {
     @Override
     protected void handleInform(ACLMessage msg) {
         try {
-            var predicate = (AbsPredicate) myAgent.getContentManager().extractAbsContent(msg);
+            var content =  myAgent.getContentManager().extractContent(msg);
 
-            if (predicate.getTypeName().equals(ChessOntology.IS_READY)) {
-                logger.info("Game is ready.");
+            if (content instanceof Done) {
+                logger.info("Game created!");
+            } else {
+                fail(content.toString());
             }
         } catch (Codec.CodecException | OntologyException e) {
             fail(e.getMessage());

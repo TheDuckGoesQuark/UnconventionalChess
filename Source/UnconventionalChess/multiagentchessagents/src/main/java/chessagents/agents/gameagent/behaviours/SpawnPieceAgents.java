@@ -22,6 +22,7 @@ import jade.wrapper.ControllerException;
 import java.util.HashSet;
 import java.util.Optional;
 import java.util.Set;
+import java.util.concurrent.CompletableFuture;
 
 public class SpawnPieceAgents extends OneShotBehaviour {
 
@@ -29,15 +30,19 @@ public class SpawnPieceAgents extends OneShotBehaviour {
     private final GameAgentProperties properties;
     private final Set<AID> pieceAgents;
     private final BoardWrapper board;
+    private final Game game;
+    private final CompletableFuture<Game> gameReadyFuture;
 
-    public SpawnPieceAgents(GameAgentProperties properties, Set<AID> pieceAgents, BoardWrapper board, Game game) {
+    public SpawnPieceAgents(GameAgentProperties properties, Set<AID> pieceAgents, BoardWrapper board, Game game, CompletableFuture<Game> gameReadyFuture) {
         this.properties = properties;
         this.pieceAgents = pieceAgents;
         this.board = board;
+        this.game = game;
+        this.gameReadyFuture = gameReadyFuture;
     }
 
-    private static String generatePieceAgentName(String pieceType, String colour, String startingSquare) {
-        return startingSquare + "-" + colour + "-" + pieceType;
+    private String generatePieceAgentName(String pieceType, String colour, String startingSquare) {
+        return game.getGameId() + "-" + startingSquare + "-" + colour + "-" + pieceType;
     }
 
     private static Optional<String> mapPieceTypeToAgentClass(String type) {
@@ -78,6 +83,8 @@ public class SpawnPieceAgents extends OneShotBehaviour {
         }
 
         agentColours.forEach(this::spawnPieceAgentsForSide);
+
+        gameReadyFuture.complete(game);
     }
 
     private void spawnPieceAgentsForSide(String colour) {
