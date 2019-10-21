@@ -1,12 +1,13 @@
 package chessagents.agents.gameagent;
 
 import chessagents.agents.ChessAgent;
-import chessagents.agents.commonbehaviours.CyclicReceiveMessage;
 import chessagents.agents.commonbehaviours.Reply;
 import chessagents.agents.gameagent.behaviours.BroadcastMadeMove;
-import chessagents.agents.gameagent.behaviours.SetupGame;
+import chessagents.agents.gameagent.behaviours.HandleGameCreationRequests;
+import chessagents.agents.gameagent.behaviours.SpawnPieceAgents;
 import chessagents.chess.BoardWrapper;
 import chessagents.ontology.schemas.actions.MakeMove;
+import chessagents.ontology.schemas.concepts.Game;
 import chessagents.ontology.schemas.concepts.Move;
 import com.github.bhlangonijr.chesslib.*;
 import jade.content.lang.Codec;
@@ -37,7 +38,7 @@ public class GameAgent extends ChessAgent {
      */
     private Set<AID> pieceAgents;
     /**
-     * AID of gateway agent to report to
+     * AID of gateway (human) agent to report to
      */
     private Set<AID> gatewayAgents;
     /**
@@ -50,72 +51,16 @@ public class GameAgent extends ChessAgent {
         super.setup();
         board = new BoardWrapper();
         pieceAgents = new HashSet<>();
-
-        logger.info("Configuring game agent " + this.getName());
-        parseArguments();
-        addBehaviours();
-    }
-
-    /**
-     * Extracts the game agent properties and optional gateway agent AID from arguments
-     */
-    private void parseArguments() {
-        final Object[] arguments = getArguments();
-        properties = (GameAgentProperties) arguments[0];
         gatewayAgents = new HashSet<>();
+
+        var arguments = getArguments();
+        properties = (GameAgentProperties) arguments[0];
 
         if (arguments.length > 1) {
             gatewayAgents.add(new AID((String) arguments[1], true));
         }
-    }
 
-    /**
-     * Adds all relevant behaviors to this agent
-     */
-    private void addBehaviours() {
-        // one shot behaviour to configure the game
-        logger.info("Adding setup game behaviour");
-        addBehaviour(new SetupGame(properties, pieceAgents, board));
-
-        // cyclic behaviour for receiving game message
-        logger.info("Adding receiving game message behaviour");
-        addBehaviour(new CyclicReceiveMessage() {
-            @Override
-            public void handle(ACLMessage message) {
-                if (isHumanAgent(message.getSender())) {
-                    handleHumanMove(message);
-                } else if (isKnownAgent(message.getSender())) {
-                    handleAgentMove(message);
-                } else {
-                    myAgent.addBehaviour(new Reply(message, ACLMessage.NOT_UNDERSTOOD));
-                }
-            }
-        });
-    }
-
-    /**
-     * @param sender sender of message
-     * @return true if the AID belongs to the human player gateway agent
-     */
-    private boolean isHumanAgent(final AID sender) {
-        return gatewayAgents.contains(sender);
-    }
-
-    /**
-     * @param sender sender of message
-     * @return true if AID belongs to a piece agent
-     */
-    private boolean isKnownAgent(final AID sender) {
-        return pieceAgents.contains(sender);
-    }
-
-    /**
-     * Handle any move messages given by an piece agent
-     *
-     * @param message message from a piece agent
-     */
-    private void handleAgentMove(ACLMessage message) {
-        // TODO
+        addBehaviour(new HandleGameCreationRequests(this, pieceAgents, properties, board));
     }
 
     /**
@@ -177,5 +122,10 @@ public class GameAgent extends ChessAgent {
         final String humanSide = properties.isHumanPlaysAsWhite() ? Side.WHITE.value() : Side.BLACK.value();
 
         return board.isSideToGo(humanSide);
+    }
+
+    public Optional<Game> createGame(Game game) {
+        var b = new SpawnPieceAgents(properties, pieceAgents, board, game);
+        this.addBehaviour(b);
     }
 }

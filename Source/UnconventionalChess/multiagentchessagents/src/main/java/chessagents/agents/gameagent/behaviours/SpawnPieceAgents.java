@@ -4,6 +4,7 @@ import chessagents.agents.gameagent.GameAgentProperties;
 import chessagents.agents.pieceagent.*;
 import chessagents.chess.BoardWrapper;
 import chessagents.ontology.schemas.concepts.Colour;
+import chessagents.ontology.schemas.concepts.Game;
 import com.github.bhlangonijr.chesslib.PieceType;
 import jade.content.lang.sl.SLCodec;
 import jade.content.onto.basic.Action;
@@ -22,14 +23,14 @@ import java.util.HashSet;
 import java.util.Optional;
 import java.util.Set;
 
-public class SetupGame extends OneShotBehaviour {
+public class SpawnPieceAgents extends OneShotBehaviour {
 
-    private static final Logger logger = Logger.getMyLogger(SetupGame.class.getName());
+    private static final Logger logger = Logger.getMyLogger(SpawnPieceAgents.class.getName());
     private final GameAgentProperties properties;
     private final Set<AID> pieceAgents;
     private final BoardWrapper board;
 
-    public SetupGame(GameAgentProperties properties, Set<AID> pieceAgents, BoardWrapper board) {
+    public SpawnPieceAgents(GameAgentProperties properties, Set<AID> pieceAgents, BoardWrapper board, Game game) {
         this.properties = properties;
         this.pieceAgents = pieceAgents;
         this.board = board;
@@ -63,9 +64,6 @@ public class SetupGame extends OneShotBehaviour {
     @Override
     public void action() {
         final Set<String> agentColours = new HashSet<>(2);
-
-        // start listening agents asking that the game is ready
-        myAgent.addBehaviour(new HandleGameMetaQueries(myAgent, pieceAgents));
 
         // Determine colours to generate agents for
         if (!properties.isHumanPlays()) {

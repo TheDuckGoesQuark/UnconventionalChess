@@ -2,13 +2,8 @@ package chessagents.agents.pieceagent.behaviours;
 
 import chessagents.ontology.ChessOntology;
 import chessagents.ontology.schemas.actions.CreateGame;
-import chessagents.ontology.schemas.concepts.Game;
-import chessagents.ontology.schemas.predicates.IsReady;
-import jade.content.Predicate;
-import jade.content.abs.AbsContentElement;
 import jade.content.abs.AbsPredicate;
 import jade.content.lang.Codec;
-import jade.content.lang.sl.SLVocabulary;
 import jade.content.onto.OntologyException;
 import jade.content.onto.basic.Action;
 import jade.core.AID;

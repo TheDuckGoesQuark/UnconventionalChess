@@ -1,9 +1,7 @@
 package chessagents.agents.gameagent.behaviours;
 
-import chessagents.ontology.schemas.predicates.IsReady;
 import jade.core.AID;
 import jade.core.Agent;
-import jade.core.behaviours.CyclicBehaviour;
 import jade.lang.acl.ACLMessage;
 import jade.lang.acl.MessageTemplate;
 import jade.proto.SimpleAchieveREResponder;

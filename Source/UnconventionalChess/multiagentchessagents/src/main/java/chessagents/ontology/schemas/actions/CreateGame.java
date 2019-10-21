@@ -1,23 +1,24 @@
 package chessagents.ontology.schemas.actions;
 
+import chessagents.ontology.schemas.concepts.Game;
 import jade.content.AgentAction;
 
 public class CreateGame implements AgentAction {
 
-    private int gameId;
+    private Game game;
 
     public CreateGame() {
     }
 
-    public CreateGame(int gameId) {
-        this.gameId = gameId;
+    public CreateGame(Game game) {
+        this.game = game;
     }
 
-    public int getGameId() {
-        return gameId;
+    public Game getGame() {
+        return game;
     }
 
-    public void setGameId(int gameId) {
-        this.gameId = gameId;
+    public void setGame(Game game) {
+        this.game = game;
     }
 }

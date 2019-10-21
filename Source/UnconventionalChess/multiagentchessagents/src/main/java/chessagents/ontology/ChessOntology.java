@@ -30,6 +30,7 @@ public class ChessOntology extends Ontology {
     public static final String COLOUR_COLOUR = "Colour";
 
     public static final String GAME = "Game";
+    public static final String GAME_ID = "ID";
 
     // Predicates
     public static final String CAN_MOVE = "Can Move";
@@ -46,15 +47,14 @@ public class ChessOntology extends Ontology {
     public static final String IS_CAPTURED = "Is Captured";
     public static final String IS_CAPTURED_PIECE = "Piece";
 
-    public static final String IS_READY = "Is Ready";
-    public static final String IS_READY_GAME = "Game";
+    public static final String BEING_CREATED = "Being Created";
+    public static final String BEING_CREATED_GAME = "Game";
 
     // Actions
     public static final String MAKE_MOVE = "Make Move";
     public static final String MAKE_MOVE_MOVE = "Move";
 
     public static final String CREATE_GAME = "Create Game";
-    public static final String CREATE_GAME_GAME_ID = "Game ID";
 
     private static final ChessOntology instance = new ChessOntology();
 
@@ -79,6 +79,7 @@ public class ChessOntology extends Ontology {
             add(moveSchema, Move.class);
 
             final ConceptSchema gameSchema = new ConceptSchema(GAME);
+            gameSchema.add(GAME_ID, (ConceptSchema) getSchema(BasicOntology.INTEGER));
             add(gameSchema, Game.class);
 
             // Predicates
@@ -95,9 +96,9 @@ public class ChessOntology extends Ontology {
             isCapturedSchema.add(IS_CAPTURED_PIECE, getSchema(PIECE));
             add(isCapturedSchema, IsCaptured.class);
 
-            final PredicateSchema isReadySchema = new PredicateSchema(IS_READY);
-            isReadySchema.add(IS_READY_GAME, getSchema(GAME));
-            add(isReadySchema, IsReady.class);
+            final PredicateSchema beingCreatedSchema = new PredicateSchema(BEING_CREATED);
+            beingCreatedSchema.add(BEING_CREATED_GAME, getSchema(GAME));
+            add(beingCreatedSchema, BeingCreated.class);
 
             // Actions
             final AgentActionSchema makeMoveSchema = new AgentActionSchema(MAKE_MOVE);
@@ -105,7 +106,7 @@ public class ChessOntology extends Ontology {
             add(makeMoveSchema, MakeMove.class);
 
             final AgentActionSchema createGameSchema = new AgentActionSchema(CREATE_GAME);
-            createGameSchema.add(CREATE_GAME_GAME_ID, (ConceptSchema) getSchema(BasicOntology.INTEGER));
+            createGameSchema.add(GAME, (ConceptSchema) getSchema(GAME));
             add(createGameSchema, CreateGame.class);
 
         } catch (OntologyException e) {
