@@ -141,8 +141,6 @@ const handleReceivedMove = (state, action) => {
         promotion: "q" // always promote to a queen for example simplicity
     });
 
-    console.log("move", move);
-
     // illegal move
     if (move === null) return state;
     else return {

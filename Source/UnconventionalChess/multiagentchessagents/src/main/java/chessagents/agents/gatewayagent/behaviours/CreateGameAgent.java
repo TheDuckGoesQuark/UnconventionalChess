@@ -1,19 +1,23 @@
 package chessagents.agents.gatewayagent.behaviours;
 
+import jade.core.AID;
 import jade.core.behaviours.OneShotBehaviour;
 import jade.wrapper.AgentController;
 import jade.wrapper.ContainerController;
 import jade.wrapper.StaleProxyException;
 import chessagents.agents.gameagent.GameAgentProperties;
 
-public class CreateGame extends OneShotBehaviour {
+/**
+ * Spawns a new game agent with the requested game id
+ */
+public class CreateGameAgent extends OneShotBehaviour {
 
     private static final String GAME_AGENT_CLASS = "chessagents.agents.gameagent.GameAgent";
 
     private final GameAgentProperties properties;
-    private final String gameAgentId;
+    private final AID gameAgentId;
 
-    public CreateGame(GameAgentProperties properties, String gameAgentId) {
+    public CreateGameAgent(GameAgentProperties properties, AID gameAgentId) {
         this.properties = properties;
         this.gameAgentId = gameAgentId;
     }
@@ -22,7 +26,7 @@ public class CreateGame extends OneShotBehaviour {
         final ContainerController container = myAgent.getContainerController();
 
         return container.createNewAgent(
-                gameAgentId,
+                gameAgentId.getLocalName(),
                 GAME_AGENT_CLASS,
                 new Object[]{properties, myAgent.getName()}
         );

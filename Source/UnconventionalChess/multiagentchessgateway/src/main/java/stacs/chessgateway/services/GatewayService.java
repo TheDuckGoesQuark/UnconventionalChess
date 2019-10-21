@@ -1,5 +1,6 @@
 package stacs.chessgateway.services;
 
+import jade.core.AID;
 import stacs.chessgateway.exceptions.GatewayFailureException;
 import stacs.chessgateway.models.GameConfiguration;
 import stacs.chessgateway.models.Message;
@@ -28,7 +29,8 @@ public interface GatewayService {
      * Handles message that originated from an agent
      *
      * @param message message received from an agent
+     * @param agentId
      */
-    void handleAgentMessage(Message message, String agentId);
+    void handleAgentMessage(Message message, AID agentId);
 
 }

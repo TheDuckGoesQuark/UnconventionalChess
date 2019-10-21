@@ -1,7 +1,8 @@
 package stacs.chessgateway.services.impl;
 
 import chessagents.agents.gameagent.GameAgentProperties;
-import chessagents.ontology.schemas.actions.MakeMove;
+import chessagents.agents.pieceagent.behaviours.RequestCreateGame;
+import jade.core.AID;
 import jade.wrapper.ControllerException;
 import jade.wrapper.gateway.JadeGateway;
 import org.slf4j.Logger;
@@ -9,7 +10,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import stacs.chessgateway.exceptions.GatewayFailureException;
-import chessagents.agents.gatewayagent.behaviours.CreateGame;
+import chessagents.agents.gatewayagent.behaviours.CreateGameAgent;
 import chessagents.agents.gatewayagent.behaviours.SendMoveToGameAgent;
 import stacs.chessgateway.models.GameConfiguration;
 import stacs.chessgateway.models.Message;
@@ -41,8 +42,8 @@ public class GatewayServiceImpl implements GatewayService {
     @Override
     public void sendMoveToGameAgents(Message<MoveMessage> move, int gameId) throws GatewayFailureException {
         try {
-            final String agentId = gameAgentMapper.getAgentByGameId(gameId);
-            final MakeMove makeMove = ontologyTranslator.translateToOntology(move.getBody());
+            var agentId = gameAgentMapper.getAgentByGameId(gameId);
+            var makeMove = ontologyTranslator.translateToOntology(move.getBody());
 
             logger.info("Sending move to agent " + agentId + ": " + move.getBody().toString());
 
@@ -55,15 +56,21 @@ public class GatewayServiceImpl implements GatewayService {
     @Override
     public Message<GameConfiguration> createGame(GameConfiguration gameConfiguration) throws GatewayFailureException {
         try {
-            int gameId = gameAgentMapper.size() + 1;
-            final String agentId = "GameAgent-" + gameId;
+            var gameId = gameAgentMapper.size() + 1;
+            var agentId = new AID("GameAgent-" + gameId, false);
 
-            final GameAgentProperties gameAgentProperties = new GameAgentProperties(
+            var gameAgentProperties = new GameAgentProperties(
                     gameConfiguration.isHumanPlays(),
                     gameConfiguration.isHumanPlaysAsWhite()
             );
 
-            JadeGateway.execute(new CreateGame(gameAgentProperties, agentId));
+            // Spawn GameAgent
+            var createGameAgent = new CreateGameAgent(gameAgentProperties, agentId);
+            JadeGateway.execute(createGameAgent);
+
+            // Request that GameAgent creates piece agents and informs when done
+            var requestCreateGame = new RequestCreateGame(createGameAgent.getAgent(), agentId, gameId);
+            JadeGateway.execute(requestCreateGame);
 
             // Game creation successful, remember mapping and inform client
             gameAgentMapper.addMapping(gameId, agentId);
@@ -75,7 +82,7 @@ public class GatewayServiceImpl implements GatewayService {
     }
 
     @Override
-    public void handleAgentMessage(Message message, String agentId) {
+    public void handleAgentMessage(Message message, AID agentId) {
         websocketService.sendMessageToClient(
                 message,
                 gameAgentMapper.getGameIdByAgent(agentId)

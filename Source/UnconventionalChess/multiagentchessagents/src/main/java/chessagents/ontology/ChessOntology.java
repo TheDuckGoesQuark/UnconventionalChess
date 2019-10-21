@@ -1,5 +1,6 @@
 package chessagents.ontology;
 
+import chessagents.ontology.schemas.actions.CreateGame;
 import chessagents.ontology.schemas.actions.MakeMove;
 import chessagents.ontology.schemas.concepts.*;
 import chessagents.ontology.schemas.predicates.*;
@@ -28,6 +29,8 @@ public class ChessOntology extends Ontology {
     public static final String COLOUR = "Colour";
     public static final String COLOUR_COLOUR = "Colour";
 
+    public static final String GAME = "Game";
+
     // Predicates
     public static final String CAN_MOVE = "Can Move";
     public static final String CAN_MOVE_PIECE = "Piece";
@@ -43,9 +46,15 @@ public class ChessOntology extends Ontology {
     public static final String IS_CAPTURED = "Is Captured";
     public static final String IS_CAPTURED_PIECE = "Piece";
 
+    public static final String IS_READY = "Is Ready";
+    public static final String IS_READY_GAME = "Game";
+
     // Actions
     public static final String MAKE_MOVE = "Make Move";
     public static final String MAKE_MOVE_MOVE = "Move";
+
+    public static final String CREATE_GAME = "Create Game";
+    public static final String CREATE_GAME_GAME_ID = "Game ID";
 
     private static final ChessOntology instance = new ChessOntology();
 
@@ -69,6 +78,9 @@ public class ChessOntology extends Ontology {
             moveSchema.add(MOVE_TARGET, (ConceptSchema) getSchema(POSITION));
             add(moveSchema, Move.class);
 
+            final ConceptSchema gameSchema = new ConceptSchema(GAME);
+            add(gameSchema, Game.class);
+
             // Predicates
             final PredicateSchema canMoveSchema = new PredicateSchema(CAN_MOVE);
             canMoveSchema.add(CAN_MOVE_PIECE, getSchema(PIECE));
@@ -83,15 +95,22 @@ public class ChessOntology extends Ontology {
             isCapturedSchema.add(IS_CAPTURED_PIECE, getSchema(PIECE));
             add(isCapturedSchema, IsCaptured.class);
 
+            final PredicateSchema isReadySchema = new PredicateSchema(IS_READY);
+            isReadySchema.add(IS_READY_GAME, getSchema(GAME));
+            add(isReadySchema, IsReady.class);
+
             // Actions
             final AgentActionSchema makeMoveSchema = new AgentActionSchema(MAKE_MOVE);
             makeMoveSchema.add(MAKE_MOVE_MOVE, (ConceptSchema) getSchema(MOVE));
             add(makeMoveSchema, MakeMove.class);
 
+            final AgentActionSchema createGameSchema = new AgentActionSchema(CREATE_GAME);
+            createGameSchema.add(CREATE_GAME_GAME_ID, (ConceptSchema) getSchema(BasicOntology.INTEGER));
+            add(createGameSchema, CreateGame.class);
+
         } catch (OntologyException e) {
             e.printStackTrace();
         }
-
     }
 
     public static ChessOntology getInstance() {

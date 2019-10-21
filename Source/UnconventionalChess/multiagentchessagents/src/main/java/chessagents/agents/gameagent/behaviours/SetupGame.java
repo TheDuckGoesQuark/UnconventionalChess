@@ -64,6 +64,9 @@ public class SetupGame extends OneShotBehaviour {
     public void action() {
         final Set<String> agentColours = new HashSet<>(2);
 
+        // start listening agents asking that the game is ready
+        myAgent.addBehaviour(new HandleGameMetaQueries(myAgent, pieceAgents));
+
         // Determine colours to generate agents for
         if (!properties.isHumanPlays()) {
             agentColours.add(Colour.WHITE);
@@ -104,6 +107,7 @@ public class SetupGame extends OneShotBehaviour {
         createAgent.setContainer(new ContainerID(containerName, null));
         createAgent.addArguments(startingSquare);
         createAgent.addArguments(colour);
+        createAgent.addArguments(myAgent.getAID().getName());
 
         final Action requestAction = new Action(myAgent.getAMS(), createAgent);
         final ACLMessage request = new ACLMessage(ACLMessage.REQUEST);

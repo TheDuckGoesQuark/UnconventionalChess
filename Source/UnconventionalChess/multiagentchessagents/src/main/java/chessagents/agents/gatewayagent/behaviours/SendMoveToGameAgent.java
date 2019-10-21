@@ -13,20 +13,18 @@ import static jade.content.lang.Codec.CodecException;
 public class SendMoveToGameAgent extends OneShotBehaviour {
 
     private static final String ONTOLOGY_NAME = ChessOntology.getInstance().getName();
-    private final String gameAgentName;
+    private final AID gameAgentName;
     private final MakeMove move;
     private final ACLMessage message;
 
-    public SendMoveToGameAgent(MakeMove move, String gameAgentName) {
+    public SendMoveToGameAgent(MakeMove move, AID gameAgentName) {
         this.move = move;
         this.gameAgentName = gameAgentName;
         this.message = new ACLMessage(ACLMessage.PROPOSE);
     }
 
     private void constructMessage() throws CodecException, OntologyException {
-        final AID gameAgent = new AID(gameAgentName, false);
-
-        message.addReceiver(gameAgent);
+        message.addReceiver(gameAgentName);
         message.setConversationId("human-move");
         message.setOntology(ONTOLOGY_NAME);
         message.setLanguage(myAgent.getContentManager().getLanguageNames()[0]);

@@ -1,36 +1,38 @@
 package chessagents.agents.pieceagent.behaviours;
 
+import chessagents.chess.BoardWrapper;
+import chessagents.ontology.ChessOntology;
 import chessagents.ontology.schemas.actions.MakeMove;
 import chessagents.ontology.schemas.concepts.Colour;
-import com.github.bhlangonijr.chesslib.Board;
-import com.github.bhlangonijr.chesslib.Square;
-import com.github.bhlangonijr.chesslib.move.Move;
-import com.github.bhlangonijr.chesslib.move.MoveGenerator;
-import com.github.bhlangonijr.chesslib.move.MoveGeneratorException;
+import chessagents.ontology.schemas.concepts.Move;
 import jade.content.lang.Codec;
 import jade.content.onto.OntologyException;
 import jade.content.onto.basic.Action;
 import jade.core.AID;
 import jade.core.behaviours.CyclicBehaviour;
+import jade.domain.FIPANames;
 import jade.lang.acl.ACLMessage;
 
-import java.util.Random;
+import java.util.Optional;
+import java.util.Set;
 
-public class ChooseMove extends CyclicBehaviour {
+public class Play extends CyclicBehaviour {
 
-    private Board board;
-    private Random random = new Random();
-    private Colour myColour;
-    private AID gameAgentAid = new AID("GameAgent-0", false);
+    private final BoardWrapper board;
+    private final Colour myColour;
+    private final Set<AID> pieceAgents;
+    private final AID gameAgentAid = new AID("GameAgent-0", false);
+
     private boolean moveSent = false;
 
-    public ChooseMove(Board board, Colour myColour) {
+    public Play(BoardWrapper board, Colour myColour, Set<AID> pieceAgents, AID gameAgent) {
         this.board = board;
         this.myColour = myColour;
+        this.pieceAgents = pieceAgents;
     }
 
     private boolean myTurn() {
-        return board.getSideToMove().value().equals(myColour.getColour());
+        return board.isSideToGo(myColour.getColour());
     }
 
     @Override
@@ -59,10 +61,7 @@ public class ChooseMove extends CyclicBehaviour {
         if (message.getPerformative() == ACLMessage.INFORM) {
             try {
                 MakeMove move = (MakeMove) ((Action) myAgent.getContentManager().extractContent(message)).getAction();
-                board.doMove(new Move(
-                        Square.valueOf(move.getMove().getSource().getCoordinates()),
-                        Square.valueOf(move.getMove().getTarget().getCoordinates()))
-                );
+                board.makeMove(move.getMove().getSource().getCoordinates(), move.getMove().getTarget().getCoordinates());
 
                 // prepare to make another move
                 if (myTurn()) moveSent = false;
@@ -74,16 +73,18 @@ public class ChooseMove extends CyclicBehaviour {
 
     private void sendRandomMove() {
         try {
-            Move move = MoveGenerator.generateLegalMoves(board).get(random.nextInt());
+            final Optional<Move> move = board.getRandomMove();
 
             MakeMove makeMoveAction = new MakeMove();
-            makeMoveAction.setMove(new chessagents.ontology.schemas.concepts.Move(move.getFrom().toString(), move.getTo().toString()));
+            makeMoveAction.setMove(move.get());
 
             ACLMessage moveMessage = new ACLMessage(ACLMessage.PROPOSE);
             moveMessage.addReceiver(gameAgentAid);
+            moveMessage.setOntology(ChessOntology.ONTOLOGY_NAME);
+            moveMessage.setLanguage(FIPANames.ContentLanguage.FIPA_SL);
             myAgent.getContentManager().fillContent(moveMessage, makeMoveAction);
             moveSent = true;
-        } catch (MoveGeneratorException | Codec.CodecException | OntologyException e) {
+        } catch (Codec.CodecException | OntologyException e) {
             e.printStackTrace();
         }
     }

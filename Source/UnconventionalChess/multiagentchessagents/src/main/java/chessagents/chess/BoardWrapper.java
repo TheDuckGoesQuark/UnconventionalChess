@@ -7,9 +7,11 @@ import com.github.bhlangonijr.chesslib.Square;
 import com.github.bhlangonijr.chesslib.move.Move;
 import com.github.bhlangonijr.chesslib.move.MoveGenerator;
 import com.github.bhlangonijr.chesslib.move.MoveGeneratorException;
+import com.github.bhlangonijr.chesslib.move.MoveList;
 
 import java.util.Arrays;
 import java.util.Optional;
+import java.util.Random;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -18,6 +20,7 @@ import java.util.stream.Collectors;
  */
 public class BoardWrapper {
 
+    private final Random random = new Random();
     private final Board board;
 
     public BoardWrapper() {
@@ -89,5 +92,18 @@ public class BoardWrapper {
                 .filter(sq -> board.getPiece(sq).getPieceSide().equals(side))
                 .map(Square::value)
                 .collect(Collectors.toSet());
+    }
+
+    public Optional<chessagents.ontology.schemas.concepts.Move> getRandomMove() {
+        try {
+            MoveList moves = MoveGenerator.generateLegalMoves(board);
+            Move move = moves.get(random.nextInt(moves.size()));
+
+            return Optional.of(
+                    new chessagents.ontology.schemas.concepts.Move(move.getFrom().value(), move.getTo().value())
+            );
+        } catch (MoveGeneratorException e) {
+            return Optional.empty();
+        }
     }
 }

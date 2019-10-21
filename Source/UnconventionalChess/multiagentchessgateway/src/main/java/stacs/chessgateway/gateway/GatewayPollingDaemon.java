@@ -3,7 +3,6 @@ package stacs.chessgateway.gateway;
 import jade.core.Profile;
 import jade.lang.acl.ACLMessage;
 import jade.util.leap.Properties;
-import jade.wrapper.ControllerException;
 import jade.wrapper.gateway.GatewayListener;
 import jade.wrapper.gateway.JadeGateway;
 import org.slf4j.Logger;
@@ -11,14 +10,10 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import stacs.chessgateway.config.GatewayProperties;
-import chessagents.agents.gatewayagent.behaviours.ReceiveMessageIntoQueue;
 import stacs.chessgateway.models.Message;
-import stacs.chessgateway.models.MoveMessage;
 import stacs.chessgateway.services.GatewayService;
 import stacs.chessgateway.util.OntologyTranslator;
 
-import java.io.IOException;
-import java.util.Arrays;
 import java.util.Queue;
 import java.util.concurrent.*;
 
@@ -69,27 +64,26 @@ public class GatewayPollingDaemon implements GatewayListener, Runnable {
 
     @Override
     public void run() {
-        while (JadeGateway.isGatewayActive()) {
-            logger.info("Listening for messages from gateway");
-            try {
-                JadeGateway.execute(new ReceiveMessageIntoQueue(messageQueue));
-                final ACLMessage received = messageQueue.poll();
-
-                if (received != null) {
-                    forwardMessage(received);
-                }
-            } catch (ControllerException | InterruptedException e) {
-                logger.error("Exception when listening for messages from gateway");
-                logger.error(Arrays.toString(e.getStackTrace()));
-            }
-        }
+        // TODO this might be stealing messages from other listeners
+//        while (JadeGateway.isGatewayActive()) {
+//            logger.info("Listening for messages from gateway");
+//            try {
+//                JadeGateway.execute(new ReceiveMessageIntoQueue(messageQueue));
+//                final ACLMessage received = messageQueue.poll();
+//
+//                if (received != null) {
+//                    forwardMessage(received);
+//                }
+//            } catch (ControllerException | InterruptedException e) {
+//                logger.error("Exception when listening for messages from gateway");
+//                logger.error(Arrays.toString(e.getStackTrace()));
+//            }
+//        }
     }
 
     private void forwardMessage(ACLMessage received) {
-        final String senderName = received.getSender().getLocalName();
-
         ontologyTranslator.translateFromOntology(received)
                 .map(moveMessage -> new Message<>(MOVE_MESSAGE, moveMessage))
-                .ifPresent(moveMessage -> gatewayService.handleAgentMessage(moveMessage, senderName));
+                .ifPresent(moveMessage -> gatewayService.handleAgentMessage(moveMessage, received.getSender()));
     }
 }
