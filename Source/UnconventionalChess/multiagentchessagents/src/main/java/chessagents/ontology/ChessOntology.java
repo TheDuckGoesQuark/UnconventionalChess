@@ -43,6 +43,9 @@ public class ChessOntology extends Ontology {
     public static final String BEING_CREATED = "Being Created";
     public static final String BEING_CREATED_GAME = "Game";
 
+    public static final String IS_READY = "Is Ready";
+    public static final String IS_READY_GAME = "Game";
+
     // Actions
     public static final String MAKE_MOVE = "Make Move";
     public static final String MAKE_MOVE_MOVE = "Move";
@@ -57,49 +60,53 @@ public class ChessOntology extends Ontology {
 
         try {
             // Concepts
-            final ConceptSchema colourSchema = new ConceptSchema(COLOUR);
+            final var colourSchema = new ConceptSchema(COLOUR);
             colourSchema.add(COLOUR_COLOUR, (PrimitiveSchema) getSchema(BasicOntology.STRING));
             add(colourSchema, Colour.class);
 
-            final ConceptSchema pieceSchema = new ConceptSchema(PIECE);
+            final var pieceSchema = new ConceptSchema(PIECE);
             pieceSchema.add(PIECE_AGENT, (ConceptSchema) getSchema(BasicOntology.AID));
             pieceSchema.add(PIECE_TYPE, (PrimitiveSchema) getSchema(BasicOntology.STRING));
             pieceSchema.add(PIECE_COLOUR, (ConceptSchema) getSchema(COLOUR));
             add(pieceSchema, Piece.class);
 
-            final ConceptSchema positionSchema = new ConceptSchema(POSITION);
+            final var positionSchema = new ConceptSchema(POSITION);
             positionSchema.add(POSITION_COORDINATES, (PrimitiveSchema) getSchema(BasicOntology.STRING));
             add(positionSchema, Position.class);
 
-            final ConceptSchema moveSchema = new ConceptSchema(MOVE);
+            final var moveSchema = new ConceptSchema(MOVE);
             moveSchema.add(MOVE_SOURCE, (ConceptSchema) getSchema(POSITION));
             moveSchema.add(MOVE_TARGET, (ConceptSchema) getSchema(POSITION));
             add(moveSchema, Move.class);
 
-            final ConceptSchema gameSchema = new ConceptSchema(GAME);
+            final var gameSchema = new ConceptSchema(GAME);
             gameSchema.add(GAME_ID, (PrimitiveSchema) getSchema(BasicOntology.INTEGER));
             add(gameSchema, Game.class);
 
             // Predicates
-            final PredicateSchema canCaptureSchema = new PredicateSchema(CAN_CAPTURE);
+            final var canCaptureSchema = new PredicateSchema(CAN_CAPTURE);
             canCaptureSchema.add(CAN_CAPTURE_ATTACKER, getSchema(PIECE));
             canCaptureSchema.add(CAN_CAPTURE_VICTIM, getSchema(PIECE));
             add(canCaptureSchema, CanCapture.class);
 
-            final PredicateSchema isCapturedSchema = new PredicateSchema(IS_CAPTURED);
+            final var isCapturedSchema = new PredicateSchema(IS_CAPTURED);
             isCapturedSchema.add(IS_CAPTURED_PIECE, getSchema(PIECE));
             add(isCapturedSchema, IsCaptured.class);
 
-            final PredicateSchema beingCreatedSchema = new PredicateSchema(BEING_CREATED);
+            final var beingCreatedSchema = new PredicateSchema(BEING_CREATED);
             beingCreatedSchema.add(BEING_CREATED_GAME, getSchema(GAME));
             add(beingCreatedSchema, BeingCreated.class);
 
+            final var isReadySchema = new PredicateSchema(IS_READY);
+            isReadySchema.add(IS_READY_GAME, getSchema(GAME));
+            add(isReadySchema, IsReady.class);
+
             // Actions
-            final AgentActionSchema makeMoveSchema = new AgentActionSchema(MAKE_MOVE);
+            final var makeMoveSchema = new AgentActionSchema(MAKE_MOVE);
             makeMoveSchema.add(MAKE_MOVE_MOVE, (ConceptSchema) getSchema(MOVE));
             add(makeMoveSchema, MakeMove.class);
 
-            final AgentActionSchema createGameSchema = new AgentActionSchema(CREATE_GAME);
+            final var createGameSchema = new AgentActionSchema(CREATE_GAME);
             createGameSchema.add(CREATE_GAME_GAME, (ConceptSchema) getSchema(GAME));
             add(createGameSchema, CreateGame.class);
 

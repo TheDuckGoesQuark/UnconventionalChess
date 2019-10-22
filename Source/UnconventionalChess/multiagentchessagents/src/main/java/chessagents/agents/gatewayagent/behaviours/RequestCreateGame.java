@@ -1,4 +1,4 @@
-package chessagents.agents.pieceagent.behaviours;
+package chessagents.agents.gatewayagent.behaviours;
 
 import chessagents.ontology.ChessOntology;
 import chessagents.ontology.schemas.actions.CreateGame;

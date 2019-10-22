@@ -161,6 +161,7 @@ public class HandleGameCreationRequests extends SimpleAchieveREResponder {
 
         if (gameReady.isDone()) {
             createSuccessResponse(action, resultReply);
+            gameStatus = GameStatus.READY;
         } else {
             LOGGER.warning("Game was not ready when sending result?");
             resultReply.setPerformative(ACLMessage.FAILURE);

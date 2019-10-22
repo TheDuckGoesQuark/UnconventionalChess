@@ -1,14 +1,13 @@
 package stacs.chessgateway.services.impl;
 
 import chessagents.agents.gameagent.GameAgentProperties;
-import chessagents.agents.pieceagent.behaviours.RequestCreateGame;
+import chessagents.agents.gatewayagent.behaviours.RequestCreateGame;
 import jade.core.AID;
 import jade.wrapper.ControllerException;
 import jade.wrapper.gateway.JadeGateway;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import stacs.chessgateway.config.GatewayProperties;
 import stacs.chessgateway.exceptions.GatewayFailureException;
