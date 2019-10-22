@@ -4,6 +4,7 @@ import chessagents.ontology.schemas.actions.CreateGame;
 import chessagents.ontology.schemas.actions.MakeMove;
 import chessagents.ontology.schemas.concepts.*;
 import chessagents.ontology.schemas.predicates.*;
+import jade.content.Predicate;
 import jade.content.onto.BasicOntology;
 import jade.content.onto.Ontology;
 import jade.content.onto.OntologyException;
@@ -14,11 +15,6 @@ public class ChessOntology extends Ontology {
     public static final String ONTOLOGY_NAME = "Chess-Ontology";
 
     // Concepts
-    public static final String PIECE = "Piece";
-    public static final String PIECE_AGENT = "Agent";
-    public static final String PIECE_TYPE = "Type";
-    public static final String PIECE_COLOUR = "Colour";
-
     public static final String POSITION = "Position";
     private static final String POSITION_COORDINATES = "Coordinates";
 
@@ -31,6 +27,13 @@ public class ChessOntology extends Ontology {
 
     public static final String GAME = "Game";
     public static final String GAME_ID = "GameId";
+
+    public static final String PIECE = "Piece";
+    public static final String PIECE_AGENT = "Agent";
+    public static final String PIECE_TYPE = "Type";
+    public static final String PIECE_COLOUR = "Colour";
+    public static final String PIECE_POSITION = "Position";
+
 
     // Predicates
     public static final String CAN_CAPTURE = "Can Capture";
@@ -45,6 +48,10 @@ public class ChessOntology extends Ontology {
 
     public static final String IS_READY = "Is Ready";
     public static final String IS_READY_GAME = "Game";
+
+    public static final String IS_COLOUR = "Is Colour";
+    public static final String IS_COLOUR_PIECE = "Piece";
+    public static final String IS_COLOUR_COLOUR = "Colour";
 
     // Actions
     public static final String MAKE_MOVE = "Make Move";
@@ -64,15 +71,16 @@ public class ChessOntology extends Ontology {
             colourSchema.add(COLOUR_COLOUR, (PrimitiveSchema) getSchema(BasicOntology.STRING));
             add(colourSchema, Colour.class);
 
+            final var positionSchema = new ConceptSchema(POSITION);
+            positionSchema.add(POSITION_COORDINATES, (PrimitiveSchema) getSchema(BasicOntology.STRING));
+            add(positionSchema, Position.class);
+
             final var pieceSchema = new ConceptSchema(PIECE);
             pieceSchema.add(PIECE_AGENT, (ConceptSchema) getSchema(BasicOntology.AID));
             pieceSchema.add(PIECE_TYPE, (PrimitiveSchema) getSchema(BasicOntology.STRING));
             pieceSchema.add(PIECE_COLOUR, (ConceptSchema) getSchema(COLOUR));
+            pieceSchema.add(PIECE_POSITION, (ConceptSchema) getSchema(POSITION));
             add(pieceSchema, Piece.class);
-
-            final var positionSchema = new ConceptSchema(POSITION);
-            positionSchema.add(POSITION_COORDINATES, (PrimitiveSchema) getSchema(BasicOntology.STRING));
-            add(positionSchema, Position.class);
 
             final var moveSchema = new ConceptSchema(MOVE);
             moveSchema.add(MOVE_SOURCE, (ConceptSchema) getSchema(POSITION));
@@ -100,6 +108,10 @@ public class ChessOntology extends Ontology {
             final var isReadySchema = new PredicateSchema(IS_READY);
             isReadySchema.add(IS_READY_GAME, getSchema(GAME));
             add(isReadySchema, IsReady.class);
+
+            final var isColourSchema = new PredicateSchema(IS_COLOUR);
+            isColourSchema.add(IS_COLOUR_COLOUR, getSchema(COLOUR));
+            isColourSchema.add(IS_COLOUR_PIECE, getSchema(PIECE));
 
             // Actions
             final var makeMoveSchema = new AgentActionSchema(MAKE_MOVE);

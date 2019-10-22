@@ -13,6 +13,7 @@ import jade.content.onto.OntologyException;
 import jade.content.onto.basic.Action;
 import jade.content.onto.basic.Done;
 import jade.content.onto.basic.TrueProposition;
+import jade.core.behaviours.DataStore;
 import jade.domain.FIPAAgentManagement.FailureException;
 import jade.domain.FIPAAgentManagement.NotUnderstoodException;
 import jade.domain.FIPAAgentManagement.RefuseException;
@@ -22,7 +23,8 @@ import jade.lang.acl.MessageTemplate;
 import jade.proto.SimpleAchieveREResponder;
 import jade.util.Logger;
 
-import java.util.concurrent.CompletableFuture;
+import static chessagents.agents.gameagent.GameAgent.GAME_STATUS_KEY;
+import static chessagents.agents.gameagent.GameStatus.*;
 
 /**
  *
@@ -34,11 +36,9 @@ public class HandleGameCreationRequests extends SimpleAchieveREResponder {
             MessageTemplate.MatchProtocol(FIPANames.InteractionProtocol.FIPA_REQUEST),
             MessageTemplate.MatchOntology(ChessOntology.ONTOLOGY_NAME)
     );
-    private GameStatus gameStatus = GameStatus.NOT_EXIST;
-    private CompletableFuture<Game> gameReady;
 
-    public HandleGameCreationRequests(GameAgent gameAgent) {
-        super(gameAgent, mt);
+    public HandleGameCreationRequests(GameAgent gameAgent, DataStore datastore) {
+        super(gameAgent, mt, datastore);
     }
 
     /**
@@ -56,13 +56,14 @@ public class HandleGameCreationRequests extends SimpleAchieveREResponder {
         var action = extractAction(request);
         Game game;
 
+        var gameStatus = (GameStatus) getDataStore().get(GAME_STATUS_KEY);
         switch (gameStatus) {
             case NOT_EXIST:
                 LOGGER.info("Agreeing to request to create game");
                 createAgreeResponse(action, reply);
                 game = ((CreateGame) (action.getAction())).getGame();
-                gameReady = ((GameAgent) myAgent).createGame(game);
-                gameStatus = GameStatus.BEING_CREATED;
+                ((GameAgent) myAgent).createGame(game);
+                getDataStore().put(GAME_STATUS_KEY, BEING_CREATED);
                 break;
             case BEING_CREATED:
                 LOGGER.info("Can't create game, already being created");
@@ -159,9 +160,9 @@ public class HandleGameCreationRequests extends SimpleAchieveREResponder {
             throw new FailureException(e.getACLMessage());
         }
 
-        if (gameReady.isDone()) {
+        var gameStatus = getDataStore().get(GAME_STATUS_KEY);
+        if (gameStatus == READY) {
             createSuccessResponse(action, resultReply);
-            gameStatus = GameStatus.READY;
         } else {
             LOGGER.warning("Game was not ready when sending result?");
             resultReply.setPerformative(ACLMessage.FAILURE);

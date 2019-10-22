@@ -1,29 +1,45 @@
 package chessagents.agents.pieceagent;
 
 import chessagents.agents.ChessAgent;
+import chessagents.agents.pieceagent.behaviours.Play;
+import chessagents.agents.pieceagent.behaviours.RequestPieceIds;
 import chessagents.agents.pieceagent.behaviours.SubscribeToGameStatus;
 import chessagents.chess.BoardWrapper;
 import chessagents.ontology.schemas.concepts.Colour;
+import chessagents.ontology.schemas.concepts.Game;
 import chessagents.ontology.schemas.concepts.Position;
 import jade.core.AID;
+import jade.core.behaviours.DataStore;
+import jade.core.behaviours.SequentialBehaviour;
 
 import java.util.HashSet;
-import java.util.Set;
 
 public class PieceAgent extends ChessAgent {
 
-    private Position myPosition = new Position();
-    private Colour myColour = new Colour();
-    private BoardWrapper board = new BoardWrapper();
-    private Set<AID> pieceAgents = new HashSet<>();
+    public static final String PIECE_AID_SET_KEY = "PIECE_AID_SET";
+    public static final String MY_POSITION_KEY = "MY_POSITION";
+    public static final String MY_COLOUR_KEY = "MY_COLOUR";
+    public static final String BOARD_KEY = "BOARD";
+    public static final String GAME_AGENT_AID_KEY = "GAME_AGENT";
+    public static final String GAME_KEY = "GAME";
+
+    private DataStore dataStore = new DataStore();
 
     @Override
     protected void setup() {
         super.setup();
         var args = getArguments();
-        myPosition.setCoordinates((String) args[0]);
-        myColour.setColour((String) args[1]);
-        final var gameAgent = new AID((String) args[2], true);
-        addBehaviour(new SubscribeToGameStatus());
+        dataStore.put(MY_POSITION_KEY, new Position((String) args[0]));
+        dataStore.put(MY_COLOUR_KEY, new Colour((String) args[1]));
+        dataStore.put(GAME_AGENT_AID_KEY, new AID((String) args[2], true));
+        dataStore.put(GAME_KEY, new Game(Integer.parseInt((String) args[3])));
+        dataStore.put(BOARD_KEY, new BoardWrapper());
+        dataStore.put(PIECE_AID_SET_KEY, new HashSet<>());
+
+        var sequence = new SequentialBehaviour();
+        sequence.addSubBehaviour(new SubscribeToGameStatus(this, sequence, dataStore));
+        sequence.addSubBehaviour(new RequestPieceIds(this, dataStore));
+        sequence.addSubBehaviour(new Play(this, dataStore));
+        addBehaviour(sequence);
     }
 }

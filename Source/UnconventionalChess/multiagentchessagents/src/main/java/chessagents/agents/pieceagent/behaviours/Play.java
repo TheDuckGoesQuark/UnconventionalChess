@@ -1,5 +1,6 @@
 package chessagents.agents.pieceagent.behaviours;
 
+import chessagents.agents.pieceagent.PieceAgent;
 import chessagents.chess.BoardWrapper;
 import chessagents.ontology.ChessOntology;
 import chessagents.ontology.schemas.actions.MakeMove;
@@ -10,12 +11,14 @@ import jade.content.onto.OntologyException;
 import jade.content.onto.basic.Action;
 import jade.core.AID;
 import jade.core.behaviours.CyclicBehaviour;
+import jade.core.behaviours.DataStore;
 import jade.domain.FIPANames;
 import jade.lang.acl.ACLMessage;
 
 import java.util.Optional;
 import java.util.Set;
 
+// TODO
 public class Play extends CyclicBehaviour {
 
     private final BoardWrapper board;
@@ -29,6 +32,9 @@ public class Play extends CyclicBehaviour {
         this.board = board;
         this.myColour = myColour;
         this.pieceAgents = pieceAgents;
+    }
+
+    public Play(PieceAgent pieceAgent, DataStore dataStore) {
     }
 
     private boolean myTurn() {

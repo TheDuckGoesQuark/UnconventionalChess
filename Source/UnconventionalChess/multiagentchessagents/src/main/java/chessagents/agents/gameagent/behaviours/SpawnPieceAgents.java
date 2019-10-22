@@ -1,5 +1,6 @@
 package chessagents.agents.gameagent.behaviours;
 
+import chessagents.agents.gameagent.GameAgent;
 import chessagents.agents.gameagent.GameAgentProperties;
 import chessagents.agents.pieceagent.*;
 import chessagents.chess.BoardWrapper;
@@ -10,6 +11,7 @@ import jade.content.lang.sl.SLCodec;
 import jade.content.onto.basic.Action;
 import jade.core.AID;
 import jade.core.ContainerID;
+import jade.core.behaviours.DataStore;
 import jade.core.behaviours.OneShotBehaviour;
 import jade.domain.FIPANames;
 import jade.domain.JADEAgentManagement.CreateAgent;
@@ -28,17 +30,13 @@ public class SpawnPieceAgents extends OneShotBehaviour {
 
     private static final Logger logger = Logger.getMyLogger(SpawnPieceAgents.class.getName());
     private final GameAgentProperties properties;
-    private final Set<AID> pieceAgents;
-    private final BoardWrapper board;
     private final Game game;
-    private final CompletableFuture<Game> gameReadyFuture;
+    private final DataStore dataStore;
 
-    public SpawnPieceAgents(GameAgentProperties properties, Set<AID> pieceAgents, BoardWrapper board, Game game, CompletableFuture<Game> gameReadyFuture) {
+    public SpawnPieceAgents(GameAgentProperties properties, Game game, DataStore dataStore) {
         this.properties = properties;
-        this.pieceAgents = pieceAgents;
-        this.board = board;
+        this.dataStore = dataStore;
         this.game = game;
-        this.gameReadyFuture = gameReadyFuture;
     }
 
     private String generatePieceAgentName(String pieceType, String colour, String startingSquare) {
@@ -83,12 +81,11 @@ public class SpawnPieceAgents extends OneShotBehaviour {
         }
 
         agentColours.forEach(this::spawnPieceAgentsForSide);
-
-        gameReadyFuture.complete(game);
     }
 
     private void spawnPieceAgentsForSide(String colour) {
         logger.info("Spawning agents for side " + colour);
+        var board = (BoardWrapper) dataStore.get(GameAgent.BOARD_KEY);
         board.getPositionsOfAllPiecesForColour(colour)
                 .forEach(sq -> spawnPieceAgent(sq, colour, board.getPieceTypeAtSquare(sq)));
     }
@@ -113,6 +110,7 @@ public class SpawnPieceAgents extends OneShotBehaviour {
         createAgent.addArguments(startingSquare);
         createAgent.addArguments(colour);
         createAgent.addArguments(myAgent.getAID().getName());
+        createAgent.addArguments(Integer.toString(game.getGameId()));
 
         final Action requestAction = new Action(myAgent.getAMS(), createAgent);
         final ACLMessage request = new ACLMessage(ACLMessage.REQUEST);
@@ -131,7 +129,8 @@ public class SpawnPieceAgents extends OneShotBehaviour {
             myAgent.addBehaviour(new AchieveREInitiator(myAgent, request) {
                 protected void handleInform(ACLMessage inform) {
                     logger.info("Agent " + agentName + "successfully created");
-                    pieceAgents.add(new AID(agentName, false));
+                    var pieces = (HashSet<AID>) dataStore.get(GameAgent.PIECE_AGENT_SET_KEY);
+                    pieces.add(new AID(agentName, false));
                 }
 
                 protected void handleFailure(ACLMessage failure) {

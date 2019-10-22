@@ -34,7 +34,7 @@ public class RequestCreateGame extends SimpleAchieveREInitiator {
         request.addReceiver(gameAgent);
         request.setLanguage(FIPANames.ContentLanguage.FIPA_SL);
         request.setOntology(ChessOntology.ONTOLOGY_NAME);
-        request.setProtocol(FIPANames.InteractionProtocol.FIPA_REQUEST);
+        request.setProtocol(FIPANames.InteractionProtocol.FIPA_QUERY);
         populateContents(request);
         return request;
     }
