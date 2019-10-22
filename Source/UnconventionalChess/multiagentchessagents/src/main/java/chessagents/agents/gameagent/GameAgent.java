@@ -3,6 +3,7 @@ package chessagents.agents.gameagent;
 import chessagents.agents.ChessAgent;
 import chessagents.agents.gameagent.behaviours.HandleGameCreationRequests;
 import chessagents.agents.gameagent.behaviours.HandleGameStatusSubscriptions;
+import chessagents.agents.gameagent.behaviours.HandlePieceListRequests;
 import chessagents.agents.gameagent.behaviours.SpawnPieceAgents;
 import chessagents.chess.BoardWrapper;
 import chessagents.ontology.schemas.concepts.Game;
@@ -44,6 +45,7 @@ public class GameAgent extends ChessAgent {
         dataStore.put(BOARD_KEY, new BoardWrapper());
         addBehaviour(new HandleGameCreationRequests(this, dataStore));
         addBehaviour(new HandleGameStatusSubscriptions(this, dataStore));
+        addBehaviour(new HandlePieceListRequests(this, dataStore));
     }
 
     public void createGame(Game game) {

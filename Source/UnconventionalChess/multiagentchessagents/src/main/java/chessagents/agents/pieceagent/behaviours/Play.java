@@ -18,6 +18,8 @@ import jade.lang.acl.ACLMessage;
 import java.util.Optional;
 import java.util.Set;
 
+import static chessagents.agents.pieceagent.PieceAgent.*;
+
 // TODO
 public class Play extends CyclicBehaviour {
 
@@ -28,13 +30,10 @@ public class Play extends CyclicBehaviour {
 
     private boolean moveSent = false;
 
-    public Play(BoardWrapper board, Colour myColour, Set<AID> pieceAgents, AID gameAgent) {
-        this.board = board;
-        this.myColour = myColour;
-        this.pieceAgents = pieceAgents;
-    }
-
     public Play(PieceAgent pieceAgent, DataStore dataStore) {
+        this.board = (BoardWrapper) dataStore.get(BOARD_KEY);
+        this.myColour = (Colour) dataStore.get(MY_COLOUR_KEY);
+        this.pieceAgents = (Set<AID>) dataStore.get(PIECE_AID_SET_KEY);
     }
 
     private boolean myTurn() {
