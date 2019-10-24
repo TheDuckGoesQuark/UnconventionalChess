@@ -131,7 +131,7 @@ public class SpawnPieceAgents extends OneShotBehaviour {
             myAgent.getContentManager().fillContent(request, requestAction);
             myAgent.addBehaviour(new AchieveREInitiator(myAgent, request) {
                 protected void handleInform(ACLMessage inform) {
-                    logger.info("Agent " + agentName + "successfully created");
+                    logger.info("Agent " + agentName + " successfully created");
                     var pieces = (Map<AID, Piece>) dataStore.get(GameAgent.AID_TO_PIECE_KEY);
                     var aid = new AID(agentName, AID.ISLOCALNAME);
                     var ontoAid = new OntoAID(aid.getLocalName(), AID.ISLOCALNAME);

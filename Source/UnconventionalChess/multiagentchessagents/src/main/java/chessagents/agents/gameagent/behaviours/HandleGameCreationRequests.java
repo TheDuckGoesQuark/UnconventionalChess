@@ -13,14 +13,15 @@ import jade.content.onto.OntologyException;
 import jade.content.onto.basic.Action;
 import jade.content.onto.basic.Done;
 import jade.content.onto.basic.TrueProposition;
+import jade.core.Agent;
 import jade.core.behaviours.DataStore;
+import jade.core.behaviours.SimpleBehaviour;
 import jade.domain.FIPAAgentManagement.FailureException;
 import jade.domain.FIPAAgentManagement.NotUnderstoodException;
 import jade.domain.FIPAAgentManagement.RefuseException;
 import jade.domain.FIPANames;
 import jade.lang.acl.ACLMessage;
 import jade.lang.acl.MessageTemplate;
-import jade.proto.SimpleAchieveREResponder;
 import jade.util.Logger;
 
 import static chessagents.agents.gameagent.GameAgent.GAME_STATUS_KEY;
@@ -29,16 +30,31 @@ import static chessagents.agents.gameagent.GameStatus.*;
 /**
  *
  */
-public class HandleGameCreationRequests extends SimpleAchieveREResponder {
+public class HandleGameCreationRequests extends SimpleBehaviour {
 
     private static final Logger LOGGER = Logger.getMyLogger(HandleGameCreationRequests.class.getName());
     private static final MessageTemplate mt = MessageTemplate.and(
             MessageTemplate.MatchProtocol(FIPANames.InteractionProtocol.FIPA_REQUEST),
             MessageTemplate.MatchOntology(ChessOntology.ONTOLOGY_NAME)
     );
+    private static final int WAITING_FOR_MESSAGE = 0;
+    private static final int PREPARE_RESPONSE = 1;
+    private static final int SEND_RESPONSE = 2;
+    private static final int PREPARE_RESULT_NOTIFICATION = 3;
+    private static final int SEND_RESULT_NOTIFICATION = 4;
+    private static final int DONE = 5;
 
-    public HandleGameCreationRequests(GameAgent gameAgent, DataStore datastore) {
-        super(gameAgent, mt, datastore);
+    public static final String REQUEST_KEY = "_REQUEST";
+    public static final String RESPONSE_KEY = "_RESPONSE";
+    public static final String RESULT_NOTIFICATION_KEY = "_RESULT_NOTIFICATION";
+
+    private final DataStore dataStore;
+
+    private int state;
+
+    public HandleGameCreationRequests(Agent a, DataStore dataStore) {
+        super(a);
+        this.dataStore = dataStore;
     }
 
     /**
@@ -49,8 +65,7 @@ public class HandleGameCreationRequests extends SimpleAchieveREResponder {
      * @throws NotUnderstoodException
      * @throws RefuseException
      */
-    @Override
-    protected ACLMessage prepareResponse(ACLMessage request) throws NotUnderstoodException, RefuseException {
+    private ACLMessage prepareResponse(ACLMessage request) throws NotUnderstoodException, RefuseException {
         LOGGER.info("Received request");
         var reply = request.createReply();
         var action = extractAction(request);
@@ -149,8 +164,7 @@ public class HandleGameCreationRequests extends SimpleAchieveREResponder {
      * @return message informing requester of result of execution
      * @throws FailureException if execution failed
      */
-    @Override
-    protected ACLMessage prepareResultNotification(ACLMessage request, ACLMessage response) throws FailureException {
+    private ACLMessage prepareResultNotification(ACLMessage request, ACLMessage response) throws FailureException {
         var resultReply = request.createReply();
 
         final Action action;
@@ -160,14 +174,8 @@ public class HandleGameCreationRequests extends SimpleAchieveREResponder {
             throw new FailureException(e.getACLMessage());
         }
 
-        var gameStatus = getDataStore().get(GAME_STATUS_KEY);
-        if (gameStatus == READY) {
-            createSuccessResponse(action, resultReply);
-        } else {
-            LOGGER.warning("Game was not ready when sending result?");
-            resultReply.setPerformative(ACLMessage.FAILURE);
-            throw new FailureException(resultReply);
-        }
+        createSuccessResponse(action, resultReply);
+        myAgent.addBehaviour(new HandlePieceListRequests((GameAgent) myAgent, getDataStore()));
 
         return resultReply;
     }
@@ -190,5 +198,94 @@ public class HandleGameCreationRequests extends SimpleAchieveREResponder {
         } catch (Codec.CodecException | OntologyException e) {
             throw new FailureException("Unable to create success response");
         }
+    }
+
+    @Override
+    public void action() {
+        ACLMessage request = null, response = null, resultNotifcation = null;
+        switch (this.state) {
+            case WAITING_FOR_MESSAGE:
+                if (receiveMessage()) {
+                    state = PREPARE_RESPONSE;
+                } else {
+                    block();
+                }
+                break;
+            case PREPARE_RESPONSE:
+                request = (ACLMessage) dataStore.get(REQUEST_KEY);
+                try {
+                    response = prepareResponse(request);
+                } catch (NotUnderstoodException e) {
+                    response = request.createReply();
+                    response.setContent(e.getMessage());
+                    response.setPerformative(ACLMessage.NOT_UNDERSTOOD);
+                } catch (RefuseException e) {
+                    response = request.createReply();
+                    response.setContent(e.getMessage());
+                    response.setPerformative(ACLMessage.REFUSE);
+                } finally {
+                    dataStore.put(RESPONSE_KEY, response);
+                    state = SEND_RESPONSE;
+                }
+                break;
+            case SEND_RESPONSE:
+                response = (ACLMessage) dataStore.get(RESPONSE_KEY);
+                if (response != null) {
+                    myAgent.send(response);
+
+                    if (response.getPerformative() == ACLMessage.AGREE) {
+                        state = PREPARE_RESULT_NOTIFICATION;
+                    } else {
+                        state = WAITING_FOR_MESSAGE;
+                    }
+                } else {
+                    state = WAITING_FOR_MESSAGE;
+                }
+                break;
+            case PREPARE_RESULT_NOTIFICATION:
+                var gameStatus = getDataStore().get(GAME_STATUS_KEY);
+                if (gameStatus != READY) {
+                    block();
+                    break;
+                    // repeat until ready
+                }
+
+                request = (ACLMessage) dataStore.get(REQUEST_KEY);
+                response = (ACLMessage) dataStore.get(RESPONSE_KEY);
+
+                try {
+                    resultNotifcation = prepareResultNotification(request, response);
+                } catch (FailureException e) {
+                    resultNotifcation = request.createReply();
+                    resultNotifcation.setContent(e.getMessage());
+                    resultNotifcation.setPerformative(ACLMessage.FAILURE);
+                } finally {
+                    dataStore.put(RESULT_NOTIFICATION_KEY, resultNotifcation);
+                    state = SEND_RESULT_NOTIFICATION;
+                }
+                break;
+            case SEND_RESULT_NOTIFICATION:
+                resultNotifcation = (ACLMessage) dataStore.get(RESULT_NOTIFICATION_KEY);
+
+                if (resultNotifcation != null) {
+                    myAgent.send(resultNotifcation);
+                }
+                state = DONE;
+                break;
+        }
+    }
+
+    private boolean receiveMessage() {
+        var request = myAgent.receive(mt);
+        var requestReceived = request != null;
+        if (requestReceived) {
+            dataStore.put(REQUEST_KEY, request);
+        }
+        return requestReceived;
+    }
+
+    @Override
+    public boolean done() {
+        return state == DONE;
     }
 }

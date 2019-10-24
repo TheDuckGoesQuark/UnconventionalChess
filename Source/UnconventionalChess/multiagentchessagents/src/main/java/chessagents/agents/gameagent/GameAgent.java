@@ -47,7 +47,6 @@ public class GameAgent extends ChessAgent {
         dataStore.put(BOARD_KEY, new BoardWrapper());
         addBehaviour(new HandleGameCreationRequests(this, dataStore));
         addBehaviour(new HandleGameStatusSubscriptions(this, dataStore));
-        addBehaviour(new HandlePieceListRequests(this, dataStore));
     }
 
     public void createGame(Game game) {

@@ -42,6 +42,7 @@ public class SubscribeToGameStatus extends SubscriptionInitiator {
     @Override
     protected Vector prepareSubscriptions(ACLMessage subscription) {
         subscription.addReceiver(getGameAgentAID());
+        subscription.setLanguage(FIPANames.ContentLanguage.FIPA_SL);
         subscription.setOntology(ChessOntology.ONTOLOGY_NAME);
         subscription.setProtocol(FIPANames.InteractionProtocol.FIPA_SUBSCRIBE);
 
