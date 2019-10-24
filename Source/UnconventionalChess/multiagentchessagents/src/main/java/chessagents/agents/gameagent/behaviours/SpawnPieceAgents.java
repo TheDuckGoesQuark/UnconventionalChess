@@ -2,6 +2,7 @@ package chessagents.agents.gameagent.behaviours;
 
 import chessagents.agents.gameagent.GameAgent;
 import chessagents.agents.gameagent.GameAgentProperties;
+import chessagents.agents.gameagent.GameStatus;
 import chessagents.agents.pieceagent.*;
 import chessagents.chess.BoardWrapper;
 import chessagents.ontology.schemas.concepts.Colour;
@@ -97,7 +98,7 @@ public class SpawnPieceAgents extends OneShotBehaviour {
         sequence.addSubBehaviour(new OneShotBehaviour() {
             @Override
             public void action() {
-                dataStore.put(GAME_STATUS_KEY, IS_READY);
+                dataStore.put(GAME_STATUS_KEY, GameStatus.READY);
             }
         });
 

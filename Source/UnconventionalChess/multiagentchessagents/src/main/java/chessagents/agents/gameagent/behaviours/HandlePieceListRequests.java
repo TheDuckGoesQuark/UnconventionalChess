@@ -36,6 +36,7 @@ public class HandlePieceListRequests extends SimpleAchieveREResponder {
 
     @Override
     protected ACLMessage prepareResponse(ACLMessage request) {
+        // TODO this request doesnt seem to be being made?
         var reply = request.createReply();
 
         if (getDataStore().get(GAME_STATUS_KEY) != GameStatus.READY) {
