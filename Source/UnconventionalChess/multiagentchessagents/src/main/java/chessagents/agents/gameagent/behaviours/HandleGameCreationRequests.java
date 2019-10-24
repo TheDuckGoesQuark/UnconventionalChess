@@ -44,17 +44,15 @@ public class HandleGameCreationRequests extends SimpleBehaviour {
     private static final int SEND_RESULT_NOTIFICATION = 4;
     private static final int DONE = 5;
 
-    public static final String REQUEST_KEY = "_REQUEST";
-    public static final String RESPONSE_KEY = "_RESPONSE";
-    public static final String RESULT_NOTIFICATION_KEY = "_RESULT_NOTIFICATION";
-
-    private final DataStore dataStore;
+    private static final String REQUEST_KEY = "_REQUEST";
+    private static final String RESPONSE_KEY = "_RESPONSE";
+    private static final String RESULT_NOTIFICATION_KEY = "_RESULT_NOTIFICATION";
 
     private int state;
 
     public HandleGameCreationRequests(Agent a, DataStore dataStore) {
         super(a);
-        this.dataStore = dataStore;
+        this.setDataStore(dataStore);
     }
 
     /**
@@ -175,7 +173,6 @@ public class HandleGameCreationRequests extends SimpleBehaviour {
         }
 
         createSuccessResponse(action, resultReply);
-        myAgent.addBehaviour(new HandlePieceListRequests((GameAgent) myAgent, getDataStore()));
 
         return resultReply;
     }
@@ -206,13 +203,14 @@ public class HandleGameCreationRequests extends SimpleBehaviour {
         switch (this.state) {
             case WAITING_FOR_MESSAGE:
                 if (receiveMessage()) {
+                    LOGGER.info("Received request to create game");
                     state = PREPARE_RESPONSE;
                 } else {
                     block();
                 }
                 break;
             case PREPARE_RESPONSE:
-                request = (ACLMessage) dataStore.get(REQUEST_KEY);
+                request = (ACLMessage) getDataStore().get(REQUEST_KEY);
                 try {
                     response = prepareResponse(request);
                 } catch (NotUnderstoodException e) {
@@ -224,17 +222,18 @@ public class HandleGameCreationRequests extends SimpleBehaviour {
                     response.setContent(e.getMessage());
                     response.setPerformative(ACLMessage.REFUSE);
                 } finally {
-                    dataStore.put(RESPONSE_KEY, response);
+                    getDataStore().put(RESPONSE_KEY, response);
                     state = SEND_RESPONSE;
                 }
                 break;
             case SEND_RESPONSE:
-                response = (ACLMessage) dataStore.get(RESPONSE_KEY);
+                response = (ACLMessage) getDataStore().get(RESPONSE_KEY);
                 if (response != null) {
                     myAgent.send(response);
 
                     if (response.getPerformative() == ACLMessage.AGREE) {
                         state = PREPARE_RESULT_NOTIFICATION;
+                        myAgent.addBehaviour(new HandlePieceListRequests((GameAgent) myAgent, getDataStore()));
                     } else {
                         state = WAITING_FOR_MESSAGE;
                     }
@@ -250,8 +249,8 @@ public class HandleGameCreationRequests extends SimpleBehaviour {
                     // repeat until ready
                 }
 
-                request = (ACLMessage) dataStore.get(REQUEST_KEY);
-                response = (ACLMessage) dataStore.get(RESPONSE_KEY);
+                request = (ACLMessage) getDataStore().get(REQUEST_KEY);
+                response = (ACLMessage) getDataStore().get(RESPONSE_KEY);
 
                 try {
                     resultNotifcation = prepareResultNotification(request, response);
@@ -260,12 +259,12 @@ public class HandleGameCreationRequests extends SimpleBehaviour {
                     resultNotifcation.setContent(e.getMessage());
                     resultNotifcation.setPerformative(ACLMessage.FAILURE);
                 } finally {
-                    dataStore.put(RESULT_NOTIFICATION_KEY, resultNotifcation);
+                    getDataStore().put(RESULT_NOTIFICATION_KEY, resultNotifcation);
                     state = SEND_RESULT_NOTIFICATION;
                 }
                 break;
             case SEND_RESULT_NOTIFICATION:
-                resultNotifcation = (ACLMessage) dataStore.get(RESULT_NOTIFICATION_KEY);
+                resultNotifcation = (ACLMessage) getDataStore().get(RESULT_NOTIFICATION_KEY);
 
                 if (resultNotifcation != null) {
                     myAgent.send(resultNotifcation);
@@ -279,7 +278,7 @@ public class HandleGameCreationRequests extends SimpleBehaviour {
         var request = myAgent.receive(mt);
         var requestReceived = request != null;
         if (requestReceived) {
-            dataStore.put(REQUEST_KEY, request);
+            getDataStore().put(REQUEST_KEY, request);
         }
         return requestReceived;
     }

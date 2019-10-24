@@ -14,8 +14,10 @@ import jade.content.lang.sl.SLCodec;
 import jade.content.onto.basic.Action;
 import jade.core.AID;
 import jade.core.ContainerID;
+import jade.core.behaviours.Behaviour;
 import jade.core.behaviours.DataStore;
 import jade.core.behaviours.OneShotBehaviour;
+import jade.core.behaviours.SequentialBehaviour;
 import jade.domain.FIPANames;
 import jade.domain.JADEAgentManagement.CreateAgent;
 import jade.domain.JADEAgentManagement.JADEManagementOntology;
@@ -28,6 +30,10 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
+import java.util.stream.Collectors;
+
+import static chessagents.agents.gameagent.GameAgent.GAME_STATUS_KEY;
+import static chessagents.ontology.ChessOntology.IS_READY;
 
 public class SpawnPieceAgents extends OneShotBehaviour {
 
@@ -83,17 +89,31 @@ public class SpawnPieceAgents extends OneShotBehaviour {
             }
         }
 
-        agentColours.forEach(this::spawnPieceAgentsForSide);
+        // build up sequence of spawn agent behaviours followed by an update to the game status
+        var sequence = new SequentialBehaviour();
+        agentColours.stream()
+                .map(this::getBehavioursForSpawningAllPiecesOnSide)
+                .forEach(behaviours -> behaviours.forEach(sequence::addSubBehaviour));
+        sequence.addSubBehaviour(new OneShotBehaviour() {
+            @Override
+            public void action() {
+                dataStore.put(GAME_STATUS_KEY, IS_READY);
+            }
+        });
+
+        myAgent.addBehaviour(sequence);
     }
 
-    private void spawnPieceAgentsForSide(String colour) {
+    private Set<Behaviour> getBehavioursForSpawningAllPiecesOnSide(String colour) {
         logger.info("Spawning agents for side " + colour);
         var board = (BoardWrapper) dataStore.get(GameAgent.BOARD_KEY);
-        board.getPositionsOfAllPiecesForColour(colour)
-                .forEach(sq -> spawnPieceAgent(sq, colour, board.getPieceTypeAtSquare(sq)));
+        return board.getPositionsOfAllPiecesForColour(colour)
+                .stream()
+                .map(sq -> createSpawnPieceBehaviour(sq, colour, board.getPieceTypeAtSquare(sq)))
+                .collect(Collectors.toSet());
     }
 
-    private void spawnPieceAgent(String startingSquare, String colour, String type) {
+    private Behaviour createSpawnPieceBehaviour(String startingSquare, String colour, String type) {
         final String agentName = generatePieceAgentName(type, colour, startingSquare);
         final String agentClassName = mapPieceTypeToAgentClass(type)
                 .orElseThrow(IllegalArgumentException::new);
@@ -129,7 +149,7 @@ public class SpawnPieceAgents extends OneShotBehaviour {
         request.setProtocol(FIPANames.InteractionProtocol.FIPA_REQUEST);
         try {
             myAgent.getContentManager().fillContent(request, requestAction);
-            myAgent.addBehaviour(new AchieveREInitiator(myAgent, request) {
+            return new AchieveREInitiator(myAgent, request) {
                 protected void handleInform(ACLMessage inform) {
                     logger.info("Agent " + agentName + " successfully created");
                     var pieces = (Map<AID, Piece>) dataStore.get(GameAgent.AID_TO_PIECE_KEY);
@@ -144,10 +164,12 @@ public class SpawnPieceAgents extends OneShotBehaviour {
                     logger.warning("Error creating agent " + agentName + ":" + failure.getContent());
                     // TODO inform user of failure, cancel game creation and cleanup
                 }
-            });
+            };
         } catch (Exception e) {
             logger.warning("Error creating agent " + agentName + ":" + e.getMessage());
         }
+
+        return null;
     }
 
 }

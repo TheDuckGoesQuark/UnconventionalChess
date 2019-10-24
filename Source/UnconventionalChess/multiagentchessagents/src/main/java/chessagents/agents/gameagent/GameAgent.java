@@ -15,6 +15,8 @@ import jade.util.Logger;
 import java.util.HashMap;
 import java.util.HashSet;
 
+import static chessagents.agents.gameagent.GameStatus.NOT_EXIST;
+
 
 /**
  * Game agent is responsible for acting as the single source of truth
@@ -42,7 +44,7 @@ public class GameAgent extends ChessAgent {
         properties = (GameAgentProperties) arguments[0];
 
         dataStore.put(GATEWAY_AGENT_KEY, new AID((String) arguments[1], true));
-        dataStore.put(GAME_STATUS_KEY, GameStatus.NOT_EXIST);
+        dataStore.put(GAME_STATUS_KEY, NOT_EXIST);
         dataStore.put(AID_TO_PIECE_KEY, new HashMap<AID, Piece>(16));
         dataStore.put(BOARD_KEY, new BoardWrapper());
         addBehaviour(new HandleGameCreationRequests(this, dataStore));
