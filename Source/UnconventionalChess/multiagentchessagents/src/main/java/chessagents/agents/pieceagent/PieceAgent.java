@@ -7,16 +7,18 @@ import chessagents.agents.pieceagent.behaviours.SubscribeToGameStatus;
 import chessagents.chess.BoardWrapper;
 import chessagents.ontology.schemas.concepts.Colour;
 import chessagents.ontology.schemas.concepts.Game;
+import chessagents.ontology.schemas.concepts.Piece;
 import chessagents.ontology.schemas.concepts.Position;
 import jade.core.AID;
 import jade.core.behaviours.DataStore;
 import jade.core.behaviours.SequentialBehaviour;
 
+import java.util.HashMap;
 import java.util.HashSet;
 
 public class PieceAgent extends ChessAgent {
 
-    public static final String PIECE_AID_SET_KEY = "PIECE_AID_SET";
+    public static final String AID_TO_PIECE_KEY = "AID_TO_PIECE";
     public static final String MY_POSITION_KEY = "MY_POSITION";
     public static final String MY_COLOUR_KEY = "MY_COLOUR";
     public static final String BOARD_KEY = "BOARD";
@@ -34,7 +36,7 @@ public class PieceAgent extends ChessAgent {
         dataStore.put(GAME_AGENT_AID_KEY, new AID((String) args[2], true));
         dataStore.put(GAME_KEY, new Game(Integer.parseInt((String) args[3])));
         dataStore.put(BOARD_KEY, new BoardWrapper());
-        dataStore.put(PIECE_AID_SET_KEY, new HashSet<>());
+        dataStore.put(AID_TO_PIECE_KEY, new HashMap<AID, Piece>());
 
         var sequence = new SequentialBehaviour();
         sequence.addSubBehaviour(new SubscribeToGameStatus(this, sequence, dataStore));

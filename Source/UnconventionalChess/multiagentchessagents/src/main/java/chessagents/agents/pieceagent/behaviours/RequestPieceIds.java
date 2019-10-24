@@ -2,13 +2,15 @@ package chessagents.agents.pieceagent.behaviours;
 
 import chessagents.ontology.ChessOntology;
 import chessagents.ontology.schemas.concepts.Colour;
-import jade.content.abs.AbsConcept;
-import jade.content.abs.AbsIRE;
-import jade.content.abs.AbsPredicate;
-import jade.content.abs.AbsVariable;
+import chessagents.ontology.schemas.concepts.Piece;
+import jade.content.abs.*;
 import jade.content.lang.Codec;
 import jade.content.lang.sl.SLVocabulary;
+import jade.content.onto.BasicOntology;
+import jade.content.onto.Ontology;
 import jade.content.onto.OntologyException;
+import jade.content.schema.AggregateSchema;
+import jade.content.schema.IRESchema;
 import jade.content.schema.facets.TypedAggregateFacet;
 import jade.core.AID;
 import jade.core.Agent;
@@ -18,8 +20,12 @@ import jade.lang.acl.ACLMessage;
 import jade.proto.SimpleAchieveREInitiator;
 import jade.util.Logger;
 
-import static chessagents.agents.pieceagent.PieceAgent.GAME_AGENT_AID_KEY;
-import static chessagents.agents.pieceagent.PieceAgent.MY_COLOUR_KEY;
+import java.util.HashSet;
+import java.util.Map;
+import java.util.Set;
+import java.util.stream.Collectors;
+
+import static chessagents.agents.pieceagent.PieceAgent.*;
 
 
 public class RequestPieceIds extends SimpleAchieveREInitiator {
@@ -76,17 +82,43 @@ public class RequestPieceIds extends SimpleAchieveREInitiator {
     @Override
     protected void handleRefuse(ACLMessage msg) {
         // TODO asked too early, game not ready yet??
+        logger.warning("Asked to early: " + msg.getContent());
         super.handleRefuse(msg);
     }
 
     @Override
     protected void handleAgree(ACLMessage agree) {
+        logger.info("GameAgent agreed to give list of pieces!");
         // TODO get excited :)
     }
 
     @Override
     protected void handleInform(ACLMessage inform) {
         // TODO extract all matching pieces, and store details
-        super.handleInform(inform);
+        try {
+            var contentManager = myAgent.getContentManager();
+            var absEquals = (AbsPredicate) contentManager.extractAbsContent(inform);
+            var absSet = (AbsAggregate) absEquals.getAbsTerm(BasicOntology.EQUALS_RIGHT);
+            var pieces = extractPieces(absSet, contentManager.getOntology(inform));
+            storePieces(pieces);
+            pieces.forEach(piece -> logger.info(piece.toString()));
+        } catch (Codec.CodecException | OntologyException e) {
+            logger.warning("Failed to extract message: " + e.getMessage());
+        }
+    }
+
+    private void storePieces(Set<Piece> pieces) {
+        var map = (Map<AID, Piece>) getDataStore().get(AID_TO_PIECE_KEY);
+        pieces.forEach(piece -> map.put(piece.getPieceAgent(), piece));
+    }
+
+    private Set<Piece> extractPieces(AbsAggregate absSet, Ontology ontology) throws OntologyException {
+        var pieces = new HashSet<Piece>(absSet.getCount());
+
+        for (int i = 0; i < absSet.getCount(); i++) {
+            pieces.add((Piece) ontology.toObject(absSet.get(i)));
+        }
+
+        return pieces;
     }
 }

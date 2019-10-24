@@ -6,7 +6,10 @@ import chessagents.agents.pieceagent.*;
 import chessagents.chess.BoardWrapper;
 import chessagents.ontology.schemas.concepts.Colour;
 import chessagents.ontology.schemas.concepts.Game;
+import chessagents.ontology.schemas.concepts.Piece;
+import chessagents.ontology.schemas.concepts.Position;
 import com.github.bhlangonijr.chesslib.PieceType;
+import jade.content.OntoAID;
 import jade.content.lang.sl.SLCodec;
 import jade.content.onto.basic.Action;
 import jade.core.AID;
@@ -22,9 +25,9 @@ import jade.util.Logger;
 import jade.wrapper.ControllerException;
 
 import java.util.HashSet;
+import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
-import java.util.concurrent.CompletableFuture;
 
 public class SpawnPieceAgents extends OneShotBehaviour {
 
@@ -129,8 +132,12 @@ public class SpawnPieceAgents extends OneShotBehaviour {
             myAgent.addBehaviour(new AchieveREInitiator(myAgent, request) {
                 protected void handleInform(ACLMessage inform) {
                     logger.info("Agent " + agentName + "successfully created");
-                    var pieces = (HashSet<AID>) dataStore.get(GameAgent.PIECE_AGENT_SET_KEY);
-                    pieces.add(new AID(agentName, false));
+                    var pieces = (Map<AID, Piece>) dataStore.get(GameAgent.AID_TO_PIECE_KEY);
+                    var aid = new AID(agentName, AID.ISLOCALNAME);
+                    var ontoAid = new OntoAID(aid.getLocalName(), AID.ISLOCALNAME);
+                    var colourConcept = new Colour(colour);
+                    var position = new Position(startingSquare);
+                    pieces.put(aid, new Piece(ontoAid, colourConcept, type, position));
                 }
 
                 protected void handleFailure(ACLMessage failure) {

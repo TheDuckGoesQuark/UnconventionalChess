@@ -5,6 +5,7 @@ plugins {
 
 repositories {
     jcenter()
+    mavenCentral()
     maven {
         url 'https://jade.tilab.com/maven/'
     }

@@ -1,7 +1,7 @@
 package chessagents.agents.gameagent.behaviours;
 
 import jade.core.behaviours.DataStore;
-import jade.core.behaviours.OneShotBehaviour;
+import jade.core.behaviours.SimpleBehaviour;
 import jade.lang.acl.ACLMessage;
 import jade.proto.SubscriptionResponder.Subscription;
 import jade.util.Logger;
@@ -10,9 +10,11 @@ import jade.util.Logger;
 import static chessagents.agents.gameagent.GameAgent.GAME_STATUS_KEY;
 import static chessagents.ontology.ChessOntology.IS_READY;
 
-public class NotifySubscriberWhenGameReady extends OneShotBehaviour {
+public class NotifySubscriberWhenGameReady extends SimpleBehaviour {
+
     private final Logger logger = Logger.getMyLogger(this.getClass().getName());
     private final Subscription subscription;
+    private boolean finished = false;
 
     public NotifySubscriberWhenGameReady(Subscription subscription, DataStore dataStore) {
         this.subscription = subscription;
@@ -32,9 +34,14 @@ public class NotifySubscriberWhenGameReady extends OneShotBehaviour {
             notification.setPerformative(ACLMessage.INFORM);
             notification.setContent(subscriptionMessage.getContent());
             subscription.notify(notification);
+            finished = true;
         } else {
-            // TODO check this repeats behaviour even though one shot
             block();
         }
+    }
+
+    @Override
+    public boolean done() {
+        return finished;
     }
 }

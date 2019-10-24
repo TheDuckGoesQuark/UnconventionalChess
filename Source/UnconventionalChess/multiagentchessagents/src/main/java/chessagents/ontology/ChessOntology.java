@@ -4,7 +4,6 @@ import chessagents.ontology.schemas.actions.CreateGame;
 import chessagents.ontology.schemas.actions.MakeMove;
 import chessagents.ontology.schemas.concepts.*;
 import chessagents.ontology.schemas.predicates.*;
-import jade.content.Predicate;
 import jade.content.onto.BasicOntology;
 import jade.content.onto.Ontology;
 import jade.content.onto.OntologyException;
@@ -34,7 +33,6 @@ public class ChessOntology extends Ontology {
     public static final String PIECE_COLOUR = "Colour";
     public static final String PIECE_POSITION = "Position";
 
-
     // Predicates
     public static final String CAN_CAPTURE = "Can Capture";
     public static final String CAN_CAPTURE_ATTACKER = "Attacker";
@@ -59,6 +57,10 @@ public class ChessOntology extends Ontology {
 
     public static final String CREATE_GAME = "Create Game";
     public static final String CREATE_GAME_GAME = "Game";
+
+    // IRE
+
+    public static final String ALL_PIECES_MATCHING_COLOUR = "ALL_PIECES_MATCHING_COLOUR";
 
     private static final ChessOntology instance = new ChessOntology();
 
@@ -112,6 +114,7 @@ public class ChessOntology extends Ontology {
             final var isColourSchema = new PredicateSchema(IS_COLOUR);
             isColourSchema.add(IS_COLOUR_COLOUR, getSchema(COLOUR));
             isColourSchema.add(IS_COLOUR_PIECE, getSchema(PIECE));
+            add(isColourSchema, IsColour.class);
 
             // Actions
             final var makeMoveSchema = new AgentActionSchema(MAKE_MOVE);

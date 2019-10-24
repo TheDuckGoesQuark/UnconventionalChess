@@ -2,15 +2,13 @@ package chessagents.ontology.schemas.concepts;
 
 import jade.content.Concept;
 import jade.content.OntoAID;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
+@ToString
 public class Piece implements Concept {
 
     private OntoAID pieceAgent;
