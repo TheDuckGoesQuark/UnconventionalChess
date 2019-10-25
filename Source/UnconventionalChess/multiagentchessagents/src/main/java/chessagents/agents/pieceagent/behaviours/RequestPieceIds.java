@@ -23,7 +23,6 @@ import jade.util.Logger;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
-import java.util.stream.Collectors;
 
 import static chessagents.agents.pieceagent.PieceAgent.*;
 
@@ -94,7 +93,6 @@ public class RequestPieceIds extends SimpleAchieveREInitiator {
 
     @Override
     protected void handleInform(ACLMessage inform) {
-        // TODO extract all matching pieces, and store details
         try {
             var contentManager = myAgent.getContentManager();
             var absEquals = (AbsPredicate) contentManager.extractAbsContent(inform);

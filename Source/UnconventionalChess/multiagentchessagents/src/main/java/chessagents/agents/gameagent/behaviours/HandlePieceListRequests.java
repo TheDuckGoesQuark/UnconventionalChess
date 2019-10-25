@@ -36,7 +36,6 @@ public class HandlePieceListRequests extends SimpleAchieveREResponder {
 
     @Override
     protected ACLMessage prepareResponse(ACLMessage request) {
-        // TODO this request doesnt seem to be being made?
         var reply = request.createReply();
 
         if (getDataStore().get(GAME_STATUS_KEY) != GameStatus.READY) {
@@ -54,7 +53,7 @@ public class HandlePieceListRequests extends SimpleAchieveREResponder {
 
         try {
             var contentManager = myAgent.getContentManager();
-            var abs = contentManager.extractContent(request);
+            var abs = contentManager.extractAbsContent(request);
 
             if (abs instanceof AbsIRE) {
                 var ire = (AbsIRE) abs;
@@ -93,6 +92,7 @@ public class HandlePieceListRequests extends SimpleAchieveREResponder {
      * @return
      */
     private Set<Piece> getPiecesForColour(String colour) {
+        // TODO the map returned by the datastore is null for some reason
         return ((HashMap<AID, Piece>) getDataStore().get(AID_TO_PIECE_KEY)).values()
                 .stream()
                 .filter(p -> p.getColour().getColour().equals(colour))
