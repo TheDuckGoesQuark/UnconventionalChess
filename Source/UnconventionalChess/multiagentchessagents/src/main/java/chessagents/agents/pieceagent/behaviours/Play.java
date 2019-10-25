@@ -7,6 +7,7 @@ import chessagents.ontology.schemas.actions.MakeMove;
 import chessagents.ontology.schemas.concepts.Colour;
 import chessagents.ontology.schemas.concepts.Move;
 import chessagents.ontology.schemas.concepts.Piece;
+import com.github.bhlangonijr.chesslib.Board;
 import jade.content.lang.Codec;
 import jade.content.onto.OntologyException;
 import jade.content.onto.basic.Action;
@@ -17,6 +18,7 @@ import jade.domain.FIPANames;
 import jade.lang.acl.ACLMessage;
 
 import java.util.HashMap;
+import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
 
@@ -28,15 +30,16 @@ public class Play extends CyclicBehaviour {
 
     private final BoardWrapper board;
     private final Colour myColour;
-    private final HashMap<AID, Piece> pieceAgents;
+    private final Map<AID, Piece> pieceAgents;
     private final AID gameAgentAid = new AID("GameAgent-0", false);
 
     private boolean moveSent = false;
 
-    public Play(PieceAgent pieceAgent, DataStore dataStore) {
-        this.board = (BoardWrapper) dataStore.get(BOARD_KEY);
-        this.myColour = (Colour) dataStore.get(MY_COLOUR_KEY);
-        this.pieceAgents = (HashMap<AID, Piece>) dataStore.get(AID_TO_PIECE_KEY);
+    public Play(PieceAgent pieceAgent, Colour colour, Map<AID, Piece> pieceAgents) {
+        super(pieceAgent);
+        this.board = new BoardWrapper();
+        this.myColour = colour;
+        this.pieceAgents = pieceAgents;
     }
 
     private boolean myTurn() {

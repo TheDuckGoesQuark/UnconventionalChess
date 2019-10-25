@@ -3,20 +3,15 @@ package chessagents.agents.pieceagent.behaviours;
 import chessagents.ontology.ChessOntology;
 import chessagents.ontology.schemas.concepts.Game;
 import chessagents.ontology.schemas.predicates.IsReady;
-import jade.content.ContentElement;
 import jade.content.lang.Codec;
 import jade.content.onto.OntologyException;
 import jade.core.AID;
 import jade.core.Agent;
-import jade.core.behaviours.DataStore;
 import jade.core.behaviours.SimpleBehaviour;
 import jade.domain.FIPANames;
 import jade.lang.acl.ACLMessage;
 import jade.lang.acl.MessageTemplate;
 import jade.util.Logger;
-
-import static chessagents.agents.pieceagent.PieceAgent.GAME_AGENT_AID_KEY;
-import static chessagents.agents.pieceagent.PieceAgent.GAME_KEY;
 
 /**
  * Subscribes the given agent to the current game status
@@ -40,26 +35,25 @@ public class SubscribeToGameStatus extends SimpleBehaviour {
     private static final String REQUEST_KEY = "_REQUEST";
     private static final String RESPONSE_KEY = "_RESPONSE";
     private static final String RESULT_KEY = "_RESULT";
+    private final AID gameAgentAID;
+    private final Game game;
 
     private int state = PREPARE_SUBSCRIPTION;
 
-    public SubscribeToGameStatus(Agent a, DataStore dataStore) {
+    public SubscribeToGameStatus(Agent a, AID gameAgentAID, Game game) {
         super(a);
-        setDataStore(dataStore);
-    }
-
-    private AID getGameAgentAID() {
-        return (AID) getDataStore().get(GAME_AGENT_AID_KEY);
+        this.gameAgentAID = gameAgentAID;
+        this.game = game;
     }
 
     private ACLMessage prepareSubscription(ACLMessage subscription) {
-        subscription.addReceiver(getGameAgentAID());
+        subscription.addReceiver(gameAgentAID);
         subscription.setLanguage(FIPANames.ContentLanguage.FIPA_SL);
         subscription.setOntology(ChessOntology.ONTOLOGY_NAME);
         subscription.setProtocol(FIPANames.InteractionProtocol.FIPA_SUBSCRIBE);
 
         try {
-            myAgent.getContentManager().fillContent(subscription, new IsReady((Game) getDataStore().get(GAME_KEY)));
+            myAgent.getContentManager().fillContent(subscription, new IsReady(game));
         } catch (Codec.CodecException | OntologyException e) {
             logger.warning("Unable to create subscription message: " + e.getMessage());
         }

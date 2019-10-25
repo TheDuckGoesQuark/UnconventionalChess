@@ -23,8 +23,8 @@ import java.util.HashMap;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+import static chessagents.agents.gameagent.GameAgent.AID_TO_PIECE_KEY;
 import static chessagents.agents.gameagent.GameAgent.GAME_STATUS_KEY;
-import static chessagents.agents.pieceagent.PieceAgent.AID_TO_PIECE_KEY;
 import static chessagents.ontology.ChessOntology.*;
 
 public class HandlePieceListRequests extends SimpleAchieveREResponder {
