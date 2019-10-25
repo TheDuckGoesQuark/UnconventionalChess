@@ -22,7 +22,8 @@ import java.util.Set;
 
 import static chessagents.agents.pieceagent.PieceAgent.*;
 
-// TODO
+// TODO start implementing agent logic for making moves
+// TODO human can't make moves right now as informs aren't communicated back to the client. fix that.
 public class Play extends CyclicBehaviour {
 
     private final BoardWrapper board;

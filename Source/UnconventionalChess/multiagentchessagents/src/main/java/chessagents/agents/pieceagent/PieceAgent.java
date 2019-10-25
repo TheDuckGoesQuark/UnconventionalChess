@@ -30,11 +30,17 @@ public class PieceAgent extends ChessAgent {
     protected void setup() {
         super.setup();
         var args = getArguments();
+
+        // init board
+        dataStore.put(BOARD_KEY, new BoardWrapper());
+
+        // populated by arguments passed during agent creation
         dataStore.put(MY_POSITION_KEY, new Position((String) args[0]));
         dataStore.put(MY_COLOUR_KEY, new Colour((String) args[1]));
         dataStore.put(GAME_AGENT_AID_KEY, new AID((String) args[2], true));
+
+        // populated by asking the game agent
         dataStore.put(GAME_KEY, new Game(Integer.parseInt((String) args[3])));
-        dataStore.put(BOARD_KEY, new BoardWrapper());
         dataStore.put(AID_TO_PIECE_KEY, new HashMap<AID, Piece>());
 
         var sequence = new SequentialBehaviour();

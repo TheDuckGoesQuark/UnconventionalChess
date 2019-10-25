@@ -71,21 +71,18 @@ public class RequestPieceIds extends SimpleAchieveREInitiator {
         absIRE.setVariable(absX);
         absIRE.setProposition(absIsColour);
 
-        logger.info("Attempting to serialize query" + absIRE.toString());
         myAgent.getContentManager().fillContent(request, absIRE);
     }
 
     @Override
     protected void handleRefuse(ACLMessage msg) {
-        // TODO asked too early, game not ready yet??
-        logger.warning("Asked to early: " + msg.getContent());
+        logger.warning("Game Agent didn't like our request :( : " + msg.getContent());
         super.handleRefuse(msg);
     }
 
     @Override
     protected void handleAgree(ACLMessage agree) {
-        logger.info("GameAgent agreed to give list of pieces!");
-        // TODO get excited :)
+        logger.info("GameAgent agreed to give list of pieces! GET EXCITED");
     }
 
     @Override
