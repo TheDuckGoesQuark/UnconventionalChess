@@ -1,5 +1,6 @@
 package chessagents.agents.gameagent.behaviours;
 
+import chessagents.agents.gameagent.GameStatus;
 import jade.core.behaviours.DataStore;
 import jade.core.behaviours.SimpleBehaviour;
 import jade.lang.acl.ACLMessage;
@@ -22,7 +23,7 @@ public class NotifySubscriberWhenGameReady extends SimpleBehaviour {
     }
 
     private boolean gameIsReady() {
-        return getDataStore().get(GAME_STATUS_KEY) == IS_READY;
+        return getDataStore().get(GAME_STATUS_KEY) == GameStatus.READY;
     }
 
     @Override

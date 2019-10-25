@@ -39,7 +39,7 @@ public class PieceAgent extends ChessAgent {
         dataStore.put(AID_TO_PIECE_KEY, new HashMap<AID, Piece>());
 
         var sequence = new SequentialBehaviour();
-        sequence.addSubBehaviour(new SubscribeToGameStatus(this, sequence, dataStore));
+        sequence.addSubBehaviour(new SubscribeToGameStatus(this, dataStore));
         sequence.addSubBehaviour(new RequestPieceIds(this, dataStore));
         sequence.addSubBehaviour(new Play(this, dataStore));
         addBehaviour(sequence);
