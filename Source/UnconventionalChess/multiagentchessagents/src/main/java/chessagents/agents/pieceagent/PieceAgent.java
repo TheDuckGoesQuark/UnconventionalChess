@@ -14,7 +14,6 @@ import jade.core.behaviours.DataStore;
 import jade.core.behaviours.SequentialBehaviour;
 
 import java.util.HashMap;
-import java.util.HashSet;
 
 public class PieceAgent extends ChessAgent {
 

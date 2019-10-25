@@ -9,9 +9,6 @@ import jade.content.lang.sl.SLVocabulary;
 import jade.content.onto.BasicOntology;
 import jade.content.onto.Ontology;
 import jade.content.onto.OntologyException;
-import jade.content.schema.AggregateSchema;
-import jade.content.schema.IRESchema;
-import jade.content.schema.facets.TypedAggregateFacet;
 import jade.core.AID;
 import jade.core.Agent;
 import jade.core.behaviours.DataStore;
@@ -99,7 +96,6 @@ public class RequestPieceIds extends SimpleAchieveREInitiator {
             var absSet = (AbsAggregate) absEquals.getAbsTerm(BasicOntology.EQUALS_RIGHT);
             var pieces = extractPieces(absSet, contentManager.getOntology(inform));
             storePieces(pieces);
-            pieces.forEach(piece -> logger.info(piece.toString()));
         } catch (Codec.CodecException | OntologyException e) {
             logger.warning("Failed to extract message: " + e.getMessage());
         }
@@ -107,7 +103,7 @@ public class RequestPieceIds extends SimpleAchieveREInitiator {
 
     private void storePieces(Set<Piece> pieces) {
         var map = (Map<AID, Piece>) getDataStore().get(AID_TO_PIECE_KEY);
-        pieces.forEach(piece -> map.put(piece.getPieceAgent(), piece));
+        pieces.forEach(piece -> map.put(piece.getAgentAID(), piece));
     }
 
     private Set<Piece> extractPieces(AbsAggregate absSet, Ontology ontology) throws OntologyException {

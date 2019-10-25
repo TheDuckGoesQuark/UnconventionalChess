@@ -28,7 +28,7 @@ public class ChessOntology extends Ontology {
     public static final String GAME_ID = "GameId";
 
     public static final String PIECE = "Piece";
-    public static final String PIECE_AGENT = "Agent";
+    public static final String PIECE_AGENT = "AgentAID";
     public static final String PIECE_TYPE = "Type";
     public static final String PIECE_COLOUR = "Colour";
     public static final String PIECE_POSITION = "Position";

@@ -17,6 +17,7 @@ import jade.domain.FIPANames;
 import jade.lang.acl.ACLMessage;
 import jade.lang.acl.MessageTemplate;
 import jade.proto.SimpleAchieveREResponder;
+import jade.util.Logger;
 
 import java.util.HashMap;
 import java.util.Set;
@@ -27,6 +28,9 @@ import static chessagents.agents.pieceagent.PieceAgent.AID_TO_PIECE_KEY;
 import static chessagents.ontology.ChessOntology.*;
 
 public class HandlePieceListRequests extends SimpleAchieveREResponder {
+
+    public final Logger logger = Logger.getMyLogger(getClass().getName());
+
     public HandlePieceListRequests(GameAgent gameAgent, DataStore dataStore) {
         super(gameAgent, MessageTemplate.and(
                 MessageTemplate.MatchProtocol(FIPANames.InteractionProtocol.FIPA_QUERY),
@@ -54,18 +58,19 @@ public class HandlePieceListRequests extends SimpleAchieveREResponder {
         try {
             var contentManager = myAgent.getContentManager();
             var abs = contentManager.extractAbsContent(request);
+            var ontology = ChessOntology.getInstance();
 
             if (abs instanceof AbsIRE) {
                 var ire = (AbsIRE) abs;
-                var absIsColour = ire.getProposition();
-                var ontology = contentManager.getOntology(request);
-                var colour = (Colour) ontology.toObject(absIsColour.getAbsObject(IS_COLOUR_COLOUR));
+                var prop = ontology.fromObject(ire.getProposition());
+                var colour = (Colour) ontology.toObject(prop.getAbsObject(IS_COLOUR_COLOUR));
                 var matchingPieces = getPiecesForColour(colour.getColour());
                 var answer = createAnswer(ire, matchingPieces, ontology);
-                reply.setPerformative(ACLMessage.INFORM_REF);
+                reply.setPerformative(ACLMessage.INFORM);
                 contentManager.fillContent(reply, answer);
             }
-        } catch (Codec.CodecException | OntologyException e) {
+        } catch (Codec.CodecException | OntologyException | NullPointerException e) {
+            logger.warning("bad thing: " + e.getMessage());
             throw new FailureException("Unable to answer message: " + e.getMessage());
         }
 
@@ -76,7 +81,7 @@ public class HandlePieceListRequests extends SimpleAchieveREResponder {
         var aggregate = new AbsAggregate(BasicOntology.SET);
 
         for (Piece matchingPiece : matchingPieces) {
-            aggregate.add((AbsTerm) ontology.fromObject(matchingPiece));
+            aggregate.add((AbsConcept) ontology.fromObject(matchingPiece));
         }
 
         var equals = new AbsPredicate(BasicOntology.EQUALS);

@@ -11,7 +11,7 @@ import lombok.*;
 @ToString
 public class Piece implements Concept {
 
-    private OntoAID pieceAgent;
+    private OntoAID agentAID;
     private Colour colour;
     private String type;
     private Position position;

@@ -60,7 +60,7 @@ class Scratch {
             if (content instanceof AbsIRE) {
                 var prop =  ChessOntology.getInstance().fromObject(((AbsIRE) content).getProposition());
                 var absObject = prop.getAbsObject(IS_COLOUR_COLOUR);
-                var actualColour = (Colour) ChessOntology.getInstance().toObject(absColour);
+                var actualColour = (Colour) ChessOntology.getInstance().toObject(absObject);
 
                 var a = (AbsTerm) ontology.fromObject(actualColour);
                 System.out.println(a);

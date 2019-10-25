@@ -28,7 +28,7 @@ public class GameAgent extends ChessAgent {
 
     public static final String GAME_STATUS_KEY = "GAME_STATUS";
     public static final String GATEWAY_AGENT_KEY = "GATEWAY_AGENT_AID";
-    public static final String AID_TO_PIECE_KEY = "AID_TO_PIECE_KEY";
+    public static final String AID_TO_PIECE_KEY = "AID_TO_PIECE";
     public static final String BOARD_KEY = "BOARD";
     private static final Logger logger = Logger.getMyLogger(GameAgent.class.getName());
 
