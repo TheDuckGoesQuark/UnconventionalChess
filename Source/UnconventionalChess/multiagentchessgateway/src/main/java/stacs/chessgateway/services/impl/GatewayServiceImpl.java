@@ -3,6 +3,7 @@ package stacs.chessgateway.services.impl;
 import chessagents.agents.gameagent.GameAgentProperties;
 import chessagents.agents.gatewayagent.behaviours.RequestCreateGame;
 import jade.core.AID;
+import jade.core.behaviours.OneShotBehaviour;
 import jade.wrapper.ControllerException;
 import jade.wrapper.gateway.JadeGateway;
 import org.slf4j.Logger;
@@ -12,7 +13,7 @@ import org.springframework.stereotype.Service;
 import stacs.chessgateway.config.GatewayProperties;
 import stacs.chessgateway.exceptions.GatewayFailureException;
 import chessagents.agents.gatewayagent.behaviours.CreateGameAgent;
-import chessagents.agents.gatewayagent.behaviours.SendMoveToGameAgent;
+import chessagents.agents.commonbehaviours.RequestGameAgentMove;
 import stacs.chessgateway.models.GameConfiguration;
 import stacs.chessgateway.models.Message;
 import stacs.chessgateway.models.MessageType;
@@ -45,12 +46,19 @@ public class GatewayServiceImpl implements GatewayService {
     @Override
     public void sendMoveToGameAgents(Message<MoveMessage> move, int gameId) throws GatewayFailureException {
         try {
-            var agentId = gameAgentMapper.getAgentByGameId(gameId);
+            var gameAgentAID = gameAgentMapper.getAgentByGameId(gameId);
             var makeMove = ontologyTranslator.translateToOntology(move.getBody());
 
-            logger.info("Sending move to agent " + agentId + ": " + move.getBody().toString());
+            logger.info("Sending move to agent " + gameAgentAID + ": " + move.getBody().toString());
 
-            JadeGateway.execute(new SendMoveToGameAgent(makeMove, agentId));
+            var resultCallback = new OneShotBehaviour() {
+                @Override
+                public void action() {
+                    // TODO send using websocket service (response will be in datastore)
+                }
+            };
+            var requestGameAgentMove = new RequestGameAgentMove(makeMove, gameAgentAID, resultCallback);
+            JadeGateway.execute(requestGameAgentMove);
         } catch (InterruptedException | ControllerException e) {
             throw new GatewayFailureException(Arrays.toString(e.getStackTrace()));
         }
