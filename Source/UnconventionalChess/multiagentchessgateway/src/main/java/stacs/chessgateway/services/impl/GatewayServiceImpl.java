@@ -56,6 +56,7 @@ public class GatewayServiceImpl implements GatewayService {
             if (requestGameAgentMove.wasSuccessful()) {
                 websocketService.sendMessageToClient(move, gameId);
             } else {
+                logger.warn("Human move was refused!");
                 // TODO send error
             }
         } catch (InterruptedException | ControllerException e) {

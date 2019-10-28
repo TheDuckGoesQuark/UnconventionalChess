@@ -54,7 +54,7 @@ public class GameAgent extends ChessAgent {
     public void createGame(Game game) {
         var gameSequence = new SequentialBehaviour();
         gameSequence.addSubBehaviour(new SpawnPieceAgents(properties, game, dataStore));
-        gameSequence.addSubBehaviour(new HandleGame(properties, game, dataStore));
+        gameSequence.addSubBehaviour(new HandleGame(properties, game, (BoardWrapper) dataStore.get(BOARD_KEY), dataStore));
         gameSequence.addSubBehaviour(new CleanupGame(properties, game, dataStore));
         addBehaviour(gameSequence);
     }
