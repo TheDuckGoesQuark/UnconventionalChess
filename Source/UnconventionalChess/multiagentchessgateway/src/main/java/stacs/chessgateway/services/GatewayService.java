@@ -14,7 +14,7 @@ public interface GatewayService {
      * @param move   move to send
      * @param gameId
      */
-    void sendMoveToGameAgents(Message<MoveMessage> move, int gameId) throws GatewayFailureException;
+    void sendMoveToGameAgent(Message<MoveMessage> move, int gameId) throws GatewayFailureException;
 
     /**
      * Initialises game using the given configuration and returns

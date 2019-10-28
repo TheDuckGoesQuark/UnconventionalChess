@@ -3,7 +3,6 @@ package stacs.chessgateway.services.impl;
 import chessagents.agents.gameagent.GameAgentProperties;
 import chessagents.agents.gatewayagent.behaviours.RequestCreateGame;
 import jade.core.AID;
-import jade.core.behaviours.OneShotBehaviour;
 import jade.wrapper.ControllerException;
 import jade.wrapper.gateway.JadeGateway;
 import org.slf4j.Logger;
@@ -44,21 +43,21 @@ public class GatewayServiceImpl implements GatewayService {
     }
 
     @Override
-    public void sendMoveToGameAgents(Message<MoveMessage> move, int gameId) throws GatewayFailureException {
+    public void sendMoveToGameAgent(Message<MoveMessage> move, int gameId) throws GatewayFailureException {
         try {
             var gameAgentAID = gameAgentMapper.getAgentByGameId(gameId);
             var makeMove = ontologyTranslator.translateToOntology(move.getBody());
 
             logger.info("Sending move to agent " + gameAgentAID + ": " + move.getBody().toString());
 
-            var resultCallback = new OneShotBehaviour() {
-                @Override
-                public void action() {
-                    // TODO send using websocket service (response will be in datastore)
-                }
-            };
-            var requestGameAgentMove = new RequestGameAgentMove(makeMove, gameAgentAID, resultCallback);
+            var requestGameAgentMove = new RequestGameAgentMove(makeMove, gameAgentAID);
             JadeGateway.execute(requestGameAgentMove);
+
+            if (requestGameAgentMove.wasSuccessful()) {
+                websocketService.sendMessageToClient(move, gameId);
+            } else {
+                // TODO send error
+            }
         } catch (InterruptedException | ControllerException e) {
             throw new GatewayFailureException(Arrays.toString(e.getStackTrace()));
         }

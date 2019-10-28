@@ -6,7 +6,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.messaging.handler.annotation.DestinationVariable;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.handler.annotation.Payload;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
@@ -39,7 +38,7 @@ public class GameController {
     @MessageMapping("/game.{gameId}.move")
     public void handleMoveMessage(@Payload final Message<MoveMessage> move, @DestinationVariable final int gameId) throws GatewayFailureException {
         logger.info("Websocket move endpoint hit for game id " + gameId + "!");
-        gatewayService.sendMoveToGameAgents(move, gameId);
+        gatewayService.sendMoveToGameAgent(move, gameId);
     }
 
     /**
