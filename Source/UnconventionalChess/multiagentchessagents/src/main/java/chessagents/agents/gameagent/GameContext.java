@@ -9,6 +9,9 @@ import lombok.Setter;
 import java.util.HashMap;
 import java.util.Map;
 
+import static chessagents.ontology.schemas.concepts.Colour.BLACK;
+import static chessagents.ontology.schemas.concepts.Colour.WHITE;
+
 @Getter
 @Setter
 public class GameContext {
@@ -24,6 +27,14 @@ public class GameContext {
     public GameContext(AID gatewayAgentAID, GameProperties gameProperties) {
         this.gatewayAgentAID = gatewayAgentAID;
         this.gameProperties = gameProperties;
+    }
+
+    public boolean isHumanTurn() {
+        var board = getBoard();
+        var gameProperties = getGameProperties();
+
+        return gameProperties.isHumanPlays() &&
+                (gameProperties.isHumanPlaysAsWhite() ? board.isSideToGo(WHITE) : board.isSideToGo(BLACK));
     }
 
 }

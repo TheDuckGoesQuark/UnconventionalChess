@@ -2,6 +2,9 @@ package chessagents.agents.gameagent.behaviours.gameplay;
 
 import chessagents.agents.gameagent.GameAgent;
 import chessagents.agents.gameagent.GameContext;
+import chessagents.util.Channel;
+import jade.core.behaviours.ReceiverBehaviour;
+import jade.lang.acl.ACLMessage;
 import jade.util.Logger;
 
 import static chessagents.agents.gameagent.behaviours.gameplay.GamePlayState.*;
@@ -22,9 +25,11 @@ public class HandleGame extends GamePlayFSMBehaviour {
 
         myAgent.addBehaviour(new HandleMoveSubscriptions((GameAgent) myAgent, context));
 
+        // single element channel for holding the move currently being considered
+        var moveMessageChannel = new Channel<ACLMessage>(1);
         registerFirstState(new InitTurn((GameAgent) myAgent, context));
         registerState(new ElectLeaderAgent(), ELECT_LEADER_AGENT);
-        registerState(new WaitForMove(), WAIT_FOR_MOVE);
+        registerState(new WaitForMove((GameAgent) myAgent, moveMessageChannel), WAIT_FOR_MOVE);
         registerState(new VerifyMove(), VERIFY_MOVE);
         registerState(new RefuseMove(), REFUSE_MOVE);
         registerState(new AgreeToMove(), AGREE_TO_MOVE);
