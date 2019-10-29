@@ -19,17 +19,11 @@ public class RequestGameAgentMove extends SimpleBehaviour {
             MessageTemplate.MatchProtocol(FIPANames.InteractionProtocol.FIPA_REQUEST),
             MessageTemplate.MatchOntology(ChessOntology.ONTOLOGY_NAME)
     );
-    private static final String REQUEST_KEY = "_REQUEST";
-    private static final String RESPONSE_KEY = "_RESPONSE";
-    private static final String RESULT_KEY = "_RESULT";
 
-    public static final int PREPARE_REQUEST = 0;
     private static final int SENDING_REQUEST = 1;
     private static final int RECEIVE_RESPONSE = 2;
-    public static final int HANDLE_RESPONSE = 3;
-    private static final int RECEIVE_RESULT = 4;
-    public static final int HANDLE_RESULT = 5;
-    private static final int DONE = 6;
+    private static final int RECEIVE_RESULT = 3;
+    private static final int DONE = 4;
 
     private final Logger logger = Logger.getMyLogger(getClass().getName());
     private final AID gameAgentName;
@@ -81,42 +75,28 @@ public class RequestGameAgentMove extends SimpleBehaviour {
     @Override
     public void action() {
         ACLMessage request, response, result;
+
         switch (this.state) {
-            case PREPARE_REQUEST:
-                request = prepareRequest(new ACLMessage(ACLMessage.REQUEST));
-                getDataStore().put(REQUEST_KEY, request);
-                state = SENDING_REQUEST;
-                break;
             case SENDING_REQUEST:
-                request = (ACLMessage) getDataStore().get(REQUEST_KEY);
+                request = prepareRequest(new ACLMessage(ACLMessage.REQUEST));
                 myAgent.send(request);
                 state = RECEIVE_RESPONSE;
                 break;
             case RECEIVE_RESPONSE:
                 response = myAgent.receive(mt);
                 if (response != null) {
-                    getDataStore().put(RESPONSE_KEY, response);
-                    state = HANDLE_RESPONSE;
+                    handleResponse(response);
                 } else {
                     block();
                 }
-                break;
-            case HANDLE_RESPONSE:
-                response = (ACLMessage) getDataStore().get(RESPONSE_KEY);
-                handleResponse(response);
                 break;
             case RECEIVE_RESULT:
                 result = myAgent.receive(mt);
                 if (result != null) {
-                    getDataStore().put(RESULT_KEY, result);
-                    state = HANDLE_RESULT;
+                    handleResult(result);
                 } else {
                     block();
                 }
-                break;
-            case HANDLE_RESULT:
-                result = (ACLMessage) getDataStore().get(RESULT_KEY);
-                handleResult(result);
                 break;
         }
     }
