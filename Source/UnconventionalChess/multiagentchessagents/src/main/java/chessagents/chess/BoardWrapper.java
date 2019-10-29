@@ -121,7 +121,7 @@ public class BoardWrapper {
         return board.getHalfMoveCounter();
     }
 
-    public boolean isOver() {
+    public boolean gameIsOver() {
         return board.isMated() || board.isDraw() || board.isStaleMate() || board.isInsufficientMaterial();
     }
 

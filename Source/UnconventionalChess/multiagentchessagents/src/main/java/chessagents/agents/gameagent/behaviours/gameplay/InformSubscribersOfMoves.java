@@ -90,7 +90,7 @@ public class InformSubscribersOfMoves extends SimpleBehaviour {
 
     @Override
     public boolean done() {
-        return context.getBoard().isOver();
+        return context.getBoard().gameIsOver();
     }
 
     void addSubscriber(Subscription sub) {

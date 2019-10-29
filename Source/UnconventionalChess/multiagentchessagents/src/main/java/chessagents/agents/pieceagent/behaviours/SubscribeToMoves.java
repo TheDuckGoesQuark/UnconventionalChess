@@ -14,7 +14,7 @@ import jade.lang.acl.MessageTemplate;
 import jade.util.Logger;
 
 /**
- * Subscribes the given agent to the current game status
+ * Subscribes the given agent to moves being made in the game TODO
  */
 public class SubscribeToMoves extends SimpleBehaviour {
 
