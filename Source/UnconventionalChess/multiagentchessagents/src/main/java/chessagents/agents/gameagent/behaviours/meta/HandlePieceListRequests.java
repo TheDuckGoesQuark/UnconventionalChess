@@ -1,17 +1,19 @@
 package chessagents.agents.gameagent.behaviours.meta;
 
 import chessagents.agents.gameagent.GameAgent;
+import chessagents.agents.gameagent.GameContext;
 import chessagents.agents.gameagent.GameStatus;
 import chessagents.ontology.ChessOntology;
 import chessagents.ontology.schemas.concepts.Colour;
 import chessagents.ontology.schemas.concepts.Piece;
-import jade.content.abs.*;
+import jade.content.abs.AbsAggregate;
+import jade.content.abs.AbsConcept;
+import jade.content.abs.AbsIRE;
+import jade.content.abs.AbsPredicate;
 import jade.content.lang.Codec;
 import jade.content.onto.BasicOntology;
 import jade.content.onto.Ontology;
 import jade.content.onto.OntologyException;
-import jade.core.AID;
-import jade.core.behaviours.DataStore;
 import jade.domain.FIPAAgentManagement.FailureException;
 import jade.domain.FIPANames;
 import jade.lang.acl.ACLMessage;
@@ -19,30 +21,29 @@ import jade.lang.acl.MessageTemplate;
 import jade.proto.SimpleAchieveREResponder;
 import jade.util.Logger;
 
-import java.util.HashMap;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-import static chessagents.agents.gameagent.GameAgent.AID_TO_PIECE_KEY;
-import static chessagents.agents.gameagent.GameAgent.GAME_STATUS_KEY;
-import static chessagents.ontology.ChessOntology.*;
+import static chessagents.ontology.ChessOntology.IS_COLOUR_COLOUR;
 
 public class HandlePieceListRequests extends SimpleAchieveREResponder {
 
-    public final Logger logger = Logger.getMyLogger(getClass().getName());
+    private final Logger logger = Logger.getMyLogger(getClass().getName());
+    private final GameContext context;
 
-    public HandlePieceListRequests(GameAgent gameAgent, DataStore dataStore) {
+    public HandlePieceListRequests(GameAgent gameAgent, GameContext context) {
         super(gameAgent, MessageTemplate.and(
                 MessageTemplate.MatchProtocol(FIPANames.InteractionProtocol.FIPA_QUERY),
                 MessageTemplate.MatchOntology(ChessOntology.ONTOLOGY_NAME)
-        ), dataStore);
+        ));
+        this.context = context;
     }
 
     @Override
     protected ACLMessage prepareResponse(ACLMessage request) {
         var reply = request.createReply();
 
-        if (getDataStore().get(GAME_STATUS_KEY) != GameStatus.READY) {
+        if (context.getGameStatus() != GameStatus.READY) {
             reply.setPerformative(ACLMessage.REFUSE);
         } else {
             reply.setPerformative(ACLMessage.AGREE);
@@ -97,8 +98,7 @@ public class HandlePieceListRequests extends SimpleAchieveREResponder {
      * @return
      */
     private Set<Piece> getPiecesForColour(String colour) {
-        // TODO the map returned by the datastore is null for some reason
-        return ((HashMap<AID, Piece>) getDataStore().get(AID_TO_PIECE_KEY)).values()
+        return context.getPiecesByAID().values()
                 .stream()
                 .filter(p -> p.getColour().getColour().equals(colour))
                 .collect(Collectors.toSet());

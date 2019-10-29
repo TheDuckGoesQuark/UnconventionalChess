@@ -1,29 +1,27 @@
 package chessagents.agents.gameagent.behaviours.meta;
 
+import chessagents.agents.gameagent.GameContext;
 import chessagents.agents.gameagent.GameStatus;
-import jade.core.behaviours.DataStore;
 import jade.core.behaviours.SimpleBehaviour;
 import jade.lang.acl.ACLMessage;
 import jade.proto.SubscriptionResponder.Subscription;
 import jade.util.Logger;
 
 
-import static chessagents.agents.gameagent.GameAgent.GAME_STATUS_KEY;
-import static chessagents.ontology.ChessOntology.IS_READY;
-
 public class NotifySubscriberWhenGameReady extends SimpleBehaviour {
 
     private final Logger logger = Logger.getMyLogger(this.getClass().getName());
     private final Subscription subscription;
+    private GameContext context;
     private boolean finished = false;
 
-    public NotifySubscriberWhenGameReady(Subscription subscription, DataStore dataStore) {
+    public NotifySubscriberWhenGameReady(Subscription subscription, GameContext context) {
         this.subscription = subscription;
-        this.setDataStore(dataStore);
+        this.context = context;
     }
 
     private boolean gameIsReady() {
-        return getDataStore().get(GAME_STATUS_KEY) == GameStatus.READY;
+        return context.getGameStatus() == GameStatus.READY;
     }
 
     @Override

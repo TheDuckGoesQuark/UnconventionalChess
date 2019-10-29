@@ -1,9 +1,7 @@
 package chessagents.agents.gameagent.behaviours.gameplay;
 
 import chessagents.agents.gameagent.GameAgent;
-import chessagents.agents.gameagent.GameAgentProperties;
-import chessagents.ontology.schemas.concepts.Game;
-import jade.core.behaviours.DataStore;
+import chessagents.agents.gameagent.GameContext;
 import jade.util.Logger;
 
 import static chessagents.agents.gameagent.behaviours.gameplay.GamePlayState.*;
@@ -12,17 +10,15 @@ import static chessagents.agents.gameagent.behaviours.gameplay.GamePlayTransitio
 public class HandleGame extends GamePlayFSMBehaviour {
 
     private final Logger logger = Logger.getMyLogger(getClass().getName());
-    private final GameAgentProperties properties;
-    private final Game game;
+    private final GameContext context;
 
-    public HandleGame(GameAgent gameAgent, GameAgentProperties properties, Game game, DataStore dataStore) {
-        super(gameAgent, dataStore);
-        this.properties = properties;
-        this.game = game;
+    public HandleGame(GameAgent gameAgent, GameContext context) {
+        super(gameAgent);
+        this.context = context;
 
-        myAgent.addBehaviour(new HandleMoveSubscriptions((GameAgent) myAgent, getDataStore()));
+        myAgent.addBehaviour(new HandleMoveSubscriptions((GameAgent) myAgent, context));
 
-        registerFirstState(new InitTurn());
+        registerFirstState(new InitTurn((GameAgent) myAgent, context));
         registerState(new ElectLeaderAgent(), ELECT_LEADER_AGENT);
         registerState(new WaitForMove(), WAIT_FOR_MOVE);
         registerState(new VerifyMove(), VERIFY_MOVE);
@@ -60,4 +56,5 @@ public class HandleGame extends GamePlayFSMBehaviour {
         // send inform move transitions (resets all once returned to initial state)
         registerTransition(SEND_INFORM_MESSAGE, INIT, SENT_MOVE_INFORM, GamePlayState.values());
     }
+
 }

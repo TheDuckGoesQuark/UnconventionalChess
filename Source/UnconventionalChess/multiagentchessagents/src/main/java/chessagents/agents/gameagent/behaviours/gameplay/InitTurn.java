@@ -1,29 +1,27 @@
 package chessagents.agents.gameagent.behaviours.gameplay;
 
-import chessagents.chess.BoardWrapper;
+import chessagents.agents.gameagent.GameAgent;
+import chessagents.agents.gameagent.GameContext;
 import jade.core.behaviours.Behaviour;
 
-import static chessagents.agents.gameagent.GameAgent.BOARD_KEY;
 import static chessagents.ontology.schemas.concepts.Colour.BLACK;
 import static chessagents.ontology.schemas.concepts.Colour.WHITE;
 
 public class InitTurn extends Behaviour {
 
-    private boolean humanPlays;
-    private boolean humanPlaysAsWhite;
-    private BoardWrapper board;
+    private final GameContext context;
 
-    public void action(boolean humanPlays, boolean humanPlaysAsWhite, BoardWrapper board) {
-        this.humanPlays = humanPlays;
-        this.humanPlaysAsWhite = humanPlaysAsWhite;
-        this.board = board;
+    public InitTurn(GameAgent agent, GameContext context) {
+        super(agent);
+        this.context = context;
     }
 
     private boolean isHumanTurn() {
-        var board = (BoardWrapper) getDataStore().get(BOARD_KEY);
+        var board = context.getBoard();
+        var gameProperties = context.getGameProperties();
 
-        return humanPlays &&
-                (humanPlaysAsWhite ? board.isSideToGo(WHITE) : board.isSideToGo(BLACK));
+        return gameProperties.isHumanPlays() &&
+                (gameProperties.isHumanPlaysAsWhite() ? board.isSideToGo(WHITE) : board.isSideToGo(BLACK));
     }
 
     @Override

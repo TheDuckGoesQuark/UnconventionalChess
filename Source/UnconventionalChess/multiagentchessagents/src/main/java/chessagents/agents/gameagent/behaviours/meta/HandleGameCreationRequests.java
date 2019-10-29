@@ -1,6 +1,7 @@
 package chessagents.agents.gameagent.behaviours.meta;
 
 import chessagents.agents.gameagent.GameAgent;
+import chessagents.agents.gameagent.GameContext;
 import chessagents.agents.gameagent.GameStatus;
 import chessagents.ontology.ChessOntology;
 import chessagents.ontology.schemas.actions.CreateGame;
@@ -14,7 +15,6 @@ import jade.content.onto.basic.Action;
 import jade.content.onto.basic.Done;
 import jade.content.onto.basic.TrueProposition;
 import jade.core.Agent;
-import jade.core.behaviours.DataStore;
 import jade.core.behaviours.SimpleBehaviour;
 import jade.domain.FIPAAgentManagement.FailureException;
 import jade.domain.FIPAAgentManagement.NotUnderstoodException;
@@ -24,7 +24,6 @@ import jade.lang.acl.ACLMessage;
 import jade.lang.acl.MessageTemplate;
 import jade.util.Logger;
 
-import static chessagents.agents.gameagent.GameAgent.GAME_STATUS_KEY;
 import static chessagents.agents.gameagent.GameStatus.*;
 
 /**
@@ -32,27 +31,30 @@ import static chessagents.agents.gameagent.GameStatus.*;
  */
 public class HandleGameCreationRequests extends SimpleBehaviour {
 
+    private enum State {
+        WAITING_FOR_MESSAGE,
+        PREPARE_RESPONSE,
+        SEND_RESPONSE,
+        PREPARE_RESULT_NOTIFICATION,
+        SEND_RESULT_NOTIFICATION,
+        DONE
+    }
+
     private static final Logger LOGGER = Logger.getMyLogger(HandleGameCreationRequests.class.getName());
+    private static final String REQUEST_KEY = "_REQUEST";
+    private static final String RESPONSE_KEY = "_RESPONSE";
+    private static final String RESULT_NOTIFICATION_KEY = "_RESULT_NOTIFICATION";
     private static final MessageTemplate mt = MessageTemplate.and(
             MessageTemplate.MatchProtocol(FIPANames.InteractionProtocol.FIPA_REQUEST),
             MessageTemplate.MatchOntology(ChessOntology.ONTOLOGY_NAME)
     );
-    private static final int WAITING_FOR_MESSAGE = 0;
-    private static final int PREPARE_RESPONSE = 1;
-    private static final int SEND_RESPONSE = 2;
-    private static final int PREPARE_RESULT_NOTIFICATION = 3;
-    private static final int SEND_RESULT_NOTIFICATION = 4;
-    private static final int DONE = 5;
 
-    private static final String REQUEST_KEY = "_REQUEST";
-    private static final String RESPONSE_KEY = "_RESPONSE";
-    private static final String RESULT_NOTIFICATION_KEY = "_RESULT_NOTIFICATION";
+    private final GameContext context;
+    private State state;
 
-    private int state;
-
-    public HandleGameCreationRequests(Agent a, DataStore dataStore) {
+    public HandleGameCreationRequests(Agent a, GameContext context) {
         super(a);
-        this.setDataStore(dataStore);
+        this.context = context;
     }
 
     /**
@@ -69,14 +71,14 @@ public class HandleGameCreationRequests extends SimpleBehaviour {
         var action = extractAction(request);
         Game game;
 
-        var gameStatus = (GameStatus) getDataStore().get(GAME_STATUS_KEY);
+        var gameStatus = context.getGameStatus();
         switch (gameStatus) {
             case NOT_EXIST:
                 LOGGER.info("Agreeing to request to create game");
                 createAgreeResponse(action, reply);
                 game = ((CreateGame) (action.getAction())).getGame();
                 ((GameAgent) myAgent).createGame(game);
-                getDataStore().put(GAME_STATUS_KEY, BEING_CREATED);
+                context.setGameStatus(BEING_CREATED);
                 break;
             case BEING_CREATED:
                 LOGGER.info("Can't create game, already being created");
@@ -204,7 +206,7 @@ public class HandleGameCreationRequests extends SimpleBehaviour {
             case WAITING_FOR_MESSAGE:
                 if (receiveMessage()) {
                     LOGGER.info("Received request to create game");
-                    state = PREPARE_RESPONSE;
+                    state = State.PREPARE_RESPONSE;
                 } else {
                     block();
                 }
@@ -223,7 +225,7 @@ public class HandleGameCreationRequests extends SimpleBehaviour {
                     response.setPerformative(ACLMessage.REFUSE);
                 } finally {
                     getDataStore().put(RESPONSE_KEY, response);
-                    state = SEND_RESPONSE;
+                    state = State.SEND_RESPONSE;
                 }
                 break;
             case SEND_RESPONSE:
@@ -232,17 +234,17 @@ public class HandleGameCreationRequests extends SimpleBehaviour {
                     myAgent.send(response);
 
                     if (response.getPerformative() == ACLMessage.AGREE) {
-                        state = PREPARE_RESULT_NOTIFICATION;
-                        myAgent.addBehaviour(new HandlePieceListRequests((GameAgent) myAgent, getDataStore()));
+                        state = State.PREPARE_RESULT_NOTIFICATION;
+                        myAgent.addBehaviour(new HandlePieceListRequests((GameAgent) myAgent, context));
                     } else {
-                        state = WAITING_FOR_MESSAGE;
+                        state = State.WAITING_FOR_MESSAGE;
                     }
                 } else {
-                    state = WAITING_FOR_MESSAGE;
+                    state = State.WAITING_FOR_MESSAGE;
                 }
                 break;
             case PREPARE_RESULT_NOTIFICATION:
-                var gameStatus = getDataStore().get(GAME_STATUS_KEY);
+                var gameStatus = context.getGameStatus();
                 if (gameStatus != READY) {
                     block();
                     break;
@@ -260,7 +262,7 @@ public class HandleGameCreationRequests extends SimpleBehaviour {
                     resultNotifcation.setPerformative(ACLMessage.FAILURE);
                 } finally {
                     getDataStore().put(RESULT_NOTIFICATION_KEY, resultNotifcation);
-                    state = SEND_RESULT_NOTIFICATION;
+                    state = State.SEND_RESULT_NOTIFICATION;
                 }
                 break;
             case SEND_RESULT_NOTIFICATION:
@@ -269,7 +271,7 @@ public class HandleGameCreationRequests extends SimpleBehaviour {
                 if (resultNotifcation != null) {
                     myAgent.send(resultNotifcation);
                 }
-                state = DONE;
+                state = State.DONE;
                 break;
         }
     }
@@ -285,6 +287,6 @@ public class HandleGameCreationRequests extends SimpleBehaviour {
 
     @Override
     public boolean done() {
-        return state == DONE;
+        return state == State.DONE;
     }
 }

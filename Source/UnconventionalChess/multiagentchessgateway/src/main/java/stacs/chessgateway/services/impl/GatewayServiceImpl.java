@@ -1,6 +1,6 @@
 package stacs.chessgateway.services.impl;
 
-import chessagents.agents.gameagent.GameAgentProperties;
+import chessagents.agents.gameagent.GameProperties;
 import chessagents.agents.gatewayagent.behaviours.RequestCreateGame;
 import jade.core.AID;
 import jade.wrapper.ControllerException;
@@ -70,7 +70,7 @@ public class GatewayServiceImpl implements GatewayService {
             var gameId = gameAgentMapper.size() + 1;
             var agentId = new AID("GameAgent-" + gameId + "@" + platformName, true);
 
-            var gameAgentProperties = new GameAgentProperties(
+            var gameAgentProperties = new GameProperties(
                     gameConfiguration.isHumanPlays(),
                     gameConfiguration.isHumanPlaysAsWhite()
             );

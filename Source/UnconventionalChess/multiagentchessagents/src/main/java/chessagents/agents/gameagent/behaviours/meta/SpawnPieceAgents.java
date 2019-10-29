@@ -1,7 +1,8 @@
 package chessagents.agents.gameagent.behaviours.meta;
 
 import chessagents.agents.gameagent.GameAgent;
-import chessagents.agents.gameagent.GameAgentProperties;
+import chessagents.agents.gameagent.GameContext;
+import chessagents.agents.gameagent.GameProperties;
 import chessagents.agents.gameagent.GameStatus;
 import chessagents.agents.pieceagent.*;
 import chessagents.chess.BoardWrapper;
@@ -33,23 +34,18 @@ import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-import static chessagents.agents.gameagent.GameAgent.GAME_STATUS_KEY;
-
 public class SpawnPieceAgents extends OneShotBehaviour {
 
     private static final Logger logger = Logger.getMyLogger(SpawnPieceAgents.class.getName());
-    private final GameAgentProperties properties;
-    private final Game game;
-    private final DataStore dataStore;
+    private final GameContext context;
 
-    public SpawnPieceAgents(GameAgentProperties properties, Game game, DataStore dataStore) {
-        this.properties = properties;
-        this.dataStore = dataStore;
-        this.game = game;
+    public SpawnPieceAgents(GameAgent gameAgent, GameContext context) {
+        super(gameAgent);
+        this.context = context;
     }
 
     private String generatePieceAgentName(String pieceType, String colour, String startingSquare) {
-        return game.getGameId() + "-" + startingSquare + "-" + colour + "-" + pieceType;
+        return context.getGameId() + "-" + startingSquare + "-" + colour + "-" + pieceType;
     }
 
     private static Optional<String> mapPieceTypeToAgentClass(String type) {
@@ -78,11 +74,11 @@ public class SpawnPieceAgents extends OneShotBehaviour {
         final Set<String> agentColours = new HashSet<>(2);
 
         // Determine colours to generate agents for
-        if (!properties.isHumanPlays()) {
+        if (!context.getGameProperties().isHumanPlays()) {
             agentColours.add(Colour.WHITE);
             agentColours.add(Colour.BLACK);
         } else {
-            if (properties.isHumanPlaysAsWhite()) {
+            if (context.getGameProperties().isHumanPlaysAsWhite()) {
                 agentColours.add(Colour.BLACK);
             } else {
                 agentColours.add(Colour.WHITE);
@@ -100,7 +96,7 @@ public class SpawnPieceAgents extends OneShotBehaviour {
         sequence.addSubBehaviour(new OneShotBehaviour() {
             @Override
             public void action() {
-                dataStore.put(GAME_STATUS_KEY, GameStatus.READY);
+                context.setGameStatus(GameStatus.READY);
             }
         });
 
@@ -109,7 +105,7 @@ public class SpawnPieceAgents extends OneShotBehaviour {
 
     private Set<Behaviour> getBehavioursForSpawningAllPiecesOnSide(String colour) {
         logger.info("Spawning agents for side " + colour);
-        var board = (BoardWrapper) dataStore.get(GameAgent.BOARD_KEY);
+        var board = context.getBoard();
         return board.getPositionsOfAllPiecesForColour(colour)
                 .stream()
                 .map(sq -> createSpawnPieceBehaviour(sq, colour, board.getPieceTypeAtSquare(sq)))
@@ -136,7 +132,7 @@ public class SpawnPieceAgents extends OneShotBehaviour {
         createAgent.addArguments(startingSquare);
         createAgent.addArguments(colour);
         createAgent.addArguments(myAgent.getAID().getName());
-        createAgent.addArguments(Integer.toString(game.getGameId()));
+        createAgent.addArguments(Integer.toString(context.getGameId()));
 
         final Action requestAction = new Action(myAgent.getAMS(), createAgent);
         final ACLMessage request = new ACLMessage(ACLMessage.REQUEST);
@@ -150,12 +146,15 @@ public class SpawnPieceAgents extends OneShotBehaviour {
 
         request.setLanguage(FIPANames.ContentLanguage.FIPA_SL);
         request.setProtocol(FIPANames.InteractionProtocol.FIPA_REQUEST);
+
+        Behaviour requestCreateAgentBehaviour = null;
+
         try {
             myAgent.getContentManager().fillContent(request, requestAction);
-            return new AchieveREInitiator(myAgent, request) {
+            requestCreateAgentBehaviour = new AchieveREInitiator(myAgent, request) {
                 protected void handleInform(ACLMessage inform) {
                     logger.info("Agent " + agentName + " successfully created");
-                    var pieces = (Map<AID, Piece>) dataStore.get(GameAgent.AID_TO_PIECE_KEY);
+                    var pieces = context.getPiecesByAID();
                     var aid = new AID(agentName, AID.ISLOCALNAME);
                     var ontoAid = new OntoAID(aid.getLocalName(), AID.ISLOCALNAME);
                     var colourConcept = new Colour(colour);
@@ -172,7 +171,7 @@ public class SpawnPieceAgents extends OneShotBehaviour {
             logger.warning("Error creating agent " + agentName + ":" + e.getMessage());
         }
 
-        return null;
+        return requestCreateAgentBehaviour;
     }
 
 }

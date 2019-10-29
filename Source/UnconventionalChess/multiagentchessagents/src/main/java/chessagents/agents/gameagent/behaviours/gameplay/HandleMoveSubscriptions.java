@@ -1,6 +1,7 @@
 package chessagents.agents.gameagent.behaviours.gameplay;
 
 import chessagents.agents.gameagent.GameAgent;
+import chessagents.agents.gameagent.GameContext;
 import chessagents.agents.gameagent.behaviours.meta.NotifySubscriberWhenGameReady;
 import chessagents.ontology.ChessOntology;
 import chessagents.ontology.schemas.predicates.IsReady;
@@ -22,12 +23,14 @@ import jade.util.Logger;
 public class HandleMoveSubscriptions extends SubscriptionResponder {
 
     private final Logger logger = Logger.getMyLogger(HandleMoveSubscriptions.class.getName());
+    private GameContext context;
 
-    public HandleMoveSubscriptions(GameAgent gameAgent, DataStore datastore) {
+    public HandleMoveSubscriptions(GameAgent gameAgent, GameContext context) {
         super(gameAgent, MessageTemplate.and(
                 MessageTemplate.MatchProtocol(FIPANames.InteractionProtocol.FIPA_SUBSCRIBE),
                 MessageTemplate.MatchOntology(ChessOntology.ONTOLOGY_NAME)
-        ), null, datastore);
+        ), null);
+        this.context = context;
     }
 
     /**
@@ -44,7 +47,7 @@ public class HandleMoveSubscriptions extends SubscriptionResponder {
 
             if (content instanceof IsReady) {
                 var sub = createSubscription(subscription);
-                myAgent.addBehaviour(new NotifySubscriberWhenGameReady(sub, getDataStore()));
+                myAgent.addBehaviour(new NotifySubscriberWhenGameReady(sub, context));
             }
         } catch (Codec.CodecException | OntologyException e) {
             logger.warning("Failed: " + e.getMessage());

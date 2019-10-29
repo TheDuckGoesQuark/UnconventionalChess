@@ -13,9 +13,8 @@ import static chessagents.agents.gameagent.behaviours.gameplay.GamePlayState.INI
  */
 abstract class GamePlayFSMBehaviour extends FSMBehaviour {
 
-    GamePlayFSMBehaviour(GameAgent gameAgent, DataStore dataStore) {
+    GamePlayFSMBehaviour(GameAgent gameAgent) {
         super(gameAgent);
-        setDataStore(dataStore);
     }
 
     void registerState(Behaviour state, GamePlayState name) {
