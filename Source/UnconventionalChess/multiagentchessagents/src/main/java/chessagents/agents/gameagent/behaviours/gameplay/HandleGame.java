@@ -2,6 +2,7 @@ package chessagents.agents.gameagent.behaviours.gameplay;
 
 import chessagents.agents.gameagent.GameAgent;
 import chessagents.agents.gameagent.GameContext;
+import chessagents.ontology.schemas.concepts.Game;
 import chessagents.util.Channel;
 import jade.core.behaviours.ReceiverBehaviour;
 import jade.lang.acl.ACLMessage;
@@ -30,7 +31,7 @@ public class HandleGame extends GamePlayFSMBehaviour {
         registerFirstState(new InitTurn((GameAgent) myAgent, context));
         registerState(new ElectLeaderAgent(), ELECT_LEADER_AGENT);
         registerState(new WaitForMove((GameAgent) myAgent, moveMessageChannel), WAIT_FOR_MOVE);
-        registerState(new VerifyMove(), VERIFY_MOVE);
+        registerState(new VerifyMove((GameAgent) myAgent, context, moveMessageChannel), VERIFY_MOVE);
         registerState(new RefuseMove(), REFUSE_MOVE);
         registerState(new AgreeToMove(), AGREE_TO_MOVE);
         registerState(new PerformMove(), PERFORM_MOVE);
