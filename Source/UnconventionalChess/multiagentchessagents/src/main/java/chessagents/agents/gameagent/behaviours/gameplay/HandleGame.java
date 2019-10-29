@@ -7,6 +7,10 @@ import jade.util.Logger;
 import static chessagents.agents.gameagent.behaviours.gameplay.GamePlayState.*;
 import static chessagents.agents.gameagent.behaviours.gameplay.GamePlayTransition.*;
 
+/**
+ * Game management operates as an FSM, where each transition is determined by the return value from the onEnd() method
+ * of each state behaviour.
+ */
 public class HandleGame extends GamePlayFSMBehaviour {
 
     private final Logger logger = Logger.getMyLogger(getClass().getName());

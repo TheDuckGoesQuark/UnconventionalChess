@@ -33,4 +33,9 @@ public class InitTurn extends Behaviour {
     public boolean done() {
         return false;
     }
+
+    @Override
+    public int onEnd() {
+        return super.onEnd();
+    }
 }

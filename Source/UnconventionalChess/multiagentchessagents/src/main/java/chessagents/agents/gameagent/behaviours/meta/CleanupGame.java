@@ -9,6 +9,8 @@ import jade.core.behaviours.OneShotBehaviour;
 
 public class CleanupGame extends OneShotBehaviour {
     public CleanupGame(GameAgent gameAgent, GameContext context) {
+        super(gameAgent);
+        // TODO
     }
 
     @Override
