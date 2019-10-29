@@ -1,6 +1,7 @@
-package chessagents.agents.gameagent.behaviours;
+package chessagents.agents.gameagent.behaviours.gameplay;
 
 import chessagents.agents.gameagent.GameAgent;
+import chessagents.agents.gameagent.behaviours.meta.NotifySubscriberWhenGameReady;
 import chessagents.ontology.ChessOntology;
 import chessagents.ontology.schemas.predicates.IsReady;
 import jade.content.lang.Codec;
@@ -14,11 +15,15 @@ import jade.lang.acl.MessageTemplate;
 import jade.proto.SubscriptionResponder;
 import jade.util.Logger;
 
-public class HandleGameStatusSubscriptions extends SubscriptionResponder {
+/**
+ * Updates all subscribers each time a move is made
+ * TODO
+ */
+public class HandleMoveSubscriptions extends SubscriptionResponder {
 
-    private final Logger logger = Logger.getMyLogger(HandleGameStatusSubscriptions.class.getName());
+    private final Logger logger = Logger.getMyLogger(HandleMoveSubscriptions.class.getName());
 
-    public HandleGameStatusSubscriptions(GameAgent gameAgent, DataStore datastore) {
+    public HandleMoveSubscriptions(GameAgent gameAgent, DataStore datastore) {
         super(gameAgent, MessageTemplate.and(
                 MessageTemplate.MatchProtocol(FIPANames.InteractionProtocol.FIPA_SUBSCRIBE),
                 MessageTemplate.MatchOntology(ChessOntology.ONTOLOGY_NAME)

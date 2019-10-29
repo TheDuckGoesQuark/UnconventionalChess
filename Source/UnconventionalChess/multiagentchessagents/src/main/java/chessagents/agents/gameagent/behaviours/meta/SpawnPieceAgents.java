@@ -1,4 +1,4 @@
-package chessagents.agents.gameagent.behaviours;
+package chessagents.agents.gameagent.behaviours.meta;
 
 import chessagents.agents.gameagent.GameAgent;
 import chessagents.agents.gameagent.GameAgentProperties;
@@ -34,7 +34,6 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 import static chessagents.agents.gameagent.GameAgent.GAME_STATUS_KEY;
-import static chessagents.ontology.ChessOntology.IS_READY;
 
 public class SpawnPieceAgents extends OneShotBehaviour {
 
@@ -92,9 +91,12 @@ public class SpawnPieceAgents extends OneShotBehaviour {
 
         // build up sequence of spawn agent behaviours followed by an update to the game status
         var sequence = new SequentialBehaviour();
-        agentColours.stream()
-                .map(this::getBehavioursForSpawningAllPiecesOnSide)
-                .forEach(behaviours -> behaviours.forEach(sequence::addSubBehaviour));
+
+        for (String agentColour : agentColours) {
+            Set<Behaviour> behaviours = getBehavioursForSpawningAllPiecesOnSide(agentColour);
+            behaviours.forEach(sequence::addSubBehaviour);
+        }
+
         sequence.addSubBehaviour(new OneShotBehaviour() {
             @Override
             public void action() {

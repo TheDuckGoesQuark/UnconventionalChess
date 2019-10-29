@@ -1,4 +1,4 @@
-package chessagents.agents.gameagent.behaviours;
+package chessagents.agents.gameagent.behaviours.meta;
 
 import chessagents.agents.gameagent.GameAgentProperties;
 import chessagents.ontology.schemas.concepts.Game;

@@ -1,7 +1,11 @@
 package chessagents.agents.gameagent;
 
 import chessagents.agents.ChessAgent;
-import chessagents.agents.gameagent.behaviours.*;
+import chessagents.agents.gameagent.behaviours.gameplay.HandleGame;
+import chessagents.agents.gameagent.behaviours.meta.CleanupGame;
+import chessagents.agents.gameagent.behaviours.meta.HandleGameCreationRequests;
+import chessagents.agents.gameagent.behaviours.meta.HandleGameStatusSubscriptions;
+import chessagents.agents.gameagent.behaviours.meta.SpawnPieceAgents;
 import chessagents.chess.BoardWrapper;
 import chessagents.ontology.schemas.concepts.Game;
 import chessagents.ontology.schemas.concepts.Piece;
@@ -54,7 +58,7 @@ public class GameAgent extends ChessAgent {
     public void createGame(Game game) {
         var gameSequence = new SequentialBehaviour();
         gameSequence.addSubBehaviour(new SpawnPieceAgents(properties, game, dataStore));
-        gameSequence.addSubBehaviour(new HandleGame(properties, game, (BoardWrapper) dataStore.get(BOARD_KEY), dataStore));
+        gameSequence.addSubBehaviour(new HandleGame(this, properties, game, dataStore));
         gameSequence.addSubBehaviour(new CleanupGame(properties, game, dataStore));
         addBehaviour(gameSequence);
     }

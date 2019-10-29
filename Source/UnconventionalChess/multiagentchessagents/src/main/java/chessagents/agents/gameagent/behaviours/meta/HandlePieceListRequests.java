@@ -1,4 +1,4 @@
-package chessagents.agents.gameagent.behaviours;
+package chessagents.agents.gameagent.behaviours.meta;
 
 import chessagents.agents.gameagent.GameAgent;
 import chessagents.agents.gameagent.GameStatus;
