@@ -41,6 +41,18 @@ public class BoardWrapper {
     }
 
     /**
+     * Constructs move concept from chess lib move
+     * @param move chess lib move instance
+     * @return concept move
+     */
+    private static chessagents.ontology.schemas.concepts.Move constructMoveConcept(Move move) {
+        return new chessagents.ontology.schemas.concepts.Move(
+                move.getFrom().value(),
+                move.getTo().value()
+        );
+    }
+
+    /**
      * Performs move from given source to given target
      *
      * @param source source coordinate
@@ -99,12 +111,22 @@ public class BoardWrapper {
             MoveList moves = MoveGenerator.generateLegalMoves(board);
             Move move = moves.get(random.nextInt(moves.size()));
 
-            return Optional.of(
-                    new chessagents.ontology.schemas.concepts.Move(move.getFrom().value(), move.getTo().value())
-            );
+            return Optional.of(constructMoveConcept(move));
         } catch (MoveGeneratorException e) {
             return Optional.empty();
         }
     }
 
+    public int getTurnCount() {
+        return board.getHalfMoveCounter();
+    }
+
+    public boolean isOver() {
+        return board.isMated() || board.isDraw() || board.isStaleMate() || board.isInsufficientMaterial();
+    }
+
+    public chessagents.ontology.schemas.concepts.Move getMove(int indexOfNextTurn) {
+        var move = board.getBackup().get(indexOfNextTurn).getMove();
+        return constructMoveConcept(move);
+    }
 }

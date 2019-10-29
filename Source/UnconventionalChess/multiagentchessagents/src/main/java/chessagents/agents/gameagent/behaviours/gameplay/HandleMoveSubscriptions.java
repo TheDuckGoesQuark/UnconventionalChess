@@ -81,7 +81,7 @@ public class HandleMoveSubscriptions extends SubscriptionResponder {
 
     @Override
     protected ACLMessage handleCancel(ACLMessage cancel) throws FailureException {
-        informSubscribersOfMoves.removeSubscriber(cancel);
+        informSubscribersOfMoves.removeSubscriber(cancel.getConversationId());
         return super.handleCancel(cancel);
     }
 }
