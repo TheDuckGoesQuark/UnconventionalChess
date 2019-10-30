@@ -1,12 +1,8 @@
 import React, {Component} from "react";
-import PropTypes from "prop-types";
 import {ChatMessage} from "../../models/Message";
+import {connect} from "react-redux";
 
 class DialogueBox extends Component {
-    static propTypes = {
-        message: PropTypes.instanceOf(ChatMessage)
-    };
-
     noMessage = () => {
         return (<div>
             <h3>Dialogue Box</h3>
@@ -15,18 +11,31 @@ class DialogueBox extends Component {
     };
 
     showMessage = (message) => {
-        const {fromId, messageBody} = message;
+        const {sourceSquare, targetSquare} = message;
 
         return (<div>
-            <h3>{fromId}</h3>
-            <p>{messageBody}</p>
+            <h3>MOVE</h3>
+            <p>{sourceSquare},{targetSquare}</p>
         </div>)
     };
 
     render() {
         const {message} = this.props;
-        return message ? this.showMessage(message) : this.noMessage();
+        return <div style={messageStyle}>
+            {message ? this.showMessage(message) : this.noMessage()}
+        </div>
     }
 }
 
-export default DialogueBox;
+function mapStateToProps(state) {
+    return {
+        message: state.chatReducer.timeOrderedMessages[state.chatReducer.timeOrderedMessages.length - 1]
+    }
+}
+
+const messageStyle = {
+    backgroundColor: "grey",
+    fontcolor: "white",
+};
+
+export default connect(mapStateToProps)(DialogueBox);
