@@ -9,17 +9,17 @@ import jade.content.onto.OntologyException;
 import jade.content.onto.basic.Action;
 import jade.core.behaviours.Behaviour;
 import jade.core.behaviours.DataStore;
+import jade.core.behaviours.OneShotBehaviour;
 import jade.core.behaviours.SimpleBehaviour;
 import jade.domain.FIPAAgentManagement.NotUnderstoodException;
 import jade.lang.acl.ACLMessage;
 import jade.util.Logger;
 
-import static chessagents.agents.gameagent.behaviours.gameplay.GamePlayTransition.MOVE_INVALID;
-import static chessagents.agents.gameagent.behaviours.gameplay.GamePlayTransition.MOVE_VALID;
+import static chessagents.agents.gameagent.behaviours.gameplay.GamePlayTransition.*;
 import static chessagents.agents.gameagent.behaviours.gameplay.HandleGame.MOVE_KEY;
 import static chessagents.agents.gameagent.behaviours.gameplay.HandleGame.MOVE_MESSAGE_KEY;
 
-public class VerifyMove extends SimpleBehaviour {
+public class VerifyMove extends OneShotBehaviour {
 
     private final Logger logger = Logger.getMyLogger(getClass().getName());
     private final GameContext context;
@@ -38,15 +38,16 @@ public class VerifyMove extends SimpleBehaviour {
 
         try {
             var move = extractMove(message);
+            getDataStore().put(MOVE_KEY, move);
+
             if (isValidMove(move)) {
-                getDataStore().put(MOVE_KEY, move);
                 nextTransition = MOVE_VALID;
             } else {
                 nextTransition = MOVE_INVALID;
             }
         } catch (Codec.CodecException | OntologyException | NotUnderstoodException e) {
             logger.warning("Failed to extract move from message: " + e.getMessage());
-            nextTransition = MOVE_INVALID;
+            nextTransition = MOVE_NOT_UNDERSTOOD;
         }
     }
 
@@ -67,12 +68,7 @@ public class VerifyMove extends SimpleBehaviour {
     }
 
     @Override
-    public boolean done() {
-        return nextTransition != null;
-    }
-
-    @Override
     public int onEnd() {
-        return (nextTransition != null ? nextTransition : MOVE_INVALID).ordinal();
+        return (nextTransition != null ? nextTransition : MOVE_NOT_UNDERSTOOD).ordinal();
     }
 }

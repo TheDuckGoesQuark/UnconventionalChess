@@ -9,6 +9,7 @@ public enum GamePlayTransition {
     MOVE_RECEIVED,
     MOVE_VALID,
     MOVE_INVALID,
+    MOVE_NOT_UNDERSTOOD,
     REFUSED_TO_MOVE,
     AGREED_TO_MOVE,
     PERFORMED_MOVE,

@@ -50,6 +50,7 @@ public class HandleGame extends GamePlayFSMBehaviour {
         // verify move transitions
         registerTransition(VERIFY_MOVE, REFUSE_MOVE, MOVE_INVALID);
         registerTransition(VERIFY_MOVE, AGREE_TO_MOVE, MOVE_VALID);
+        registerTransition(VERIFY_MOVE, WAIT_FOR_MOVE, MOVE_NOT_UNDERSTOOD);
 
         // refuse move transitions (reset wait for move step)
         registerTransition(REFUSE_MOVE, WAIT_FOR_MOVE, REFUSED_TO_MOVE, new GamePlayState[]{WAIT_FOR_MOVE});
