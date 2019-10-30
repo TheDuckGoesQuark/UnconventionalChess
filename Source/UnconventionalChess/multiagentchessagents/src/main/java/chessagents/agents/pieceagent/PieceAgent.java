@@ -31,7 +31,7 @@ public class PieceAgent extends ChessAgent {
         // ask for the AID <-> piece mapping so we know who to talk to
         sequence.addSubBehaviour(new RequestPieceIds(this, aidToPiece, myColour, gameAgentAID));
         // start making moves
-        sequence.addSubBehaviour(new Play(this, myColour, aidToPiece));
+        sequence.addSubBehaviour(new Play(this, myColour, aidToPiece, gameAgentAID));
         addBehaviour(sequence);
     }
 }
