@@ -4,19 +4,35 @@ import chessagents.agents.gameagent.GameAgent;
 import chessagents.agents.gameagent.GameContext;
 import jade.core.behaviours.Behaviour;
 import jade.core.behaviours.DataStore;
+import jade.core.behaviours.OneShotBehaviour;
+import jade.lang.acl.ACLMessage;
 
-public class AgreeToMove extends Behaviour {
+import static chessagents.agents.gameagent.behaviours.gameplay.GamePlayTransition.AGREED_TO_MOVE;
+import static chessagents.agents.gameagent.behaviours.gameplay.HandleGame.MOVE_MESSAGE_KEY;
 
-    public AgreeToMove(GameAgent myAgent, GameContext context, DataStore datastore) {
+public class AgreeToMove extends OneShotBehaviour {
+
+    AgreeToMove(GameAgent myAgent, DataStore datastore) {
+        super(myAgent);
+        setDataStore(datastore);
     }
 
     @Override
     public void action() {
+        var request = (ACLMessage) getDataStore().get(MOVE_MESSAGE_KEY);
+        var reply = constructReply(request);
+        myAgent.send(reply);
+    }
 
+    private ACLMessage constructReply(ACLMessage request) {
+        var reply = request.createReply();
+        reply.setPerformative(ACLMessage.AGREE);
+        reply.setContent(request.getContent());
+        return reply;
     }
 
     @Override
-    public boolean done() {
-        return false;
+    public int onEnd() {
+        return AGREED_TO_MOVE.ordinal();
     }
 }
