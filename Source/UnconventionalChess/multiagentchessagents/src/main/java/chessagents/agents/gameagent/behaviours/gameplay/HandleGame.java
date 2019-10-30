@@ -2,10 +2,6 @@ package chessagents.agents.gameagent.behaviours.gameplay;
 
 import chessagents.agents.gameagent.GameAgent;
 import chessagents.agents.gameagent.GameContext;
-import chessagents.ontology.schemas.concepts.Game;
-import chessagents.util.Channel;
-import jade.core.behaviours.ReceiverBehaviour;
-import jade.lang.acl.ACLMessage;
 import jade.util.Logger;
 
 import static chessagents.agents.gameagent.behaviours.gameplay.GamePlayState.*;
@@ -17,25 +13,26 @@ import static chessagents.agents.gameagent.behaviours.gameplay.GamePlayTransitio
  */
 public class HandleGame extends GamePlayFSMBehaviour {
 
+    final static String MOVE_MESSAGE_KEY = "_MOVE_MESSAGE";
+    final static String MOVE_KEY = "_MOVE";
+
     private final Logger logger = Logger.getMyLogger(getClass().getName());
-    private final GameContext context;
 
     public HandleGame(GameAgent gameAgent, GameContext context) {
         super(gameAgent);
-        this.context = context;
 
         myAgent.addBehaviour(new HandleMoveSubscriptions((GameAgent) myAgent, context));
 
         // single element channel for holding the move currently being considered
-        var moveMessageChannel = new Channel<ACLMessage>(1);
+        var dataStore = getDataStore();
         registerFirstState(new InitTurn((GameAgent) myAgent, context));
         registerState(new ElectLeaderAgent(), ELECT_LEADER_AGENT);
-        registerState(new WaitForMove((GameAgent) myAgent, moveMessageChannel), WAIT_FOR_MOVE);
-        registerState(new VerifyMove((GameAgent) myAgent, context, moveMessageChannel), VERIFY_MOVE);
-        registerState(new RefuseMove(), REFUSE_MOVE);
-        registerState(new AgreeToMove(), AGREE_TO_MOVE);
-        registerState(new PerformMove(), PERFORM_MOVE);
-        registerState(new SendInformMoveMessage(), SEND_INFORM_MESSAGE);
+        registerState(new WaitForMove((GameAgent) myAgent, dataStore), WAIT_FOR_MOVE);
+        registerState(new VerifyMove((GameAgent) myAgent, context, dataStore), VERIFY_MOVE);
+        registerState(new RefuseMove((GameAgent) myAgent, context, dataStore), REFUSE_MOVE);
+        registerState(new AgreeToMove((GameAgent) myAgent, context, dataStore), AGREE_TO_MOVE);
+        registerState(new PerformMove((GameAgent) myAgent, context, dataStore), PERFORM_MOVE);
+        registerState(new SendInformMoveMessage((GameAgent) myAgent, context, dataStore), SEND_INFORM_MESSAGE);
         registerLastState(new EndGame());
 
         // init transitions
