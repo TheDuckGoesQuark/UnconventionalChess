@@ -62,7 +62,7 @@ public class RequestCreateGame extends SimpleAchieveREInitiator {
     @Override
     protected void handleInform(ACLMessage msg) {
         try {
-            var content =  myAgent.getContentManager().extractContent(msg);
+            var content = myAgent.getContentManager().extractContent(msg);
 
             if (content instanceof Done) {
                 logger.info("Game created!");

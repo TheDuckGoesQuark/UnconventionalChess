@@ -48,8 +48,6 @@ public class GatewayServiceImpl implements GatewayService {
             var gameAgentAID = gameAgentMapper.getAgentByGameId(gameId);
             var makeMove = ontologyTranslator.translateToOntology(move.getBody());
 
-            logger.info("Sending move to agent " + gameAgentAID + ": " + move.getBody().toString());
-
             var requestGameAgentMove = new RequestGameAgentMove(makeMove, gameAgentAID);
             JadeGateway.execute(requestGameAgentMove);
 
@@ -68,7 +66,7 @@ public class GatewayServiceImpl implements GatewayService {
     public Message<GameConfiguration> createGame(GameConfiguration gameConfiguration) throws GatewayFailureException {
         try {
             var gameId = gameAgentMapper.size() + 1;
-            var agentId = new AID("GameAgent-" + gameId + "@" + platformName, true);
+            var agentId = new AID("GameAgent-" + gameId + "@" + platformName, AID.ISGUID);
 
             var gameAgentProperties = new GameProperties(
                     gameConfiguration.isHumanPlays(),

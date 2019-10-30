@@ -13,13 +13,15 @@ import jade.lang.acl.ACLMessage;
 import jade.lang.acl.MessageTemplate;
 import jade.util.Logger;
 
+import static chessagents.agents.gameagent.behaviours.gameplay.HandleMoveSubscriptions.MOVE_SUBSCRIPTION_PROTOCOL;
+
 /**
  * Subscribes the given agent to moves being made in the game TODO
  */
 public class SubscribeToMoves extends SimpleBehaviour {
 
     private static final MessageTemplate MESSAGE_TEMPLATE = MessageTemplate.and(
-            MessageTemplate.MatchProtocol(FIPANames.InteractionProtocol.FIPA_SUBSCRIBE),
+            MessageTemplate.MatchProtocol(MOVE_SUBSCRIPTION_PROTOCOL),
             MessageTemplate.MatchOntology(ChessOntology.ONTOLOGY_NAME)
     );
     private final Logger logger = Logger.getMyLogger(this.getClass().getName());
@@ -50,7 +52,7 @@ public class SubscribeToMoves extends SimpleBehaviour {
         subscription.addReceiver(gameAgentAID);
         subscription.setLanguage(FIPANames.ContentLanguage.FIPA_SL);
         subscription.setOntology(ChessOntology.ONTOLOGY_NAME);
-        subscription.setProtocol(FIPANames.InteractionProtocol.FIPA_SUBSCRIBE);
+        subscription.setProtocol(MOVE_SUBSCRIPTION_PROTOCOL);
 
         try {
             myAgent.getContentManager().fillContent(subscription, new IsReady(game));

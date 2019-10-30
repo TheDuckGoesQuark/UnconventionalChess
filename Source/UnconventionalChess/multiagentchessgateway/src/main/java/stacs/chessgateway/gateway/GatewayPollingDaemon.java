@@ -53,21 +53,20 @@ public class GatewayPollingDaemon implements GatewayListener, Runnable {
 
     @Override
     public void run() {
-        // TODO this might be stealing messages from other listeners
-        while (JadeGateway.isGatewayActive()) {
-            logger.info("Listening for messages from gateway");
+//        while (JadeGateway.isGatewayActive()) {
+//            logger.info("Listening for messages from gateway");
 //            try {
-//                JadeGateway.execute(new ReceiveMessageIntoQueue(messageQueue));?
-            final ACLMessage received = messageQueue.poll();
-
-            if (received != null) {
-                forwardMessage(received);
-            }
-//            } catch (ControllerException | InterruptedException e) {
-//                logger.error("Exception when listening for messages from gateway");
-//                logger.error(Arrays.toString(e.getStackTrace()));
+//                JadeGateway.execute(new ReceiveMessageIntoQueue(messageQueue));
+//            final ACLMessage received = messageQueue.poll();
+//
+//            if (received != null) {
+//                forwardMessage(received);
 //            }
-        }
+////            } catch (ControllerException | InterruptedException e) {
+////                logger.error("Exception when listening for messages from gateway");
+////                logger.error(Arrays.toString(e.getStackTrace()));
+////            }
+//        }
     }
 
     private void forwardMessage(ACLMessage received) {

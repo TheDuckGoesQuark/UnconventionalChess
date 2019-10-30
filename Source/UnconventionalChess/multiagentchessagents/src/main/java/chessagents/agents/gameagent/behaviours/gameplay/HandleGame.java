@@ -27,6 +27,7 @@ public class HandleGame extends GamePlayFSMBehaviour {
         var dataStore = getDataStore();
         registerFirstState(new InitTurn((GameAgent) myAgent, context));
         registerState(new ElectLeaderAgent(), ELECT_LEADER_AGENT);
+        registerState(new ElectLeaderAgent(), ELECT_LEADER_AGENT);
         registerState(new WaitForMove((GameAgent) myAgent, dataStore), WAIT_FOR_MOVE);
         registerState(new VerifyMove((GameAgent) myAgent, context, dataStore), VERIFY_MOVE);
         registerState(new RefuseMove((GameAgent) myAgent, dataStore), REFUSE_MOVE);
@@ -64,5 +65,4 @@ public class HandleGame extends GamePlayFSMBehaviour {
         // send inform move transitions (resets all once returned to initial state)
         registerTransition(SEND_INFORM_MESSAGE, INIT, SENT_MOVE_INFORM, GamePlayState.values());
     }
-
 }

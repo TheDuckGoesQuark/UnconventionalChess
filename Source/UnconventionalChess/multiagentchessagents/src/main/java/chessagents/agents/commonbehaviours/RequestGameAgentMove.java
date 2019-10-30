@@ -15,11 +15,6 @@ import static jade.content.lang.Codec.CodecException;
 
 public class RequestGameAgentMove extends SimpleBehaviour {
 
-    private static final MessageTemplate mt = MessageTemplate.and(
-            MessageTemplate.MatchProtocol(FIPANames.InteractionProtocol.FIPA_REQUEST),
-            MessageTemplate.MatchOntology(ChessOntology.ONTOLOGY_NAME)
-    );
-
     private static final int SENDING_REQUEST = 1;
     private static final int RECEIVE_RESPONSE = 2;
     private static final int RECEIVE_RESULT = 3;
@@ -38,6 +33,7 @@ public class RequestGameAgentMove extends SimpleBehaviour {
     }
 
     private ACLMessage prepareRequest(ACLMessage request) {
+        request.addReceiver(gameAgentName);
         request.setLanguage(FIPANames.ContentLanguage.FIPA_SL);
         request.setOntology(ChessOntology.ONTOLOGY_NAME);
         request.setProtocol(FIPANames.InteractionProtocol.FIPA_REQUEST);
@@ -79,11 +75,12 @@ public class RequestGameAgentMove extends SimpleBehaviour {
         switch (this.state) {
             case SENDING_REQUEST:
                 request = prepareRequest(new ACLMessage(ACLMessage.REQUEST));
+                logger.info("Sending " + request.toString());
                 myAgent.send(request);
                 state = RECEIVE_RESPONSE;
                 break;
             case RECEIVE_RESPONSE:
-                response = myAgent.receive(mt);
+                response = myAgent.receive();
                 if (response != null) {
                     handleResponse(response);
                 } else {
@@ -91,7 +88,7 @@ public class RequestGameAgentMove extends SimpleBehaviour {
                 }
                 break;
             case RECEIVE_RESULT:
-                result = myAgent.receive(mt);
+                result = myAgent.receive();
                 if (result != null) {
                     handleResult(result);
                 } else {

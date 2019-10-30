@@ -11,6 +11,11 @@ public class ElectLeaderAgent extends Behaviour {
 
     @Override
     public boolean done() {
-        return false;
+        return true;
+    }
+
+    @Override
+    public int onEnd() {
+        return GamePlayTransition.LEADER_AGENT_CHOSEN.ordinal();
     }
 }

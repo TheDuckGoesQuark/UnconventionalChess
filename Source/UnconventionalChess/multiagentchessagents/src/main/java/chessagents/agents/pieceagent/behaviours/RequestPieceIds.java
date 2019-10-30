@@ -2,7 +2,6 @@ package chessagents.agents.pieceagent.behaviours;
 
 import chessagents.ontology.ChessOntology;
 import chessagents.ontology.schemas.concepts.Colour;
-import chessagents.ontology.schemas.concepts.Game;
 import chessagents.ontology.schemas.concepts.Piece;
 import jade.content.abs.*;
 import jade.content.lang.Codec;
@@ -12,7 +11,6 @@ import jade.content.onto.Ontology;
 import jade.content.onto.OntologyException;
 import jade.core.AID;
 import jade.core.Agent;
-import jade.core.behaviours.DataStore;
 import jade.domain.FIPANames;
 import jade.lang.acl.ACLMessage;
 import jade.proto.SimpleAchieveREInitiator;
@@ -22,7 +20,7 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
-import static chessagents.agents.pieceagent.PieceAgent.*;
+import static chessagents.agents.gameagent.behaviours.meta.HandlePieceListRequests.PIECE_LIST_QUERY_PROTOCOL;
 
 
 public class RequestPieceIds extends SimpleAchieveREInitiator {
@@ -44,7 +42,7 @@ public class RequestPieceIds extends SimpleAchieveREInitiator {
         request.addReceiver(gameAgentAID);
         request.setLanguage(FIPANames.ContentLanguage.FIPA_SL);
         request.setOntology(ChessOntology.ONTOLOGY_NAME);
-        request.setProtocol(FIPANames.InteractionProtocol.FIPA_QUERY);
+        request.setProtocol(PIECE_LIST_QUERY_PROTOCOL);
 
         try {
             populateRequestContents(request);
@@ -59,11 +57,9 @@ public class RequestPieceIds extends SimpleAchieveREInitiator {
     private void populateRequestContents(ACLMessage request) throws OntologyException, Codec.CodecException {
         // query for all x where isColour(x, <mycolour>)
         var ontology = ChessOntology.getInstance();
-        var colour = (Colour) getDataStore().get(myColour);
 
         // create abstract descriptor for colour
-        var absColour = (AbsConcept) ontology.fromObject(colour);
-        absColour.set(ChessOntology.COLOUR_COLOUR, colour.getColour());
+        var absColour = (AbsConcept) ontology.fromObject(myColour);
 
         // declare variable in our query to be of type piece
         var absX = new AbsVariable("x", ChessOntology.PIECE);

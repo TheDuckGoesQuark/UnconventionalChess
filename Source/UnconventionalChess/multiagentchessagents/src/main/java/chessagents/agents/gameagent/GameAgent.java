@@ -6,17 +6,10 @@ import chessagents.agents.gameagent.behaviours.meta.CleanupGame;
 import chessagents.agents.gameagent.behaviours.meta.HandleGameCreationRequests;
 import chessagents.agents.gameagent.behaviours.meta.HandleGameStatusSubscriptions;
 import chessagents.agents.gameagent.behaviours.meta.SpawnPieceAgents;
-import chessagents.chess.BoardWrapper;
 import chessagents.ontology.schemas.concepts.Game;
-import chessagents.ontology.schemas.concepts.Piece;
 import jade.core.AID;
-import jade.core.behaviours.DataStore;
 import jade.core.behaviours.SequentialBehaviour;
 import jade.util.Logger;
-
-import java.util.HashMap;
-
-import static chessagents.agents.gameagent.GameStatus.NOT_EXIST;
 
 
 /**
@@ -27,7 +20,6 @@ import static chessagents.agents.gameagent.GameStatus.NOT_EXIST;
  */
 public class GameAgent extends ChessAgent {
 
-    private final Logger logger = Logger.getMyLogger(getClass().getName());
     private GameContext context;
 
     @Override
@@ -44,6 +36,8 @@ public class GameAgent extends ChessAgent {
     }
 
     public void createGame(Game game) {
+        context.setGameId(game.getGameId());
+
         var gameSequence = new SequentialBehaviour();
         gameSequence.addSubBehaviour(new SpawnPieceAgents(this, context));
         gameSequence.addSubBehaviour(new HandleGame(this, context));

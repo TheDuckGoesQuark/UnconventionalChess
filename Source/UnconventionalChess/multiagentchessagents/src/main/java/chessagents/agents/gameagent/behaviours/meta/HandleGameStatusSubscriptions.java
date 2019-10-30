@@ -6,10 +6,8 @@ import chessagents.ontology.ChessOntology;
 import chessagents.ontology.schemas.predicates.IsReady;
 import jade.content.lang.Codec;
 import jade.content.onto.OntologyException;
-import jade.core.behaviours.DataStore;
 import jade.domain.FIPAAgentManagement.FailureException;
 import jade.domain.FIPAAgentManagement.NotUnderstoodException;
-import jade.domain.FIPANames;
 import jade.lang.acl.ACLMessage;
 import jade.lang.acl.MessageTemplate;
 import jade.proto.SubscriptionResponder;
@@ -17,12 +15,13 @@ import jade.util.Logger;
 
 public class HandleGameStatusSubscriptions extends SubscriptionResponder {
 
+    public static final String GAME_STATUS_SUBSCRIPTION_PROTOCOL = "GAME_STATUS_SUBSCRIPTION_PROTOCOL";
     private final Logger logger = Logger.getMyLogger(HandleGameStatusSubscriptions.class.getName());
     private final GameContext context;
 
     public HandleGameStatusSubscriptions(GameAgent gameAgent, GameContext context) {
         super(gameAgent, MessageTemplate.and(
-                MessageTemplate.MatchProtocol(FIPANames.InteractionProtocol.FIPA_SUBSCRIBE),
+                MessageTemplate.MatchProtocol(GAME_STATUS_SUBSCRIPTION_PROTOCOL),
                 MessageTemplate.MatchOntology(ChessOntology.ONTOLOGY_NAME)
         ), null);
         this.context = context;

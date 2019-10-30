@@ -14,5 +14,4 @@ public enum GamePlayTransition {
     AGREED_TO_MOVE,
     PERFORMED_MOVE,
     SENT_MOVE_INFORM,
-    TURN_COMPLETE,
 }

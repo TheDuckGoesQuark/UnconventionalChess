@@ -28,12 +28,13 @@ import static chessagents.ontology.ChessOntology.IS_COLOUR_COLOUR;
 
 public class HandlePieceListRequests extends SimpleAchieveREResponder {
 
+    public static final String PIECE_LIST_QUERY_PROTOCOL = "PieceListQueryProtocol";
     private final Logger logger = Logger.getMyLogger(getClass().getName());
     private final GameContext context;
 
     public HandlePieceListRequests(GameAgent gameAgent, GameContext context) {
         super(gameAgent, MessageTemplate.and(
-                MessageTemplate.MatchProtocol(FIPANames.InteractionProtocol.FIPA_QUERY),
+                MessageTemplate.MatchProtocol(PIECE_LIST_QUERY_PROTOCOL),
                 MessageTemplate.MatchOntology(ChessOntology.ONTOLOGY_NAME)
         ));
         this.context = context;

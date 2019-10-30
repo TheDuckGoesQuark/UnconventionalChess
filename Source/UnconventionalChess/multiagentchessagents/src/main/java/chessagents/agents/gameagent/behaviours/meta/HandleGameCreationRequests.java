@@ -50,7 +50,7 @@ public class HandleGameCreationRequests extends SimpleBehaviour {
     );
 
     private final GameContext context;
-    private State state;
+    private State state = State.WAITING_FOR_MESSAGE;
 
     public HandleGameCreationRequests(Agent a, GameContext context) {
         super(a);

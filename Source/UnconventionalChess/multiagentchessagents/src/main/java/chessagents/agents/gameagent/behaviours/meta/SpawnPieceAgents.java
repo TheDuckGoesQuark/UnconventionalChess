@@ -16,10 +16,7 @@ import jade.content.lang.sl.SLCodec;
 import jade.content.onto.basic.Action;
 import jade.core.AID;
 import jade.core.ContainerID;
-import jade.core.behaviours.Behaviour;
-import jade.core.behaviours.DataStore;
-import jade.core.behaviours.OneShotBehaviour;
-import jade.core.behaviours.SequentialBehaviour;
+import jade.core.behaviours.*;
 import jade.domain.FIPANames;
 import jade.domain.JADEAgentManagement.CreateAgent;
 import jade.domain.JADEAgentManagement.JADEManagementOntology;
@@ -34,10 +31,15 @@ import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-public class SpawnPieceAgents extends OneShotBehaviour {
+public class SpawnPieceAgents extends SimpleBehaviour {
+
+    private enum CreationState {
+        INIT, CREATING, CREATED
+    }
 
     private static final Logger logger = Logger.getMyLogger(SpawnPieceAgents.class.getName());
     private final GameContext context;
+    private CreationState creationState = CreationState.INIT;
 
     public SpawnPieceAgents(GameAgent gameAgent, GameContext context) {
         super(gameAgent);
@@ -71,6 +73,22 @@ public class SpawnPieceAgents extends OneShotBehaviour {
 
     @Override
     public void action() {
+        switch (creationState) {
+            case INIT:
+                addPieceCreationBehaviours();
+                creationState = CreationState.CREATING;
+                break;
+            case CREATING:
+                if (context.getGameStatus() == GameStatus.READY) {
+                    creationState = CreationState.CREATED;
+                } else {
+                    block();
+                }
+                break;
+        }
+    }
+
+    private void addPieceCreationBehaviours() {
         final Set<String> agentColours = new HashSet<>(2);
 
         // Determine colours to generate agents for
@@ -101,6 +119,11 @@ public class SpawnPieceAgents extends OneShotBehaviour {
         });
 
         myAgent.addBehaviour(sequence);
+    }
+
+    @Override
+    public boolean done() {
+        return creationState == CreationState.CREATED;
     }
 
     private Set<Behaviour> getBehavioursForSpawningAllPiecesOnSide(String colour) {
@@ -173,5 +196,4 @@ public class SpawnPieceAgents extends OneShotBehaviour {
 
         return requestCreateAgentBehaviour;
     }
-
 }

@@ -25,12 +25,13 @@ import static chessagents.ontology.ChessOntology.MOVE_MADE;
  */
 public class HandleMoveSubscriptions extends SubscriptionResponder {
 
+    public static final String MOVE_SUBSCRIPTION_PROTOCOL = "MOVE_SUBSCRIPTION_PROTOCOL";
     private final Logger logger = Logger.getMyLogger(HandleMoveSubscriptions.class.getName());
     private final InformSubscribersOfMoves informSubscribersOfMoves;
 
     HandleMoveSubscriptions(GameAgent gameAgent, GameContext context) {
         super(gameAgent, MessageTemplate.and(
-                MessageTemplate.MatchProtocol(FIPANames.InteractionProtocol.FIPA_SUBSCRIBE),
+                MessageTemplate.MatchProtocol(MOVE_SUBSCRIPTION_PROTOCOL),
                 MessageTemplate.MatchOntology(ChessOntology.ONTOLOGY_NAME)
         ));
         this.informSubscribersOfMoves = new InformSubscribersOfMoves(context);
