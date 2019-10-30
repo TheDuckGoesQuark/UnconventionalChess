@@ -30,7 +30,7 @@ public class HandleGame extends GamePlayFSMBehaviour {
         registerState(new WaitForMove((GameAgent) myAgent, dataStore), WAIT_FOR_MOVE);
         registerState(new VerifyMove((GameAgent) myAgent, context, dataStore), VERIFY_MOVE);
         registerState(new RefuseMove((GameAgent) myAgent, dataStore), REFUSE_MOVE);
-        registerState(new AgreeToMove((GameAgent) myAgent, context, dataStore), AGREE_TO_MOVE);
+        registerState(new AgreeToMove((GameAgent) myAgent, dataStore), AGREE_TO_MOVE);
         registerState(new PerformMove((GameAgent) myAgent, context, dataStore), PERFORM_MOVE);
         registerState(new SendInformMoveMessage((GameAgent) myAgent, context, dataStore), SEND_INFORM_MESSAGE);
         registerLastState(new EndGame());
