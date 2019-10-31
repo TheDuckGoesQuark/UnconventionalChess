@@ -12,14 +12,17 @@ import jade.content.onto.OntologyException;
 import jade.core.AID;
 import jade.core.behaviours.SimpleBehaviour;
 import jade.lang.acl.ACLMessage;
+import jade.lang.acl.MessageTemplate;
 import jade.util.Logger;
 
 import java.util.HashSet;
 import java.util.Random;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 public class ElectLeaderAgent extends SimpleBehaviour {
 
+    public static final String ELECT_LEADER_PROTOCOL_NAME = "ELECT_LEADER_PROTOCOL_NAME";
     private static final Random random = new Random();
     private final Logger logger = Logger.getMyLogger(getClass().getName());
     private final GameContext context;
@@ -33,7 +36,8 @@ public class ElectLeaderAgent extends SimpleBehaviour {
 
     @Override
     public void action() {
-        var message = myAgent.receive();
+        logger.info("Checking for request for leader");
+        var message = myAgent.receive(MessageTemplate.MatchProtocol(ELECT_LEADER_PROTOCOL_NAME));
 
         if (message != null && message.getPerformative() == ACLMessage.QUERY_REF) {
             if (isLeaderQuery(message)) {
@@ -41,9 +45,9 @@ public class ElectLeaderAgent extends SimpleBehaviour {
             } else {
                 replyNotUnderstood(message);
             }
+        } else {
+            block();
         }
-
-        block();
     }
 
     private void replyNotUnderstood(ACLMessage message) {
@@ -98,14 +102,14 @@ public class ElectLeaderAgent extends SimpleBehaviour {
 
     private void informOfTheChosenOne(ACLMessage request, AbsPredicate answer) throws Codec.CodecException, OntologyException {
         var inform = request.createReply();
-        inform.setPerformative(ACLMessage.INFORM_REF);
+        inform.setPerformative(ACLMessage.INFORM);
         myAgent.getContentManager().fillContent(inform, answer);
         myAgent.send(inform);
     }
 
     private AID chooseLeader() {
-        var requestMessages = (ACLMessage[]) requests.toArray();
-        return requestMessages[random.nextInt(requestMessages.length)].getSender();
+        var requestMessages = requests.stream().collect(Collectors.toUnmodifiableList());
+        return requestMessages.get(random.nextInt(requestMessages.size())).getSender();
     }
 
     private void sendAgree(ACLMessage message) {

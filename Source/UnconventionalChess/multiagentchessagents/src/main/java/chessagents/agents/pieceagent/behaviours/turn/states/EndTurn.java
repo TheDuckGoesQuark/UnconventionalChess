@@ -1,8 +1,8 @@
 package chessagents.agents.pieceagent.behaviours.turn.states;
 
 import chessagents.agents.pieceagent.PieceContext;
+import chessagents.agents.pieceagent.behaviours.turn.TurnContext;
 import chessagents.agents.pieceagent.pieces.PieceAgent;
-import jade.core.behaviours.DataStore;
 import jade.core.behaviours.OneShotBehaviour;
 import jade.util.Logger;
 
@@ -11,12 +11,13 @@ import static chessagents.agents.pieceagent.behaviours.turn.fsm.PieceTransition.
 public class EndTurn extends OneShotBehaviour {
 
     private final Logger logger = Logger.getMyLogger(getClass().getName());
-    private final PieceContext context;
+    private final PieceContext pieceContext;
+    private final TurnContext turnContext;
 
-    public EndTurn(PieceAgent pieceAgent, PieceContext context, DataStore dataStore) {
+    public EndTurn(PieceAgent pieceAgent, PieceContext pieceContext, TurnContext turnContext) {
         super(pieceAgent);
-        setDataStore(dataStore);
-        this.context = context;
+        this.pieceContext = pieceContext;
+        this.turnContext = turnContext;
     }
 
     @Override

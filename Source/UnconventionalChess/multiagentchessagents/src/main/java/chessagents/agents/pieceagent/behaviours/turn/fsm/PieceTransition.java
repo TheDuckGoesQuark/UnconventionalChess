@@ -7,4 +7,6 @@ public enum PieceTransition {
     OTHER_MOVE_RECEIVED,
     MOVE_PERFORMED,
     TURN_ENDED,
+    I_AM_LEADER,
+    I_AM_NOT_LEADER,
 }

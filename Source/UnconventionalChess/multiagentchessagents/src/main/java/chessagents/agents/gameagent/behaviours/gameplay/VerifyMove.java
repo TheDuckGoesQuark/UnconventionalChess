@@ -47,6 +47,7 @@ public class VerifyMove extends OneShotBehaviour {
             }
         } catch (Codec.CodecException | OntologyException | NotUnderstoodException e) {
             logger.warning("Failed to extract move from message: " + e.getMessage());
+            logger.warning("Move: " + message.getContent());
             nextTransition = MOVE_NOT_UNDERSTOOD;
         }
     }

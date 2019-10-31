@@ -71,6 +71,7 @@ public class InformSubscribersOfMoves extends OneShotBehaviour {
 
     private ACLMessage createInform(Subscription subscription, AbsContentElement content) {
         var reply = subscription.getMessage().createReply();
+        reply.setPerformative(ACLMessage.INFORM_REF);
 
         try {
             myAgent.getContentManager().fillContent(reply, content);

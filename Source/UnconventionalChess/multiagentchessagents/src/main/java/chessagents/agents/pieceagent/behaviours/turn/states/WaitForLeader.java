@@ -2,6 +2,7 @@ package chessagents.agents.pieceagent.behaviours.turn.states;
 
 import chessagents.agents.pieceagent.PieceContext;
 import chessagents.agents.pieceagent.behaviours.turn.TurnContext;
+import chessagents.agents.pieceagent.behaviours.turn.fsm.PieceTransition;
 import chessagents.agents.pieceagent.pieces.PieceAgent;
 import chessagents.ontology.ChessOntology;
 import chessagents.ontology.schemas.predicates.IsLeader;
@@ -23,6 +24,12 @@ import jade.lang.acl.ACLMessage;
 import jade.proto.SimpleAchieveREInitiator;
 import jade.util.Logger;
 
+import java.util.Vector;
+
+import static chessagents.agents.gameagent.behaviours.gameplay.ElectLeaderAgent.ELECT_LEADER_PROTOCOL_NAME;
+import static chessagents.agents.pieceagent.behaviours.turn.fsm.PieceTransition.I_AM_LEADER;
+import static chessagents.agents.pieceagent.behaviours.turn.fsm.PieceTransition.I_AM_NOT_LEADER;
+
 /**
  * Requests to know who the leader is at the start of the turn
  */
@@ -32,18 +39,27 @@ public class WaitForLeader extends SimpleAchieveREInitiator {
     private final TurnContext turnContext;
     private final PieceContext pieceContext;
 
-    public WaitForLeader(PieceAgent pieceAgent, PieceContext pieceContext, TurnContext turnContext, DataStore dataStore) {
-        super(pieceAgent, new ACLMessage(ACLMessage.QUERY_REF), dataStore);
+    public WaitForLeader(PieceAgent pieceAgent, PieceContext pieceContext, TurnContext turnContext) {
+        super(pieceAgent, new ACLMessage(ACLMessage.QUERY_REF));
         this.turnContext = turnContext;
         this.pieceContext = pieceContext;
     }
 
     @Override
+    public void onStart() {
+        logger.info("Waiting for leader");
+        super.onStart();
+    }
+
+    @Override
     protected ACLMessage prepareRequest(ACLMessage request) {
+        // JADE Impl resets the internal datastore which nulls our request in the constructor.
+        if (request == null) request = new ACLMessage(ACLMessage.QUERY_REF);
+
         request.addReceiver(pieceContext.getGameAgentAID());
-        request.setProtocol(FIPANames.InteractionProtocol.FIPA_QUERY);
+        request.setProtocol(ELECT_LEADER_PROTOCOL_NAME);
         request.setOntology(ChessOntology.ONTOLOGY_NAME);
-        request.setEncoding(FIPANames.ContentLanguage.FIPA_SL);
+        request.setLanguage(FIPANames.ContentLanguage.FIPA_SL);
 
         var absAID = new AbsVariable("leader", ChessOntology.IS_LEADER_AGENT);
         var absIsLeader = new AbsPredicate(ChessOntology.IS_LEADER);
@@ -84,5 +100,10 @@ public class WaitForLeader extends SimpleAchieveREInitiator {
     @Override
     public boolean done() {
         return turnContext.getCurrentSpeaker() != null;
+    }
+
+    @Override
+    public int onEnd() {
+        return (turnContext.getCurrentSpeaker().equals(myAgent.getAID()) ? I_AM_LEADER : I_AM_NOT_LEADER).ordinal();
     }
 }

@@ -1,15 +1,14 @@
 package chessagents.agents.pieceagent.behaviours.turn.states;
 
 import chessagents.agents.pieceagent.PieceContext;
+import chessagents.agents.pieceagent.behaviours.turn.TurnContext;
 import chessagents.agents.pieceagent.pieces.PieceAgent;
 import chessagents.ontology.ChessOntology;
 import chessagents.ontology.schemas.concepts.Move;
-import chessagents.ontology.schemas.predicates.MoveMade;
 import jade.content.abs.AbsPredicate;
 import jade.content.lang.Codec;
 import jade.content.onto.BasicOntology;
 import jade.content.onto.OntologyException;
-import jade.core.behaviours.DataStore;
 import jade.core.behaviours.SimpleBehaviour;
 import jade.domain.FIPAAgentManagement.NotUnderstoodException;
 import jade.lang.acl.ACLMessage;
@@ -18,24 +17,24 @@ import jade.util.Logger;
 
 import java.util.Optional;
 
-import static chessagents.agents.pieceagent.behaviours.turn.Play.MOVE_KEY;
 import static chessagents.agents.pieceagent.behaviours.turn.fsm.PieceTransition.OTHER_MOVE_RECEIVED;
 
 public class WaitForMove extends SimpleBehaviour {
 
     private final Logger logger = Logger.getMyLogger(getClass().getName());
-    private final PieceContext context;
+    private final PieceContext pieceContext;
+    private final TurnContext turnContext;
     private MessageTemplate messageTemplate;
 
-    public WaitForMove(PieceAgent pieceAgent, PieceContext context, DataStore dataStore) {
+    public WaitForMove(PieceAgent pieceAgent, PieceContext pieceContext, TurnContext turnContext) {
         super(pieceAgent);
-        setDataStore(dataStore);
-        this.context = context;
+        this.pieceContext = pieceContext;
+        this.turnContext = turnContext;
     }
 
     @Override
     public void onStart() {
-        messageTemplate = MessageTemplate.MatchConversationId(context.getMoveSubscriptionId());
+        messageTemplate = MessageTemplate.MatchConversationId(pieceContext.getMoveSubscriptionId());
     }
 
     @Override
@@ -44,8 +43,7 @@ public class WaitForMove extends SimpleBehaviour {
         var message = myAgent.receive(messageTemplate);
 
         if (message != null) {
-            extractMove(message)
-                    .ifPresent(move -> getDataStore().put(MOVE_KEY, move));
+            extractMove(message).ifPresent(turnContext::setCurrentMove);
         } else {
             block();
         }
@@ -71,12 +69,11 @@ public class WaitForMove extends SimpleBehaviour {
 
     @Override
     public boolean done() {
-        return getDataStore().containsKey(MOVE_KEY);
+        return turnContext.getCurrentMove() != null;
     }
 
     @Override
     public void reset() {
-        getDataStore().remove(MOVE_KEY);
         super.reset();
     }
 
