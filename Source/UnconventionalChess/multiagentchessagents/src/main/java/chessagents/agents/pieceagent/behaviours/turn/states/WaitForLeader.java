@@ -5,6 +5,7 @@ import chessagents.agents.pieceagent.behaviours.turn.TurnContext;
 import chessagents.agents.pieceagent.pieces.PieceAgent;
 import chessagents.ontology.ChessOntology;
 import chessagents.ontology.schemas.predicates.IsLeader;
+import jade.content.OntoAID;
 import jade.content.abs.AbsConcept;
 import jade.content.abs.AbsIRE;
 import jade.content.abs.AbsPredicate;
@@ -68,8 +69,8 @@ public class WaitForLeader extends SimpleAchieveREInitiator {
 
             if (abs.getTypeName().equals(BasicOntology.EQUALS)) {
                 var right = abs.getAbsTerm(BasicOntology.EQUALS_RIGHT);
-                var isLeader = (IsLeader) ChessOntology.getInstance().toObject(right);
-                turnContext.setCurrentSpeaker(isLeader.getAgent());
+                var leaderAID = (OntoAID) ChessOntology.getInstance().toObject(right);
+                turnContext.setCurrentSpeaker(leaderAID);
                 logger.info("Speaker realised as " + turnContext.getCurrentSpeaker().getName());
             } else {
                 throw new NotUnderstoodException("Did not receive answer to query?");
