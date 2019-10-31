@@ -1,4 +1,4 @@
-package chessagents.agents.pieceagent.behaviours.turn;
+package chessagents.agents.pieceagent.behaviours.turn.states;
 
 import chessagents.agents.pieceagent.PieceContext;
 import chessagents.agents.pieceagent.pieces.PieceAgent;
@@ -27,7 +27,7 @@ public class WaitForMove extends SimpleBehaviour {
     private final PieceContext context;
     private MessageTemplate messageTemplate;
 
-    WaitForMove(PieceAgent pieceAgent, PieceContext context, DataStore dataStore) {
+    public WaitForMove(PieceAgent pieceAgent, PieceContext context, DataStore dataStore) {
         super(pieceAgent);
         setDataStore(dataStore);
         this.context = context;

@@ -1,4 +1,4 @@
-package chessagents.agents.pieceagent.behaviours.turn;
+package chessagents.agents.pieceagent.behaviours.turn.states;
 
 import chessagents.agents.pieceagent.PieceContext;
 import chessagents.agents.pieceagent.pieces.PieceAgent;
@@ -18,7 +18,7 @@ import jade.lang.acl.MessageTemplate;
 import jade.util.Logger;
 
 import static chessagents.agents.gameagent.behaviours.gameplay.HandleMoveSubscriptions.MOVE_SUBSCRIPTION_PROTOCOL;
-import static chessagents.agents.pieceagent.behaviours.turn.SubscribeToMoves.SubscriptionState.*;
+import static chessagents.agents.pieceagent.behaviours.turn.states.SubscribeToMoves.SubscriptionState.*;
 import static chessagents.ontology.ChessOntology.*;
 
 /**

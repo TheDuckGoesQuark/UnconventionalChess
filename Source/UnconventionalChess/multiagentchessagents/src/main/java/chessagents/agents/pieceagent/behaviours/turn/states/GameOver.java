@@ -1,4 +1,4 @@
-package chessagents.agents.pieceagent.behaviours.turn;
+package chessagents.agents.pieceagent.behaviours.turn.states;
 
 import jade.core.behaviours.Behaviour;
 

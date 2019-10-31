@@ -5,4 +5,5 @@ public enum PieceTransition {
     NOT_MY_TURN,
     GAME_IS_OVER,
     OTHER_MOVE_RECEIVED,
+    MOVE_PERFORMED,
 }
