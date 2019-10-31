@@ -3,12 +3,14 @@ package chessagents.agents.pieceagent.behaviours.turn;
 import chessagents.agents.pieceagent.PieceContext;
 import chessagents.agents.pieceagent.pieces.PieceAgent;
 import chessagents.ontology.ChessOntology;
-import chessagents.ontology.schemas.concepts.Game;
-import chessagents.ontology.schemas.predicates.IsReady;
+import jade.content.abs.AbsAggregate;
+import jade.content.abs.AbsIRE;
+import jade.content.abs.AbsPredicate;
+import jade.content.abs.AbsVariable;
 import jade.content.lang.Codec;
+import jade.content.lang.sl.SLVocabulary;
+import jade.content.onto.BasicOntology;
 import jade.content.onto.OntologyException;
-import jade.core.AID;
-import jade.core.Agent;
 import jade.core.behaviours.SimpleBehaviour;
 import jade.domain.FIPANames;
 import jade.lang.acl.ACLMessage;
@@ -16,32 +18,33 @@ import jade.lang.acl.MessageTemplate;
 import jade.util.Logger;
 
 import static chessagents.agents.gameagent.behaviours.gameplay.HandleMoveSubscriptions.MOVE_SUBSCRIPTION_PROTOCOL;
+import static chessagents.agents.pieceagent.behaviours.turn.SubscribeToMoves.SubscriptionState.*;
+import static chessagents.ontology.ChessOntology.*;
 
 /**
  * Subscribes the given agent to moves being made in the game TODO
  */
 public class SubscribeToMoves extends SimpleBehaviour {
 
+    enum SubscriptionState {
+        PREPARE_SUBSCRIPTION,
+        SEND_SUBSCRIPTION_REQUEST,
+        WAIT_FOR_RESPONSE,
+        HANDLE_RESPONSE,
+        SUBSCRIBED,
+    }
+
     private static final MessageTemplate MESSAGE_TEMPLATE = MessageTemplate.and(
             MessageTemplate.MatchProtocol(MOVE_SUBSCRIPTION_PROTOCOL),
             MessageTemplate.MatchOntology(ChessOntology.ONTOLOGY_NAME)
     );
-    private final Logger logger = Logger.getMyLogger(this.getClass().getName());
-    private static final int PREPARE_SUBSCRIPTION = 0;
-    private static final int SEND_SUBSCRIPTION_REQUEST = 1;
-    private static final int WAIT_FOR_RESPONSE = 2;
-    private static final int HANDLE_RESPONSE = 3;
-    private static final int WAIT_FOR_INFORM = 4;
-    private static final int HANDLE_INFORM = 5;
-    private static final int CANCEL_SUBSCRIPTION = 6;
-    private static final int DONE = 7;
 
     private static final String REQUEST_KEY = "_REQUEST";
     private static final String RESPONSE_KEY = "_RESPONSE";
-    private static final String RESULT_KEY = "_RESULT";
+    private final Logger logger = Logger.getMyLogger(getClass().getName());
     private final PieceContext context;
 
-    private int state = PREPARE_SUBSCRIPTION;
+    private SubscriptionState state = PREPARE_SUBSCRIPTION;
 
     public SubscribeToMoves(PieceAgent pieceAgent, PieceContext context) {
         super(pieceAgent);
@@ -54,10 +57,24 @@ public class SubscribeToMoves extends SimpleBehaviour {
         subscription.setOntology(ChessOntology.ONTOLOGY_NAME);
         subscription.setProtocol(MOVE_SUBSCRIPTION_PROTOCOL);
 
+        var absVariableMove = new AbsVariable("move", MOVE_MADE_MOVE);
+        var absVariableTurn = new AbsVariable("turn", MOVE_MADE_TURN);
+        var absVariableAggregate = new AbsAggregate(BasicOntology.SET);
+        absVariableAggregate.add(absVariableMove);
+        absVariableAggregate.add(absVariableTurn);
+
+        var absMoveMade = new AbsPredicate(MOVE_MADE);
+        absMoveMade.set(MOVE_MADE_MOVE, absVariableMove);
+        absMoveMade.set(MOVE_MADE_TURN, absVariableTurn);
+
+        var ire = new AbsIRE(SLVocabulary.ALL);
+        ire.setProposition(absMoveMade);
+        ire.setVariables(absVariableAggregate);
+
         try {
-            myAgent.getContentManager().fillContent(subscription, new IsReady(game));
+            myAgent.getContentManager().fillContent(subscription, ire);
         } catch (Codec.CodecException | OntologyException e) {
-            logger.warning("Unable to create subscription message: " + e.getMessage());
+            logger.warning("Unable to create move subscription message: " + e.getMessage());
         }
 
         return subscription;
@@ -72,18 +89,18 @@ public class SubscribeToMoves extends SimpleBehaviour {
                 logger.info("Preparing subscription");
                 request = this.prepareSubscription(new ACLMessage(ACLMessage.SUBSCRIBE));
                 getDataStore().put(REQUEST_KEY, request);
-                state = SEND_SUBSCRIPTION_REQUEST;
+                state = SubscriptionState.SEND_SUBSCRIPTION_REQUEST;
                 break;
             case SEND_SUBSCRIPTION_REQUEST:
                 logger.info("Sending subscription");
                 request = (ACLMessage) getDataStore().get(REQUEST_KEY);
                 myAgent.send(request);
-                state = WAIT_FOR_RESPONSE;
+                state = SubscriptionState.WAIT_FOR_RESPONSE;
                 break;
             case WAIT_FOR_RESPONSE:
-                if (receiveMessage(RESPONSE_KEY)) {
+                if (receiveResponse()) {
                     logger.info("Received subscription response");
-                    state = HANDLE_RESPONSE;
+                    state = SubscriptionState.HANDLE_RESPONSE;
                 } else {
                     block();
                 }
@@ -92,54 +109,27 @@ public class SubscribeToMoves extends SimpleBehaviour {
                 response = (ACLMessage) getDataStore().get(RESPONSE_KEY);
                 if (response.getPerformative() == ACLMessage.AGREE) {
                     logger.info("Subscription AGREE received");
-                    state = WAIT_FOR_INFORM;
+                    state = SUBSCRIBED;
                 } else {
                     state = PREPARE_SUBSCRIPTION;
                 }
-                break;
-            case WAIT_FOR_INFORM:
-                if (receiveMessage(RESULT_KEY)) {
-                    logger.info("Game status INFORM received");
-                    state = HANDLE_INFORM;
-                } else {
-                    block();
-                }
-                break;
-            case HANDLE_INFORM:
-                response = (ACLMessage) getDataStore().get(RESULT_KEY);
-                if (response.getPerformative() == ACLMessage.INFORM) {
-                    state = CANCEL_SUBSCRIPTION;
-                } else {
-                    state = PREPARE_SUBSCRIPTION;
-                }
-                break;
-            case CANCEL_SUBSCRIPTION:
-                logger.info("Canceling subscription");
-                response = (ACLMessage) getDataStore().get(RESULT_KEY);
-                cancelSubscription(response.createReply());
-                state = DONE;
                 break;
         }
     }
 
-    private void cancelSubscription(ACLMessage cancel) {
-        cancel.setPerformative(ACLMessage.CANCEL);
-        myAgent.send(cancel);
-    }
-
-    private boolean receiveMessage(String resultKey) {
+    private boolean receiveResponse() {
         var response = myAgent.receive(MESSAGE_TEMPLATE);
-        var responseReceieved = response != null;
+        var responseReceived = response != null;
 
-        if (responseReceieved) {
-            getDataStore().put(resultKey, response);
+        if (responseReceived) {
+            getDataStore().put(SubscribeToMoves.RESPONSE_KEY, response);
         }
 
-        return responseReceieved;
+        return responseReceived;
     }
 
     @Override
     public boolean done() {
-        return this.state == DONE;
+        return this.state == SUBSCRIBED;
     }
 }
