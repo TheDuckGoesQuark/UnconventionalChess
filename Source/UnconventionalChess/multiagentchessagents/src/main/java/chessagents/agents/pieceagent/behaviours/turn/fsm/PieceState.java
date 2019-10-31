@@ -6,5 +6,6 @@ public enum PieceState {
     WAIT_FOR_LEADER,
     GAME_OVER,
     PERFORM_MOVE,
+    END_TURN,
 
 }
