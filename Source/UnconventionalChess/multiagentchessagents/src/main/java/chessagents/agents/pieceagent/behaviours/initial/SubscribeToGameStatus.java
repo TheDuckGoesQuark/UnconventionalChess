@@ -13,6 +13,8 @@ import jade.lang.acl.ACLMessage;
 import jade.lang.acl.MessageTemplate;
 import jade.util.Logger;
 
+import java.util.UUID;
+
 import static chessagents.agents.gameagent.behaviours.meta.HandleGameStatusSubscriptions.GAME_STATUS_SUBSCRIPTION_PROTOCOL;
 
 /**
@@ -53,6 +55,7 @@ public class SubscribeToGameStatus extends SimpleBehaviour {
         subscription.setLanguage(FIPANames.ContentLanguage.FIPA_SL);
         subscription.setOntology(ChessOntology.ONTOLOGY_NAME);
         subscription.setProtocol(GAME_STATUS_SUBSCRIPTION_PROTOCOL);
+        subscription.setConversationId(UUID.randomUUID().toString());
 
         var content = new IsReady(new Game(context.getGameId()));
         try {

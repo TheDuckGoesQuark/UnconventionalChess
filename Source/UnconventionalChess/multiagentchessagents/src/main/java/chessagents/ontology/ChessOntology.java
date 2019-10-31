@@ -54,7 +54,6 @@ public class ChessOntology extends Ontology {
 
     public static final String MOVE_MADE = "Move Made";
     public static final String MOVE_MADE_MOVE = "Move";
-    public static final String MOVE_MADE_TURN = "Turn";
 
     public static final String IS_VALID_MOVE = "Is Valid Move";
     public static final String IS_VALID_MOVE_MOVE = "Move";
@@ -122,7 +121,6 @@ public class ChessOntology extends Ontology {
 
             final var moveMadeSchema = new PredicateSchema(MOVE_MADE);
             moveMadeSchema.add(MOVE_MADE_MOVE, getSchema(MOVE));
-            moveMadeSchema.add(MOVE_MADE_TURN, getSchema(BasicOntology.INTEGER));
             add(moveMadeSchema, MoveMade.class);
 
             final var isValidMoveSchema = new PredicateSchema(IS_VALID_MOVE);

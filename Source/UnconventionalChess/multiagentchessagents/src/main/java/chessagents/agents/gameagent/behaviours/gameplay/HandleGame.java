@@ -23,10 +23,8 @@ public class HandleGame extends GamePlayFSMBehaviour {
 
         myAgent.addBehaviour(new HandleMoveSubscriptions((GameAgent) myAgent, context));
 
-        // single element channel for holding the move currently being considered
         var dataStore = getDataStore();
         registerFirstState(new InitTurn((GameAgent) myAgent, context));
-        registerState(new ElectLeaderAgent(), ELECT_LEADER_AGENT);
         registerState(new ElectLeaderAgent(), ELECT_LEADER_AGENT);
         registerState(new WaitForMove((GameAgent) myAgent, dataStore), WAIT_FOR_MOVE);
         registerState(new VerifyMove((GameAgent) myAgent, context, dataStore), VERIFY_MOVE);

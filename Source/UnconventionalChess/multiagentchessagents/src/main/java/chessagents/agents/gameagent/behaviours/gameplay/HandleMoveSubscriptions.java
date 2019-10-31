@@ -35,6 +35,7 @@ public class HandleMoveSubscriptions extends SubscriptionResponder {
                 MessageTemplate.MatchOntology(ChessOntology.ONTOLOGY_NAME)
         ));
         this.informSubscribersOfMoves = new InformSubscribersOfMoves(context);
+        gameAgent.addBehaviour(informSubscribersOfMoves);
     }
 
     /**

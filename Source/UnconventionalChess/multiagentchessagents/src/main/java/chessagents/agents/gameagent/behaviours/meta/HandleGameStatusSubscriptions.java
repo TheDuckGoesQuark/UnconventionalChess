@@ -23,7 +23,7 @@ public class HandleGameStatusSubscriptions extends SubscriptionResponder {
         super(gameAgent, MessageTemplate.and(
                 MessageTemplate.MatchProtocol(GAME_STATUS_SUBSCRIPTION_PROTOCOL),
                 MessageTemplate.MatchOntology(ChessOntology.ONTOLOGY_NAME)
-        ), null);
+        ));
         this.context = context;
     }
 

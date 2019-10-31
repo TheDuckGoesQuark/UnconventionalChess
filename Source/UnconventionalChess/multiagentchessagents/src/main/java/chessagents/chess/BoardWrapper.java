@@ -8,6 +8,7 @@ import com.github.bhlangonijr.chesslib.move.Move;
 import com.github.bhlangonijr.chesslib.move.MoveGenerator;
 import com.github.bhlangonijr.chesslib.move.MoveGeneratorException;
 import com.github.bhlangonijr.chesslib.move.MoveList;
+import jade.util.Logger;
 
 import java.util.Arrays;
 import java.util.Optional;
@@ -22,6 +23,7 @@ public class BoardWrapper {
 
     private final Random random = new Random();
     private final Board board;
+    private final Logger logger = Logger.getMyLogger(getClass().getName());
 
     public BoardWrapper() {
         board = new Board();
@@ -42,6 +44,7 @@ public class BoardWrapper {
 
     /**
      * Constructs move concept from chess lib move
+     *
      * @param move chess lib move instance
      * @return concept move
      */

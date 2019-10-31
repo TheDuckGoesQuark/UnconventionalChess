@@ -17,6 +17,8 @@ import jade.lang.acl.ACLMessage;
 import jade.lang.acl.MessageTemplate;
 import jade.util.Logger;
 
+import java.util.UUID;
+
 import static chessagents.agents.gameagent.behaviours.gameplay.HandleMoveSubscriptions.MOVE_SUBSCRIPTION_PROTOCOL;
 import static chessagents.agents.pieceagent.behaviours.turn.states.SubscribeToMoves.SubscriptionState.*;
 import static chessagents.ontology.ChessOntology.*;
@@ -56,20 +58,15 @@ public class SubscribeToMoves extends SimpleBehaviour {
         subscription.setLanguage(FIPANames.ContentLanguage.FIPA_SL);
         subscription.setOntology(ChessOntology.ONTOLOGY_NAME);
         subscription.setProtocol(MOVE_SUBSCRIPTION_PROTOCOL);
+        subscription.setConversationId(UUID.randomUUID().toString());
 
         var absVariableMove = new AbsVariable("move", MOVE_MADE_MOVE);
-        var absVariableTurn = new AbsVariable("turn", MOVE_MADE_TURN);
-        var absVariableAggregate = new AbsAggregate(BasicOntology.SET);
-        absVariableAggregate.add(absVariableMove);
-        absVariableAggregate.add(absVariableTurn);
-
         var absMoveMade = new AbsPredicate(MOVE_MADE);
         absMoveMade.set(MOVE_MADE_MOVE, absVariableMove);
-        absMoveMade.set(MOVE_MADE_TURN, absVariableTurn);
 
-        var ire = new AbsIRE(SLVocabulary.ALL);
+        var ire = new AbsIRE(SLVocabulary.IOTA);
         ire.setProposition(absMoveMade);
-        ire.setVariables(absVariableAggregate);
+        ire.setVariable(absVariableMove);
 
         try {
             myAgent.getContentManager().fillContent(subscription, ire);
@@ -112,6 +109,7 @@ public class SubscribeToMoves extends SimpleBehaviour {
                     context.setMoveSubscriptionId(response.getConversationId());
                     state = SUBSCRIBED;
                 } else {
+                    logger.warning("Received non-agree to subscription:" + response.getPerformative());
                     state = PREPARE_SUBSCRIPTION;
                 }
                 break;

@@ -14,7 +14,6 @@ import lombok.Setter;
 @AllArgsConstructor
 public class MoveMade implements Predicate {
 
-    private int turn;
     private Move move;
 
 }

@@ -1,6 +1,7 @@
 package chessagents.agents.pieceagent.behaviours.turn;
 
 import chessagents.agents.pieceagent.behaviours.turn.fsm.PieceFSMBehaviour;
+import chessagents.agents.pieceagent.behaviours.turn.fsm.PieceState;
 import chessagents.agents.pieceagent.behaviours.turn.states.*;
 import chessagents.agents.pieceagent.pieces.PieceAgent;
 import chessagents.agents.pieceagent.PieceContext;
@@ -24,11 +25,12 @@ public class Play extends PieceFSMBehaviour {
         registerState(new WaitForMove(pieceAgent, context, getDataStore()), WAIT_FOR_MOVE);
         registerState(new PerformMove(pieceAgent, context, getDataStore()), PERFORM_MOVE);
         registerState(new EndTurn(pieceAgent, context, getDataStore()), END_TURN);
+        registerState(new WaitForLeader(pieceAgent, context, getDataStore()), WAIT_FOR_LEADER);
 
         registerLastState(new GameOver(), GAME_OVER);
 
         // initial transitions
-        registerTransition(INITIAL, WAIT_FOR_LEADER, MY_TURN);
+        registerTransition(INITIAL, WAIT_FOR_MOVE, MY_TURN);
         registerTransition(INITIAL, WAIT_FOR_MOVE, NOT_MY_TURN);
         registerTransition(INITIAL, GAME_OVER, GAME_IS_OVER);
 
@@ -38,6 +40,7 @@ public class Play extends PieceFSMBehaviour {
         // perform move transitions
         registerTransition(PERFORM_MOVE, END_TURN, MOVE_PERFORMED);
 
-        // turn ended transitions
+        // turn ended transitions, reset all other states
+        registerTransition(END_TURN, INITIAL, TURN_ENDED, PieceState.values());
     }
 }

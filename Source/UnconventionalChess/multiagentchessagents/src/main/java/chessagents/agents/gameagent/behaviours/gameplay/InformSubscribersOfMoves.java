@@ -34,15 +34,10 @@ public class InformSubscribersOfMoves extends SimpleBehaviour {
 
         // construct IRE
         var absVariableMove = new AbsVariable("Move", ChessOntology.MOVE_MADE_MOVE);
-        var absVariableTurn = new AbsVariable("Turn", ChessOntology.MOVE_MADE_TURN);
-        var absVariableAggregate = new AbsAggregate(BasicOntology.SET);
-        absVariableAggregate.add(absVariableMove);
-        absVariableAggregate.add(absVariableTurn);
-        absIRE.setVariables(absVariableAggregate);
+        absIRE.setVariable(absVariableMove);
 
         var absProp = new AbsPredicate(ChessOntology.MOVE_MADE);
         absProp.set(ChessOntology.MOVE_MADE_MOVE, absVariableMove);
-        absProp.set(ChessOntology.MOVE_MADE_TURN, absVariableTurn);
         absIRE.setProposition(absProp);
     }
 
@@ -59,20 +54,19 @@ public class InformSubscribersOfMoves extends SimpleBehaviour {
         }
     }
 
-    private AbsContentElement constructMessageContent(Move move, int indexOfNextTurn) throws OntologyException {
-        var moveMade = new MoveMade(indexOfNextTurn, move);
-        var absMoveMade = ChessOntology.getInstance().fromObject(moveMade);
+    private AbsContentElement constructMessageContent(Move move) throws OntologyException {
+        var absMove = ChessOntology.getInstance().fromObject(move);
         var equals = new AbsPredicate(BasicOntology.EQUALS);
 
         equals.set(BasicOntology.EQUALS_LEFT, absIRE);
-        equals.set(BasicOntology.EQUALS_RIGHT, absMoveMade);
+        equals.set(BasicOntology.EQUALS_RIGHT, absMove);
 
         return equals;
     }
 
     private void sendNextTurn(int indexOfNextTurn) throws OntologyException {
         var move = context.getBoard().getMove(indexOfNextTurn);
-        var content = constructMessageContent(move, indexOfNextTurn);
+        var content = constructMessageContent(move);
         subs.stream().map(s -> createInform(s, content)).forEach(inform -> myAgent.send(inform));
     }
 
@@ -94,6 +88,7 @@ public class InformSubscribersOfMoves extends SimpleBehaviour {
     }
 
     void addSubscriber(Subscription sub) {
+        logger.info("New subscriber to moves: " + sub.getMessage().getSender());
         subs.add(sub);
     }
 

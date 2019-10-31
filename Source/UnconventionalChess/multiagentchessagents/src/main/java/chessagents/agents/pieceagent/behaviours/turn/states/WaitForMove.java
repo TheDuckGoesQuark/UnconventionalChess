@@ -40,6 +40,7 @@ public class WaitForMove extends SimpleBehaviour {
 
     @Override
     public void action() {
+        logger.info("Waiting for move...");
         var message = myAgent.receive(messageTemplate);
 
         if (message != null) {
@@ -60,8 +61,8 @@ public class WaitForMove extends SimpleBehaviour {
             }
 
             var absRight = absEquals.getAbsTerm(BasicOntology.EQUALS_RIGHT);
-            var moveMade = (MoveMade) ChessOntology.getInstance().toObject(absRight);
-            result = Optional.of(moveMade.getMove());
+            var move = (Move) ChessOntology.getInstance().toObject(absRight);
+            result = Optional.of(move);
         } catch (Codec.CodecException | OntologyException | NotUnderstoodException e) {
             logger.warning("Failed to deserialize move message: " + e.getMessage());
         }
