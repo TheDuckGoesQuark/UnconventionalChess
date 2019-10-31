@@ -19,6 +19,7 @@ public class PieceContext {
     private final AID gameAgentAID;
     private final Map<AID, Piece> aidToPiece = new HashMap<>();
     private final BoardWrapper board = new BoardWrapper();
+    private String moveSubscriptionId = null;
 
     public PieceContext(int gameId, Colour myColour, AID gameAgentAID, Position myPosition) {
         this.gameId = gameId;
@@ -29,5 +30,9 @@ public class PieceContext {
 
     public boolean isMyTurnToGo() {
         return board.isSideToGo(myColour.getColour());
+    }
+
+    public void setMoveSubscriptionId(String moveSubscriptionId) {
+        this.moveSubscriptionId = moveSubscriptionId;
     }
 }

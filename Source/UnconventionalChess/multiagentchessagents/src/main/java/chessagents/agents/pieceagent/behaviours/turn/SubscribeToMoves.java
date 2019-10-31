@@ -109,6 +109,7 @@ public class SubscribeToMoves extends SimpleBehaviour {
                 response = (ACLMessage) getDataStore().get(RESPONSE_KEY);
                 if (response.getPerformative() == ACLMessage.AGREE) {
                     logger.info("Subscription AGREE received");
+                    context.setMoveSubscriptionId(response.getConversationId());
                     state = SUBSCRIBED;
                 } else {
                     state = PREPARE_SUBSCRIPTION;
