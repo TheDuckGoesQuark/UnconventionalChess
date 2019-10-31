@@ -9,6 +9,7 @@ import chessagents.ontology.schemas.predicates.MoveMade;
 import jade.content.abs.AbsIRE;
 import jade.content.lang.Codec;
 import jade.content.onto.OntologyException;
+import jade.core.behaviours.Behaviour;
 import jade.core.behaviours.DataStore;
 import jade.domain.FIPAAgentManagement.FailureException;
 import jade.domain.FIPAAgentManagement.NotUnderstoodException;
@@ -29,13 +30,12 @@ public class HandleMoveSubscriptions extends SubscriptionResponder {
     private final Logger logger = Logger.getMyLogger(HandleMoveSubscriptions.class.getName());
     private final InformSubscribersOfMoves informSubscribersOfMoves;
 
-    HandleMoveSubscriptions(GameAgent gameAgent, GameContext context) {
+    HandleMoveSubscriptions(GameAgent gameAgent, GameContext context, InformSubscribersOfMoves informSubscribersBehaviour) {
         super(gameAgent, MessageTemplate.and(
                 MessageTemplate.MatchProtocol(MOVE_SUBSCRIPTION_PROTOCOL),
                 MessageTemplate.MatchOntology(ChessOntology.ONTOLOGY_NAME)
         ));
-        this.informSubscribersOfMoves = new InformSubscribersOfMoves(context);
-        gameAgent.addBehaviour(informSubscribersOfMoves);
+        this.informSubscribersOfMoves = informSubscribersBehaviour;
     }
 
     /**

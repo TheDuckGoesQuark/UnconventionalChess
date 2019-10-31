@@ -12,9 +12,12 @@ import static chessagents.agents.gameagent.behaviours.gameplay.HandleGame.MOVE_M
 
 public class SendInformMoveMessage extends OneShotBehaviour {
 
-    SendInformMoveMessage(GameAgent myAgent, DataStore datastore) {
+    private final InformSubscribersOfMoves informSubscribersOfMove;
+
+    SendInformMoveMessage(GameAgent myAgent, DataStore datastore, InformSubscribersOfMoves informSubscribersOfMove) {
         super(myAgent);
         setDataStore(datastore);
+        this.informSubscribersOfMove = informSubscribersOfMove;
     }
 
     @Override
@@ -22,6 +25,7 @@ public class SendInformMoveMessage extends OneShotBehaviour {
         var request = (ACLMessage) getDataStore().get(MOVE_MESSAGE_KEY);
         var inform = createInform(request);
         myAgent.send(inform);
+        myAgent.addBehaviour(informSubscribersOfMove);
     }
 
     private ACLMessage createInform(ACLMessage request) {

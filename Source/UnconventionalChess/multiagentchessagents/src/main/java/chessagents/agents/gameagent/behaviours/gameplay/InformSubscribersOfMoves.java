@@ -3,12 +3,12 @@ package chessagents.agents.gameagent.behaviours.gameplay;
 import chessagents.agents.gameagent.GameContext;
 import chessagents.ontology.ChessOntology;
 import chessagents.ontology.schemas.concepts.Move;
-import chessagents.ontology.schemas.predicates.MoveMade;
 import jade.content.abs.*;
 import jade.content.lang.Codec;
 import jade.content.lang.sl.SLVocabulary;
 import jade.content.onto.BasicOntology;
 import jade.content.onto.OntologyException;
+import jade.core.behaviours.OneShotBehaviour;
 import jade.core.behaviours.SimpleBehaviour;
 import jade.lang.acl.ACLMessage;
 import jade.util.Logger;
@@ -21,13 +21,13 @@ import static jade.proto.SubscriptionResponder.Subscription;
 /**
  *
  */
-public class InformSubscribersOfMoves extends SimpleBehaviour {
+public class InformSubscribersOfMoves extends OneShotBehaviour {
 
     private final Logger logger = Logger.getMyLogger(getClass().getName());
     private final AbsIRE absIRE = new AbsIRE(SLVocabulary.IOTA);
     private final Set<Subscription> subs = new HashSet<>();
     private final GameContext context;
-    private int nextTurnIndex = 0;
+    private int turnIndex = 0;
 
     InformSubscribersOfMoves(GameContext context) {
         this.context = context;
@@ -43,14 +43,13 @@ public class InformSubscribersOfMoves extends SimpleBehaviour {
 
     @Override
     public void action() {
-        while (nextTurnIndex < context.getBoard().getTurnCount()) {
-            try {
-                sendNextTurn(nextTurnIndex);
-            } catch (OntologyException e) {
-                logger.warning("Failed to serialise move: " + e.getMessage());
-            } finally {
-                nextTurnIndex++;
-            }
+        try {
+            logger.info("Sending moves for turn " + turnIndex);
+            sendNextTurn(turnIndex);
+        } catch (OntologyException e) {
+            logger.warning("Failed to serialise move: " + e.getMessage());
+        } finally {
+            turnIndex++;
         }
     }
 
@@ -80,11 +79,6 @@ public class InformSubscribersOfMoves extends SimpleBehaviour {
         }
 
         return reply;
-    }
-
-    @Override
-    public boolean done() {
-        return context.getBoard().gameIsOver();
     }
 
     void addSubscriber(Subscription sub) {

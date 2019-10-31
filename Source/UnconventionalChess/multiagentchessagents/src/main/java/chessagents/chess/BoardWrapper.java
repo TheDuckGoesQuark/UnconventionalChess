@@ -121,7 +121,7 @@ public class BoardWrapper {
     }
 
     public int getTurnCount() {
-        return board.getHalfMoveCounter();
+        return board.getBackup().size();
     }
 
     public boolean gameIsOver() {
