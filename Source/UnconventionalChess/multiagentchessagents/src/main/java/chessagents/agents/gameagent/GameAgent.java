@@ -9,7 +9,6 @@ import chessagents.agents.gameagent.behaviours.meta.SpawnPieceAgents;
 import chessagents.ontology.schemas.concepts.Game;
 import jade.core.AID;
 import jade.core.behaviours.SequentialBehaviour;
-import jade.util.Logger;
 
 
 /**

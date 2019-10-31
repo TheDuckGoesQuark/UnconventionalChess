@@ -22,7 +22,6 @@ public class PieceAgent extends ChessAgent {
         var myColour = new Colour((String) args[1]);
         var game = new Game(Integer.parseInt((String) args[3]));
         var gameAgentAID = new AID((String) args[2], true);
-
         var aidToPiece = new HashMap<AID, Piece>();
 
         var sequence = new SequentialBehaviour();
