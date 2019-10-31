@@ -152,6 +152,8 @@ public class SpawnPieceAgents extends SimpleBehaviour {
         createAgent.setAgentName(agentName);
         createAgent.setClassName(agentClassName);
         createAgent.setContainer(new ContainerID(containerName, null));
+
+        // add arguments for piece
         createAgent.addArguments(startingSquare);
         createAgent.addArguments(colour);
         createAgent.addArguments(myAgent.getAID().getName());

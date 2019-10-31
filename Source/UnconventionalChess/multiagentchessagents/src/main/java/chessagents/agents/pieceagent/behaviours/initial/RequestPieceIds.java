@@ -1,5 +1,7 @@
-package chessagents.agents.pieceagent.behaviours;
+package chessagents.agents.pieceagent.behaviours.initial;
 
+import chessagents.agents.pieceagent.PieceAgent;
+import chessagents.agents.pieceagent.PieceContext;
 import chessagents.ontology.ChessOntology;
 import chessagents.ontology.schemas.concepts.Colour;
 import chessagents.ontology.schemas.concepts.Piece;
@@ -26,20 +28,16 @@ import static chessagents.agents.gameagent.behaviours.meta.HandlePieceListReques
 public class RequestPieceIds extends SimpleAchieveREInitiator {
 
     private final Logger logger = Logger.getMyLogger(this.getClass().getName());
-    private final Map<AID, Piece> aidToPiece;
-    private final Colour myColour;
-    private final AID gameAgentAID;
+    private final PieceContext context;
 
-    public RequestPieceIds(Agent a, Map<AID, Piece> aidToPiece, Colour myColour, AID gameAgentAID) {
-        super(a, new ACLMessage(ACLMessage.QUERY_REF));
-        this.aidToPiece = aidToPiece;
-        this.myColour = myColour;
-        this.gameAgentAID = gameAgentAID;
+    public RequestPieceIds(PieceAgent pieceAgent, PieceContext context) {
+        super(pieceAgent, new ACLMessage(ACLMessage.QUERY_REF));
+        this.context = context;
     }
 
     @Override
     protected ACLMessage prepareRequest(ACLMessage request) {
-        request.addReceiver(gameAgentAID);
+        request.addReceiver(context.getGameAgentAID());
         request.setLanguage(FIPANames.ContentLanguage.FIPA_SL);
         request.setOntology(ChessOntology.ONTOLOGY_NAME);
         request.setProtocol(PIECE_LIST_QUERY_PROTOCOL);
@@ -59,7 +57,7 @@ public class RequestPieceIds extends SimpleAchieveREInitiator {
         var ontology = ChessOntology.getInstance();
 
         // create abstract descriptor for colour
-        var absColour = (AbsConcept) ontology.fromObject(myColour);
+        var absColour = (AbsConcept) ontology.fromObject(context.getMyColour());
 
         // declare variable in our query to be of type piece
         var absX = new AbsVariable("x", ChessOntology.PIECE);
@@ -95,7 +93,7 @@ public class RequestPieceIds extends SimpleAchieveREInitiator {
             var absEquals = (AbsPredicate) contentManager.extractAbsContent(inform);
             var absSet = (AbsAggregate) absEquals.getAbsTerm(BasicOntology.EQUALS_RIGHT);
             var pieces = extractPieces(absSet, contentManager.getOntology(inform));
-            pieces.forEach(piece -> aidToPiece.put(piece.getAgentAID(), piece));
+            pieces.forEach(piece -> context.getAidToPiece().put(piece.getAgentAID(), piece));
         } catch (Codec.CodecException | OntologyException e) {
             logger.warning("Failed to extract message: " + e.getMessage());
         }
