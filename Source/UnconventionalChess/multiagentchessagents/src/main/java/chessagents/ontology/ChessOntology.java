@@ -58,6 +58,9 @@ public class ChessOntology extends Ontology {
     public static final String IS_VALID_MOVE = "Is Valid Move";
     public static final String IS_VALID_MOVE_MOVE = "Move";
 
+    public static final String IS_LEADER = "Is Leader";
+    public static final String IS_LEADER_AGENT = "Agent";
+
     // Actions
     public static final String MAKE_MOVE = "Make Move";
     public static final String MAKE_MOVE_MOVE = "Move";
@@ -126,6 +129,10 @@ public class ChessOntology extends Ontology {
             final var isValidMoveSchema = new PredicateSchema(IS_VALID_MOVE);
             isValidMoveSchema.add(IS_VALID_MOVE_MOVE, getSchema(MOVE));
             add(isValidMoveSchema, IsValidMove.class);
+
+            final var isLeaderSchema = new PredicateSchema(IS_LEADER);
+            isLeaderSchema.add(IS_LEADER_AGENT, getSchema(BasicOntology.AID));
+            add(isLeaderSchema);
 
             // Actions
             final var makeMoveSchema = new AgentActionSchema(MAKE_MOVE);

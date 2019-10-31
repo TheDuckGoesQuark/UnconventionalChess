@@ -13,19 +13,19 @@ import static chessagents.agents.pieceagent.behaviours.turn.fsm.PieceTransition.
 public class Play extends PieceFSMBehaviour {
 
     public static final String MOVE_KEY = "_MOVE";
-    private final PieceContext context;
 
-    public Play(PieceAgent pieceAgent, PieceContext context) {
+    public Play(PieceAgent pieceAgent, PieceContext pieceContext) {
         super(pieceAgent);
-        this.context = context;
         this.setDataStore(new DataStore());
 
-        registerFirstState(new Initial(pieceAgent, context), INITIAL);
+        var turnContext = new TurnContext();
 
-        registerState(new WaitForMove(pieceAgent, context, getDataStore()), WAIT_FOR_MOVE);
-        registerState(new PerformMove(pieceAgent, context, getDataStore()), PERFORM_MOVE);
-        registerState(new EndTurn(pieceAgent, context, getDataStore()), END_TURN);
-        registerState(new WaitForLeader(pieceAgent, context, getDataStore()), WAIT_FOR_LEADER);
+        registerFirstState(new Initial(pieceAgent, pieceContext, turnContext), INITIAL);
+
+        registerState(new WaitForMove(pieceAgent, pieceContext, getDataStore()), WAIT_FOR_MOVE);
+        registerState(new PerformMove(pieceAgent, pieceContext, getDataStore()), PERFORM_MOVE);
+        registerState(new EndTurn(pieceAgent, pieceContext, getDataStore()), END_TURN);
+        registerState(new WaitForLeader(pieceAgent, pieceContext, turnContext, getDataStore()), WAIT_FOR_LEADER);
 
         registerLastState(new GameOver(), GAME_OVER);
 
