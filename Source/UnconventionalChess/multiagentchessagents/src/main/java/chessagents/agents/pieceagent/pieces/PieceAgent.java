@@ -2,7 +2,7 @@ package chessagents.agents.pieceagent.pieces;
 
 import chessagents.agents.ChessAgent;
 import chessagents.agents.pieceagent.PieceContext;
-import chessagents.agents.pieceagent.behaviours.Play;
+import chessagents.agents.pieceagent.behaviours.turn.Play;
 import chessagents.agents.pieceagent.behaviours.initial.RequestPieceIds;
 import chessagents.agents.pieceagent.behaviours.initial.SubscribeToGameStatus;
 import chessagents.ontology.schemas.concepts.Colour;

@@ -1,4 +1,4 @@
-package chessagents.agents.pieceagent.behaviours;
+package chessagents.agents.pieceagent.behaviours.turn;
 
 import chessagents.ontology.ChessOntology;
 import chessagents.ontology.schemas.concepts.Game;
