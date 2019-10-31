@@ -1,5 +1,7 @@
 package chessagents.agents.pieceagent.behaviours.turn;
 
+import chessagents.agents.pieceagent.PieceContext;
+import chessagents.agents.pieceagent.pieces.PieceAgent;
 import chessagents.ontology.ChessOntology;
 import chessagents.ontology.schemas.concepts.Game;
 import chessagents.ontology.schemas.predicates.IsReady;
@@ -37,19 +39,17 @@ public class SubscribeToMoves extends SimpleBehaviour {
     private static final String REQUEST_KEY = "_REQUEST";
     private static final String RESPONSE_KEY = "_RESPONSE";
     private static final String RESULT_KEY = "_RESULT";
-    private final AID gameAgentAID;
-    private final Game game;
+    private final PieceContext context;
 
     private int state = PREPARE_SUBSCRIPTION;
 
-    public SubscribeToMoves(Agent a, AID gameAgentAID, Game game) {
-        super(a);
-        this.gameAgentAID = gameAgentAID;
-        this.game = game;
+    public SubscribeToMoves(PieceAgent pieceAgent, PieceContext context) {
+        super(pieceAgent);
+        this.context = context;
     }
 
     private ACLMessage prepareSubscription(ACLMessage subscription) {
-        subscription.addReceiver(gameAgentAID);
+        subscription.addReceiver(context.getGameAgentAID());
         subscription.setLanguage(FIPANames.ContentLanguage.FIPA_SL);
         subscription.setOntology(ChessOntology.ONTOLOGY_NAME);
         subscription.setProtocol(MOVE_SUBSCRIPTION_PROTOCOL);

@@ -5,6 +5,7 @@ import chessagents.agents.pieceagent.PieceContext;
 import chessagents.agents.pieceagent.behaviours.turn.Play;
 import chessagents.agents.pieceagent.behaviours.initial.RequestPieceIds;
 import chessagents.agents.pieceagent.behaviours.initial.SubscribeToGameStatus;
+import chessagents.agents.pieceagent.behaviours.turn.SubscribeToMoves;
 import chessagents.ontology.schemas.concepts.Colour;
 import chessagents.ontology.schemas.concepts.Position;
 import jade.core.AID;
@@ -29,6 +30,8 @@ public abstract class PieceAgent extends ChessAgent {
         sequence.addSubBehaviour(new SubscribeToGameStatus(this, context));
         // ask for the AID <-> piece mapping so we know who to talk to
         sequence.addSubBehaviour(new RequestPieceIds(this, context));
+        // subscribe to updates about moves
+        sequence.addSubBehaviour(new SubscribeToMoves(this, context));
         // start making moves
         sequence.addSubBehaviour(new Play(this, context));
         addBehaviour(sequence);

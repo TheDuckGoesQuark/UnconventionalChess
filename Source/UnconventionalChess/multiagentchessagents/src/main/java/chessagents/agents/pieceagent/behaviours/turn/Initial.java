@@ -9,7 +9,6 @@ import jade.util.Logger;
 
 public class Initial extends SimpleBehaviour {
 
-    public static final PieceState STATE = PieceState.INITIAL;
     private final Logger logger = Logger.getMyLogger(getClass().getName());
     private final PieceContext context;
     private PieceTransition nextTransition = null;
