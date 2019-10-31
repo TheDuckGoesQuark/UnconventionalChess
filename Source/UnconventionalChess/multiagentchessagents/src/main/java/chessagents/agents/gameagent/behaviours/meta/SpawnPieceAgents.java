@@ -2,12 +2,9 @@ package chessagents.agents.gameagent.behaviours.meta;
 
 import chessagents.agents.gameagent.GameAgent;
 import chessagents.agents.gameagent.GameContext;
-import chessagents.agents.gameagent.GameProperties;
 import chessagents.agents.gameagent.GameStatus;
-import chessagents.agents.pieceagent.*;
-import chessagents.chess.BoardWrapper;
+import chessagents.agents.pieceagent.pieces.*;
 import chessagents.ontology.schemas.concepts.Colour;
-import chessagents.ontology.schemas.concepts.Game;
 import chessagents.ontology.schemas.concepts.Piece;
 import chessagents.ontology.schemas.concepts.Position;
 import com.github.bhlangonijr.chesslib.PieceType;
@@ -26,7 +23,6 @@ import jade.util.Logger;
 import jade.wrapper.ControllerException;
 
 import java.util.HashSet;
-import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;

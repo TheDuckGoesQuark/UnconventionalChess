@@ -1,9 +1,8 @@
 package chessagents.agents.pieceagent.behaviours.initial;
 
-import chessagents.agents.pieceagent.PieceAgent;
+import chessagents.agents.pieceagent.pieces.PieceAgent;
 import chessagents.agents.pieceagent.PieceContext;
 import chessagents.ontology.ChessOntology;
-import chessagents.ontology.schemas.concepts.Colour;
 import chessagents.ontology.schemas.concepts.Piece;
 import jade.content.abs.*;
 import jade.content.lang.Codec;
@@ -11,15 +10,12 @@ import jade.content.lang.sl.SLVocabulary;
 import jade.content.onto.BasicOntology;
 import jade.content.onto.Ontology;
 import jade.content.onto.OntologyException;
-import jade.core.AID;
-import jade.core.Agent;
 import jade.domain.FIPANames;
 import jade.lang.acl.ACLMessage;
 import jade.proto.SimpleAchieveREInitiator;
 import jade.util.Logger;
 
 import java.util.HashSet;
-import java.util.Map;
 import java.util.Set;
 
 import static chessagents.agents.gameagent.behaviours.meta.HandlePieceListRequests.PIECE_LIST_QUERY_PROTOCOL;

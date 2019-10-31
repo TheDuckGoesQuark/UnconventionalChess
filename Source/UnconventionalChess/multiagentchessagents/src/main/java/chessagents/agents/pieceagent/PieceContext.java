@@ -20,7 +20,7 @@ public class PieceContext {
     private final Map<AID, Piece> aidToPiece = new HashMap<>();
     private final BoardWrapper board = new BoardWrapper();
 
-    PieceContext(int gameId, Colour myColour, AID gameAgentAID, Position myPosition) {
+    public PieceContext(int gameId, Colour myColour, AID gameAgentAID, Position myPosition) {
         this.gameId = gameId;
         this.myColour = myColour;
         this.myPosition = myPosition;

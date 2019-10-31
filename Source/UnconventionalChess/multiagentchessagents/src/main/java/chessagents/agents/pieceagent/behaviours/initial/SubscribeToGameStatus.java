@@ -1,6 +1,6 @@
 package chessagents.agents.pieceagent.behaviours.initial;
 
-import chessagents.agents.pieceagent.PieceAgent;
+import chessagents.agents.pieceagent.pieces.PieceAgent;
 import chessagents.agents.pieceagent.PieceContext;
 import chessagents.ontology.ChessOntology;
 import chessagents.ontology.schemas.concepts.Game;
