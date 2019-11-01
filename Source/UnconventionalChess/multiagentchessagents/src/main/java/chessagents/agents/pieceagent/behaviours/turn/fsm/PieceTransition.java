@@ -9,4 +9,8 @@ public enum PieceTransition {
     TURN_ENDED,
     I_AM_LEADER,
     I_AM_NOT_LEADER,
+    NOT_REQUESTING_PROPOSALS,
+    ASKED_TO_MOVE,
+    OTHER_PIECE_ASKED_TO_MOVE,
+    ASKED_TO_PROPOSE_MOVE,
 }
