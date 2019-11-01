@@ -51,6 +51,7 @@ public class WaitForProposalRequest extends SimpleBehaviour {
                     nextTransition = ASKED_TO_MOVE;
                 } else {
                     logger.info("Asked other piece to move!");
+                    nextTransition = OTHER_PIECE_ASKED_TO_MOVE;
                 }
 
                 turnContext.setCurrentMessage(message);

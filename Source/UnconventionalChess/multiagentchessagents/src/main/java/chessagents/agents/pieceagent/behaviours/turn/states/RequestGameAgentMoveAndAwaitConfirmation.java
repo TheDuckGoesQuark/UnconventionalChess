@@ -5,8 +5,6 @@ import chessagents.agents.pieceagent.PieceContext;
 import chessagents.agents.pieceagent.behaviours.turn.TurnContext;
 import chessagents.agents.pieceagent.pieces.PieceAgent;
 import chessagents.ontology.schemas.actions.MakeMove;
-import jade.core.behaviours.Behaviour;
-import jade.core.behaviours.SequentialBehaviour;
 import jade.core.behaviours.SimpleBehaviour;
 import jade.lang.acl.MessageTemplate;
 
@@ -15,16 +13,16 @@ import static chessagents.agents.pieceagent.behaviours.turn.fsm.PieceTransition.
 public class RequestGameAgentMoveAndAwaitConfirmation extends SimpleBehaviour {
 
     enum State {
-        REQUEST,
-        INFORMED,
-        WAITING,
+        MAKE_REQUEST,
+        WAITING_FOR_INFORM,
+        WAITING_FOR_CONFIRMATION,
         CONFIRMED,
     }
 
     private final PieceContext pieceContext;
     private final TurnContext turnContext;
     private RequestGameAgentMove request = null;
-    private State state = State.REQUEST;
+    private State state = State.MAKE_REQUEST;
 
     public RequestGameAgentMoveAndAwaitConfirmation(PieceAgent pieceAgent, PieceContext pieceContext, TurnContext turnContext) {
         super(pieceAgent);
@@ -35,20 +33,20 @@ public class RequestGameAgentMoveAndAwaitConfirmation extends SimpleBehaviour {
     @Override
     public void action() {
         switch (state) {
-            case REQUEST:
+            case MAKE_REQUEST:
                 var makeMove = new MakeMove(turnContext.getCurrentMove());
                 request = new RequestGameAgentMove(makeMove, pieceContext.getGameAgentAID());
                 myAgent.addBehaviour(request);
+                state = State.WAITING_FOR_INFORM;
                 break;
-            case INFORMED:
+            case WAITING_FOR_INFORM:
                 if (request.done()) {
-                    state = State.WAITING;
-                    block();
+                    state = State.WAITING_FOR_CONFIRMATION;
                 } else {
                     block();
                 }
                 break;
-            case WAITING:
+            case WAITING_FOR_CONFIRMATION:
                 var message = myAgent.receive(MessageTemplate.MatchConversationId(pieceContext.getMoveSubscriptionId()));
 
                 if (message != null) {
@@ -67,7 +65,7 @@ public class RequestGameAgentMoveAndAwaitConfirmation extends SimpleBehaviour {
 
     @Override
     public void reset() {
-        state = State.REQUEST;
+        state = State.MAKE_REQUEST;
         super.reset();
     }
 

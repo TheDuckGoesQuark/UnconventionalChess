@@ -29,15 +29,10 @@ public class HandleAskedToMove extends SimpleBehaviour {
 
     @Override
     public void action() {
-        var message = myAgent.receive();
-
-        if (message != null && message.getPerformative() == ACLMessage.REQUEST) {
-            sendAgree(message);
-            saveMove(message);
-            agreed = true;
-        } else {
-            block();
-        }
+        var message = turnContext.getCurrentMessage();
+        sendAgree(message);
+        saveMove(message);
+        agreed = true;
     }
 
     private void saveMove(ACLMessage message) {
