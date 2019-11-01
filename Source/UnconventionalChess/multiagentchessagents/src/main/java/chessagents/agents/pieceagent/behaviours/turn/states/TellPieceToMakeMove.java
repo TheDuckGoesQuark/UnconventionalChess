@@ -8,6 +8,7 @@ import chessagents.ontology.schemas.actions.MakeMove;
 import chessagents.ontology.schemas.concepts.Move;
 import chessagents.ontology.schemas.concepts.Piece;
 import chessagents.ontology.schemas.concepts.Position;
+import jade.content.OntoAID;
 import jade.content.lang.Codec;
 import jade.content.lang.sl.SLVocabulary;
 import jade.content.onto.OntologyException;
@@ -69,11 +70,13 @@ public class TellPieceToMakeMove extends SimpleBehaviour {
     }
 
     private AID getAIDOfPieceAtPosition(Position position) {
-        return pieceContext.getAidToPiece().values().stream()
-                .filter(piece -> piece.getPosition().equals(position))
-                .map(Piece::getAgentAID)
-                .findFirst()
-                .orElse(null);
+        for (Piece piece : pieceContext.getAidToPiece().values()) {
+            if (piece.getPosition().equals(position)) {
+                OntoAID agentAID = piece.getAgentAID();
+                return agentAID;
+            }
+        }
+        return null;
     }
 
     @Override
