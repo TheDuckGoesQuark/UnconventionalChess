@@ -18,6 +18,8 @@ import jade.domain.FIPANames;
 import jade.lang.acl.ACLMessage;
 import jade.util.Logger;
 
+import static chessagents.agents.pieceagent.behaviours.turn.fsm.PieceTransition.TOLD_PIECE_TO_MAKE_MOVE;
+
 public class TellPieceToMakeMove extends SimpleBehaviour {
     private final Logger logger = Logger.getMyLogger(getClass().getName());
     private final PieceContext pieceContext;
@@ -39,9 +41,14 @@ public class TellPieceToMakeMove extends SimpleBehaviour {
     }
 
     private void sendRequestMove(ACLMessage request) {
-        pieceContext.getAidToPiece().values().stream().map(Piece::getAgentAID)
-                .forEach(request::addReceiver);
+        var pieces = pieceContext.getAidToPiece().values();
 
+        pieces.stream().map(Piece::getAgentAID)
+                .forEach(request::addReceiver);
+        pieces.stream().map(Piece::getAgentAID)
+                .forEach(request::addReplyTo);
+
+        logger.info("Telling piece to make move");
         myAgent.send(request);
     }
 
@@ -72,5 +79,10 @@ public class TellPieceToMakeMove extends SimpleBehaviour {
     @Override
     public boolean done() {
         return true;
+    }
+
+    @Override
+    public int onEnd() {
+        return TOLD_PIECE_TO_MAKE_MOVE.ordinal();
     }
 }
