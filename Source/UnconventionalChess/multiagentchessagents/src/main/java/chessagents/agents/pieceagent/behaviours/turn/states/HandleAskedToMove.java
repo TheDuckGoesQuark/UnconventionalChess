@@ -47,8 +47,8 @@ public class HandleAskedToMove extends SimpleBehaviour {
 
     private void sendAgree(ACLMessage message) {
         var agree = message.createReply();
-        message.setPerformative(ACLMessage.AGREE);
-        message.removeReceiver(myAgent.getAID());
+        agree.setPerformative(ACLMessage.AGREE);
+        agree.removeReceiver(myAgent.getAID());
         myAgent.send(agree);
     }
 
