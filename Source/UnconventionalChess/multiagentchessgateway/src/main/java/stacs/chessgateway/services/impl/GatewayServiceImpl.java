@@ -2,6 +2,8 @@ package stacs.chessgateway.services.impl;
 
 import chessagents.agents.gameagent.GameProperties;
 import chessagents.agents.gatewayagent.behaviours.RequestCreateGame;
+import chessagents.agents.pieceagent.PieceContext;
+import chessagents.agents.pieceagent.behaviours.turn.states.SubscribeToMoves;
 import jade.core.AID;
 import jade.wrapper.ControllerException;
 import jade.wrapper.gateway.JadeGateway;
@@ -19,7 +21,7 @@ import stacs.chessgateway.models.MessageType;
 import stacs.chessgateway.models.MoveMessage;
 import stacs.chessgateway.services.GatewayService;
 import stacs.chessgateway.services.WebsocketService;
-import stacs.chessgateway.util.GameAgentMapper;
+import stacs.chessgateway.util.GameContextStore;
 import stacs.chessgateway.util.OntologyTranslator;
 
 import java.util.Arrays;
@@ -29,14 +31,14 @@ public class GatewayServiceImpl implements GatewayService {
 
     private static final Logger logger = LoggerFactory.getLogger(GatewayServiceImpl.class);
 
-    private final GameAgentMapper gameAgentMapper;
+    private final GameContextStore gameContextStore;
     private final WebsocketService websocketService;
     private final OntologyTranslator ontologyTranslator;
     private final String platformName;
 
     @Autowired
-    public GatewayServiceImpl(GameAgentMapper gameAgentMapper, WebsocketService websocketService, OntologyTranslator ontologyTranslator, GatewayProperties properties) {
-        this.gameAgentMapper = gameAgentMapper;
+    public GatewayServiceImpl(GameContextStore gameContextStore, WebsocketService websocketService, OntologyTranslator ontologyTranslator, GatewayProperties properties) {
+        this.gameContextStore = gameContextStore;
         this.websocketService = websocketService;
         this.ontologyTranslator = ontologyTranslator;
         this.platformName = properties.getPlatformName();
@@ -45,7 +47,7 @@ public class GatewayServiceImpl implements GatewayService {
     @Override
     public void sendMoveToGameAgent(Message<MoveMessage> move, int gameId) throws GatewayFailureException {
         try {
-            var gameAgentAID = gameAgentMapper.getAgentByGameId(gameId);
+            var gameAgentAID = gameContextStore.getAgentByGameId(gameId);
             var makeMove = ontologyTranslator.translateToOntology(move.getBody());
 
             var requestGameAgentMove = new RequestGameAgentMove(makeMove, gameAgentAID);
@@ -65,7 +67,7 @@ public class GatewayServiceImpl implements GatewayService {
     @Override
     public Message<GameConfiguration> createGame(GameConfiguration gameConfiguration) throws GatewayFailureException {
         try {
-            var gameId = gameAgentMapper.size() + 1;
+            var gameId = gameContextStore.size() + 1;
             var agentId = new AID("GameAgent-" + gameId + "@" + platformName, AID.ISGUID);
 
             var gameAgentProperties = new GameProperties(
@@ -81,8 +83,13 @@ public class GatewayServiceImpl implements GatewayService {
             var requestCreateGame = new RequestCreateGame(createGameAgent.getAgent(), agentId, gameId);
             JadeGateway.execute(requestCreateGame);
 
+            // Subscribe to moves
+            var pieceContext = new PieceContext(gameId, null, agentId, null);
+            var subscribeToMoves = new SubscribeToMoves(createGameAgent.getAgent(), pieceContext);
+            JadeGateway.execute(subscribeToMoves);
+
             // Game creation successful, remember mapping and inform client
-            gameAgentMapper.addMapping(gameId, agentId);
+            gameContextStore.addMapping(gameId, agentId, pieceContext.getMoveSubscriptionId());
             gameConfiguration.setGameId(gameId);
             return new Message<>(MessageType.GAME_CONFIGURATION_MESSAGE, gameConfiguration);
         } catch (InterruptedException | ControllerException e) {
@@ -94,7 +101,7 @@ public class GatewayServiceImpl implements GatewayService {
     public void handleAgentMessage(Message message, AID agentId) {
         websocketService.sendMessageToClient(
                 message,
-                gameAgentMapper.getGameIdByAgent(agentId)
+                gameContextStore.getGameIdByAgent(agentId)
         );
     }
 }

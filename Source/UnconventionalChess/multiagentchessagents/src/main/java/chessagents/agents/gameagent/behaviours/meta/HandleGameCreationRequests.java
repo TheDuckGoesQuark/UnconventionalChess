@@ -246,7 +246,7 @@ public class HandleGameCreationRequests extends SimpleBehaviour {
             case PREPARE_RESULT_NOTIFICATION:
                 var gameStatus = context.getGameStatus();
                 if (gameStatus != READY) {
-                    block();
+//                    block(); TODO this might fix inconsistent start behaviour
                     break;
                     // repeat until ready
                 }

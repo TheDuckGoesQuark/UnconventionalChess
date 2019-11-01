@@ -11,6 +11,7 @@ import jade.content.lang.Codec;
 import jade.content.lang.sl.SLVocabulary;
 import jade.content.onto.BasicOntology;
 import jade.content.onto.OntologyException;
+import jade.core.Agent;
 import jade.core.behaviours.SimpleBehaviour;
 import jade.domain.FIPANames;
 import jade.lang.acl.ACLMessage;
@@ -24,7 +25,7 @@ import static chessagents.agents.pieceagent.behaviours.turn.states.SubscribeToMo
 import static chessagents.ontology.ChessOntology.*;
 
 /**
- * Subscribes the given agent to moves being made in the game TODO
+ * Subscribes the given agent to moves being made in the game
  */
 public class SubscribeToMoves extends SimpleBehaviour {
 
@@ -48,8 +49,8 @@ public class SubscribeToMoves extends SimpleBehaviour {
 
     private SubscriptionState state = PREPARE_SUBSCRIPTION;
 
-    public SubscribeToMoves(PieceAgent pieceAgent, PieceContext context) {
-        super(pieceAgent);
+    public SubscribeToMoves(Agent agent, PieceContext context) {
+        super(agent);
         this.context = context;
     }
 
