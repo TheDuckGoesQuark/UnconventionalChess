@@ -29,6 +29,9 @@ import java.util.stream.Collectors;
 
 public class SpawnPieceAgents extends SimpleBehaviour {
 
+    // TODO make this variable in GUI
+    private static final int MAX_DEBATE_CYCLES = 3;
+
     private enum CreationState {
         INIT, CREATING, CREATED
     }
@@ -154,6 +157,7 @@ public class SpawnPieceAgents extends SimpleBehaviour {
         createAgent.addArguments(colour);
         createAgent.addArguments(myAgent.getAID().getName());
         createAgent.addArguments(Integer.toString(context.getGameId()));
+        createAgent.addArguments(Integer.toString(MAX_DEBATE_CYCLES));
 
         final Action requestAction = new Action(myAgent.getAMS(), createAgent);
         final ACLMessage request = new ACLMessage(ACLMessage.REQUEST);

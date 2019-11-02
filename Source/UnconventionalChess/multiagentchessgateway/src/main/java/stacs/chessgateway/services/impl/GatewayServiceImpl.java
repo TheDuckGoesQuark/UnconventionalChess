@@ -68,7 +68,7 @@ public class GatewayServiceImpl implements GatewayService {
     public Message<GameConfiguration> createGame(GameConfiguration gameConfiguration) throws GatewayFailureException {
         try {
             var gameId = gameContextStore.size() + 1;
-            var agentId = new AID("GameAgent-" + gameId + "@" + platformName, AID.ISGUID);
+            var gameAgentId = new AID("GameAgent-" + gameId + "@" + platformName, AID.ISGUID);
 
             var gameAgentProperties = new GameProperties(
                     gameConfiguration.isHumanPlays(),
@@ -76,20 +76,20 @@ public class GatewayServiceImpl implements GatewayService {
             );
 
             // Spawn GameAgent
-            var createGameAgent = new CreateGameAgent(gameAgentProperties, agentId);
+            var createGameAgent = new CreateGameAgent(gameAgentProperties, gameAgentId);
             JadeGateway.execute(createGameAgent);
 
             // Request that GameAgent creates piece agents and informs when done
-            var requestCreateGame = new RequestCreateGame(createGameAgent.getAgent(), agentId, gameId);
+            var requestCreateGame = new RequestCreateGame(createGameAgent.getAgent(), gameAgentId, gameId);
             JadeGateway.execute(requestCreateGame);
 
             // Subscribe to moves
-            var pieceContext = new PieceContext(gameId, null, agentId, null);
+            var pieceContext = new PieceContext(gameId, null, gameAgentId, null, 0);
             var subscribeToMoves = new SubscribeToMoves(createGameAgent.getAgent(), pieceContext);
             JadeGateway.execute(subscribeToMoves);
 
             // Game creation successful, remember mapping and inform client
-            gameContextStore.addMapping(gameId, agentId, pieceContext.getMoveSubscriptionId());
+            gameContextStore.addMapping(gameId, gameAgentId);
             gameConfiguration.setGameId(gameId);
             return new Message<>(MessageType.GAME_CONFIGURATION_MESSAGE, gameConfiguration);
         } catch (InterruptedException | ControllerException e) {

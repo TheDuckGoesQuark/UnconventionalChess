@@ -1,6 +1,5 @@
 package chessagents.agents.pieceagent;
 
-import chessagents.agents.pieceagent.behaviours.turn.TurnContext;
 import chessagents.chess.BoardWrapper;
 import chessagents.ontology.schemas.concepts.Colour;
 import chessagents.ontology.schemas.concepts.Piece;
@@ -20,16 +19,18 @@ public class PieceContext {
     private final Colour myColour;
     private final Position myPosition;
     private final AID gameAgentAID;
+    private final int maxDebateCycle;
     private final Map<AID, Piece> aidToPiece = new HashMap<>();
     private final BoardWrapper board = new BoardWrapper();
 
     private String moveSubscriptionId = null;
 
-    public PieceContext(int gameId, Colour myColour, AID gameAgentAID, Position myPosition) {
+    public PieceContext(int gameId, Colour myColour, AID gameAgentAID, Position myPosition, int maxDebateCycle) {
         this.gameId = gameId;
         this.myColour = myColour;
         this.myPosition = myPosition;
         this.gameAgentAID = gameAgentAID;
+        this.maxDebateCycle = maxDebateCycle;
     }
 
     public boolean isMyTurnToGo() {

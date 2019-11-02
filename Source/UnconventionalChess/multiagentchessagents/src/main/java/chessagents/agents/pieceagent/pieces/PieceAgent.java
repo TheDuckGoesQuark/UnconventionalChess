@@ -21,7 +21,8 @@ public abstract class PieceAgent extends ChessAgent {
         var myColour = (String) args[1];
         var gameAgentAID = (String) args[2];
         var gameId = Integer.parseInt((String) args[3]);
-        context = new PieceContext(gameId, new Colour(myColour), new AID(gameAgentAID, AID.ISGUID), new Position(startingSquare));
+        var maxDebateCycle = Integer.parseInt((String) args[4]);
+        context = new PieceContext(gameId, new Colour(myColour), new AID(gameAgentAID, AID.ISGUID), new Position(startingSquare), maxDebateCycle);
     }
 
     private void addInitialBehaviours() {

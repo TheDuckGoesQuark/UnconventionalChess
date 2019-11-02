@@ -14,10 +14,12 @@ public class TurnContext {
     private AID currentSpeaker = null;
     private Move currentMove = null;
     private ACLMessage currentMessage = null;
+    private int debateCycles = 0;
 
     public void reset() {
         currentSpeaker = null;
         currentMove = null;
         currentMessage = null;
+        debateCycles = 0;
     }
 }
