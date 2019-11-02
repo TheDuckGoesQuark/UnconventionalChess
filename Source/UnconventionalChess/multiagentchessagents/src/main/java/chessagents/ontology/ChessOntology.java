@@ -1,5 +1,6 @@
 package chessagents.ontology;
 
+import chessagents.ontology.schemas.actions.BecomeSpeaker;
 import chessagents.ontology.schemas.actions.CreateGame;
 import chessagents.ontology.schemas.actions.MakeMove;
 import chessagents.ontology.schemas.concepts.*;
@@ -66,6 +67,9 @@ public class ChessOntology extends Ontology {
 
     public static final String CREATE_GAME = "Create Game";
     public static final String CREATE_GAME_GAME = "Game";
+
+    public static final String BECOME_SPEAKER = "Become Speaker";
+    public static final String BECOME_SPEAKER_AGENT = "Agent";
 
     private static final ChessOntology instance = new ChessOntology();
 
@@ -141,6 +145,10 @@ public class ChessOntology extends Ontology {
             final var createGameSchema = new AgentActionSchema(CREATE_GAME);
             createGameSchema.add(CREATE_GAME_GAME, (ConceptSchema) getSchema(GAME));
             add(createGameSchema, CreateGame.class);
+
+            final var becomeSpeakerSchema = new AgentActionSchema(BECOME_SPEAKER);
+            becomeSpeakerSchema.add(BECOME_SPEAKER, (ConceptSchema) getSchema(BasicOntology.AID));
+            add(becomeSpeakerSchema, BecomeSpeaker.class);
 
         } catch (OntologyException e) {
             e.printStackTrace();

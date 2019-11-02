@@ -5,8 +5,13 @@ import chessagents.agents.pieceagent.PieceContext;
 import chessagents.agents.pieceagent.behaviours.turn.TurnContext;
 import chessagents.agents.pieceagent.behaviours.turn.fsm.PieceTransition;
 import chessagents.agents.pieceagent.pieces.PieceAgent;
+import chessagents.ontology.schemas.actions.BecomeSpeaker;
+import chessagents.ontology.schemas.concepts.Piece;
+import jade.content.lang.Codec;
+import jade.content.onto.OntologyException;
 import jade.core.behaviours.SimpleBehaviour;
 import jade.lang.acl.ACLMessage;
+import jade.util.Logger;
 
 import java.util.Random;
 
@@ -15,6 +20,7 @@ import static chessagents.agents.pieceagent.behaviours.turn.fsm.PieceTransition.
 
 public class DecideIfRequestingProposals extends SimpleBehaviour {
 
+    private final Logger logger = Logger.getMyLogger(getClass().getName());
     private final Random random = new Random();
     private final PieceContext pieceContext;
     private final TurnContext turnContext;
@@ -37,7 +43,23 @@ public class DecideIfRequestingProposals extends SimpleBehaviour {
     }
 
     private void requestProposals() {
-        var request = ((ChessAgent) myAgent).constructMessage(ACLMessage.CFP);
+        var cfp = ((ChessAgent) myAgent).constructMessage(ACLMessage.CFP);
+
+        // Send to everyone but me
+        pieceContext.getAidToPiece().values().stream()
+                .map(Piece::getAgentAID)
+                .filter(aid -> !aid.equals(myAgent.getAID()))
+                .forEach(cfp::addReceiver);
+
+        // construct message body
+        var becomeSpeaker = new BecomeSpeaker();
+        try {
+            myAgent.getContentManager().fillContent(cfp, becomeSpeaker);
+        } catch (Codec.CodecException | OntologyException e) {
+            logger.warning("Failed to fill content for cfp: " + e.getMessage());
+        }
+
+        myAgent.send(cfp);
     }
 
     private boolean requestingProposals() {
