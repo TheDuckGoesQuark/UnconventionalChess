@@ -3,6 +3,7 @@ package chessagents.agents.pieceagent.behaviours.turn.states;
 import chessagents.agents.ChessAgent;
 import chessagents.agents.pieceagent.PieceContext;
 import chessagents.agents.pieceagent.behaviours.turn.TurnContext;
+import chessagents.agents.pieceagent.behaviours.turn.fsm.PieceStateBehaviour;
 import chessagents.agents.pieceagent.pieces.PieceAgent;
 import chessagents.ontology.ChessOntology;
 import jade.content.OntoAID;
@@ -26,7 +27,7 @@ import static chessagents.agents.pieceagent.behaviours.turn.fsm.PieceTransition.
 /**
  * Requests to know who the speaker is at the start of the turn
  */
-public class WaitForSpeaker extends SimpleAchieveREInitiator {
+public class WaitForSpeaker extends SimpleAchieveREInitiator implements PieceStateBehaviour {
 
     private final Logger logger = Logger.getMyLogger(getClass().getName());
     private final TurnContext turnContext;
@@ -95,7 +96,7 @@ public class WaitForSpeaker extends SimpleAchieveREInitiator {
     }
 
     @Override
-    public int onEnd() {
+    public int getNextTransition() {
         return (turnContext.getCurrentSpeaker().equals(myAgent.getAID()) ? I_AM_SPEAKER : I_AM_NOT_SPEAKER).ordinal();
     }
 }

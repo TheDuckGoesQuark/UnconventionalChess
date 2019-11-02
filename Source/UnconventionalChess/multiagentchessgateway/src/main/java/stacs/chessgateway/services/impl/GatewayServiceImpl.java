@@ -3,7 +3,7 @@ package stacs.chessgateway.services.impl;
 import chessagents.agents.gameagent.GameProperties;
 import chessagents.agents.gatewayagent.behaviours.RequestCreateGame;
 import chessagents.agents.pieceagent.PieceContext;
-import chessagents.agents.pieceagent.behaviours.turn.states.SubscribeToMoves;
+import chessagents.agents.pieceagent.behaviours.turn.SubscribeToMoves;
 import jade.core.AID;
 import jade.wrapper.ControllerException;
 import jade.wrapper.gateway.JadeGateway;

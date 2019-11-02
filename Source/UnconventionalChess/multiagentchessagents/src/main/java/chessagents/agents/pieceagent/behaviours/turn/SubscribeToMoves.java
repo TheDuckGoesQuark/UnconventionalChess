@@ -1,20 +1,16 @@
-package chessagents.agents.pieceagent.behaviours.turn.states;
+package chessagents.agents.pieceagent.behaviours.turn;
 
 import chessagents.agents.ChessAgent;
 import chessagents.agents.pieceagent.PieceContext;
-import chessagents.agents.pieceagent.pieces.PieceAgent;
 import chessagents.ontology.ChessOntology;
-import jade.content.abs.AbsAggregate;
 import jade.content.abs.AbsIRE;
 import jade.content.abs.AbsPredicate;
 import jade.content.abs.AbsVariable;
 import jade.content.lang.Codec;
 import jade.content.lang.sl.SLVocabulary;
-import jade.content.onto.BasicOntology;
 import jade.content.onto.OntologyException;
 import jade.core.Agent;
 import jade.core.behaviours.SimpleBehaviour;
-import jade.domain.FIPANames;
 import jade.lang.acl.ACLMessage;
 import jade.lang.acl.MessageTemplate;
 import jade.util.Logger;
@@ -22,7 +18,7 @@ import jade.util.Logger;
 import java.util.UUID;
 
 import static chessagents.agents.gameagent.behaviours.gameplay.HandleMoveSubscriptions.MOVE_SUBSCRIPTION_PROTOCOL;
-import static chessagents.agents.pieceagent.behaviours.turn.states.SubscribeToMoves.SubscriptionState.*;
+import static chessagents.agents.pieceagent.behaviours.turn.SubscribeToMoves.SubscriptionState.*;
 import static chessagents.ontology.ChessOntology.*;
 
 /**

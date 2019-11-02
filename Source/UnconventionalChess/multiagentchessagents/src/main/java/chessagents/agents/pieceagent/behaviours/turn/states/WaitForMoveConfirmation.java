@@ -2,6 +2,7 @@ package chessagents.agents.pieceagent.behaviours.turn.states;
 
 import chessagents.agents.pieceagent.PieceContext;
 import chessagents.agents.pieceagent.behaviours.turn.TurnContext;
+import chessagents.agents.pieceagent.behaviours.turn.fsm.PieceStateBehaviour;
 import chessagents.agents.pieceagent.pieces.PieceAgent;
 import chessagents.ontology.ChessOntology;
 import chessagents.ontology.schemas.concepts.Move;
@@ -19,7 +20,7 @@ import java.util.Optional;
 
 import static chessagents.agents.pieceagent.behaviours.turn.fsm.PieceTransition.MOVE_CONFIRMATION_RECEIVED;
 
-public class WaitForMoveConfirmation extends SimpleBehaviour {
+public class WaitForMoveConfirmation extends SimpleBehaviour implements PieceStateBehaviour {
 
     private final Logger logger = Logger.getMyLogger(getClass().getName());
     private final PieceContext pieceContext;
@@ -68,7 +69,7 @@ public class WaitForMoveConfirmation extends SimpleBehaviour {
     }
 
     @Override
-    public int onEnd() {
+    public int getNextTransition() {
         return MOVE_CONFIRMATION_RECEIVED.ordinal();
     }
 

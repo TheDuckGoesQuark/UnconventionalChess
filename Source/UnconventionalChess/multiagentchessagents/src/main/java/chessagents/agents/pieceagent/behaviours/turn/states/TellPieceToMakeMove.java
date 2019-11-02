@@ -3,6 +3,7 @@ package chessagents.agents.pieceagent.behaviours.turn.states;
 import chessagents.agents.ChessAgent;
 import chessagents.agents.pieceagent.PieceContext;
 import chessagents.agents.pieceagent.behaviours.turn.TurnContext;
+import chessagents.agents.pieceagent.behaviours.turn.fsm.PieceStateBehaviour;
 import chessagents.agents.pieceagent.pieces.PieceAgent;
 import chessagents.ontology.ChessOntology;
 import chessagents.ontology.schemas.actions.MakeMove;
@@ -22,7 +23,7 @@ import jade.util.Logger;
 
 import static chessagents.agents.pieceagent.behaviours.turn.fsm.PieceTransition.TOLD_PIECE_TO_MAKE_MOVE;
 
-public class TellPieceToMakeMove extends SimpleBehaviour {
+public class TellPieceToMakeMove extends SimpleBehaviour implements PieceStateBehaviour {
     private final Logger logger = Logger.getMyLogger(getClass().getName());
     private final PieceContext pieceContext;
     private final TurnContext turnContext;
@@ -55,7 +56,7 @@ public class TellPieceToMakeMove extends SimpleBehaviour {
     }
 
     private ACLMessage createRequestToMove(AID movingPiece, Move move) {
-        var request = ((ChessAgent)myAgent).constructMessage(ACLMessage.REQUEST);
+        var request = ((ChessAgent) myAgent).constructMessage(ACLMessage.REQUEST);
         var makeMove = new MakeMove(move);
         var action = new Action(movingPiece, makeMove);
 
@@ -84,7 +85,7 @@ public class TellPieceToMakeMove extends SimpleBehaviour {
     }
 
     @Override
-    public int onEnd() {
+    public int getNextTransition() {
         return TOLD_PIECE_TO_MAKE_MOVE.ordinal();
     }
 }

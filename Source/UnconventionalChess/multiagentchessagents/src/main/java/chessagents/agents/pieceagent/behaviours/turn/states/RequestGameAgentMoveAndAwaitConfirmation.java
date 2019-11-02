@@ -3,6 +3,7 @@ package chessagents.agents.pieceagent.behaviours.turn.states;
 import chessagents.agents.commonbehaviours.RequestGameAgentMove;
 import chessagents.agents.pieceagent.PieceContext;
 import chessagents.agents.pieceagent.behaviours.turn.TurnContext;
+import chessagents.agents.pieceagent.behaviours.turn.fsm.PieceStateBehaviour;
 import chessagents.agents.pieceagent.pieces.PieceAgent;
 import chessagents.ontology.schemas.actions.MakeMove;
 import jade.core.behaviours.SimpleBehaviour;
@@ -10,7 +11,7 @@ import jade.lang.acl.MessageTemplate;
 
 import static chessagents.agents.pieceagent.behaviours.turn.fsm.PieceTransition.MOVE_CONFIRMATION_RECEIVED;
 
-public class RequestGameAgentMoveAndAwaitConfirmation extends SimpleBehaviour {
+public class RequestGameAgentMoveAndAwaitConfirmation extends SimpleBehaviour implements PieceStateBehaviour {
 
     enum State {
         MAKE_REQUEST,
@@ -70,7 +71,7 @@ public class RequestGameAgentMoveAndAwaitConfirmation extends SimpleBehaviour {
     }
 
     @Override
-    public int onEnd() {
+    public int getNextTransition() {
         return MOVE_CONFIRMATION_RECEIVED.ordinal();
     }
 }

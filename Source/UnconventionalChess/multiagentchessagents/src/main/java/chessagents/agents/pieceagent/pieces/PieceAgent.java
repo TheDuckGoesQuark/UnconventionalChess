@@ -5,7 +5,7 @@ import chessagents.agents.pieceagent.PieceContext;
 import chessagents.agents.pieceagent.behaviours.turn.Play;
 import chessagents.agents.pieceagent.behaviours.initial.RequestPieceIds;
 import chessagents.agents.pieceagent.behaviours.initial.SubscribeToGameStatus;
-import chessagents.agents.pieceagent.behaviours.turn.states.SubscribeToMoves;
+import chessagents.agents.pieceagent.behaviours.turn.SubscribeToMoves;
 import chessagents.ontology.schemas.concepts.Colour;
 import chessagents.ontology.schemas.concepts.Position;
 import jade.core.AID;

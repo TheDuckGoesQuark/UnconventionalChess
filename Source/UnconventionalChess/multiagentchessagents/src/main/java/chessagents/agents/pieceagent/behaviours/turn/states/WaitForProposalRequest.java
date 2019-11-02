@@ -2,6 +2,7 @@ package chessagents.agents.pieceagent.behaviours.turn.states;
 
 import chessagents.agents.pieceagent.PieceContext;
 import chessagents.agents.pieceagent.behaviours.turn.TurnContext;
+import chessagents.agents.pieceagent.behaviours.turn.fsm.PieceStateBehaviour;
 import chessagents.agents.pieceagent.behaviours.turn.fsm.PieceTransition;
 import chessagents.agents.pieceagent.pieces.PieceAgent;
 import jade.content.lang.Codec;
@@ -13,7 +14,7 @@ import jade.util.Logger;
 
 import static chessagents.agents.pieceagent.behaviours.turn.fsm.PieceTransition.*;
 
-public class WaitForProposalRequest extends SimpleBehaviour {
+public class WaitForProposalRequest extends SimpleBehaviour implements PieceStateBehaviour {
 
     private final Logger logger = Logger.getMyLogger(getClass().getName());
     private final PieceContext pieceContext;
@@ -80,7 +81,7 @@ public class WaitForProposalRequest extends SimpleBehaviour {
     }
 
     @Override
-    public int onEnd() {
+    public int getNextTransition() {
         return (nextTransition != null ? nextTransition : OTHER_PIECE_TOLD_TO_MOVE).ordinal();
     }
 }
