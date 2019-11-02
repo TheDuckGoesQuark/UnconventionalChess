@@ -32,7 +32,7 @@ public class Play extends PieceFSMBehaviour {
         registerState(new WaitForSpeaker(pieceAgent, pieceContext, turnContext), WAIT_FOR_SPEAKER);
         registerState(new WaitForProposalRequest(pieceAgent, pieceContext, turnContext), WAIT_FOR_PROPOSAL_REQUEST);
         registerState(new DecideIfRequestingProposals(pieceAgent, pieceContext, turnContext), DECIDE_IF_REQUESTING_PROPOSALS);
-        registerState(new WaitForRequestsToSpeak(pieceAgent, pieceAgent, turnContext), WAIT_FOR_REQUESTS_TO_SPEAK);
+        registerState(new ChoosingSpeaker(pieceAgent, pieceContext, turnContext), CHOOSING_SPEAKER);
         registerState(new TellPieceToMakeMove(pieceAgent, pieceContext, turnContext), TELL_PIECE_TO_MOVE);
         registerState(new WaitForPieceResponseToMakeMoveRequest(pieceAgent, pieceContext, turnContext), WAIT_FOR_PIECE_RESPONSE_TO_MOVE_REQUEST);
         registerState(new WaitForMoveConfirmation(pieceAgent, pieceContext, turnContext), WAIT_FOR_MOVE_CONFIRMATION);
@@ -62,7 +62,7 @@ public class Play extends PieceFSMBehaviour {
 
         // decide if requesting proposals transitions
         registerTransition(DECIDE_IF_REQUESTING_PROPOSALS, TELL_PIECE_TO_MOVE, NOT_REQUESTING_PROPOSALS);
-        registerTransition(DECIDE_IF_REQUESTING_PROPOSALS, WAIT_FOR_REQUESTS_TO_SPEAK, REQUESTED_PROPOSALS);
+        registerTransition(DECIDE_IF_REQUESTING_PROPOSALS, CHOOSING_SPEAKER, REQUESTED_PROPOSALS);
 
         // wait for proposal request transitions
         registerTransition(WAIT_FOR_PROPOSAL_REQUEST, DECIDE_IF_MOVING, TOLD_TO_MOVE);

@@ -8,8 +8,11 @@ import jade.core.AID;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.util.Collection;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 @Getter
 @Setter
@@ -35,5 +38,9 @@ public class PieceContext {
 
     public boolean isMyTurnToGo() {
         return board.isSideToGo(myColour.getColour());
+    }
+
+    public List<AID> getAllAIDs() {
+        return aidToPiece.values().stream().map(Piece::getAgentAID).collect(Collectors.toUnmodifiableList());
     }
 }

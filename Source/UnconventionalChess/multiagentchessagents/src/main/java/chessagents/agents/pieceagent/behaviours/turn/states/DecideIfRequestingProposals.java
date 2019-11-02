@@ -47,11 +47,7 @@ public class DecideIfRequestingProposals extends OneShotBehaviour implements Pie
     private void requestProposals() {
         var cfp = ((ChessAgent) myAgent).constructMessage(ACLMessage.CFP);
 
-        // Send to everyone but me
-        pieceContext.getAidToPiece().values().stream()
-                .map(Piece::getAgentAID)
-                .filter(aid -> !aid.equals(myAgent.getAID()))
-                .forEach(cfp::addReceiver);
+        pieceContext.getAllAIDs().forEach(cfp::addReceiver);
 
         // construct message body
         var becomeSpeaker = new BecomeSpeaker();

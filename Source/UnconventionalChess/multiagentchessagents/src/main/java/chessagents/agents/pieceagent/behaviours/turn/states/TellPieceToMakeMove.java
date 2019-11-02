@@ -72,8 +72,7 @@ public class TellPieceToMakeMove extends SimpleBehaviour implements PieceStateBe
     private AID getAIDOfPieceAtPosition(Position position) {
         for (Piece piece : pieceContext.getAidToPiece().values()) {
             if (piece.getPosition().equals(position)) {
-                OntoAID agentAID = piece.getAgentAID();
-                return agentAID;
+                return piece.getAgentAID();
             }
         }
         return null;
