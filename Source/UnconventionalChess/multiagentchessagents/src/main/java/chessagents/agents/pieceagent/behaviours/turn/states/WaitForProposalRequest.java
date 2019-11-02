@@ -4,11 +4,9 @@ import chessagents.agents.pieceagent.PieceContext;
 import chessagents.agents.pieceagent.behaviours.turn.TurnContext;
 import chessagents.agents.pieceagent.behaviours.turn.fsm.PieceTransition;
 import chessagents.agents.pieceagent.pieces.PieceAgent;
-import chessagents.ontology.schemas.actions.MakeMove;
 import jade.content.lang.Codec;
 import jade.content.onto.OntologyException;
 import jade.content.onto.basic.Action;
-import jade.core.behaviours.Behaviour;
 import jade.core.behaviours.SimpleBehaviour;
 import jade.lang.acl.ACLMessage;
 import jade.util.Logger;
@@ -43,15 +41,15 @@ public class WaitForProposalRequest extends SimpleBehaviour {
         switch (message.getPerformative()) {
             case ACLMessage.CFP:
                 logger.info("Call for proposal received!");
-                nextTransition = ASKED_TO_PROPOSE_MOVE;
+                nextTransition = PROPOSAL_REQUESTED;
                 break;
             case ACLMessage.REQUEST:
                 if (asksMeToMove(message)) {
                     logger.info("Asked me to move!");
-                    nextTransition = ASKED_TO_MOVE;
+                    nextTransition = TOLD_TO_MOVE;
                 } else {
                     logger.info("Asked other piece to move!");
-                    nextTransition = OTHER_PIECE_ASKED_TO_MOVE;
+                    nextTransition = OTHER_PIECE_TOLD_TO_MOVE;
                 }
 
                 turnContext.setCurrentMessage(message);
@@ -83,6 +81,6 @@ public class WaitForProposalRequest extends SimpleBehaviour {
 
     @Override
     public int onEnd() {
-        return (nextTransition != null ? nextTransition : OTHER_PIECE_ASKED_TO_MOVE).ordinal();
+        return (nextTransition != null ? nextTransition : OTHER_PIECE_TOLD_TO_MOVE).ordinal();
     }
 }

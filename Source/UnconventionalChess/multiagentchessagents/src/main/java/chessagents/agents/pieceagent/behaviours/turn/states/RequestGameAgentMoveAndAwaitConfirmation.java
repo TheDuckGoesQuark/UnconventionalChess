@@ -8,7 +8,7 @@ import chessagents.ontology.schemas.actions.MakeMove;
 import jade.core.behaviours.SimpleBehaviour;
 import jade.lang.acl.MessageTemplate;
 
-import static chessagents.agents.pieceagent.behaviours.turn.fsm.PieceTransition.RECEIVED_CONFIRMATION_OF_MOVE_MADE;
+import static chessagents.agents.pieceagent.behaviours.turn.fsm.PieceTransition.MOVE_CONFIRMATION_RECEIVED;
 
 public class RequestGameAgentMoveAndAwaitConfirmation extends SimpleBehaviour {
 
@@ -71,6 +71,6 @@ public class RequestGameAgentMoveAndAwaitConfirmation extends SimpleBehaviour {
 
     @Override
     public int onEnd() {
-        return RECEIVED_CONFIRMATION_OF_MOVE_MADE.ordinal();
+        return MOVE_CONFIRMATION_RECEIVED.ordinal();
     }
 }

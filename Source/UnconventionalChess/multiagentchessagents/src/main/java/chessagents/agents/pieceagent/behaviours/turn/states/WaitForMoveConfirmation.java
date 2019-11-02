@@ -9,7 +9,6 @@ import jade.content.abs.AbsPredicate;
 import jade.content.lang.Codec;
 import jade.content.onto.BasicOntology;
 import jade.content.onto.OntologyException;
-import jade.core.behaviours.Behaviour;
 import jade.core.behaviours.SimpleBehaviour;
 import jade.domain.FIPAAgentManagement.NotUnderstoodException;
 import jade.lang.acl.ACLMessage;
@@ -18,7 +17,7 @@ import jade.util.Logger;
 
 import java.util.Optional;
 
-import static chessagents.agents.pieceagent.behaviours.turn.fsm.PieceTransition.RECEIVED_CONFIRMATION_OF_MOVE_MADE;
+import static chessagents.agents.pieceagent.behaviours.turn.fsm.PieceTransition.MOVE_CONFIRMATION_RECEIVED;
 
 public class WaitForMoveConfirmation extends SimpleBehaviour {
 
@@ -70,7 +69,7 @@ public class WaitForMoveConfirmation extends SimpleBehaviour {
 
     @Override
     public int onEnd() {
-        return RECEIVED_CONFIRMATION_OF_MOVE_MADE.ordinal();
+        return MOVE_CONFIRMATION_RECEIVED.ordinal();
     }
 
     @Override

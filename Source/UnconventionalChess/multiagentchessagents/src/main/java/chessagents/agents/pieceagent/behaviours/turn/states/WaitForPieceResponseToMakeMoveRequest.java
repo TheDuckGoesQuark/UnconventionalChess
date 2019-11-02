@@ -3,11 +3,10 @@ package chessagents.agents.pieceagent.behaviours.turn.states;
 import chessagents.agents.pieceagent.PieceContext;
 import chessagents.agents.pieceagent.behaviours.turn.TurnContext;
 import chessagents.agents.pieceagent.pieces.PieceAgent;
-import jade.core.behaviours.Behaviour;
 import jade.core.behaviours.SimpleBehaviour;
 import jade.lang.acl.ACLMessage;
 
-import static chessagents.agents.pieceagent.behaviours.turn.fsm.PieceTransition.PIECE_AGREED_TO_MAKE_MOVE;
+import static chessagents.agents.pieceagent.behaviours.turn.fsm.PieceTransition.PIECE_AGREED_TO_MOVE;
 
 public class WaitForPieceResponseToMakeMoveRequest extends SimpleBehaviour {
     private final PieceContext pieceContext;
@@ -45,6 +44,6 @@ public class WaitForPieceResponseToMakeMoveRequest extends SimpleBehaviour {
 
     @Override
     public int onEnd() {
-        return PIECE_AGREED_TO_MAKE_MOVE.ordinal();
+        return PIECE_AGREED_TO_MOVE.ordinal();
     }
 }

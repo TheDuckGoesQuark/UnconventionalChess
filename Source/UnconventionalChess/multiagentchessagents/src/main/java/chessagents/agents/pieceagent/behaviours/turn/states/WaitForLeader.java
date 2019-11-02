@@ -2,12 +2,9 @@ package chessagents.agents.pieceagent.behaviours.turn.states;
 
 import chessagents.agents.pieceagent.PieceContext;
 import chessagents.agents.pieceagent.behaviours.turn.TurnContext;
-import chessagents.agents.pieceagent.behaviours.turn.fsm.PieceTransition;
 import chessagents.agents.pieceagent.pieces.PieceAgent;
 import chessagents.ontology.ChessOntology;
-import chessagents.ontology.schemas.predicates.IsLeader;
 import jade.content.OntoAID;
-import jade.content.abs.AbsConcept;
 import jade.content.abs.AbsIRE;
 import jade.content.abs.AbsPredicate;
 import jade.content.abs.AbsVariable;
@@ -15,20 +12,15 @@ import jade.content.lang.Codec;
 import jade.content.lang.sl.SLVocabulary;
 import jade.content.onto.BasicOntology;
 import jade.content.onto.OntologyException;
-import jade.core.behaviours.Behaviour;
-import jade.core.behaviours.DataStore;
-import jade.core.behaviours.SimpleBehaviour;
 import jade.domain.FIPAAgentManagement.NotUnderstoodException;
 import jade.domain.FIPANames;
 import jade.lang.acl.ACLMessage;
 import jade.proto.SimpleAchieveREInitiator;
 import jade.util.Logger;
 
-import java.util.Vector;
-
 import static chessagents.agents.gameagent.behaviours.gameplay.ElectLeaderAgent.ELECT_LEADER_PROTOCOL_NAME;
-import static chessagents.agents.pieceagent.behaviours.turn.fsm.PieceTransition.I_AM_LEADER;
-import static chessagents.agents.pieceagent.behaviours.turn.fsm.PieceTransition.I_AM_NOT_LEADER;
+import static chessagents.agents.pieceagent.behaviours.turn.fsm.PieceTransition.I_AM_SPEAKER;
+import static chessagents.agents.pieceagent.behaviours.turn.fsm.PieceTransition.I_AM_NOT_SPEAKER;
 
 /**
  * Requests to know who the leader is at the start of the turn
@@ -104,6 +96,6 @@ public class WaitForLeader extends SimpleAchieveREInitiator {
 
     @Override
     public int onEnd() {
-        return (turnContext.getCurrentSpeaker().equals(myAgent.getAID()) ? I_AM_LEADER : I_AM_NOT_LEADER).ordinal();
+        return (turnContext.getCurrentSpeaker().equals(myAgent.getAID()) ? I_AM_SPEAKER : I_AM_NOT_SPEAKER).ordinal();
     }
 }

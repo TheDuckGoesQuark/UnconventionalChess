@@ -3,10 +3,9 @@ package chessagents.agents.pieceagent.behaviours.turn.states;
 import chessagents.agents.pieceagent.PieceContext;
 import chessagents.agents.pieceagent.behaviours.turn.TurnContext;
 import chessagents.agents.pieceagent.pieces.PieceAgent;
-import jade.core.behaviours.Behaviour;
 import jade.core.behaviours.SimpleBehaviour;
 
-import static chessagents.agents.pieceagent.behaviours.turn.fsm.PieceTransition.ACTUALLY_MAKING_MOVE;
+import static chessagents.agents.pieceagent.behaviours.turn.fsm.PieceTransition.ACTUALLY_MOVING;
 
 public class DecideIfActuallyMoving extends SimpleBehaviour {
     public DecideIfActuallyMoving(PieceAgent pieceAgent, PieceContext pieceContext, TurnContext turnContext) {
@@ -24,6 +23,6 @@ public class DecideIfActuallyMoving extends SimpleBehaviour {
 
     @Override
     public int onEnd() {
-        return ACTUALLY_MAKING_MOVE.ordinal();
+        return ACTUALLY_MOVING.ordinal();
     }
 }
