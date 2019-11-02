@@ -22,7 +22,7 @@ import java.util.stream.Collectors;
 
 public class ElectLeaderAgent extends SimpleBehaviour {
 
-    public static final String ELECT_LEADER_PROTOCOL_NAME = "ELECT_LEADER_PROTOCOL_NAME";
+    public static final String ELECT_SPEAKER_PROTOCOL_NAME = "ELECT_LEADER_PROTOCOL_NAME";
     private static final Random random = new Random();
     private final Logger logger = Logger.getMyLogger(getClass().getName());
     private final GameContext context;
@@ -37,7 +37,7 @@ public class ElectLeaderAgent extends SimpleBehaviour {
     @Override
     public void action() {
         logger.info("Checking for request for leader");
-        var message = myAgent.receive(MessageTemplate.MatchProtocol(ELECT_LEADER_PROTOCOL_NAME));
+        var message = myAgent.receive(MessageTemplate.MatchProtocol(ELECT_SPEAKER_PROTOCOL_NAME));
 
         if (message != null && message.getPerformative() == ACLMessage.QUERY_REF) {
             if (isLeaderQuery(message)) {

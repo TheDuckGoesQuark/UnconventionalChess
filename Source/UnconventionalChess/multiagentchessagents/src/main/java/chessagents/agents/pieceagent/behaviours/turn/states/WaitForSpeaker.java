@@ -18,7 +18,7 @@ import jade.lang.acl.ACLMessage;
 import jade.proto.SimpleAchieveREInitiator;
 import jade.util.Logger;
 
-import static chessagents.agents.gameagent.behaviours.gameplay.ElectLeaderAgent.ELECT_LEADER_PROTOCOL_NAME;
+import static chessagents.agents.gameagent.behaviours.gameplay.ElectLeaderAgent.ELECT_SPEAKER_PROTOCOL_NAME;
 import static chessagents.agents.pieceagent.behaviours.turn.fsm.PieceTransition.I_AM_SPEAKER;
 import static chessagents.agents.pieceagent.behaviours.turn.fsm.PieceTransition.I_AM_NOT_SPEAKER;
 
@@ -50,17 +50,17 @@ public class WaitForSpeaker extends SimpleAchieveREInitiator {
         if (request == null) request = new ACLMessage(ACLMessage.QUERY_REF);
 
         request.addReceiver(pieceContext.getGameAgentAID());
-        request.setProtocol(ELECT_LEADER_PROTOCOL_NAME);
+        request.setProtocol(ELECT_SPEAKER_PROTOCOL_NAME);
         request.setOntology(ChessOntology.ONTOLOGY_NAME);
         request.setLanguage(FIPANames.ContentLanguage.FIPA_SL);
 
         var absAID = new AbsVariable("leader", ChessOntology.IS_SPEAKER_AGENT);
-        var absIsLeader = new AbsPredicate(ChessOntology.IS_SPEAKER);
-        absIsLeader.set(ChessOntology.IS_SPEAKER_AGENT, absAID);
+        var absIsSpeaker = new AbsPredicate(ChessOntology.IS_SPEAKER);
+        absIsSpeaker.set(ChessOntology.IS_SPEAKER_AGENT, absAID);
 
         var ire = new AbsIRE(SLVocabulary.IOTA);
         ire.setVariable(absAID);
-        ire.setProposition(absIsLeader);
+        ire.setProposition(absIsSpeaker);
 
         try {
             myAgent.getContentManager().fillContent(request, ire);
@@ -86,7 +86,7 @@ public class WaitForSpeaker extends SimpleAchieveREInitiator {
             }
 
         } catch (Codec.CodecException | OntologyException | NotUnderstoodException e) {
-            logger.warning("Failed when receiving inform to leader query: " + e.getMessage());
+            logger.warning("Failed when receiving inform to speaker query: " + e.getMessage());
         }
     }
 
