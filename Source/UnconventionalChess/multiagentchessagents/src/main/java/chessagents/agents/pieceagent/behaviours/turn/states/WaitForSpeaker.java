@@ -1,5 +1,6 @@
 package chessagents.agents.pieceagent.behaviours.turn.states;
 
+import chessagents.agents.ChessAgent;
 import chessagents.agents.pieceagent.PieceContext;
 import chessagents.agents.pieceagent.behaviours.turn.TurnContext;
 import chessagents.agents.pieceagent.pieces.PieceAgent;
@@ -32,7 +33,7 @@ public class WaitForSpeaker extends SimpleAchieveREInitiator {
     private final PieceContext pieceContext;
 
     public WaitForSpeaker(PieceAgent pieceAgent, PieceContext pieceContext, TurnContext turnContext) {
-        super(pieceAgent, new ACLMessage(ACLMessage.QUERY_REF));
+        super(pieceAgent, pieceAgent.constructMessage(ACLMessage.QUERY_REF));
         this.turnContext = turnContext;
         this.pieceContext = pieceContext;
     }
@@ -47,12 +48,10 @@ public class WaitForSpeaker extends SimpleAchieveREInitiator {
     protected ACLMessage prepareRequest(ACLMessage request) {
         // JADE Impl resets the internal data store which nulls our request we gave it in the constructor.
         // I lost at least two hours to that nonsense. So now we need this check.
-        if (request == null) request = new ACLMessage(ACLMessage.QUERY_REF);
+        if (request == null) request = ((ChessAgent) myAgent).constructMessage(ACLMessage.QUERY_REF);
 
         request.addReceiver(pieceContext.getGameAgentAID());
         request.setProtocol(ELECT_SPEAKER_PROTOCOL_NAME);
-        request.setOntology(ChessOntology.ONTOLOGY_NAME);
-        request.setLanguage(FIPANames.ContentLanguage.FIPA_SL);
 
         var absAID = new AbsVariable("leader", ChessOntology.IS_SPEAKER_AGENT);
         var absIsSpeaker = new AbsPredicate(ChessOntology.IS_SPEAKER);

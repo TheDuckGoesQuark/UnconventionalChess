@@ -1,5 +1,6 @@
 package chessagents.agents.pieceagent.behaviours.turn.states;
 
+import chessagents.agents.ChessAgent;
 import chessagents.agents.pieceagent.PieceContext;
 import chessagents.agents.pieceagent.pieces.PieceAgent;
 import chessagents.ontology.ChessOntology;
@@ -56,8 +57,6 @@ public class SubscribeToMoves extends SimpleBehaviour {
 
     private ACLMessage prepareSubscription(ACLMessage subscription) {
         subscription.addReceiver(context.getGameAgentAID());
-        subscription.setLanguage(FIPANames.ContentLanguage.FIPA_SL);
-        subscription.setOntology(ChessOntology.ONTOLOGY_NAME);
         subscription.setProtocol(MOVE_SUBSCRIPTION_PROTOCOL);
         subscription.setConversationId(UUID.randomUUID().toString());
 
@@ -85,7 +84,7 @@ public class SubscribeToMoves extends SimpleBehaviour {
         switch (this.state) {
             case PREPARE_SUBSCRIPTION:
                 logger.info("Preparing subscription");
-                request = this.prepareSubscription(new ACLMessage(ACLMessage.SUBSCRIBE));
+                request = this.prepareSubscription(((ChessAgent) myAgent).constructMessage(ACLMessage.SUBSCRIBE));
                 getDataStore().put(REQUEST_KEY, request);
                 state = SubscriptionState.SEND_SUBSCRIPTION_REQUEST;
                 break;

@@ -1,5 +1,6 @@
 package chessagents.agents.pieceagent.behaviours.turn.states;
 
+import chessagents.agents.ChessAgent;
 import chessagents.agents.pieceagent.PieceContext;
 import chessagents.agents.pieceagent.behaviours.turn.TurnContext;
 import chessagents.agents.pieceagent.pieces.PieceAgent;
@@ -54,9 +55,7 @@ public class TellPieceToMakeMove extends SimpleBehaviour {
     }
 
     private ACLMessage createRequestToMove(AID movingPiece, Move move) {
-        var request = new ACLMessage(ACLMessage.REQUEST);
-        request.setOntology(ChessOntology.ONTOLOGY_NAME);
-        request.setLanguage(FIPANames.ContentLanguage.FIPA_SL);
+        var request = ((ChessAgent)myAgent).constructMessage(ACLMessage.REQUEST);
         var makeMove = new MakeMove(move);
         var action = new Action(movingPiece, makeMove);
 

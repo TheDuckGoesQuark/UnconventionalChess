@@ -1,5 +1,6 @@
 package chessagents.agents.commonbehaviours;
 
+import chessagents.agents.ChessAgent;
 import chessagents.ontology.ChessOntology;
 import chessagents.ontology.schemas.actions.MakeMove;
 import jade.content.onto.OntologyException;
@@ -34,8 +35,6 @@ public class RequestGameAgentMove extends SimpleBehaviour {
 
     private ACLMessage prepareRequest(ACLMessage request) {
         request.addReceiver(gameAgentName);
-        request.setLanguage(FIPANames.ContentLanguage.FIPA_SL);
-        request.setOntology(ChessOntology.ONTOLOGY_NAME);
         request.setProtocol(FIPANames.InteractionProtocol.FIPA_REQUEST);
 
         try {
@@ -74,7 +73,7 @@ public class RequestGameAgentMove extends SimpleBehaviour {
 
         switch (this.state) {
             case SENDING_REQUEST:
-                request = prepareRequest(new ACLMessage(ACLMessage.REQUEST));
+                request = prepareRequest(((ChessAgent) myAgent).constructMessage(ACLMessage.REQUEST));
                 logger.info("Sending " + request.toString());
                 myAgent.send(request);
                 state = RECEIVE_RESPONSE;

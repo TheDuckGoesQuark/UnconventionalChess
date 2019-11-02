@@ -1,16 +1,17 @@
 package chessagents.agents.pieceagent.behaviours.turn.states;
 
+import chessagents.agents.ChessAgent;
 import chessagents.agents.pieceagent.PieceContext;
 import chessagents.agents.pieceagent.behaviours.turn.TurnContext;
 import chessagents.agents.pieceagent.behaviours.turn.fsm.PieceTransition;
 import chessagents.agents.pieceagent.pieces.PieceAgent;
-import jade.core.behaviours.Behaviour;
 import jade.core.behaviours.SimpleBehaviour;
+import jade.lang.acl.ACLMessage;
 
 import java.util.Random;
 
 import static chessagents.agents.pieceagent.behaviours.turn.fsm.PieceTransition.NOT_REQUESTING_PROPOSALS;
-import static chessagents.agents.pieceagent.behaviours.turn.fsm.PieceTransition.REQUESTING_PROPOSALS;
+import static chessagents.agents.pieceagent.behaviours.turn.fsm.PieceTransition.REQUESTED_PROPOSALS;
 
 public class DecideIfRequestingProposals extends SimpleBehaviour {
 
@@ -28,10 +29,15 @@ public class DecideIfRequestingProposals extends SimpleBehaviour {
     @Override
     public void action() {
         if (turnContext.getDebateCycles() < pieceContext.getMaxDebateCycle() && requestingProposals()) {
-            pieceTransition = REQUESTING_PROPOSALS;
+            pieceTransition = REQUESTED_PROPOSALS;
+            requestProposals();
         } else {
             pieceTransition = NOT_REQUESTING_PROPOSALS;
         }
+    }
+
+    private void requestProposals() {
+        var request = ((ChessAgent) myAgent).constructMessage(ACLMessage.CFP);
     }
 
     private boolean requestingProposals() {

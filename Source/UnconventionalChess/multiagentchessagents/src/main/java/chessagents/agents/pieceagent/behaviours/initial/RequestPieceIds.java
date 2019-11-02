@@ -27,15 +27,13 @@ public class RequestPieceIds extends SimpleAchieveREInitiator {
     private final PieceContext context;
 
     public RequestPieceIds(PieceAgent pieceAgent, PieceContext context) {
-        super(pieceAgent, new ACLMessage(ACLMessage.QUERY_REF));
+        super(pieceAgent, pieceAgent.constructMessage(ACLMessage.QUERY_REF));
         this.context = context;
     }
 
     @Override
     protected ACLMessage prepareRequest(ACLMessage request) {
         request.addReceiver(context.getGameAgentAID());
-        request.setLanguage(FIPANames.ContentLanguage.FIPA_SL);
-        request.setOntology(ChessOntology.ONTOLOGY_NAME);
         request.setProtocol(PIECE_LIST_QUERY_PROTOCOL);
 
         try {

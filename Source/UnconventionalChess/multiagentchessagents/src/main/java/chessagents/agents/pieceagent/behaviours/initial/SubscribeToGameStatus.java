@@ -1,5 +1,6 @@
 package chessagents.agents.pieceagent.behaviours.initial;
 
+import chessagents.agents.ChessAgent;
 import chessagents.agents.pieceagent.pieces.PieceAgent;
 import chessagents.agents.pieceagent.PieceContext;
 import chessagents.ontology.ChessOntology;
@@ -52,8 +53,6 @@ public class SubscribeToGameStatus extends SimpleBehaviour {
 
     private ACLMessage prepareSubscription(ACLMessage subscription) {
         subscription.addReceiver(context.getGameAgentAID());
-        subscription.setLanguage(FIPANames.ContentLanguage.FIPA_SL);
-        subscription.setOntology(ChessOntology.ONTOLOGY_NAME);
         subscription.setProtocol(GAME_STATUS_SUBSCRIPTION_PROTOCOL);
         subscription.setConversationId(UUID.randomUUID().toString());
 
@@ -74,7 +73,7 @@ public class SubscribeToGameStatus extends SimpleBehaviour {
         switch (this.state) {
             case PREPARE_SUBSCRIPTION:
                 logger.info("Preparing subscription");
-                request = this.prepareSubscription(new ACLMessage(ACLMessage.SUBSCRIBE));
+                request = this.prepareSubscription(((ChessAgent) myAgent).constructMessage(ACLMessage.SUBSCRIBE));
                 getDataStore().put(REQUEST_KEY, request);
                 state = SubscriptionState.SEND_SUBSCRIPTION_REQUEST;
                 break;
