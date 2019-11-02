@@ -61,7 +61,7 @@ public class ElectLeaderAgent extends SimpleBehaviour {
         try {
             var ire = (AbsIRE) myAgent.getContentManager().extractAbsContent(message);
             var prop = ire.getProposition();
-            isLeaderQuery = prop.getTypeName().equals(ChessOntology.IS_LEADER);
+            isLeaderQuery = prop.getTypeName().equals(ChessOntology.IS_SPEAKER);
         } catch (Codec.CodecException | OntologyException | ClassCastException e) {
             logger.warning("Failed to extract leader query from message");
         }

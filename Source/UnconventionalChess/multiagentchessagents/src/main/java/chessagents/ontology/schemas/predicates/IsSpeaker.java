@@ -12,7 +12,7 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class IsLeader implements Predicate {
+public class IsSpeaker implements Predicate {
 
     private OntoAID agent;
 

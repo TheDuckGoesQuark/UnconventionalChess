@@ -23,15 +23,15 @@ import static chessagents.agents.pieceagent.behaviours.turn.fsm.PieceTransition.
 import static chessagents.agents.pieceagent.behaviours.turn.fsm.PieceTransition.I_AM_NOT_SPEAKER;
 
 /**
- * Requests to know who the leader is at the start of the turn
+ * Requests to know who the speaker is at the start of the turn
  */
-public class WaitForLeader extends SimpleAchieveREInitiator {
+public class WaitForSpeaker extends SimpleAchieveREInitiator {
 
     private final Logger logger = Logger.getMyLogger(getClass().getName());
     private final TurnContext turnContext;
     private final PieceContext pieceContext;
 
-    public WaitForLeader(PieceAgent pieceAgent, PieceContext pieceContext, TurnContext turnContext) {
+    public WaitForSpeaker(PieceAgent pieceAgent, PieceContext pieceContext, TurnContext turnContext) {
         super(pieceAgent, new ACLMessage(ACLMessage.QUERY_REF));
         this.turnContext = turnContext;
         this.pieceContext = pieceContext;
@@ -45,7 +45,8 @@ public class WaitForLeader extends SimpleAchieveREInitiator {
 
     @Override
     protected ACLMessage prepareRequest(ACLMessage request) {
-        // JADE Impl resets the internal datastore which nulls our request in the constructor.
+        // JADE Impl resets the internal data store which nulls our request we gave it in the constructor.
+        // I lost at least two hours to that nonsense. So now we need this check.
         if (request == null) request = new ACLMessage(ACLMessage.QUERY_REF);
 
         request.addReceiver(pieceContext.getGameAgentAID());
@@ -53,9 +54,9 @@ public class WaitForLeader extends SimpleAchieveREInitiator {
         request.setOntology(ChessOntology.ONTOLOGY_NAME);
         request.setLanguage(FIPANames.ContentLanguage.FIPA_SL);
 
-        var absAID = new AbsVariable("leader", ChessOntology.IS_LEADER_AGENT);
-        var absIsLeader = new AbsPredicate(ChessOntology.IS_LEADER);
-        absIsLeader.set(ChessOntology.IS_LEADER_AGENT, absAID);
+        var absAID = new AbsVariable("leader", ChessOntology.IS_SPEAKER_AGENT);
+        var absIsLeader = new AbsPredicate(ChessOntology.IS_SPEAKER);
+        absIsLeader.set(ChessOntology.IS_SPEAKER_AGENT, absAID);
 
         var ire = new AbsIRE(SLVocabulary.IOTA);
         ire.setVariable(absAID);

@@ -10,12 +10,18 @@ import jade.core.behaviours.DataStore;
 import static chessagents.agents.pieceagent.behaviours.turn.fsm.PieceState.*;
 import static chessagents.agents.pieceagent.behaviours.turn.fsm.PieceTransition.*;
 
+/**
+ * Implementation of the FSM found at
+ * https://www.draw.io/#G11m79C_XHxcL85d38NqvYSzVpo2LJj5q8
+ */
 public class Play extends PieceFSMBehaviour {
 
     public Play(PieceAgent pieceAgent, PieceContext pieceContext) {
         super(pieceAgent);
         this.setDataStore(new DataStore());
 
+        // Turn context is a type safe data store for any data that is shared between states
+        // JADE provides a non-type safe Datastore which requires casting but I'm not about that life
         var turnContext = new TurnContext();
 
         registerFirstState(new Initial(pieceAgent, pieceContext, turnContext), INITIAL);
@@ -23,7 +29,7 @@ public class Play extends PieceFSMBehaviour {
         registerState(new WaitForMove(pieceAgent, pieceContext, turnContext), WAIT_FOR_MOVE);
         registerState(new PerformMove(pieceAgent, pieceContext, turnContext), PERFORM_MOVE);
         registerState(new EndTurn(pieceAgent, pieceContext, turnContext), END_TURN);
-        registerState(new WaitForLeader(pieceAgent, pieceContext, turnContext), WAIT_FOR_SPEAKER);
+        registerState(new WaitForSpeaker(pieceAgent, pieceContext, turnContext), WAIT_FOR_SPEAKER);
         registerState(new WaitForProposalRequest(pieceAgent, pieceContext, turnContext), WAIT_FOR_PROPOSAL_REQUEST);
         registerState(new DecideIfRequestingProposals(pieceAgent, pieceContext, turnContext), DECIDE_IF_REQUESTING_PROPOSALS);
         registerState(new TellPieceToMakeMove(pieceAgent, pieceContext, turnContext), TELL_PIECE_TO_MOVE);

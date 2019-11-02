@@ -4,7 +4,6 @@ import chessagents.ontology.schemas.actions.CreateGame;
 import chessagents.ontology.schemas.actions.MakeMove;
 import chessagents.ontology.schemas.concepts.*;
 import chessagents.ontology.schemas.predicates.*;
-import jade.content.Predicate;
 import jade.content.onto.BasicOntology;
 import jade.content.onto.Ontology;
 import jade.content.onto.OntologyException;
@@ -58,8 +57,8 @@ public class ChessOntology extends Ontology {
     public static final String IS_VALID_MOVE = "Is Valid Move";
     public static final String IS_VALID_MOVE_MOVE = "Move";
 
-    public static final String IS_LEADER = "Is Leader";
-    public static final String IS_LEADER_AGENT = "Agent";
+    public static final String IS_SPEAKER = "Is Speaker";
+    public static final String IS_SPEAKER_AGENT = "Agent";
 
     // Actions
     public static final String MAKE_MOVE = "Make Move";
@@ -130,9 +129,9 @@ public class ChessOntology extends Ontology {
             isValidMoveSchema.add(IS_VALID_MOVE_MOVE, getSchema(MOVE));
             add(isValidMoveSchema, IsValidMove.class);
 
-            final var isLeaderSchema = new PredicateSchema(IS_LEADER);
-            isLeaderSchema.add(IS_LEADER_AGENT, getSchema(BasicOntology.AID));
-            add(isLeaderSchema);
+            final var isSpeakerSchema = new PredicateSchema(IS_SPEAKER);
+            isSpeakerSchema.add(IS_SPEAKER_AGENT, getSchema(BasicOntology.AID));
+            add(isSpeakerSchema);
 
             // Actions
             final var makeMoveSchema = new AgentActionSchema(MAKE_MOVE);
