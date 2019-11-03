@@ -1,5 +1,6 @@
 package chessagents.agents.pieceagent.behaviours.turn.states;
 
+import chessagents.agents.ChessAgent;
 import chessagents.agents.pieceagent.PieceContext;
 import chessagents.agents.pieceagent.behaviours.turn.TurnContext;
 import chessagents.agents.pieceagent.behaviours.turn.fsm.PieceStateBehaviour;
@@ -42,7 +43,8 @@ public class RequestToSpeak extends OneShotBehaviour implements PieceStateBehavi
     }
 
     private ACLMessage constructProposal(ACLMessage cfp) {
-        var myAID = myAgent.getAID();
+        var agent = (ChessAgent) myAgent;
+        var myAID = agent.getAID();
         var ontoAID = new OntoAID(myAID.getName(), AID.ISGUID);
         var becomeSpeaker = new BecomeSpeaker(ontoAID);
         var action = new Action(myAID, becomeSpeaker);
@@ -50,7 +52,7 @@ public class RequestToSpeak extends OneShotBehaviour implements PieceStateBehavi
         proposal.setPerformative(ACLMessage.PROPOSE);
 
         try {
-            myAgent.getContentManager().fillContent(proposal, action);
+            agent.getContentManager().fillContent(proposal, action);
         } catch (Codec.CodecException | OntologyException e) {
             logger.warning("Failed to build proposal to become speaker: " + e.getMessage());
         }
