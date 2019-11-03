@@ -53,9 +53,11 @@ public class PlayFSM extends PieceFSM {
         registerState(new RequestSpeakerProposals(pieceAgent, pieceContext, turnContext), REQUEST_SPEAKER_PROPOSALS);
         registerTransition(REQUEST_SPEAKER_PROPOSALS, CHOOSING_SPEAKER, PROPOSALS_REQUESTED);
 
+        registerState(new RequestToRemainSpeaker(pieceAgent, pieceContext, turnContext), REQUEST_TO_REMAIN_SPEAKER);
+        registerTransition(REQUEST_TO_REMAIN_SPEAKER, CHOOSING_SPEAKER, REQUESTED_TO_REMAIN_SPEAKER);
+
         registerState(new ChoosingSpeaker(pieceAgent, pieceContext, turnContext), CHOOSING_SPEAKER);
-        registerTransition(CHOOSING_SPEAKER, WAIT_FOR_SPEAKER_CONFIRMATION, SPEAKER_CHOSEN);
-        registerTransition(CHOOSING_SPEAKER, INFORM_EVERYONE_IM_SPEAKER, CHOSE_SELF_AS_SPEAKER);
+        registerTransition(CHOOSING_SPEAKER, WAIT_FOR_PERMISSION_TO_SPEAK, SPEAKER_CHOSEN);
 
         registerState(new InformEveryoneImSpeaker(pieceAgent, pieceContext, turnContext), INFORM_EVERYONE_IM_SPEAKER);
         registerTransition(INFORM_EVERYONE_IM_SPEAKER, REACT_TO_PREVIOUS_PROPOSAL, SPEAKER_UPDATE_SENT);

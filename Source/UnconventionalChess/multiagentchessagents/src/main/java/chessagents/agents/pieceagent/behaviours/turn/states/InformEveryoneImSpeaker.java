@@ -45,7 +45,6 @@ public class InformEveryoneImSpeaker extends OneShotBehaviour implements PieceSt
         informSpeakerUpdated.setPerformative(ACLMessage.INFORM);
         addContent(informSpeakerUpdated);
 
-        // TODO reply-to doesnt seem right, this is only being sent to self?
         myAgent.send(informSpeakerUpdated);
     }
 

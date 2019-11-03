@@ -5,28 +5,16 @@ import chessagents.agents.pieceagent.behaviours.turn.TurnContext;
 import chessagents.agents.pieceagent.behaviours.turn.fsm.PieceStateBehaviour;
 import chessagents.agents.pieceagent.behaviours.turn.fsm.PieceTransition;
 import chessagents.agents.pieceagent.pieces.PieceAgent;
-import chessagents.ontology.schemas.actions.BecomeSpeaker;
-import jade.content.OntoAID;
-import jade.content.abs.AbsConcept;
-import jade.content.abs.AbsObject;
-import jade.content.abs.AbsVariable;
-import jade.content.lang.Codec;
-import jade.content.onto.BasicOntology;
-import jade.content.onto.OntologyException;
-import jade.content.onto.basic.Action;
 import jade.core.AID;
 import jade.core.behaviours.Behaviour;
 import jade.lang.acl.ACLMessage;
 import jade.lang.acl.MessageTemplate;
 import jade.util.Logger;
 
-import java.io.IOException;
 import java.util.HashSet;
 import java.util.Random;
 import java.util.Set;
 
-import static chessagents.agents.pieceagent.behaviours.turn.fsm.PieceTransition.CHOSE_SELF_AS_SPEAKER;
-import static chessagents.agents.pieceagent.behaviours.turn.fsm.PieceTransition.SPEAKER_CHOSEN;
 import static chessagents.agents.pieceagent.behaviours.turn.states.RequestSpeakerProposals.SPEAKER_CONTRACT_NET_PROTOCOL;
 
 public class ChoosingSpeaker extends Behaviour implements PieceStateBehaviour {
@@ -50,10 +38,8 @@ public class ChoosingSpeaker extends Behaviour implements PieceStateBehaviour {
         if (receivedRequestFromEveryone()) {
             var speaker = chooseSpeaker();
             sendResults(speaker);
-
-            transition = speaker.equals(myAgent.getAID()) ? CHOSE_SELF_AS_SPEAKER : SPEAKER_CHOSEN;
         } else {
-            // receive all messages for this protocol (include CFP to myself)
+            // receive all messages for this protocol
             var message = myAgent.receive(mt);
 
             if (message != null) {
@@ -66,25 +52,30 @@ public class ChoosingSpeaker extends Behaviour implements PieceStateBehaviour {
 
     private void sendResults(AID speaker) {
         speakerProposals.stream()
-                .map(ACLMessage::createReply)
-                .peek(reply -> setPerformativeForReply(reply, speaker))
+                .map(proposal -> constructReply(proposal, speaker))
                 .forEach(myAgent::send);
     }
 
-    private void setPerformativeForReply(ACLMessage reply, AID speaker) {
+    private ACLMessage constructReply(ACLMessage proposal, AID speaker) {
+        var reply = proposal.createReply();
         var receiver = reply.getAllReceiver().next();
 
         if (receiver.equals(speaker)) {
             reply.setPerformative(ACLMessage.ACCEPT_PROPOSAL);
-
-            // inform everyone else when they've became the speaker
-            speakerProposals.stream()
-                    .map(ACLMessage::getSender)
-                    .filter(aid -> aid.equals(speaker))
-                    .forEach(reply::addReplyTo);
+            addReplyToAllRejected(reply, speaker);
         } else {
             reply.setPerformative(ACLMessage.REJECT_PROPOSAL);
         }
+
+        return reply;
+    }
+
+    private void addReplyToAllRejected(ACLMessage reply, AID speaker) {
+        // inform everyone else when they've became the speaker
+        speakerProposals.stream()
+                .map(ACLMessage::getSender)
+                .filter(aid -> aid.equals(speaker))
+                .forEach(reply::addReplyTo);
     }
 
     private AID chooseSpeaker() {
@@ -93,7 +84,7 @@ public class ChoosingSpeaker extends Behaviour implements PieceStateBehaviour {
     }
 
     private boolean receivedRequestFromEveryone() {
-        return speakerProposals.size() == (pieceContext.getAidToPiece().size() - 1);
+        return speakerProposals.size() == (pieceContext.getAidToPiece().size());
     }
 
     @Override
