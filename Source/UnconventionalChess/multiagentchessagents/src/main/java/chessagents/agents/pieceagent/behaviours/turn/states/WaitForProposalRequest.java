@@ -49,6 +49,7 @@ public class WaitForProposalRequest extends SimpleBehaviour implements PieceStat
                 if (asksMeToMove(message)) {
                     logger.info("Asked me to move!");
                     nextTransition = TOLD_TO_MOVE;
+                    turnContext.setCurrentMessage(message);
                 } else {
                     logger.info("Asked other piece to move!");
                     nextTransition = OTHER_PIECE_TOLD_TO_MOVE;

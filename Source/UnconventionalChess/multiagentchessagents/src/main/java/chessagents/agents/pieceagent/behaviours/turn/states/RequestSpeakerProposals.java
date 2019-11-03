@@ -14,6 +14,8 @@ import jade.core.behaviours.OneShotBehaviour;
 import jade.lang.acl.ACLMessage;
 import jade.util.Logger;
 
+import java.util.UUID;
+
 import static chessagents.agents.pieceagent.behaviours.turn.fsm.PieceTransition.PROPOSALS_REQUESTED;
 
 public class RequestSpeakerProposals extends OneShotBehaviour implements PieceStateBehaviour {
@@ -51,6 +53,7 @@ public class RequestSpeakerProposals extends OneShotBehaviour implements PieceSt
             logger.warning("Failed to fill content for cfp: " + e.getMessage());
         }
 
+        cfp.setConversationId(UUID.randomUUID().toString());
         myAgent.send(cfp);
     }
 

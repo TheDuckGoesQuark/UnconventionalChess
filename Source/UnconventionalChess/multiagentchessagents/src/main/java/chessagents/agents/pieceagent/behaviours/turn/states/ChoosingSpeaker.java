@@ -62,6 +62,8 @@ public class ChoosingSpeaker extends Behaviour implements PieceStateBehaviour {
 
             // Set content to object to avoid having to reextract later on
             message.setContentObject(action);
+            // TODO
+            // ON SPEAKER_CHOSEN TRANSITION: Failed to fill content for cfp: Missing value for mandatory slot Agent. Schema is jade.content.schema.AgentActionSchema-Become Speaker
         } catch (Codec.CodecException | ClassCastException | OntologyException | IOException e) {
             logger.warning("Failed to extract content from message: " + e.getMessage());
         }
