@@ -43,6 +43,7 @@ public class WaitForProposalRequest extends SimpleBehaviour implements PieceStat
             case ACLMessage.CFP:
                 logger.info("Call for proposal received!");
                 nextTransition = PROPOSAL_REQUESTED;
+                turnContext.setCurrentMessage(message);
                 break;
             case ACLMessage.REQUEST:
                 if (asksMeToMove(message)) {
@@ -52,7 +53,9 @@ public class WaitForProposalRequest extends SimpleBehaviour implements PieceStat
                     logger.info("Asked other piece to move!");
                     nextTransition = OTHER_PIECE_TOLD_TO_MOVE;
                 }
-
+            case ACLMessage.INFORM:
+                logger.info("Move arrived late.");
+                nextTransition = MOVE_RECEIVED_LATE;
                 turnContext.setCurrentMessage(message);
                 break;
         }
