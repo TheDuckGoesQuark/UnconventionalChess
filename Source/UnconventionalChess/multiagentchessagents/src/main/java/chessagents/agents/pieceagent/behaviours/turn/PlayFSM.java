@@ -25,73 +25,73 @@ public class PlayFSM extends PieceFSM {
         var turnContext = new TurnContext();
 
         registerFirstState(new Initial(pieceAgent, pieceContext, turnContext), INITIAL);
-        registerLastState(new GameOver(), GAME_OVER);
-
-        // common states
-        registerState(new WaitForMove(pieceAgent, pieceContext, turnContext), WAIT_FOR_MOVE);
-        registerState(new PerformMove(pieceAgent, pieceContext, turnContext), PERFORM_MOVE);
-        registerState(new EndTurn(pieceAgent, pieceContext, turnContext), END_TURN);
-        registerState(new WaitForInitialSpeaker(pieceAgent, pieceContext, turnContext), WAIT_FOR_INITIAL_SPEAKER);
-
-        // speaker states
-        registerState(new DecideIfRequestingProposals(pieceAgent, pieceContext, turnContext), DECIDE_IF_REQUESTING_PROPOSALS);
-        registerState(new ChoosingSpeaker(pieceAgent, pieceContext, turnContext), CHOOSING_SPEAKER);
-        registerState(new InformEveryoneImSpeaker(pieceAgent, pieceContext, turnContext), INFORM_EVERYONE_IM_SPEAKER);
-        registerState(new ReactToPreviousProposal(pieceAgent, pieceContext, turnContext), REACT_TO_PREVIOUS_PROPOSAL);
-        registerState(new ReactToPreviousProposal(pieceAgent, pieceContext, turnContext), REACT_TO_PREVIOUS_PROPOSAL);
-        registerState(new TellPieceToMove(pieceAgent, pieceContext, turnContext), TELL_PIECE_TO_MOVE);
-        registerState(new DecideIfMoving(pieceAgent, pieceContext, turnContext), DECIDE_IF_MOVING);
-        registerState(new DecideIfActuallyMoving(pieceAgent, pieceContext, turnContext), DECIDE_IF_ACTUALLY_MOVING);
-        registerState(new RequestMoveMade(pieceAgent, pieceContext, turnContext), REQUEST_MOVE_MADE);
-
-        // non-speaker states
-        registerState(new WaitForProposalRequest(pieceAgent, pieceContext, turnContext), WAIT_FOR_PROPOSAL_REQUEST);
-        registerState(new RequestToSpeak(pieceAgent, pieceContext, turnContext), REQUEST_TO_SPEAK);
-        registerState(new WaitForPermissionToSpeak(pieceAgent, pieceContext, turnContext), WAIT_FOR_PERMISSION_TO_SPEAK);
-        registerState(new WaitForSpeakerConfirmation(pieceAgent, pieceContext, turnContext), WAIT_FOR_SPEAKER_CONFIRMATION);
-        registerState(new WaitForPieceResponseToMoveRequest(pieceAgent, pieceContext, turnContext), WAIT_FOR_PIECE_RESPONSE_TO_MOVE_REQUEST);
-        registerState(new WaitForMoveConfirmation(pieceAgent, pieceContext, turnContext), WAIT_FOR_MOVE_CONFIRMATION);
-
-        // initial transitions
         registerTransition(INITIAL, WAIT_FOR_INITIAL_SPEAKER, MY_TURN);
         registerTransition(INITIAL, WAIT_FOR_MOVE, NOT_MY_TURN);
         registerTransition(INITIAL, GAME_OVER, GAME_IS_OVER);
 
-        // wait for move transitions
+        registerLastState(new GameOver(), GAME_OVER);
+
+        // common states
+        registerState(new WaitForMove(pieceAgent, pieceContext, turnContext), WAIT_FOR_MOVE);
         registerTransition(WAIT_FOR_MOVE, PERFORM_MOVE, OTHER_MOVE_RECEIVED);
 
-        // perform move transitions
+        registerState(new PerformMove(pieceAgent, pieceContext, turnContext), PERFORM_MOVE);
         registerTransition(PERFORM_MOVE, END_TURN, MOVE_PERFORMED);
 
-        // turn ended transitions, reset all other states
-        registerTransition(END_TURN, INITIAL, TURN_ENDED, PieceState.values());
+        registerState(new EndTurn(pieceAgent, pieceContext, turnContext), END_TURN);
+        registerTransition(END_TURN, INITIAL, TURN_ENDED, PieceState.values()); // resets all states at end of turn
 
-        // wait for leader transition
+        registerState(new WaitForInitialSpeaker(pieceAgent, pieceContext, turnContext), WAIT_FOR_INITIAL_SPEAKER);
         registerTransition(WAIT_FOR_INITIAL_SPEAKER, DECIDE_IF_REQUESTING_PROPOSALS, I_AM_SPEAKER);
         registerTransition(WAIT_FOR_INITIAL_SPEAKER, WAIT_FOR_PROPOSAL_REQUEST, I_AM_NOT_SPEAKER);
 
-        // decide if requesting proposals transitions
+        // speaker states
+        registerState(new DecideIfRequestingProposals(pieceAgent, pieceContext, turnContext), DECIDE_IF_REQUESTING_PROPOSALS);
         registerTransition(DECIDE_IF_REQUESTING_PROPOSALS, TELL_PIECE_TO_MOVE, NOT_REQUESTING_PROPOSALS);
         registerTransition(DECIDE_IF_REQUESTING_PROPOSALS, CHOOSING_SPEAKER, REQUESTED_PROPOSALS);
 
-        // wait for proposal request transitions
+        registerState(new ChoosingSpeaker(pieceAgent, pieceContext, turnContext), CHOOSING_SPEAKER);
+        registerTransition(CHOOSING_SPEAKER, WAIT_FOR_SPEAKER_CONFIRMATION, SPEAKER_CHOSEN);
+
+        registerState(new InformEveryoneImSpeaker(pieceAgent, pieceContext, turnContext), INFORM_EVERYONE_IM_SPEAKER);
+        registerTransition(INFORM_EVERYONE_IM_SPEAKER, REACT_TO_PREVIOUS_PROPOSAL, SPEAKER_UPDATE_SENT);
+
+        registerState(new ReactToPreviousProposal(pieceAgent, pieceContext, turnContext), REACT_TO_PREVIOUS_PROPOSAL);
+        registerTransition(REACT_TO_PREVIOUS_PROPOSAL, DECIDE_IF_REQUESTING_PROPOSALS, REACTED_TO_PREVIOUS_PROPOSAL);
+
+        registerState(new TellPieceToMove(pieceAgent, pieceContext, turnContext), TELL_PIECE_TO_MOVE);
+        registerTransition(TELL_PIECE_TO_MOVE, WAIT_FOR_PIECE_RESPONSE_TO_MOVE_REQUEST, TOLD_PIECE_TO_MOVE);
+
+        registerState(new DecideIfMoving(pieceAgent, pieceContext, turnContext), DECIDE_IF_MOVING);
+        registerTransition(DECIDE_IF_MOVING, DECIDE_IF_ACTUALLY_MOVING, AGREED_TO_MAKE_MOVE);
+        registerTransition(DECIDE_IF_MOVING, DECIDE_IF_REQUESTING_PROPOSALS, NOT_MOVING);
+
+        registerState(new DecideIfActuallyMoving(pieceAgent, pieceContext, turnContext), DECIDE_IF_ACTUALLY_MOVING);
+        registerTransition(DECIDE_IF_ACTUALLY_MOVING, REQUEST_MOVE_MADE, ACTUALLY_MOVING);
+        registerTransition(DECIDE_IF_ACTUALLY_MOVING, CHOOSING_SPEAKER, NOT_ACTUALLY_MOVING);
+
+        registerState(new RequestMoveMade(pieceAgent, pieceContext, turnContext), REQUEST_MOVE_MADE);
+        registerTransition(REQUEST_MOVE_MADE, PERFORM_MOVE, MOVE_CONFIRMATION_RECEIVED);
+
+        // non-speaker states
+        registerState(new WaitForProposalRequest(pieceAgent, pieceContext, turnContext), WAIT_FOR_PROPOSAL_REQUEST);
         registerTransition(WAIT_FOR_PROPOSAL_REQUEST, DECIDE_IF_MOVING, TOLD_TO_MOVE);
         registerTransition(WAIT_FOR_PROPOSAL_REQUEST, WAIT_FOR_PIECE_RESPONSE_TO_MOVE_REQUEST, OTHER_PIECE_TOLD_TO_MOVE);
 
-        // choosing speaker transition
-        registerTransition(CHOOSING_SPEAKER, WAIT_FOR_SPEAKER_CONFIRMATION, SPEAKER_CHOSEN);
+        registerState(new RequestToSpeak(pieceAgent, pieceContext, turnContext), REQUEST_TO_SPEAK);
 
-        // tell piece to make move
-        registerTransition(TELL_PIECE_TO_MOVE, WAIT_FOR_PIECE_RESPONSE_TO_MOVE_REQUEST, TOLD_PIECE_TO_MAKE_MOVE);
+        registerState(new WaitForPermissionToSpeak(pieceAgent, pieceContext, turnContext), WAIT_FOR_PERMISSION_TO_SPEAK);
 
+        registerState(new WaitForSpeakerConfirmation(pieceAgent, pieceContext, turnContext), WAIT_FOR_SPEAKER_CONFIRMATION);
+
+        registerState(new WaitForPieceResponseToMoveRequest(pieceAgent, pieceContext, turnContext), WAIT_FOR_PIECE_RESPONSE_TO_MOVE_REQUEST);
         registerTransition(WAIT_FOR_PIECE_RESPONSE_TO_MOVE_REQUEST, WAIT_FOR_MOVE_CONFIRMATION, PIECE_AGREED_TO_MOVE);
 
-        registerTransition(DECIDE_IF_MOVING, DECIDE_IF_ACTUALLY_MOVING, AGREED_TO_MAKE_MOVE);
-
-        registerTransition(DECIDE_IF_ACTUALLY_MOVING, REQUEST_MOVE_MADE, ACTUALLY_MOVING);
-
-        registerTransition(REQUEST_MOVE_MADE, PERFORM_MOVE, MOVE_CONFIRMATION_RECEIVED);
-
+        registerState(new WaitForMoveConfirmation(pieceAgent, pieceContext, turnContext), WAIT_FOR_MOVE_CONFIRMATION);
         registerTransition(WAIT_FOR_MOVE_CONFIRMATION, PERFORM_MOVE, MOVE_CONFIRMATION_RECEIVED);
+
+        // tell piece to make move
+
+
     }
 }

@@ -5,23 +5,19 @@ import chessagents.agents.pieceagent.PieceContext;
 import chessagents.agents.pieceagent.behaviours.turn.TurnContext;
 import chessagents.agents.pieceagent.behaviours.turn.fsm.PieceStateBehaviour;
 import chessagents.agents.pieceagent.pieces.PieceAgent;
-import chessagents.ontology.ChessOntology;
 import chessagents.ontology.schemas.actions.MakeMove;
 import chessagents.ontology.schemas.concepts.Move;
 import chessagents.ontology.schemas.concepts.Piece;
 import chessagents.ontology.schemas.concepts.Position;
-import jade.content.OntoAID;
 import jade.content.lang.Codec;
-import jade.content.lang.sl.SLVocabulary;
 import jade.content.onto.OntologyException;
 import jade.content.onto.basic.Action;
 import jade.core.AID;
 import jade.core.behaviours.SimpleBehaviour;
-import jade.domain.FIPANames;
 import jade.lang.acl.ACLMessage;
 import jade.util.Logger;
 
-import static chessagents.agents.pieceagent.behaviours.turn.fsm.PieceTransition.TOLD_PIECE_TO_MAKE_MOVE;
+import static chessagents.agents.pieceagent.behaviours.turn.fsm.PieceTransition.TOLD_PIECE_TO_MOVE;
 
 public class TellPieceToMove extends SimpleBehaviour implements PieceStateBehaviour {
     private final Logger logger = Logger.getMyLogger(getClass().getName());
@@ -85,6 +81,6 @@ public class TellPieceToMove extends SimpleBehaviour implements PieceStateBehavi
 
     @Override
     public int getNextTransition() {
-        return TOLD_PIECE_TO_MAKE_MOVE.ordinal();
+        return TOLD_PIECE_TO_MOVE.ordinal();
     }
 }
