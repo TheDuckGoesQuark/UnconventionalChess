@@ -27,13 +27,13 @@ import static chessagents.agents.pieceagent.behaviours.turn.fsm.PieceTransition.
 /**
  * Requests to know who the speaker is at the start of the turn
  */
-public class WaitForSpeaker extends SimpleAchieveREInitiator implements PieceStateBehaviour {
+public class WaitForInitialSpeaker extends SimpleAchieveREInitiator implements PieceStateBehaviour {
 
     private final Logger logger = Logger.getMyLogger(getClass().getName());
     private final TurnContext turnContext;
     private final PieceContext pieceContext;
 
-    public WaitForSpeaker(PieceAgent pieceAgent, PieceContext pieceContext, TurnContext turnContext) {
+    public WaitForInitialSpeaker(PieceAgent pieceAgent, PieceContext pieceContext, TurnContext turnContext) {
         super(pieceAgent, pieceAgent.constructMessage(ACLMessage.QUERY_REF));
         this.turnContext = turnContext;
         this.pieceContext = pieceContext;

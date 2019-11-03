@@ -2,7 +2,7 @@ package chessagents.agents.pieceagent.pieces;
 
 import chessagents.agents.ChessAgent;
 import chessagents.agents.pieceagent.PieceContext;
-import chessagents.agents.pieceagent.behaviours.turn.Play;
+import chessagents.agents.pieceagent.behaviours.turn.PlayFSM;
 import chessagents.agents.pieceagent.behaviours.initial.RequestPieceIds;
 import chessagents.agents.pieceagent.behaviours.initial.SubscribeToGameStatus;
 import chessagents.agents.pieceagent.behaviours.turn.SubscribeToMoves;
@@ -34,7 +34,7 @@ public abstract class PieceAgent extends ChessAgent {
         // subscribe to updates about moves
         sequence.addSubBehaviour(new SubscribeToMoves(this, context));
         // start making moves
-        sequence.addSubBehaviour(new Play(this, context));
+        sequence.addSubBehaviour(new PlayFSM(this, context));
         addBehaviour(sequence);
     }
 

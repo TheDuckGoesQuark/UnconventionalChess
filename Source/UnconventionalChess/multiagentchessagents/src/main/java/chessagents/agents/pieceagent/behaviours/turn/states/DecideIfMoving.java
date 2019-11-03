@@ -15,14 +15,14 @@ import jade.util.Logger;
 
 import static chessagents.agents.pieceagent.behaviours.turn.fsm.PieceTransition.AGREED_TO_MAKE_MOVE;
 
-public class HandleAskedToMove extends SimpleBehaviour implements PieceStateBehaviour {
+public class DecideIfMoving extends SimpleBehaviour implements PieceStateBehaviour {
 
     private final Logger logger = Logger.getMyLogger(getClass().getName());
     private final PieceContext pieceContext;
     private final TurnContext turnContext;
     private boolean agreed = false;
 
-    public HandleAskedToMove(PieceAgent pieceAgent, PieceContext pieceContext, TurnContext turnContext) {
+    public DecideIfMoving(PieceAgent pieceAgent, PieceContext pieceContext, TurnContext turnContext) {
         super(pieceAgent);
         this.pieceContext = pieceContext;
         this.turnContext = turnContext;

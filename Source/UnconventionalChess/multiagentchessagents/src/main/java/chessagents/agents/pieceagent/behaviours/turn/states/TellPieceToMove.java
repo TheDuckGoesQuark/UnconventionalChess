@@ -23,12 +23,12 @@ import jade.util.Logger;
 
 import static chessagents.agents.pieceagent.behaviours.turn.fsm.PieceTransition.TOLD_PIECE_TO_MAKE_MOVE;
 
-public class TellPieceToMakeMove extends SimpleBehaviour implements PieceStateBehaviour {
+public class TellPieceToMove extends SimpleBehaviour implements PieceStateBehaviour {
     private final Logger logger = Logger.getMyLogger(getClass().getName());
     private final PieceContext pieceContext;
     private final TurnContext turnContext;
 
-    public TellPieceToMakeMove(PieceAgent pieceAgent, PieceContext pieceContext, TurnContext turnContext) {
+    public TellPieceToMove(PieceAgent pieceAgent, PieceContext pieceContext, TurnContext turnContext) {
         super(pieceAgent);
         this.pieceContext = pieceContext;
         this.turnContext = turnContext;

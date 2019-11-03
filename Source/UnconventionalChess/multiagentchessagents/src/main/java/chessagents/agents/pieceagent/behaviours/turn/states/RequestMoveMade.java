@@ -11,7 +11,7 @@ import jade.lang.acl.MessageTemplate;
 
 import static chessagents.agents.pieceagent.behaviours.turn.fsm.PieceTransition.MOVE_CONFIRMATION_RECEIVED;
 
-public class RequestGameAgentMoveAndAwaitConfirmation extends SimpleBehaviour implements PieceStateBehaviour {
+public class RequestMoveMade extends SimpleBehaviour implements PieceStateBehaviour {
 
     enum State {
         MAKE_REQUEST,
@@ -25,7 +25,7 @@ public class RequestGameAgentMoveAndAwaitConfirmation extends SimpleBehaviour im
     private RequestGameAgentMove request = null;
     private State state = State.MAKE_REQUEST;
 
-    public RequestGameAgentMoveAndAwaitConfirmation(PieceAgent pieceAgent, PieceContext pieceContext, TurnContext turnContext) {
+    public RequestMoveMade(PieceAgent pieceAgent, PieceContext pieceContext, TurnContext turnContext) {
         super(pieceAgent);
         this.pieceContext = pieceContext;
         this.turnContext = turnContext;
