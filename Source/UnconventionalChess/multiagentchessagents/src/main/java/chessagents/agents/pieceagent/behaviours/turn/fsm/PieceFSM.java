@@ -7,9 +7,9 @@ import jade.core.behaviours.FSMBehaviour;
 /**
  * Wrapper for FSM behaviour to allow enums to be used in place of ints and strings
  */
-public class PieceFSMBehaviour extends FSMBehaviour {
+public class PieceFSM extends FSMBehaviour {
 
-    public PieceFSMBehaviour(PieceAgent pieceAgent) {
+    public PieceFSM(PieceAgent pieceAgent) {
         super(pieceAgent);
     }
 

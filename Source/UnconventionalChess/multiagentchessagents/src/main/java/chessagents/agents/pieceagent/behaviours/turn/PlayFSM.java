@@ -1,6 +1,6 @@
 package chessagents.agents.pieceagent.behaviours.turn;
 
-import chessagents.agents.pieceagent.behaviours.turn.fsm.PieceFSMBehaviour;
+import chessagents.agents.pieceagent.behaviours.turn.fsm.PieceFSM;
 import chessagents.agents.pieceagent.behaviours.turn.fsm.PieceState;
 import chessagents.agents.pieceagent.behaviours.turn.states.*;
 import chessagents.agents.pieceagent.pieces.PieceAgent;
@@ -14,7 +14,7 @@ import static chessagents.agents.pieceagent.behaviours.turn.fsm.PieceTransition.
  * Implementation of the FSM found at
  * https://www.draw.io/#G11m79C_XHxcL85d38NqvYSzVpo2LJj5q8
  */
-public class PlayFSM extends PieceFSMBehaviour {
+public class PlayFSM extends PieceFSM {
 
     public PlayFSM(PieceAgent pieceAgent, PieceContext pieceContext) {
         super(pieceAgent);
@@ -25,6 +25,7 @@ public class PlayFSM extends PieceFSMBehaviour {
         var turnContext = new TurnContext();
 
         registerFirstState(new Initial(pieceAgent, pieceContext, turnContext), INITIAL);
+        registerLastState(new GameOver(), GAME_OVER);
 
         // common states
         registerState(new WaitForMove(pieceAgent, pieceContext, turnContext), WAIT_FOR_MOVE);
@@ -41,14 +42,15 @@ public class PlayFSM extends PieceFSMBehaviour {
         registerState(new TellPieceToMove(pieceAgent, pieceContext, turnContext), TELL_PIECE_TO_MOVE);
         registerState(new DecideIfMoving(pieceAgent, pieceContext, turnContext), DECIDE_IF_MOVING);
         registerState(new DecideIfActuallyMoving(pieceAgent, pieceContext, turnContext), DECIDE_IF_ACTUALLY_MOVING);
-        registerState(new RequestMoveMade(pieceAgent, pieceContext, turnContext), REQUEST_GAME_AGENT_MOVE_AND_AWAIT_CONFIRMATION);
+        registerState(new RequestMoveMade(pieceAgent, pieceContext, turnContext), REQUEST_MOVE_MADE);
 
         // non-speaker states
         registerState(new WaitForProposalRequest(pieceAgent, pieceContext, turnContext), WAIT_FOR_PROPOSAL_REQUEST);
-        registerState(new WaitForPieceResponseToMakeMoveRequest(pieceAgent, pieceContext, turnContext), WAIT_FOR_PIECE_RESPONSE_TO_MOVE_REQUEST);
+        registerState(new RequestToSpeak(pieceAgent, pieceContext, turnContext), REQUEST_TO_SPEAK);
+        registerState(new WaitForPermissionToSpeak(pieceAgent, pieceContext, turnContext), WAIT_FOR_PERMISSION_TO_SPEAK);
+        registerState(new WaitForSpeakerConfirmation(pieceAgent, pieceContext, turnContext), WAIT_FOR_SPEAKER_CONFIRMATION);
+        registerState(new WaitForPieceResponseToMoveRequest(pieceAgent, pieceContext, turnContext), WAIT_FOR_PIECE_RESPONSE_TO_MOVE_REQUEST);
         registerState(new WaitForMoveConfirmation(pieceAgent, pieceContext, turnContext), WAIT_FOR_MOVE_CONFIRMATION);
-
-        registerLastState(new GameOver(), GAME_OVER);
 
         // initial transitions
         registerTransition(INITIAL, WAIT_FOR_INITIAL_SPEAKER, MY_TURN);
@@ -86,9 +88,9 @@ public class PlayFSM extends PieceFSMBehaviour {
 
         registerTransition(DECIDE_IF_MOVING, DECIDE_IF_ACTUALLY_MOVING, AGREED_TO_MAKE_MOVE);
 
-        registerTransition(DECIDE_IF_ACTUALLY_MOVING, REQUEST_GAME_AGENT_MOVE_AND_AWAIT_CONFIRMATION, ACTUALLY_MOVING);
+        registerTransition(DECIDE_IF_ACTUALLY_MOVING, REQUEST_MOVE_MADE, ACTUALLY_MOVING);
 
-        registerTransition(REQUEST_GAME_AGENT_MOVE_AND_AWAIT_CONFIRMATION, PERFORM_MOVE, MOVE_CONFIRMATION_RECEIVED);
+        registerTransition(REQUEST_MOVE_MADE, PERFORM_MOVE, MOVE_CONFIRMATION_RECEIVED);
 
         registerTransition(WAIT_FOR_MOVE_CONFIRMATION, PERFORM_MOVE, MOVE_CONFIRMATION_RECEIVED);
     }
