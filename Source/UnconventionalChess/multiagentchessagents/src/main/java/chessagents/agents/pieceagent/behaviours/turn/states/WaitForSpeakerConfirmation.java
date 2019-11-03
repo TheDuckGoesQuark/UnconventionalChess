@@ -49,7 +49,6 @@ public class WaitForSpeakerConfirmation extends SimpleBehaviour implements Piece
     @Override
     public void action() {
         logger.info("Waiting for speaking confirmation");
-        logger.info("Filtering speaking confirmations using: " + mt.toString());
         var inform = myAgent.receive(mt);
 
         if (inform != null) {

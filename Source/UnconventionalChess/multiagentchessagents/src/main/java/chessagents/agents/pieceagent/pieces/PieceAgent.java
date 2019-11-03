@@ -20,7 +20,7 @@ import jade.util.Logger;
 
 public abstract class PieceAgent extends ChessAgent {
 
-    private final Logger logger = Logger.getMyLogger(getName());
+    private Logger logger;
     private PieceContext context;
 
     private void constructContextFromArgs() {
@@ -49,6 +49,7 @@ public abstract class PieceAgent extends ChessAgent {
     @Override
     protected void setup() {
         super.setup();
+        logger = Logger.getMyLogger(getName());
         constructContextFromArgs();
         addInitialBehaviours();
     }
