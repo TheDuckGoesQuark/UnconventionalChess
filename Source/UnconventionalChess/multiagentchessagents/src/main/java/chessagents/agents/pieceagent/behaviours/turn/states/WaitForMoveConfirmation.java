@@ -79,4 +79,9 @@ public class WaitForMoveConfirmation extends SimpleBehaviour implements PieceSta
         received = false;
         super.reset();
     }
+
+    @Override
+    public int onEnd() {
+        return getNextTransition();
+    }
 }

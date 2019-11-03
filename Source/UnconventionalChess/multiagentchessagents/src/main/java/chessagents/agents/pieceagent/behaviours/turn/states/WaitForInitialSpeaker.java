@@ -1,6 +1,7 @@
 package chessagents.agents.pieceagent.behaviours.turn.states;
 
 import chessagents.agents.ChessAgent;
+import chessagents.agents.ChessMessageBuilder;
 import chessagents.agents.pieceagent.PieceContext;
 import chessagents.agents.pieceagent.behaviours.turn.TurnContext;
 import chessagents.agents.pieceagent.behaviours.turn.fsm.PieceStateBehaviour;
@@ -34,7 +35,7 @@ public class WaitForInitialSpeaker extends SimpleAchieveREInitiator implements P
     private final PieceContext pieceContext;
 
     public WaitForInitialSpeaker(PieceAgent pieceAgent, PieceContext pieceContext, TurnContext turnContext) {
-        super(pieceAgent, pieceAgent.constructMessage(ACLMessage.QUERY_REF));
+        super(pieceAgent, ChessMessageBuilder.constructMessage(ACLMessage.QUERY_REF));
         this.turnContext = turnContext;
         this.pieceContext = pieceContext;
     }
@@ -49,7 +50,7 @@ public class WaitForInitialSpeaker extends SimpleAchieveREInitiator implements P
     protected ACLMessage prepareRequest(ACLMessage request) {
         // JADE Impl resets the internal data store which nulls our request we gave it in the constructor.
         // I lost at least two hours to that nonsense. So now we need this check.
-        if (request == null) request = ((ChessAgent) myAgent).constructMessage(ACLMessage.QUERY_REF);
+        if (request == null) request = ChessMessageBuilder.constructMessage(ACLMessage.QUERY_REF);
 
         request.addReceiver(pieceContext.getGameAgentAID());
         request.setProtocol(ELECT_SPEAKER_PROTOCOL_NAME);
@@ -98,5 +99,10 @@ public class WaitForInitialSpeaker extends SimpleAchieveREInitiator implements P
     @Override
     public int getNextTransition() {
         return (turnContext.getCurrentSpeaker().equals(myAgent.getAID()) ? I_AM_SPEAKER : I_AM_NOT_SPEAKER).ordinal();
+    }
+
+    @Override
+    public int onEnd() {
+        return getNextTransition();
     }
 }

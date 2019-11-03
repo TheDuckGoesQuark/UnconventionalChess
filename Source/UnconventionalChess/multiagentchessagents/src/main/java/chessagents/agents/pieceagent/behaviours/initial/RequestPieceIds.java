@@ -1,5 +1,6 @@
 package chessagents.agents.pieceagent.behaviours.initial;
 
+import chessagents.agents.ChessMessageBuilder;
 import chessagents.agents.pieceagent.pieces.PieceAgent;
 import chessagents.agents.pieceagent.PieceContext;
 import chessagents.ontology.ChessOntology;
@@ -27,7 +28,7 @@ public class RequestPieceIds extends SimpleAchieveREInitiator {
     private final PieceContext context;
 
     public RequestPieceIds(PieceAgent pieceAgent, PieceContext context) {
-        super(pieceAgent, pieceAgent.constructMessage(ACLMessage.QUERY_REF));
+        super(pieceAgent, ChessMessageBuilder.constructMessage(ACLMessage.QUERY_REF));
         this.context = context;
     }
 

@@ -2,12 +2,13 @@ package chessagents.agents.pieceagent.behaviours.turn.states;
 
 import chessagents.agents.pieceagent.PieceContext;
 import chessagents.agents.pieceagent.behaviours.turn.TurnContext;
+import chessagents.agents.pieceagent.behaviours.turn.fsm.PieceStateBehaviour;
 import chessagents.agents.pieceagent.behaviours.turn.fsm.PieceTransition;
 import chessagents.agents.pieceagent.pieces.PieceAgent;
 import jade.core.behaviours.SimpleBehaviour;
 import jade.util.Logger;
 
-public class Initial extends SimpleBehaviour {
+public class Initial extends SimpleBehaviour implements PieceStateBehaviour  {
 
     private final Logger logger = Logger.getMyLogger(getClass().getName());
     private final PieceContext pieceContext;
@@ -39,6 +40,11 @@ public class Initial extends SimpleBehaviour {
 
     @Override
     public int onEnd() {
+        return getNextTransition();
+    }
+
+    @Override
+    public int getNextTransition() {
         return nextTransition.ordinal();
     }
 }

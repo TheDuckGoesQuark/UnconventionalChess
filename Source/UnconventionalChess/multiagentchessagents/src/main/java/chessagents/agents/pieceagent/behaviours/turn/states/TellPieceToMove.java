@@ -1,6 +1,7 @@
 package chessagents.agents.pieceagent.behaviours.turn.states;
 
 import chessagents.agents.ChessAgent;
+import chessagents.agents.ChessMessageBuilder;
 import chessagents.agents.pieceagent.PieceContext;
 import chessagents.agents.pieceagent.behaviours.turn.TurnContext;
 import chessagents.agents.pieceagent.behaviours.turn.fsm.PieceStateBehaviour;
@@ -52,7 +53,7 @@ public class TellPieceToMove extends SimpleBehaviour implements PieceStateBehavi
     }
 
     private ACLMessage createRequestToMove(AID movingPiece, Move move) {
-        var request = ((ChessAgent) myAgent).constructMessage(ACLMessage.REQUEST);
+        var request = ChessMessageBuilder.constructMessage(ACLMessage.REQUEST);
         var makeMove = new MakeMove(move);
         var action = new Action(movingPiece, makeMove);
 
@@ -82,5 +83,10 @@ public class TellPieceToMove extends SimpleBehaviour implements PieceStateBehavi
     @Override
     public int getNextTransition() {
         return TOLD_PIECE_TO_MOVE.ordinal();
+    }
+
+    @Override
+    public int onEnd() {
+        return getNextTransition();
     }
 }

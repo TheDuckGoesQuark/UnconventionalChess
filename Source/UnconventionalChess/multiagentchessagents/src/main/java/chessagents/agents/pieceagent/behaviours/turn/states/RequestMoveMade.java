@@ -74,4 +74,9 @@ public class RequestMoveMade extends SimpleBehaviour implements PieceStateBehavi
     public int getNextTransition() {
         return MOVE_CONFIRMATION_RECEIVED.ordinal();
     }
+
+    @Override
+    public int onEnd() {
+        return getNextTransition();
+    }
 }

@@ -29,4 +29,9 @@ public class ReactToPreviousProposal extends OneShotBehaviour implements PieceSt
     public void action() {
         // TODO
     }
+
+    @Override
+    public int onEnd() {
+        return getNextTransition();
+    }
 }

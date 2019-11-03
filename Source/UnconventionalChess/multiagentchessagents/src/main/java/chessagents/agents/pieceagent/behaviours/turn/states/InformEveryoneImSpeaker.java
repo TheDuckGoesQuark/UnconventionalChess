@@ -58,4 +58,9 @@ public class InformEveryoneImSpeaker extends OneShotBehaviour implements PieceSt
             logger.warning("Failed to fill contents of inform new speaker: " + e.getMessage());
         }
     }
+
+    @Override
+    public int onEnd() {
+        return getNextTransition();
+    }
 }

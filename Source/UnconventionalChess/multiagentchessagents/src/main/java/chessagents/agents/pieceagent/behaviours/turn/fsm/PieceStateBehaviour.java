@@ -8,13 +8,4 @@ public interface PieceStateBehaviour {
 
     int getNextTransition();
 
-    /**
-     * Override behaviour onEnd to always fetch the next transition
-     *
-     * @return int value of next transition ordinal
-     */
-    default int onEnd() {
-        return getNextTransition();
-    }
-
 }

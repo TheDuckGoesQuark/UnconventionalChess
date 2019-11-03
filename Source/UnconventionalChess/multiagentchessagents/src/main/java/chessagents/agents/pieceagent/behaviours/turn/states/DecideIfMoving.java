@@ -70,4 +70,9 @@ public class DecideIfMoving extends SimpleBehaviour implements PieceStateBehavio
         agreed = false;
         super.reset();
     }
+
+    @Override
+    public int onEnd() {
+        return getNextTransition();
+    }
 }

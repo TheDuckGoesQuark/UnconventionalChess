@@ -72,4 +72,9 @@ public class WaitForPermissionToSpeak extends SimpleBehaviour implements PieceSt
     public boolean done() {
         return transition != null;
     }
+
+    @Override
+    public int onEnd() {
+        return getNextTransition();
+    }
 }

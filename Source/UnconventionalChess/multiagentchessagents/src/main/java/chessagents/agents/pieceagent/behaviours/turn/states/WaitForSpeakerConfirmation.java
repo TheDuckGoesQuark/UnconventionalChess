@@ -86,4 +86,9 @@ public class WaitForSpeakerConfirmation extends SimpleBehaviour implements Piece
         mt = null;
         super.reset();
     }
+
+    @Override
+    public int onEnd() {
+        return getNextTransition();
+    }
 }

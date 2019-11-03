@@ -30,4 +30,9 @@ public class EndTurn extends OneShotBehaviour implements PieceStateBehaviour {
     public int getNextTransition() {
         return TURN_ENDED.ordinal();
     }
+
+    @Override
+    public int onEnd() {
+        return getNextTransition();
+    }
 }

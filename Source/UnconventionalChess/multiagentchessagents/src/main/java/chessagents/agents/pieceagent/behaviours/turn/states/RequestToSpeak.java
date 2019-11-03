@@ -59,4 +59,9 @@ public class RequestToSpeak extends OneShotBehaviour implements PieceStateBehavi
 
         return proposal;
     }
+
+    @Override
+    public int onEnd() {
+        return getNextTransition();
+    }
 }

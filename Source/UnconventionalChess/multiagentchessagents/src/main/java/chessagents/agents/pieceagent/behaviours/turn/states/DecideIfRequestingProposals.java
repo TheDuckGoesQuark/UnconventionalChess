@@ -51,4 +51,9 @@ public class DecideIfRequestingProposals extends OneShotBehaviour implements Pie
         pieceTransition = null;
         super.reset();
     }
+
+    @Override
+    public int onEnd() {
+        return getNextTransition();
+    }
 }

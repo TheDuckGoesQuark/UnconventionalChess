@@ -27,4 +27,9 @@ public class DecideIfActuallyMoving extends SimpleBehaviour implements PieceStat
     public int getNextTransition() {
         return ACTUALLY_MOVING.ordinal();
     }
+
+    @Override
+    public int onEnd() {
+        return getNextTransition();
+    }
 }

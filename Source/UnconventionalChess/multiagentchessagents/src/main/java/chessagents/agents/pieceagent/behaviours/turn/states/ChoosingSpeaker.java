@@ -117,4 +117,9 @@ public class ChoosingSpeaker extends Behaviour implements PieceStateBehaviour {
         speakerProposals.clear();
         super.reset();
     }
+
+    @Override
+    public int onEnd() {
+        return getNextTransition();
+    }
 }

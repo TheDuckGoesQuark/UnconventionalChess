@@ -88,4 +88,9 @@ public class WaitForProposalRequest extends SimpleBehaviour implements PieceStat
     public int getNextTransition() {
         return (nextTransition != null ? nextTransition : OTHER_PIECE_TOLD_TO_MOVE).ordinal();
     }
+
+    @Override
+    public int onEnd() {
+        return getNextTransition();
+    }
 }

@@ -1,6 +1,7 @@
 package chessagents.agents.pieceagent.behaviours.turn.states;
 
 import chessagents.agents.ChessAgent;
+import chessagents.agents.ChessMessageBuilder;
 import chessagents.agents.pieceagent.PieceContext;
 import chessagents.agents.pieceagent.behaviours.turn.TurnContext;
 import chessagents.agents.pieceagent.behaviours.turn.fsm.PieceStateBehaviour;
@@ -38,7 +39,7 @@ public class RequestSpeakerProposals extends OneShotBehaviour implements PieceSt
     }
 
     private void requestProposals() {
-        var cfp = ((ChessAgent) myAgent).constructMessage(ACLMessage.CFP);
+        var cfp = ChessMessageBuilder.constructMessage(ACLMessage.CFP);
 
         pieceContext.getAllAIDs().forEach(cfp::addReceiver);
 
@@ -51,5 +52,10 @@ public class RequestSpeakerProposals extends OneShotBehaviour implements PieceSt
         }
 
         myAgent.send(cfp);
+    }
+
+    @Override
+    public int onEnd() {
+        return getNextTransition();
     }
 }

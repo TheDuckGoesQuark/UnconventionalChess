@@ -80,6 +80,11 @@ public class WaitForMove extends SimpleBehaviour implements PieceStateBehaviour 
     }
 
     @Override
+    public int onEnd() {
+        return getNextTransition();
+    }
+
+    @Override
     public int getNextTransition() {
         return OTHER_MOVE_RECEIVED.ordinal();
     }

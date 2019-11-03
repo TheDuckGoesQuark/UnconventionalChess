@@ -48,4 +48,9 @@ public class WaitForPieceResponseToMoveRequest extends SimpleBehaviour implement
     public int getNextTransition() {
         return PIECE_AGREED_TO_MOVE.ordinal();
     }
+
+    @Override
+    public int onEnd() {
+        return getNextTransition();
+    }
 }
