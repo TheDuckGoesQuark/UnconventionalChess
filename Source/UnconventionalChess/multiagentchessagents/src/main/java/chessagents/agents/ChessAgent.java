@@ -6,7 +6,7 @@ import jade.content.lang.sl.SLCodec;
 import jade.content.onto.Ontology;
 import jade.core.Agent;
 
-public abstract class ChessAgent extends Agent implements ChessMessageBuilder {
+public abstract class ChessAgent extends Agent {
 
     private Codec codec = new SLCodec();
     private Ontology ontology = ChessOntology.getInstance();

@@ -80,7 +80,7 @@ public class SubscribeToMoves extends SimpleBehaviour {
         switch (this.state) {
             case PREPARE_SUBSCRIPTION:
                 logger.info("Preparing subscription");
-                request = this.prepareSubscription(((ChessMessageBuilder) myAgent).constructMessage(ACLMessage.SUBSCRIBE));
+                request = this.prepareSubscription(ChessMessageBuilder.constructMessage(ACLMessage.SUBSCRIBE));
                 getDataStore().put(REQUEST_KEY, request);
                 state = SubscriptionState.SEND_SUBSCRIPTION_REQUEST;
                 break;
