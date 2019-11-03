@@ -147,7 +147,7 @@ public class ChessOntology extends Ontology {
             add(createGameSchema, CreateGame.class);
 
             final var becomeSpeakerSchema = new AgentActionSchema(BECOME_SPEAKER);
-            becomeSpeakerSchema.add(BECOME_SPEAKER, (ConceptSchema) getSchema(BasicOntology.AID));
+            becomeSpeakerSchema.add(BECOME_SPEAKER_AGENT, (ConceptSchema) getSchema(BasicOntology.AID));
             add(becomeSpeakerSchema, BecomeSpeaker.class);
 
         } catch (OntologyException e) {

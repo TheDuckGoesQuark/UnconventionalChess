@@ -53,6 +53,7 @@ public class WaitForProposalRequest extends SimpleBehaviour implements PieceStat
                     logger.info("Asked other piece to move!");
                     nextTransition = OTHER_PIECE_TOLD_TO_MOVE;
                 }
+                break;
             case ACLMessage.INFORM:
                 // TODO better verify this
                 logger.info("Move arrived late.");
