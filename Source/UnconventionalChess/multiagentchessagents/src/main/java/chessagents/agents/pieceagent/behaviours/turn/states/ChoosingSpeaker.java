@@ -72,17 +72,23 @@ public class ChoosingSpeaker extends Behaviour implements PieceStateBehaviour {
     private void sendResults(AID speaker) {
         speakerProposals.stream()
                 .map(ACLMessage::createReply)
-                .peek(reply -> setPerformativeForProposal(reply, speaker))
+                .peek(reply -> setPerformativeForReply(reply, speaker))
                 .forEach(myAgent::send);
     }
 
-    private void setPerformativeForProposal(ACLMessage reply, AID speaker) {
+    private void setPerformativeForReply(ACLMessage reply, AID speaker) {
         var receiver = reply.getAllReceiver().next();
 
         if (receiver.equals(speaker)) {
             reply.setPerformative(ACLMessage.ACCEPT_PROPOSAL);
+
+            // inform everyone else when done
+            speakerProposals.stream()
+                    .map(ACLMessage::getSender)
+                    .filter(aid -> aid.equals(speaker))
+                    .forEach(reply::addReplyTo);
         } else {
-            reply.setPerformative(ACLMessage.ACCEPT_PROPOSAL);
+            reply.setPerformative(ACLMessage.REJECT_PROPOSAL);
         }
     }
 

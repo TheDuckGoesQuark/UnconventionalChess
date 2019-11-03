@@ -40,6 +40,7 @@ public class WaitForPermissionToSpeak extends SimpleBehaviour implements PieceSt
             switch (response.getPerformative()) {
                 case ACLMessage.ACCEPT_PROPOSAL:
                     logger.info("Proposal accepted!");
+                    turnContext.setCurrentMessage(response);
                     transition = PieceTransition.CHOSEN_TO_SPEAK;
                     break;
                 case ACLMessage.REJECT_PROPOSAL:
