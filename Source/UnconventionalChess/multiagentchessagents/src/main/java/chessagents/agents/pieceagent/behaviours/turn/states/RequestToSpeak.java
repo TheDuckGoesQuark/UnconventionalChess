@@ -38,26 +38,8 @@ public class RequestToSpeak extends OneShotBehaviour implements PieceStateBehavi
     public void action() {
         logger.info("Requesting to speak");
         var cfp = turnContext.getCurrentMessage();
-        var proposal = constructProposal(cfp);
+        var proposal = ((PieceAgent) myAgent).constructProposalToSpeak(cfp);
         myAgent.send(proposal);
-    }
-
-    private ACLMessage constructProposal(ACLMessage cfp) {
-        var agent = (ChessAgent) myAgent;
-        var myAID = agent.getAID();
-        var ontoAID = new OntoAID(myAID.getName(), AID.ISGUID);
-        var becomeSpeaker = new BecomeSpeaker(ontoAID);
-        var action = new Action(myAID, becomeSpeaker);
-        var proposal = cfp.createReply();
-        proposal.setPerformative(ACLMessage.PROPOSE);
-
-        try {
-            agent.getContentManager().fillContent(proposal, action);
-        } catch (Codec.CodecException | OntologyException e) {
-            logger.warning("Failed to build proposal to become speaker: " + e.getMessage());
-        }
-
-        return proposal;
     }
 
     @Override

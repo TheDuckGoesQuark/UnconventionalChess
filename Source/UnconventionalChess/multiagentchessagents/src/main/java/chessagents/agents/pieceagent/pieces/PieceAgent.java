@@ -6,13 +6,21 @@ import chessagents.agents.pieceagent.behaviours.turn.PlayFSM;
 import chessagents.agents.pieceagent.behaviours.initial.RequestPieceIds;
 import chessagents.agents.pieceagent.behaviours.initial.SubscribeToGameStatus;
 import chessagents.agents.pieceagent.behaviours.turn.SubscribeToMoves;
+import chessagents.ontology.schemas.actions.BecomeSpeaker;
 import chessagents.ontology.schemas.concepts.Colour;
 import chessagents.ontology.schemas.concepts.Position;
+import jade.content.OntoAID;
+import jade.content.lang.Codec;
+import jade.content.onto.OntologyException;
+import jade.content.onto.basic.Action;
 import jade.core.AID;
 import jade.core.behaviours.SequentialBehaviour;
+import jade.lang.acl.ACLMessage;
+import jade.util.Logger;
 
 public abstract class PieceAgent extends ChessAgent {
 
+    private final Logger logger = Logger.getMyLogger(getName());
     private PieceContext context;
 
     private void constructContextFromArgs() {
@@ -44,4 +52,22 @@ public abstract class PieceAgent extends ChessAgent {
         constructContextFromArgs();
         addInitialBehaviours();
     }
+
+    public ACLMessage constructProposalToSpeak(ACLMessage cfp) {
+        var myAID = getAID();
+        var ontoAID = new OntoAID(myAID.getName(), AID.ISGUID);
+        var becomeSpeaker = new BecomeSpeaker(ontoAID);
+        var action = new Action(myAID, becomeSpeaker);
+        var proposal = cfp.createReply();
+        proposal.setPerformative(ACLMessage.PROPOSE);
+
+        try {
+            getContentManager().fillContent(proposal, action);
+        } catch (Codec.CodecException | OntologyException e) {
+            logger.warning("Failed to build proposal to become speaker: " + e.getMessage());
+        }
+
+        return proposal;
+    }
+
 }

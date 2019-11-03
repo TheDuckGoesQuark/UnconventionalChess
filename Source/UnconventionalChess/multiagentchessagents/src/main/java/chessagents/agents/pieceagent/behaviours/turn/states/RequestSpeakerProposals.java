@@ -55,8 +55,6 @@ public class RequestSpeakerProposals extends OneShotBehaviour implements PieceSt
         cfp.setConversationId(UUID.randomUUID().toString());
 
         myAgent.send(cfp);
-
-        turnContext.setCurrentMessage(cfp);
     }
 
     @Override
