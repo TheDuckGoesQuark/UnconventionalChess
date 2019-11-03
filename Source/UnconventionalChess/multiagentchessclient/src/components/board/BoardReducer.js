@@ -3,12 +3,13 @@ import {
     GAME_START,
     MOUSE_OUT_SQUARE, MOUSE_OVER_SQUARE,
     MOVE_RECEIVE,
-    MOVE_SEND, PIECE_DROPPED,
+    PIECE_DROPPED,
     SQUARE_CLICK,
     SQUARE_RIGHT_CLICK
 } from "./BoardActions";
 import Chess from "chess.js"
 import {squareStyling} from "./GameBoard";
+import {CONFIG_RESET} from "../config/ConfigActions";
 
 const initialState = {
     fen: "start",
@@ -156,6 +157,7 @@ export default function boardReducer(state = initialState, action) {
         case MOVE_RECEIVE:
             return handleReceivedMove(state, action);
         case GAME_START:
+        case CONFIG_RESET:
             return {
                 ...state,
                 initialState
