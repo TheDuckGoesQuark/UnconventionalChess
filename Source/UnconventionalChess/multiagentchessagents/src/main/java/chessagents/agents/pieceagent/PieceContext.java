@@ -20,7 +20,6 @@ public class PieceContext {
 
     private final int gameId;
     private final Colour myColour;
-    private final Position myPosition;
     private final AID gameAgentAID;
     private final int maxDebateCycle;
     private final Map<AID, Piece> aidToPiece = new HashMap<>();
@@ -31,9 +30,21 @@ public class PieceContext {
     public PieceContext(int gameId, Colour myColour, AID gameAgentAID, Position myPosition, int maxDebateCycle) {
         this.gameId = gameId;
         this.myColour = myColour;
-        this.myPosition = myPosition;
         this.gameAgentAID = gameAgentAID;
         this.maxDebateCycle = maxDebateCycle;
+    }
+
+    public void makeMove(Position from, Position to) {
+        var aidToPieceNeedsUpdating = isMyTurnToGo();
+        board.makeMove(from.getCoordinates(), to.getCoordinates());
+
+        // update position of piece agent
+        if (aidToPieceNeedsUpdating) {
+            aidToPiece.values().stream()
+                    .map(Piece::getPosition)
+                    .filter(p -> p.equals(from))
+                    .forEach(p -> p.setCoordinates(to.getCoordinates()));
+        }
     }
 
     public boolean isMyTurnToGo() {

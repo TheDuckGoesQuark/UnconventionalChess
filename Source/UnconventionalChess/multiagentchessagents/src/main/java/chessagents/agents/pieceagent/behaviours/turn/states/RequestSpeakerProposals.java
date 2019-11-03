@@ -6,7 +6,11 @@ import chessagents.agents.pieceagent.PieceContext;
 import chessagents.agents.pieceagent.behaviours.turn.TurnContext;
 import chessagents.agents.pieceagent.behaviours.turn.fsm.PieceStateBehaviour;
 import chessagents.agents.pieceagent.pieces.PieceAgent;
+import chessagents.ontology.ChessOntology;
 import chessagents.ontology.schemas.actions.BecomeSpeaker;
+import jade.content.ContentElement;
+import jade.content.abs.AbsConcept;
+import jade.content.abs.AbsVariable;
 import jade.content.lang.Codec;
 import jade.content.onto.OntologyException;
 import jade.core.behaviours.Behaviour;
@@ -20,6 +24,7 @@ import static chessagents.agents.pieceagent.behaviours.turn.fsm.PieceTransition.
 
 public class RequestSpeakerProposals extends OneShotBehaviour implements PieceStateBehaviour {
 
+    public static final String SPEAKER_CONTRACT_NET_PROTOCOL = "SPEAKER_CONTRACT_NET_PROTOCOL";
     private final Logger logger = Logger.getMyLogger(getClass().getName());
     private final PieceContext pieceContext;
     private final TurnContext turnContext;
@@ -45,16 +50,12 @@ public class RequestSpeakerProposals extends OneShotBehaviour implements PieceSt
 
         pieceContext.getAllAIDs().forEach(cfp::addReceiver);
 
-        // construct message body
-        var becomeSpeaker = new BecomeSpeaker();
-        try {
-            myAgent.getContentManager().fillContent(cfp, becomeSpeaker);
-        } catch (Codec.CodecException | OntologyException e) {
-            logger.warning("Failed to fill content for cfp: " + e.getMessage());
-        }
-
+        cfp.setProtocol(SPEAKER_CONTRACT_NET_PROTOCOL);
         cfp.setConversationId(UUID.randomUUID().toString());
+
         myAgent.send(cfp);
+
+        turnContext.setCurrentMessage(cfp);
     }
 
     @Override

@@ -9,7 +9,7 @@ import jade.util.Logger;
 
 import static chessagents.agents.pieceagent.behaviours.turn.fsm.PieceTransition.MOVE_PERFORMED;
 
-public class PerformMove extends OneShotBehaviour implements PieceStateBehaviour  {
+public class PerformMove extends OneShotBehaviour implements PieceStateBehaviour {
     private final Logger logger = Logger.getMyLogger(getClass().getName());
     private final PieceContext pieceContext;
     private final TurnContext turnContext;
@@ -23,10 +23,8 @@ public class PerformMove extends OneShotBehaviour implements PieceStateBehaviour
     @Override
     public void action() {
         var move = turnContext.getCurrentMove();
-        var from = move.getSource().getCoordinates();
-        var to = move.getTarget().getCoordinates();
-        pieceContext.getBoard().makeMove(from, to);
-        logger.info("Performed move " + from + to);
+        pieceContext.makeMove(move.getSource(), move.getTarget());
+        logger.info("Performed move " + move.getSource().getCoordinates() + ":" + move.getTarget().getCoordinates());
     }
 
     @Override

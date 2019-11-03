@@ -35,6 +35,7 @@ public class TellPieceToMove extends SimpleBehaviour implements PieceStateBehavi
     public void action() {
         pieceContext.getBoard().getRandomMove().ifPresent(move -> {
             var movingPiece = getAIDOfPieceAtPosition(move.getSource());
+            logger.info("Telling " + movingPiece.getName() + " to move");
             var request = createRequestToMove(movingPiece, move);
             sendRequestMove(request);
         });

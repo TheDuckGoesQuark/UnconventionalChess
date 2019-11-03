@@ -17,6 +17,7 @@ import jade.lang.acl.MessageTemplate;
 import jade.util.Logger;
 
 import static chessagents.agents.pieceagent.behaviours.turn.fsm.PieceTransition.SPEAKER_UPDATED;
+import static chessagents.agents.pieceagent.behaviours.turn.states.RequestSpeakerProposals.SPEAKER_CONTRACT_NET_PROTOCOL;
 
 public class WaitForSpeakerConfirmation extends SimpleBehaviour implements PieceStateBehaviour {
 
@@ -36,14 +37,19 @@ public class WaitForSpeakerConfirmation extends SimpleBehaviour implements Piece
     public void onStart() {
         var cfp = turnContext.getCurrentMessage();
         mt = MessageTemplate.and(
-                MessageTemplate.MatchConversationId(cfp.getConversationId()),
-                MessageTemplate.MatchPerformative(ACLMessage.INFORM)
+                MessageTemplate.and(
+                        MessageTemplate.MatchConversationId(cfp.getConversationId()),
+                        MessageTemplate.MatchPerformative(ACLMessage.INFORM)
+                ),
+                MessageTemplate.MatchProtocol(SPEAKER_CONTRACT_NET_PROTOCOL)
         );
     }
 
 
     @Override
     public void action() {
+        logger.info("Waiting for speaking confirmation");
+        logger.info("Filtering speaking confirmations using: " + mt.toString());
         var inform = myAgent.receive(mt);
 
         if (inform != null) {

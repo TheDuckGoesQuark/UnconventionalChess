@@ -63,7 +63,7 @@ public class PlayFSM extends PieceFSM {
         registerTransition(REACT_TO_PREVIOUS_PROPOSAL, DECIDE_IF_REQUESTING_PROPOSALS, REACTED_TO_PREVIOUS_PROPOSAL);
 
         registerState(new TellPieceToMove(pieceAgent, pieceContext, turnContext), TELL_PIECE_TO_MOVE);
-        registerTransition(TELL_PIECE_TO_MOVE, WAIT_FOR_PIECE_RESPONSE_TO_MOVE_REQUEST, TOLD_PIECE_TO_MOVE);
+        registerTransition(TELL_PIECE_TO_MOVE, WAIT_FOR_PROPOSAL_REQUEST, TOLD_PIECE_TO_MOVE);
 
         registerState(new DecideIfMoving(pieceAgent, pieceContext, turnContext), DECIDE_IF_MOVING);
         registerTransition(DECIDE_IF_MOVING, DECIDE_IF_ACTUALLY_MOVING, AGREED_TO_MAKE_MOVE);

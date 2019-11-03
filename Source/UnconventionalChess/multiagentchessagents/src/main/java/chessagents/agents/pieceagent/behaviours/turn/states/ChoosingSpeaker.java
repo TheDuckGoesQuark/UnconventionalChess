@@ -5,12 +5,18 @@ import chessagents.agents.pieceagent.behaviours.turn.TurnContext;
 import chessagents.agents.pieceagent.behaviours.turn.fsm.PieceStateBehaviour;
 import chessagents.agents.pieceagent.pieces.PieceAgent;
 import chessagents.ontology.schemas.actions.BecomeSpeaker;
+import jade.content.OntoAID;
+import jade.content.abs.AbsConcept;
+import jade.content.abs.AbsObject;
+import jade.content.abs.AbsVariable;
 import jade.content.lang.Codec;
+import jade.content.onto.BasicOntology;
 import jade.content.onto.OntologyException;
 import jade.content.onto.basic.Action;
 import jade.core.AID;
 import jade.core.behaviours.Behaviour;
 import jade.lang.acl.ACLMessage;
+import jade.lang.acl.MessageTemplate;
 import jade.util.Logger;
 
 import java.io.IOException;
@@ -19,9 +25,11 @@ import java.util.Random;
 import java.util.Set;
 
 import static chessagents.agents.pieceagent.behaviours.turn.fsm.PieceTransition.SPEAKER_CHOSEN;
+import static chessagents.agents.pieceagent.behaviours.turn.states.RequestSpeakerProposals.SPEAKER_CONTRACT_NET_PROTOCOL;
 
 public class ChoosingSpeaker extends Behaviour implements PieceStateBehaviour {
 
+    private static final MessageTemplate mt = MessageTemplate.MatchProtocol(SPEAKER_CONTRACT_NET_PROTOCOL);
     private final Random random = new Random();
     private final Logger logger = Logger.getMyLogger(getClass().getName());
     private final PieceContext pieceContext;
@@ -42,33 +50,14 @@ public class ChoosingSpeaker extends Behaviour implements PieceStateBehaviour {
             sendResults(speaker);
             done = true;
         } else {
-            var message = myAgent.receive();
+            var message = myAgent.receive(mt);
 
-            if (message != null && isSpeakerProposal(message)) {
+            if (message != null) {
                 speakerProposals.add(message);
             } else {
                 block();
             }
         }
-    }
-
-    private boolean isSpeakerProposal(ACLMessage message) {
-        var isSpeakerProposal = false;
-
-        try {
-            var action = (Action) myAgent.getContentManager().extractContent(message);
-
-            isSpeakerProposal = action.getAction() instanceof BecomeSpeaker;
-
-            // Set content to object to avoid having to reextract later on
-            message.setContentObject(action);
-            // TODO
-            // ON SPEAKER_CHOSEN TRANSITION: Failed to fill content for cfp: Missing value for mandatory slot Agent. Schema is jade.content.schema.AgentActionSchema-Become Speaker
-        } catch (Codec.CodecException | ClassCastException | OntologyException | IOException e) {
-            logger.warning("Failed to extract content from message: " + e.getMessage());
-        }
-
-        return isSpeakerProposal;
     }
 
     private void sendResults(AID speaker) {
