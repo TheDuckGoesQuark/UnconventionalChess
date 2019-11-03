@@ -1,6 +1,6 @@
 package chessagents.agents.pieceagent.behaviours.turn;
 
-import chessagents.agents.ChessAgent;
+import chessagents.agents.ChessMessageBuilder;
 import chessagents.agents.pieceagent.PieceContext;
 import chessagents.ontology.ChessOntology;
 import jade.content.abs.AbsIRE;
@@ -80,7 +80,7 @@ public class SubscribeToMoves extends SimpleBehaviour {
         switch (this.state) {
             case PREPARE_SUBSCRIPTION:
                 logger.info("Preparing subscription");
-                request = this.prepareSubscription(((ChessAgent) myAgent).constructMessage(ACLMessage.SUBSCRIBE));
+                request = this.prepareSubscription(((ChessMessageBuilder) myAgent).constructMessage(ACLMessage.SUBSCRIBE));
                 getDataStore().put(REQUEST_KEY, request);
                 state = SubscriptionState.SEND_SUBSCRIPTION_REQUEST;
                 break;
