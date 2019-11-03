@@ -35,6 +35,7 @@ public class WaitForMoveConfirmation extends SimpleBehaviour implements PieceSta
 
     @Override
     public void action() {
+        // TODO add timeout for no move confirmation
         var message = myAgent.receive(MessageTemplate.MatchConversationId(pieceContext.getMoveSubscriptionId()));
 
         if (message != null) {

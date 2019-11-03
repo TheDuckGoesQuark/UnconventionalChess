@@ -51,6 +51,7 @@ public class WaitForMove extends SimpleBehaviour implements PieceStateBehaviour 
     }
 
     private Optional<Move> extractMove(ACLMessage message) {
+        // TODO move this logic to another state to be resused
         Optional<Move> result = Optional.empty();
         try {
             var absEquals = (AbsPredicate) myAgent.getContentManager().extractAbsContent(message);

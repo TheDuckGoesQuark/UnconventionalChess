@@ -34,6 +34,8 @@ public class DecideIfMoving extends SimpleBehaviour implements PieceStateBehavio
         sendAgree(message);
         saveMove(message);
         agreed = true;
+
+        // TODO not agree transition
     }
 
     private void saveMove(ACLMessage message) {

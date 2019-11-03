@@ -54,6 +54,7 @@ public class WaitForProposalRequest extends SimpleBehaviour implements PieceStat
                     nextTransition = OTHER_PIECE_TOLD_TO_MOVE;
                 }
             case ACLMessage.INFORM:
+                // TODO better verify this
                 logger.info("Move arrived late.");
                 nextTransition = MOVE_RECEIVED_LATE;
                 turnContext.setCurrentMessage(message);

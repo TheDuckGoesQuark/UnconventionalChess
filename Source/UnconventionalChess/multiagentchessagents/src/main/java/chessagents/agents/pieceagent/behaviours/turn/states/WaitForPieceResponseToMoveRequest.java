@@ -23,7 +23,7 @@ public class WaitForPieceResponseToMoveRequest extends SimpleBehaviour implement
 
     @Override
     public void action() {
-        // TODO other pieces dont receive when waiting i dont think!
+        // TODO handle piece refused to move
         var message = myAgent.receive();
 
         if (message != null && message.getPerformative() == ACLMessage.AGREE) {
