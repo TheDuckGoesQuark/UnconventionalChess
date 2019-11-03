@@ -48,6 +48,7 @@ public class RequestSpeakerProposals extends OneShotBehaviour implements PieceSt
     private void requestProposals() {
         var cfp = ChessMessageBuilder.constructMessage(ACLMessage.CFP);
 
+        // send to everyone (including myself!)
         pieceContext.getAllAIDs().forEach(cfp::addReceiver);
 
         cfp.setProtocol(SPEAKER_CONTRACT_NET_PROTOCOL);

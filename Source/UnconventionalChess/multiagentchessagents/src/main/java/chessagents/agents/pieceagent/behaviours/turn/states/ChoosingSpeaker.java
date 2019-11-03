@@ -3,6 +3,7 @@ package chessagents.agents.pieceagent.behaviours.turn.states;
 import chessagents.agents.pieceagent.PieceContext;
 import chessagents.agents.pieceagent.behaviours.turn.TurnContext;
 import chessagents.agents.pieceagent.behaviours.turn.fsm.PieceStateBehaviour;
+import chessagents.agents.pieceagent.behaviours.turn.fsm.PieceTransition;
 import chessagents.agents.pieceagent.pieces.PieceAgent;
 import chessagents.ontology.schemas.actions.BecomeSpeaker;
 import jade.content.OntoAID;
@@ -24,6 +25,7 @@ import java.util.HashSet;
 import java.util.Random;
 import java.util.Set;
 
+import static chessagents.agents.pieceagent.behaviours.turn.fsm.PieceTransition.CHOSE_SELF_AS_SPEAKER;
 import static chessagents.agents.pieceagent.behaviours.turn.fsm.PieceTransition.SPEAKER_CHOSEN;
 import static chessagents.agents.pieceagent.behaviours.turn.states.RequestSpeakerProposals.SPEAKER_CONTRACT_NET_PROTOCOL;
 
@@ -35,7 +37,7 @@ public class ChoosingSpeaker extends Behaviour implements PieceStateBehaviour {
     private final PieceContext pieceContext;
     private final TurnContext turnContext;
     private final Set<ACLMessage> speakerProposals = new HashSet<>();
-    private boolean done;
+    private PieceTransition transition = null;
 
     public ChoosingSpeaker(PieceAgent pieceAgent, PieceContext pieceContext, TurnContext turnContext) {
         super(pieceAgent);
@@ -48,8 +50,10 @@ public class ChoosingSpeaker extends Behaviour implements PieceStateBehaviour {
         if (receivedRequestFromEveryone()) {
             var speaker = chooseSpeaker();
             sendResults(speaker);
-            done = true;
+
+            transition = speaker.equals(myAgent.getAID()) ? CHOSE_SELF_AS_SPEAKER : SPEAKER_CHOSEN;
         } else {
+            // receive all messages for this protocol (include CFP to myself)
             var message = myAgent.receive(mt);
 
             if (message != null) {
@@ -73,7 +77,7 @@ public class ChoosingSpeaker extends Behaviour implements PieceStateBehaviour {
         if (receiver.equals(speaker)) {
             reply.setPerformative(ACLMessage.ACCEPT_PROPOSAL);
 
-            // inform everyone else when done
+            // inform everyone else when they've became the speaker
             speakerProposals.stream()
                     .map(ACLMessage::getSender)
                     .filter(aid -> aid.equals(speaker))
@@ -94,17 +98,17 @@ public class ChoosingSpeaker extends Behaviour implements PieceStateBehaviour {
 
     @Override
     public boolean done() {
-        return done;
+        return transition != null;
     }
 
     @Override
     public int getNextTransition() {
-        return SPEAKER_CHOSEN.ordinal();
+        return transition.ordinal();
     }
 
     @Override
     public void reset() {
-        done = false;
+        transition = null;
         speakerProposals.clear();
         super.reset();
     }
