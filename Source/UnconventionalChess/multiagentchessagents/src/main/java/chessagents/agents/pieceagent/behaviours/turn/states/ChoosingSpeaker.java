@@ -15,14 +15,19 @@ import jade.util.Logger;
 
 import java.io.IOException;
 import java.util.HashSet;
+import java.util.Random;
 import java.util.Set;
+
+import static chessagents.agents.pieceagent.behaviours.turn.fsm.PieceTransition.SPEAKER_CHOSEN;
 
 public class ChoosingSpeaker extends Behaviour implements PieceStateBehaviour {
 
+    private final Random random = new Random();
     private final Logger logger = Logger.getMyLogger(getClass().getName());
     private final PieceContext pieceContext;
     private final TurnContext turnContext;
     private final Set<ACLMessage> speakerProposals = new HashSet<>();
+    private boolean done;
 
     public ChoosingSpeaker(PieceAgent pieceAgent, PieceContext pieceContext, TurnContext turnContext) {
         super(pieceAgent);
@@ -35,6 +40,7 @@ public class ChoosingSpeaker extends Behaviour implements PieceStateBehaviour {
         if (receivedRequestFromEveryone()) {
             var speaker = chooseSpeaker();
             sendResults(speaker);
+            done = true;
         } else {
             var message = myAgent.receive();
 
@@ -64,34 +70,45 @@ public class ChoosingSpeaker extends Behaviour implements PieceStateBehaviour {
     }
 
     private void sendResults(AID speaker) {
-        // TODO work out how to allow agents to propose other pieces as speaker
-//        var rejections = speakerProposals.stream().filter(proposal -> proposal.getContentObject().)
+        speakerProposals.stream()
+                .map(ACLMessage::createReply)
+                .peek(reply -> setPerformativeForProposal(reply, speaker))
+                .forEach(myAgent::send);
+    }
+
+    private void setPerformativeForProposal(ACLMessage reply, AID speaker) {
+        var receiver = reply.getAllReceiver().next();
+
+        if (receiver.equals(speaker)) {
+            reply.setPerformative(ACLMessage.ACCEPT_PROPOSAL);
+        } else {
+            reply.setPerformative(ACLMessage.ACCEPT_PROPOSAL);
+        }
     }
 
     private AID chooseSpeaker() {
-        // TODO
-        return null;
-    }
-
-    @Override
-    public boolean done() {
-        // TODO
-        return false;
-    }
-
-    @Override
-    public int getNextTransition() {
-        // TODO
-        return 0;
-    }
-
-    @Override
-    public void reset() {
-        // TODO
-        super.reset();
+        var arr = speakerProposals.toArray(new ACLMessage[0]);
+        return arr[random.nextInt(arr.length)].getSender();
     }
 
     private boolean receivedRequestFromEveryone() {
         return speakerProposals.size() == (pieceContext.getAidToPiece().size() - 1);
+    }
+
+    @Override
+    public boolean done() {
+        return done;
+    }
+
+    @Override
+    public int getNextTransition() {
+        return SPEAKER_CHOSEN.ordinal();
+    }
+
+    @Override
+    public void reset() {
+        done = false;
+        speakerProposals.clear();
+        super.reset();
     }
 }
