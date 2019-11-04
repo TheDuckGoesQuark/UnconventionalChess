@@ -74,7 +74,7 @@ public class ChoosingSpeaker extends Behaviour implements PieceStateBehaviour {
         // inform everyone else when they've became the speaker
         speakerProposals.stream()
                 .map(ACLMessage::getSender)
-                .filter(aid -> aid.equals(speaker))
+                .filter(aid -> !aid.equals(speaker))
                 .forEach(reply::addReplyTo);
     }
 
