@@ -83,6 +83,7 @@ public class WaitForProposalRequest extends SimpleBehaviour implements PieceStat
 
     @Override
     public void reset() {
+        // TODO this should be triggered when another debate cycle starts!
         nextTransition = null;
         super.reset();
     }

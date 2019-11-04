@@ -14,6 +14,7 @@ import jade.core.behaviours.SimpleBehaviour;
 import jade.lang.acl.ACLMessage;
 import jade.lang.acl.MessageTemplate;
 import jade.util.Logger;
+import jdk.jshell.spi.SPIResolutionException;
 
 import java.util.HashSet;
 import java.util.Random;
@@ -42,12 +43,20 @@ public class ElectLeaderAgent extends SimpleBehaviour {
         if (message != null && message.getPerformative() == ACLMessage.QUERY_REF) {
             if (isLeaderQuery(message)) {
                 handleQuery(message);
+                printStillWaiting();
             } else {
+                logger.info("Did not understand message: " + message.toString());
                 replyNotUnderstood(message);
             }
         } else {
             block();
         }
+    }
+
+    private void printStillWaiting() {
+        logger.info("Still waiting on query for leader from:");
+        var received = requests.stream().map(ACLMessage::getSender).collect(Collectors.toSet());
+        context.getPiecesByAID().keySet().stream().filter(a -> !received.contains(a)).forEach(a -> logger.info(a.getLocalName()));
     }
 
     private void replyNotUnderstood(ACLMessage message) {
