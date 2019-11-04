@@ -29,7 +29,13 @@ public class WaitForPermissionToSpeak extends SimpleBehaviour implements PieceSt
     @Override
     public void onStart() {
         var cfp = turnContext.getCurrentMessage();
-        mt = MessageTemplate.MatchConversationId(cfp.getConversationId());
+        mt = MessageTemplate.and(
+                MessageTemplate.MatchConversationId(cfp.getConversationId()),
+                MessageTemplate.or(
+                        MessageTemplate.MatchPerformative(ACLMessage.ACCEPT_PROPOSAL),
+                        MessageTemplate.MatchPerformative(ACLMessage.REJECT_PROPOSAL)
+                )
+        );
     }
 
     @Override

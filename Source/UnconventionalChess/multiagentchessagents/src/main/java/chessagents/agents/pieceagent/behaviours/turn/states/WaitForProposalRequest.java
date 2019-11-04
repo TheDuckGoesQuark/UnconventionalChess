@@ -43,6 +43,7 @@ public class WaitForProposalRequest extends SimpleBehaviour implements PieceStat
             case ACLMessage.CFP:
                 logger.info("Call for proposal received!");
                 nextTransition = PROPOSAL_REQUESTED;
+                turnContext.setDebateCycles(turnContext.getDebateCycles() + 1);
                 turnContext.setCurrentMessage(message);
                 break;
             case ACLMessage.REQUEST:

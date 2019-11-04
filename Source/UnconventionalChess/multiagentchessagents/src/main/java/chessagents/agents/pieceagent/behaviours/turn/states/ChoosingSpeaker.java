@@ -106,6 +106,7 @@ public class ChoosingSpeaker extends Behaviour implements PieceStateBehaviour {
 
     @Override
     public int onEnd() {
+        turnContext.setCurrentSpeaker(null);
         return getNextTransition();
     }
 }

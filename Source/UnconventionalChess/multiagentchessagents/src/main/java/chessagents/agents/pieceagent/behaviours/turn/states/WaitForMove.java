@@ -40,7 +40,7 @@ public class WaitForMove extends SimpleBehaviour implements PieceStateBehaviour 
 
     @Override
     public void action() {
-        logger.info("Waiting for move...");
+//        logger.info("Waiting for move...");
         var message = myAgent.receive(messageTemplate);
 
         if (message != null) {
