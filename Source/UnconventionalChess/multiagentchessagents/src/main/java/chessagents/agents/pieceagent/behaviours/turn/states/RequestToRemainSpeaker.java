@@ -49,6 +49,7 @@ public class RequestToRemainSpeaker extends SimpleBehaviour implements PieceStat
             turnContext.setCurrentMessage(message);
             var proposal = ((PieceAgent) myAgent).constructProposalToSpeak(message);
             myAgent.send(proposal);
+            done = true;
         } else {
             block();
         }

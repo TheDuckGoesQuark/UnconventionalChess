@@ -44,7 +44,10 @@ public class TellPieceToMove extends SimpleBehaviour implements PieceStateBehavi
     private void sendRequestMove(ACLMessage request) {
         var aids = pieceContext.getGameContext().getAllPieceAgentAIDs();
 
+        // send to everyone so they know not to expect a CFP to speak
         aids.forEach(request::addReceiver);
+
+        // tell actual recipient that they should also let everyone know of their response
         aids.forEach(request::addReplyTo);
 
         myAgent.send(request);

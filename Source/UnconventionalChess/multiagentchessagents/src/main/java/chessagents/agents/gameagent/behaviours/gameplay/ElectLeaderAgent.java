@@ -37,10 +37,10 @@ public class ElectLeaderAgent extends SimpleBehaviour {
 
     @Override
     public void action() {
-        logger.info("Checking for request for leader");
         var message = myAgent.receive(MessageTemplate.MatchProtocol(ELECT_SPEAKER_PROTOCOL_NAME));
 
         if (message != null) {
+            logger.info("Checking for request for leader");
             if (message.getPerformative() == ACLMessage.QUERY_REF && isLeaderQuery(message)) {
                 handleQuery(message);
             } else {

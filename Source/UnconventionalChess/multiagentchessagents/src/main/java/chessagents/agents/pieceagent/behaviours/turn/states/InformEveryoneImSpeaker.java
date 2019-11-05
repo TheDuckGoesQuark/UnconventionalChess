@@ -40,8 +40,8 @@ public class InformEveryoneImSpeaker extends OneShotBehaviour implements PieceSt
         logger.info("Informing everyone I'm the new speaker.");
         turnContext.setCurrentSpeaker(myAgent.getAID());
 
-        var agreeProposal = turnContext.getCurrentMessage();
-        var informSpeakerUpdated = agreeProposal.createReply();
+        var acceptProposalMessage = turnContext.getCurrentMessage();
+        var informSpeakerUpdated = acceptProposalMessage.createReply();
         informSpeakerUpdated.setPerformative(ACLMessage.INFORM);
         addContent(informSpeakerUpdated);
 

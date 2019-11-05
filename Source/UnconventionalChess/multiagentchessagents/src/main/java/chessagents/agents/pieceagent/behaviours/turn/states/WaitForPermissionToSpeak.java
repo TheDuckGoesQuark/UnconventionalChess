@@ -53,6 +53,7 @@ public class WaitForPermissionToSpeak extends SimpleBehaviour implements PieceSt
                     break;
                 case ACLMessage.REJECT_PROPOSAL:
                     logger.info("Proposal rejected!");
+                    turnContext.setCurrentMessage(response);
                     transition = PieceTransition.REJECTED_TO_SPEAK;
                     break;
                 default:

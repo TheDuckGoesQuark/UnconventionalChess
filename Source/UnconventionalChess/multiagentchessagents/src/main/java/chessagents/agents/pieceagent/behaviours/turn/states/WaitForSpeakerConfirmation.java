@@ -37,10 +37,10 @@ public class WaitForSpeakerConfirmation extends SimpleBehaviour implements Piece
     public void onStart() {
         speakerUpdated = false;
 
-        var cfp = turnContext.getCurrentMessage();
+        var rejectProposalMessage = turnContext.getCurrentMessage();
         mt = MessageTemplate.and(
                 MessageTemplate.and(
-                        MessageTemplate.MatchConversationId(cfp.getConversationId()),
+                        MessageTemplate.MatchConversationId(rejectProposalMessage.getConversationId()),
                         MessageTemplate.MatchPerformative(ACLMessage.INFORM)
                 ),
                 MessageTemplate.MatchProtocol(SPEAKER_CONTRACT_NET_PROTOCOL)
