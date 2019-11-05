@@ -3,17 +3,19 @@ package chessagents.agents.pieceagent.behaviours.turn.states;
 import chessagents.agents.pieceagent.PieceContext;
 import chessagents.agents.pieceagent.behaviours.turn.TurnContext;
 import chessagents.agents.pieceagent.behaviours.turn.fsm.PieceStateBehaviour;
+import chessagents.agents.pieceagent.behaviours.turn.fsm.PieceTransition;
 import chessagents.agents.pieceagent.pieces.PieceAgent;
 import chessagents.ontology.schemas.concepts.Piece;
 import jade.core.behaviours.SimpleBehaviour;
 import jade.lang.acl.ACLMessage;
 
 import static chessagents.agents.pieceagent.behaviours.turn.fsm.PieceTransition.PIECE_AGREED_TO_MOVE;
+import static chessagents.agents.pieceagent.behaviours.turn.fsm.PieceTransition.PIECE_REFUSED_TO_MOVE;
 
 public class WaitForPieceResponseToMoveRequest extends SimpleBehaviour implements PieceStateBehaviour {
     private final PieceContext pieceContext;
     private final TurnContext turnContext;
-    private boolean received = false;
+    private PieceTransition transition = null;
 
     public WaitForPieceResponseToMoveRequest(PieceAgent pieceAgent, PieceContext pieceContext, TurnContext turnContext) {
         super(pieceAgent);
@@ -23,11 +25,13 @@ public class WaitForPieceResponseToMoveRequest extends SimpleBehaviour implement
 
     @Override
     public void action() {
-        // TODO handle piece refused to move
         var message = myAgent.receive();
 
-        if (message != null && message.getPerformative() == ACLMessage.AGREE) {
-            received = true;
+        if (message != null) {
+            if (message.getPerformative() == ACLMessage.AGREE)
+                transition = PIECE_AGREED_TO_MOVE;
+            else if (message.getPerformative() == ACLMessage.REFUSE)
+                transition = PIECE_REFUSED_TO_MOVE;
         } else {
             block();
         }
@@ -35,18 +39,18 @@ public class WaitForPieceResponseToMoveRequest extends SimpleBehaviour implement
 
     @Override
     public boolean done() {
-        return received;
+        return transition != null;
     }
 
     @Override
     public void reset() {
-        received = false;
+        transition = null;
         super.reset();
     }
 
     @Override
     public int getNextTransition() {
-        return PIECE_AGREED_TO_MOVE.ordinal();
+        return transition.ordinal();
     }
 
     @Override

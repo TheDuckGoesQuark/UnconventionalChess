@@ -46,6 +46,7 @@ public class WaitForMoveConfirmation extends SimpleBehaviour implements PieceSta
     }
 
     private Optional<Move> extractMove(ACLMessage message) {
+        // TODO duplicated code with WaitForMove
         Optional<Move> result = Optional.empty();
         try {
             var absEquals = (AbsPredicate) myAgent.getContentManager().extractAbsContent(message);
