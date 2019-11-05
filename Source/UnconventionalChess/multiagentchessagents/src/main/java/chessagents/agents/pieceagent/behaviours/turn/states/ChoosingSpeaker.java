@@ -84,7 +84,7 @@ public class ChoosingSpeaker extends Behaviour implements PieceStateBehaviour {
     }
 
     private boolean receivedRequestFromEveryone() {
-        return speakerProposals.size() == (pieceContext.getAidToPiece().size());
+        return speakerProposals.size() == (pieceContext.getGameContext().getAllPieceAgentAIDs().size());
     }
 
     @Override

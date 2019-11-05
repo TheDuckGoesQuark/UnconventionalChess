@@ -1,7 +1,8 @@
 package chessagents.agents.gameagent.behaviours.meta;
 
 import chessagents.agents.gameagent.GameAgent;
-import chessagents.agents.gameagent.GameContext;
+import chessagents.GameContext;
+import chessagents.agents.gameagent.GameAgentContext;
 import chessagents.ontology.ChessOntology;
 import chessagents.ontology.schemas.predicates.IsReady;
 import jade.content.lang.Codec;
@@ -17,9 +18,9 @@ public class HandleGameStatusSubscriptions extends SubscriptionResponder {
 
     public static final String GAME_STATUS_SUBSCRIPTION_PROTOCOL = "GAME_STATUS_SUBSCRIPTION_PROTOCOL";
     private final Logger logger = Logger.getMyLogger(HandleGameStatusSubscriptions.class.getName());
-    private final GameContext context;
+    private final GameAgentContext context;
 
-    public HandleGameStatusSubscriptions(GameAgent gameAgent, GameContext context) {
+    public HandleGameStatusSubscriptions(GameAgent gameAgent, GameAgentContext context) {
         super(gameAgent, MessageTemplate.and(
                 MessageTemplate.MatchProtocol(GAME_STATUS_SUBSCRIPTION_PROTOCOL),
                 MessageTemplate.MatchOntology(ChessOntology.ONTOLOGY_NAME)

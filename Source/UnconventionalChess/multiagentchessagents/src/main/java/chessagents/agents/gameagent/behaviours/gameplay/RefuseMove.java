@@ -1,7 +1,6 @@
 package chessagents.agents.gameagent.behaviours.gameplay;
 
 import chessagents.agents.gameagent.GameAgent;
-import chessagents.agents.gameagent.GameContext;
 import chessagents.ontology.ChessOntology;
 import chessagents.ontology.schemas.concepts.Move;
 import chessagents.ontology.schemas.predicates.IsValidMove;
@@ -10,10 +9,7 @@ import jade.content.ContentElementList;
 import jade.content.abs.AbsPredicate;
 import jade.content.lang.Codec;
 import jade.content.lang.sl.SLVocabulary;
-import jade.content.onto.BasicOntology;
 import jade.content.onto.OntologyException;
-import jade.content.onto.basic.Action;
-import jade.core.behaviours.Behaviour;
 import jade.core.behaviours.DataStore;
 import jade.core.behaviours.OneShotBehaviour;
 import jade.lang.acl.ACLMessage;

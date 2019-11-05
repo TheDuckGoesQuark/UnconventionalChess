@@ -1,8 +1,8 @@
 package chessagents.agents.gameagent.behaviours.meta;
 
 import chessagents.agents.gameagent.GameAgent;
-import chessagents.agents.gameagent.GameContext;
-import chessagents.agents.gameagent.GameStatus;
+import chessagents.GameContext;
+import chessagents.agents.gameagent.GameAgentContext;
 import chessagents.ontology.ChessOntology;
 import chessagents.ontology.schemas.actions.CreateGame;
 import chessagents.ontology.schemas.concepts.Game;
@@ -49,10 +49,10 @@ public class HandleGameCreationRequests extends SimpleBehaviour {
             MessageTemplate.MatchOntology(ChessOntology.ONTOLOGY_NAME)
     );
 
-    private final GameContext context;
+    private final GameAgentContext context;
     private State state = State.WAITING_FOR_MESSAGE;
 
-    public HandleGameCreationRequests(Agent a, GameContext context) {
+    public HandleGameCreationRequests(Agent a, GameAgentContext context) {
         super(a);
         this.context = context;
     }

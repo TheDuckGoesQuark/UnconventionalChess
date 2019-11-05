@@ -1,6 +1,7 @@
 package chessagents.agents.gameagent.behaviours.meta;
 
-import chessagents.agents.gameagent.GameContext;
+import chessagents.GameContext;
+import chessagents.agents.gameagent.GameAgentContext;
 import chessagents.agents.gameagent.GameStatus;
 import jade.core.behaviours.SimpleBehaviour;
 import jade.lang.acl.ACLMessage;
@@ -12,10 +13,10 @@ public class NotifySubscriberWhenGameReady extends SimpleBehaviour {
 
     private final Logger logger = Logger.getMyLogger(this.getClass().getName());
     private final Subscription subscription;
-    private GameContext context;
+    private GameAgentContext context;
     private boolean finished = false;
 
-    public NotifySubscriberWhenGameReady(Subscription subscription, GameContext context) {
+    public NotifySubscriberWhenGameReady(Subscription subscription, GameAgentContext context) {
         this.subscription = subscription;
         this.context = context;
     }

@@ -57,7 +57,7 @@ public class SubscribeToGameStatus extends SimpleBehaviour {
         subscription.setProtocol(GAME_STATUS_SUBSCRIPTION_PROTOCOL);
         subscription.setConversationId(UUID.randomUUID().toString());
 
-        var content = new IsReady(new Game(context.getGameId()));
+        var content = new IsReady(new Game(context.getGameContext().getGameId()));
         try {
             myAgent.getContentManager().fillContent(subscription, content);
         } catch (Codec.CodecException | OntologyException e) {

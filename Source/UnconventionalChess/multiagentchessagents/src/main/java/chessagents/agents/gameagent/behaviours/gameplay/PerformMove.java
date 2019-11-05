@@ -1,9 +1,9 @@
 package chessagents.agents.gameagent.behaviours.gameplay;
 
 import chessagents.agents.gameagent.GameAgent;
-import chessagents.agents.gameagent.GameContext;
+import chessagents.GameContext;
+import chessagents.agents.gameagent.GameAgentContext;
 import chessagents.ontology.schemas.concepts.Move;
-import jade.core.behaviours.Behaviour;
 import jade.core.behaviours.DataStore;
 import jade.core.behaviours.OneShotBehaviour;
 
@@ -14,7 +14,7 @@ public class PerformMove extends OneShotBehaviour {
 
     private final GameContext context;
 
-    PerformMove(GameAgent myAgent, GameContext context, DataStore datastore) {
+    PerformMove(GameAgent myAgent, GameAgentContext context, DataStore datastore) {
         super(myAgent);
         setDataStore(datastore);
         this.context = context;

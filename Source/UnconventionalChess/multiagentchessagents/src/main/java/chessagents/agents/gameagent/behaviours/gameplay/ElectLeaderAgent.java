@@ -1,7 +1,8 @@
 package chessagents.agents.gameagent.behaviours.gameplay;
 
 import chessagents.agents.gameagent.GameAgent;
-import chessagents.agents.gameagent.GameContext;
+import chessagents.GameContext;
+import chessagents.agents.gameagent.GameAgentContext;
 import chessagents.ontology.ChessOntology;
 import jade.content.OntoAID;
 import jade.content.abs.AbsIRE;
@@ -14,7 +15,6 @@ import jade.core.behaviours.SimpleBehaviour;
 import jade.lang.acl.ACLMessage;
 import jade.lang.acl.MessageTemplate;
 import jade.util.Logger;
-import jdk.jshell.spi.SPIResolutionException;
 
 import java.util.HashSet;
 import java.util.Random;
@@ -30,7 +30,7 @@ public class ElectLeaderAgent extends SimpleBehaviour {
     private final Set<ACLMessage> requests = new HashSet<>();
     private boolean leaderChosen = false;
 
-    ElectLeaderAgent(GameAgent myAgent, GameContext context) {
+    ElectLeaderAgent(GameAgent myAgent, GameAgentContext context) {
         super(myAgent);
         this.context = context;
     }
@@ -56,7 +56,7 @@ public class ElectLeaderAgent extends SimpleBehaviour {
     private void printStillWaiting() {
         logger.info("Still waiting on query for leader from:");
         var received = requests.stream().map(ACLMessage::getSender).collect(Collectors.toSet());
-        context.getPiecesByAID().keySet().stream().filter(a -> !received.contains(a)).forEach(a -> logger.info(a.getLocalName()));
+        context.getAidToPiece().keySet().stream().filter(a -> !received.contains(a)).forEach(a -> logger.info(a.getLocalName()));
     }
 
     private void replyNotUnderstood(ACLMessage message) {
@@ -78,7 +78,7 @@ public class ElectLeaderAgent extends SimpleBehaviour {
     }
 
     private boolean receivedRequestFromEveryone() {
-        return requests.size() == context.getPiecesByAID().size();
+        return requests.size() == context.getAidToPiece().size();
     }
 
     private void handleQuery(ACLMessage message) {

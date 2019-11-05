@@ -33,21 +33,19 @@ public class TellPieceToMove extends SimpleBehaviour implements PieceStateBehavi
 
     @Override
     public void action() {
-        pieceContext.getBoard().getRandomMove().ifPresent(move -> {
-            var movingPiece = getAIDOfPieceAtPosition(move.getSource());
-            logger.info("Telling " + movingPiece.getName() + " to move");
-            var request = createRequestToMove(movingPiece, move);
+        pieceContext.getGameContext().getBoard().getRandomMove().ifPresent(move -> {
+            var movingPiece = pieceContext.getGameContext().getPieceAtPosition(move.getSource());
+            logger.info("Telling " + movingPiece.get().getAgentAID() + " to move");
+            var request = createRequestToMove(movingPiece.get().getAgentAID(), move);
             sendRequestMove(request);
         });
     }
 
     private void sendRequestMove(ACLMessage request) {
-        var pieces = pieceContext.getAidToPiece().values();
+        var aids = pieceContext.getGameContext().getAllPieceAgentAIDs();
 
-        pieces.stream().map(Piece::getAgentAID)
-                .forEach(request::addReceiver);
-        pieces.stream().map(Piece::getAgentAID)
-                .forEach(request::addReplyTo);
+        aids.forEach(request::addReceiver);
+        aids.forEach(request::addReplyTo);
 
         logger.info("Telling piece to make move");
         myAgent.send(request);
@@ -65,15 +63,6 @@ public class TellPieceToMove extends SimpleBehaviour implements PieceStateBehavi
         }
 
         return request;
-    }
-
-    private AID getAIDOfPieceAtPosition(Position position) {
-        for (Piece piece : pieceContext.getAidToPiece().values()) {
-            if (piece.getPosition().equals(position)) {
-                return piece.getAgentAID();
-            }
-        }
-        return null;
     }
 
     @Override

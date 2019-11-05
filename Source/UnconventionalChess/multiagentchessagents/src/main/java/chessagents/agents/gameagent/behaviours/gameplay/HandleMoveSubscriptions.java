@@ -1,19 +1,14 @@
 package chessagents.agents.gameagent.behaviours.gameplay;
 
 import chessagents.agents.gameagent.GameAgent;
-import chessagents.agents.gameagent.GameContext;
-import chessagents.agents.gameagent.behaviours.meta.NotifySubscriberWhenGameReady;
+import chessagents.GameContext;
+import chessagents.agents.gameagent.GameAgentContext;
 import chessagents.ontology.ChessOntology;
-import chessagents.ontology.schemas.predicates.IsReady;
-import chessagents.ontology.schemas.predicates.MoveMade;
 import jade.content.abs.AbsIRE;
 import jade.content.lang.Codec;
 import jade.content.onto.OntologyException;
-import jade.core.behaviours.Behaviour;
-import jade.core.behaviours.DataStore;
 import jade.domain.FIPAAgentManagement.FailureException;
 import jade.domain.FIPAAgentManagement.NotUnderstoodException;
-import jade.domain.FIPANames;
 import jade.lang.acl.ACLMessage;
 import jade.lang.acl.MessageTemplate;
 import jade.proto.SubscriptionResponder;
@@ -30,7 +25,7 @@ public class HandleMoveSubscriptions extends SubscriptionResponder {
     private final Logger logger = Logger.getMyLogger(HandleMoveSubscriptions.class.getName());
     private final InformSubscribersOfMoves informSubscribersOfMoves;
 
-    HandleMoveSubscriptions(GameAgent gameAgent, GameContext context, InformSubscribersOfMoves informSubscribersBehaviour) {
+    HandleMoveSubscriptions(GameAgent gameAgent, GameAgentContext context, InformSubscribersOfMoves informSubscribersBehaviour) {
         super(gameAgent, MessageTemplate.and(
                 MessageTemplate.MatchProtocol(MOVE_SUBSCRIPTION_PROTOCOL),
                 MessageTemplate.MatchOntology(ChessOntology.ONTOLOGY_NAME)

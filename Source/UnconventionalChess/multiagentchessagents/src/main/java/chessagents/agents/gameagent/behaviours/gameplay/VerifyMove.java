@@ -1,16 +1,15 @@
 package chessagents.agents.gameagent.behaviours.gameplay;
 
 import chessagents.agents.gameagent.GameAgent;
-import chessagents.agents.gameagent.GameContext;
+import chessagents.GameContext;
+import chessagents.agents.gameagent.GameAgentContext;
 import chessagents.ontology.schemas.actions.MakeMove;
 import chessagents.ontology.schemas.concepts.Move;
 import jade.content.lang.Codec;
 import jade.content.onto.OntologyException;
 import jade.content.onto.basic.Action;
-import jade.core.behaviours.Behaviour;
 import jade.core.behaviours.DataStore;
 import jade.core.behaviours.OneShotBehaviour;
-import jade.core.behaviours.SimpleBehaviour;
 import jade.domain.FIPAAgentManagement.NotUnderstoodException;
 import jade.lang.acl.ACLMessage;
 import jade.util.Logger;
@@ -26,7 +25,7 @@ public class VerifyMove extends OneShotBehaviour {
 
     private GamePlayTransition nextTransition = null;
 
-    VerifyMove(GameAgent myAgent, GameContext context, DataStore dataStore) {
+    VerifyMove(GameAgent myAgent, GameAgentContext context, DataStore dataStore) {
         super(myAgent);
         this.context = context;
         setDataStore(dataStore);

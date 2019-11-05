@@ -1,6 +1,7 @@
 package chessagents.agents.gameagent.behaviours.gameplay;
 
-import chessagents.agents.gameagent.GameContext;
+import chessagents.GameContext;
+import chessagents.agents.gameagent.GameAgentContext;
 import chessagents.ontology.ChessOntology;
 import chessagents.ontology.schemas.concepts.Move;
 import jade.content.abs.*;
@@ -9,7 +10,6 @@ import jade.content.lang.sl.SLVocabulary;
 import jade.content.onto.BasicOntology;
 import jade.content.onto.OntologyException;
 import jade.core.behaviours.OneShotBehaviour;
-import jade.core.behaviours.SimpleBehaviour;
 import jade.lang.acl.ACLMessage;
 import jade.util.Logger;
 
@@ -29,7 +29,7 @@ public class InformSubscribersOfMoves extends OneShotBehaviour {
     private final GameContext context;
     private int turnIndex = 0;
 
-    InformSubscribersOfMoves(GameContext context) {
+    InformSubscribersOfMoves(GameAgentContext context) {
         this.context = context;
 
         // construct IRE

@@ -1,7 +1,8 @@
 package chessagents.agents.gameagent.behaviours.gameplay;
 
 import chessagents.agents.gameagent.GameAgent;
-import chessagents.agents.gameagent.GameContext;
+import chessagents.GameContext;
+import chessagents.agents.gameagent.GameAgentContext;
 import jade.util.Logger;
 
 import static chessagents.agents.gameagent.behaviours.gameplay.GamePlayState.*;
@@ -18,7 +19,7 @@ public class HandleGame extends GamePlayFSMBehaviour {
 
     private final Logger logger = Logger.getMyLogger(getClass().getName());
 
-    public HandleGame(GameAgent gameAgent, GameContext context) {
+    public HandleGame(GameAgent gameAgent, GameAgentContext context) {
         super(gameAgent);
 
         var informSubscribersOfMove = new InformSubscribersOfMoves(context);

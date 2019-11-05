@@ -1,5 +1,6 @@
 package chessagents.agents.gameagent;
 
+import chessagents.GameContext;
 import chessagents.agents.ChessAgent;
 import chessagents.agents.gameagent.behaviours.gameplay.HandleGame;
 import chessagents.agents.gameagent.behaviours.meta.CleanupGame;
@@ -19,7 +20,7 @@ import jade.core.behaviours.SequentialBehaviour;
  */
 public class GameAgent extends ChessAgent {
 
-    private GameContext context;
+    private GameAgentContext myContext;
 
     @Override
     protected void setup() {
@@ -28,19 +29,19 @@ public class GameAgent extends ChessAgent {
         var arguments = getArguments();
         var properties = (GameProperties) arguments[0];
         var gameAgent = new AID((String) arguments[1], true);
-        context = new GameContext(gameAgent, properties);
+        myContext = new GameAgentContext(gameAgent, properties);
 
-        addBehaviour(new HandleGameStatusSubscriptions(this, context));
-        addBehaviour(new HandleGameCreationRequests(this, context));
+        addBehaviour(new HandleGameStatusSubscriptions(this, myContext));
+        addBehaviour(new HandleGameCreationRequests(this, myContext));
     }
 
     public void createGame(Game game) {
-        context.setGameId(game.getGameId());
+        myContext.getGameContext().setGameId(game.getGameId());
 
         var gameSequence = new SequentialBehaviour();
-        gameSequence.addSubBehaviour(new SpawnPieceAgents(this, context));
-        gameSequence.addSubBehaviour(new HandleGame(this, context));
-        gameSequence.addSubBehaviour(new CleanupGame(this, context));
+        gameSequence.addSubBehaviour(new SpawnPieceAgents(this, myContext));
+        gameSequence.addSubBehaviour(new HandleGame(this, myContext));
+        gameSequence.addSubBehaviour(new CleanupGame(this, myContext));
         addBehaviour(gameSequence);
     }
 }

@@ -1,7 +1,8 @@
 package chessagents.agents.gameagent.behaviours.meta;
 
 import chessagents.agents.gameagent.GameAgent;
-import chessagents.agents.gameagent.GameContext;
+import chessagents.GameContext;
+import chessagents.agents.gameagent.GameAgentContext;
 import chessagents.agents.gameagent.GameStatus;
 import chessagents.ontology.ChessOntology;
 import chessagents.ontology.schemas.concepts.Colour;
@@ -15,7 +16,6 @@ import jade.content.onto.BasicOntology;
 import jade.content.onto.Ontology;
 import jade.content.onto.OntologyException;
 import jade.domain.FIPAAgentManagement.FailureException;
-import jade.domain.FIPANames;
 import jade.lang.acl.ACLMessage;
 import jade.lang.acl.MessageTemplate;
 import jade.proto.SimpleAchieveREResponder;
@@ -30,9 +30,9 @@ public class HandlePieceListRequests extends SimpleAchieveREResponder {
 
     public static final String PIECE_LIST_QUERY_PROTOCOL = "PieceListQueryProtocol";
     private final Logger logger = Logger.getMyLogger(getClass().getName());
-    private final GameContext context;
+    private final GameAgentContext context;
 
-    public HandlePieceListRequests(GameAgent gameAgent, GameContext context) {
+    public HandlePieceListRequests(GameAgent gameAgent, GameAgentContext context) {
         super(gameAgent, MessageTemplate.and(
                 MessageTemplate.MatchProtocol(PIECE_LIST_QUERY_PROTOCOL),
                 MessageTemplate.MatchOntology(ChessOntology.ONTOLOGY_NAME)
@@ -66,7 +66,7 @@ public class HandlePieceListRequests extends SimpleAchieveREResponder {
                 var ire = (AbsIRE) abs;
                 var prop = ontology.fromObject(ire.getProposition());
                 var colour = (Colour) ontology.toObject(prop.getAbsObject(IS_COLOUR_COLOUR));
-                var matchingPieces = getPiecesForColour(colour.getColour());
+                var matchingPieces = context.getGameContext().getPiecesForColour(colour);
                 var answer = createAnswer(ire, matchingPieces, ontology);
                 reply.setPerformative(ACLMessage.INFORM);
                 contentManager.fillContent(reply, answer);
@@ -90,18 +90,5 @@ public class HandlePieceListRequests extends SimpleAchieveREResponder {
         equals.set(BasicOntology.EQUALS_LEFT, ire);
         equals.set(BasicOntology.EQUALS_RIGHT, aggregate);
         return equals;
-    }
-
-    /**
-     * Gets all pieces for the given colour
-     *
-     * @param colour
-     * @return
-     */
-    private Set<Piece> getPiecesForColour(String colour) {
-        return context.getPiecesByAID().values()
-                .stream()
-                .filter(p -> p.getColour().getColour().equals(colour))
-                .collect(Collectors.toSet());
     }
 }
