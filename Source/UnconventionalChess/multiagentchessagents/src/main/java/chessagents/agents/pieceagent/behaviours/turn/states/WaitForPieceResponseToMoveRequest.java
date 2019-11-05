@@ -8,6 +8,7 @@ import chessagents.agents.pieceagent.pieces.PieceAgent;
 import chessagents.ontology.schemas.concepts.Piece;
 import jade.core.behaviours.SimpleBehaviour;
 import jade.lang.acl.ACLMessage;
+import jade.lang.acl.MessageTemplate;
 
 import static chessagents.agents.pieceagent.behaviours.turn.fsm.PieceTransition.PIECE_AGREED_TO_MOVE;
 import static chessagents.agents.pieceagent.behaviours.turn.fsm.PieceTransition.PIECE_REFUSED_TO_MOVE;
@@ -17,6 +18,7 @@ public class WaitForPieceResponseToMoveRequest extends SimpleBehaviour implement
     private final PieceContext pieceContext;
     private final TurnContext turnContext;
     private PieceTransition transition = null;
+    private MessageTemplate messageTemplate;
 
     public WaitForPieceResponseToMoveRequest(PieceAgent pieceAgent, PieceContext pieceContext, TurnContext turnContext) {
         super(pieceAgent);
@@ -25,8 +27,23 @@ public class WaitForPieceResponseToMoveRequest extends SimpleBehaviour implement
     }
 
     @Override
+    public void onStart() {
+        transition = null;
+
+        var requestMoveMessage = turnContext.getCurrentMessage();
+
+        messageTemplate = MessageTemplate.and(
+                MessageTemplate.or(
+                        MessageTemplate.MatchPerformative(ACLMessage.REFUSE),
+                        MessageTemplate.MatchPerformative(ACLMessage.AGREE)
+                ),
+                MessageTemplate.MatchConversationId(requestMoveMessage.getConversationId())
+        );
+    }
+
+    @Override
     public void action() {
-        var message = myAgent.receive();
+        var message = myAgent.receive(messageTemplate);
 
         if (message != null) {
             if (message.getPerformative() == ACLMessage.AGREE)
@@ -41,12 +58,6 @@ public class WaitForPieceResponseToMoveRequest extends SimpleBehaviour implement
     @Override
     public boolean done() {
         return transition != null;
-    }
-
-    @Override
-    public void reset() {
-        transition = null;
-        super.reset();
     }
 
     @Override

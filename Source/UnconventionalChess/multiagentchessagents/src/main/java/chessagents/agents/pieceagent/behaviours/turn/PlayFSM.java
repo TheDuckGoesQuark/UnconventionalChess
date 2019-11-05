@@ -104,7 +104,5 @@ public class PlayFSM extends PieceFSM {
         registerTransition(WAIT_FOR_MOVE_CONFIRMATION, PERFORM_MOVE, MOVE_CONFIRMATION_RECEIVED);
         registerTransition(WAIT_FOR_MOVE_CONFIRMATION, WAIT_FOR_PROPOSAL_REQUEST, NO_MOVE_CONFIRMATION);
 
-        // tell piece to make move
-
     }
 }
