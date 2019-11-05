@@ -73,20 +73,17 @@ public class SubscribeToGameStatus extends SimpleBehaviour {
 
         switch (this.state) {
             case PREPARE_SUBSCRIPTION:
-                logger.info("Preparing subscription");
                 request = this.prepareSubscription(ChessMessageBuilder.constructMessage(ACLMessage.SUBSCRIBE));
                 getDataStore().put(REQUEST_KEY, request);
                 state = SubscriptionState.SEND_SUBSCRIPTION_REQUEST;
                 break;
             case SEND_SUBSCRIPTION_REQUEST:
-                logger.info("Sending subscription");
                 request = (ACLMessage) getDataStore().get(REQUEST_KEY);
                 myAgent.send(request);
                 state = SubscriptionState.WAIT_FOR_RESPONSE;
                 break;
             case WAIT_FOR_RESPONSE:
                 if (receiveMessage(RESPONSE_KEY)) {
-                    logger.info("Received subscription response");
                     state = SubscriptionState.HANDLE_RESPONSE;
                 } else {
                     block();
@@ -95,7 +92,6 @@ public class SubscribeToGameStatus extends SimpleBehaviour {
             case HANDLE_RESPONSE:
                 response = (ACLMessage) getDataStore().get(RESPONSE_KEY);
                 if (response.getPerformative() == ACLMessage.AGREE) {
-                    logger.info("Subscription AGREE received");
                     state = SubscriptionState.WAIT_FOR_INFORM;
                 } else {
                     state = SubscriptionState.PREPARE_SUBSCRIPTION;
@@ -103,7 +99,6 @@ public class SubscribeToGameStatus extends SimpleBehaviour {
                 break;
             case WAIT_FOR_INFORM:
                 if (receiveMessage(RESULT_KEY)) {
-                    logger.info("Game status INFORM received");
                     state = SubscriptionState.HANDLE_INFORM;
                 } else {
                     block();
@@ -118,7 +113,6 @@ public class SubscribeToGameStatus extends SimpleBehaviour {
                 }
                 break;
             case CANCEL_SUBSCRIPTION:
-                logger.info("Canceling subscription");
                 response = (ACLMessage) getDataStore().get(RESULT_KEY);
                 cancelSubscription(response.createReply());
                 state = SubscriptionState.DONE;

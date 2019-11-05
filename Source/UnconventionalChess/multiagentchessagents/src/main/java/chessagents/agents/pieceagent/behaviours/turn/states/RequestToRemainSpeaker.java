@@ -31,6 +31,11 @@ public class RequestToRemainSpeaker extends SimpleBehaviour implements PieceStat
     }
 
     @Override
+    public void onStart() {
+        done = false;
+    }
+
+    @Override
     public int getNextTransition() {
         return REQUESTED_TO_REMAIN_SPEAKER.ordinal();
     }
@@ -52,12 +57,6 @@ public class RequestToRemainSpeaker extends SimpleBehaviour implements PieceStat
     @Override
     public boolean done() {
         return done;
-    }
-
-    @Override
-    public void reset() {
-        done = false;
-        super.reset();
     }
 
     @Override

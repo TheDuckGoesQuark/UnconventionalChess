@@ -82,7 +82,6 @@ public class WaitForInitialSpeaker extends SimpleAchieveREInitiator implements P
                 var leaderAID = (OntoAID) ChessOntology.getInstance().toObject(right);
                 turnContext.setCurrentSpeaker(leaderAID);
                 logger.info("Speaker realised as " + turnContext.getCurrentSpeaker().getName());
-                logger.info("Is that me? " + (turnContext.getCurrentSpeaker().equals(myAgent.getAID()) ? "yes" : "no"));
             } else {
                 throw new NotUnderstoodException("Did not receive answer to query?");
             }

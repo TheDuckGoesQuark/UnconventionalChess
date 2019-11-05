@@ -35,6 +35,8 @@ public class WaitForSpeakerConfirmation extends SimpleBehaviour implements Piece
 
     @Override
     public void onStart() {
+        speakerUpdated = false;
+
         var cfp = turnContext.getCurrentMessage();
         mt = MessageTemplate.and(
                 MessageTemplate.and(
@@ -83,13 +85,6 @@ public class WaitForSpeakerConfirmation extends SimpleBehaviour implements Piece
     @Override
     public boolean done() {
         return speakerUpdated;
-    }
-
-    @Override
-    public void reset() {
-        speakerUpdated = false;
-        mt = null;
-        super.reset();
     }
 
     @Override

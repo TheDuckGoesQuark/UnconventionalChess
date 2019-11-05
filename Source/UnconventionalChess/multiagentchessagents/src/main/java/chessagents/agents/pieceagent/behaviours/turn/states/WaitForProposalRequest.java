@@ -10,12 +10,20 @@ import jade.content.onto.OntologyException;
 import jade.content.onto.basic.Action;
 import jade.core.behaviours.SimpleBehaviour;
 import jade.lang.acl.ACLMessage;
+import jade.lang.acl.MessageTemplate;
 import jade.util.Logger;
 
 import static chessagents.agents.pieceagent.behaviours.turn.fsm.PieceTransition.*;
 
 public class WaitForProposalRequest extends SimpleBehaviour implements PieceStateBehaviour {
 
+    private static final MessageTemplate MESSAGE_TEMPLATE = MessageTemplate.or(
+            MessageTemplate.or(
+                    MessageTemplate.MatchPerformative(ACLMessage.CFP),
+                    MessageTemplate.MatchPerformative(ACLMessage.REQUEST)
+            ),
+            MessageTemplate.MatchPerformative(ACLMessage.INFORM)
+    );
     private final Logger logger = Logger.getMyLogger(getClass().getName());
     private final PieceContext pieceContext;
     private final TurnContext turnContext;
@@ -27,9 +35,18 @@ public class WaitForProposalRequest extends SimpleBehaviour implements PieceStat
         this.turnContext = turnContext;
     }
 
+    /**
+     * restore this state behaviour to its initial values before proceeding
+     */
+    @Override
+    public void onStart() {
+        nextTransition = null;
+        super.onStart();
+    }
+
     @Override
     public void action() {
-        var message = myAgent.receive();
+        var message = myAgent.receive(MESSAGE_TEMPLATE);
 
         if (message != null) {
             handleMessage(message);
@@ -62,6 +79,8 @@ public class WaitForProposalRequest extends SimpleBehaviour implements PieceStat
                 nextTransition = MOVE_RECEIVED_LATE;
                 turnContext.setCurrentMessage(message);
                 break;
+            default:
+                logger.warning("RECEIVED OUT OF SEQUENCE MESSAGE: " + message.toString());
         }
     }
 
@@ -79,13 +98,6 @@ public class WaitForProposalRequest extends SimpleBehaviour implements PieceStat
     @Override
     public boolean done() {
         return nextTransition != null;
-    }
-
-    @Override
-    public void reset() {
-        // TODO this should be triggered when another debate cycle starts!
-        nextTransition = null;
-        super.reset();
     }
 
     @Override

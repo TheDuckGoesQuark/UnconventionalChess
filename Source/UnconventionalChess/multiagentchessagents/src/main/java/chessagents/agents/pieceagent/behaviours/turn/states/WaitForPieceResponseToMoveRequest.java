@@ -13,6 +13,7 @@ import static chessagents.agents.pieceagent.behaviours.turn.fsm.PieceTransition.
 import static chessagents.agents.pieceagent.behaviours.turn.fsm.PieceTransition.PIECE_REFUSED_TO_MOVE;
 
 public class WaitForPieceResponseToMoveRequest extends SimpleBehaviour implements PieceStateBehaviour {
+
     private final PieceContext pieceContext;
     private final TurnContext turnContext;
     private PieceTransition transition = null;

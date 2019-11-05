@@ -47,7 +47,6 @@ public class TellPieceToMove extends SimpleBehaviour implements PieceStateBehavi
         aids.forEach(request::addReceiver);
         aids.forEach(request::addReplyTo);
 
-        logger.info("Telling piece to make move");
         myAgent.send(request);
     }
 

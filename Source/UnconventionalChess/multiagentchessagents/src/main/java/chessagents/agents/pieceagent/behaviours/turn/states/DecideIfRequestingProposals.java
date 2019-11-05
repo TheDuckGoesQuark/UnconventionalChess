@@ -28,6 +28,11 @@ public class DecideIfRequestingProposals extends OneShotBehaviour implements Pie
     }
 
     @Override
+    public void onStart() {
+        pieceTransition = null;
+    }
+
+    @Override
     public void action() {
         if (turnContext.getDebateCycles() < pieceContext.getMaxDebateCycle() && requestingProposals()) {
             pieceTransition = REQUESTING_PROPOSALS;
@@ -44,12 +49,6 @@ public class DecideIfRequestingProposals extends OneShotBehaviour implements Pie
     @Override
     public int getNextTransition() {
         return (pieceTransition != null ? pieceTransition : NOT_REQUESTING_PROPOSALS).ordinal();
-    }
-
-    @Override
-    public void reset() {
-        pieceTransition = null;
-        super.reset();
     }
 
     @Override

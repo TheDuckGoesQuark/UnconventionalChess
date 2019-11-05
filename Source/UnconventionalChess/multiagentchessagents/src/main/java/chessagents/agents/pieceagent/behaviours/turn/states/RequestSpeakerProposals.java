@@ -50,9 +50,10 @@ public class RequestSpeakerProposals extends OneShotBehaviour implements PieceSt
 
         // send to everyone (including myself!)
         pieceContext.getGameContext().getAllPieceAgentAIDs().forEach(cfp::addReceiver);
-
         cfp.setProtocol(SPEAKER_CONTRACT_NET_PROTOCOL);
-        cfp.setConversationId(UUID.randomUUID().toString());
+
+        // Store CFP
+        turnContext.setCurrentMessage(cfp);
 
         myAgent.send(cfp);
     }

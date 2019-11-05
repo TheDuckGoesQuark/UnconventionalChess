@@ -40,11 +40,11 @@ public class ElectLeaderAgent extends SimpleBehaviour {
         logger.info("Checking for request for leader");
         var message = myAgent.receive(MessageTemplate.MatchProtocol(ELECT_SPEAKER_PROTOCOL_NAME));
 
-        if (message != null && message.getPerformative() == ACLMessage.QUERY_REF) {
-            if (isLeaderQuery(message)) {
+        if (message != null) {
+            if (message.getPerformative() == ACLMessage.QUERY_REF && isLeaderQuery(message)) {
                 handleQuery(message);
             } else {
-                logger.info("Did not understand message: " + message.toString());
+                logger.warning("Did not understand message: " + message.toString());
                 replyNotUnderstood(message);
             }
         } else {
@@ -95,6 +95,7 @@ public class ElectLeaderAgent extends SimpleBehaviour {
             for (ACLMessage r : requests) {
                 informOfTheChosenOne(r, equals);
             }
+            logger.info("Told everyone of the chosen one");
         } catch (Codec.CodecException | ClassCastException | OntologyException e) {
             logger.warning("Failed to inform everyone of the chosen one: " + e.getMessage());
         } finally {

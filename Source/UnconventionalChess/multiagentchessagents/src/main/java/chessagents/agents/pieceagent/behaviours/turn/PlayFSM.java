@@ -106,6 +106,5 @@ public class PlayFSM extends PieceFSM {
 
         // tell piece to make move
 
-
     }
 }

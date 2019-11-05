@@ -9,6 +9,7 @@ import jade.core.AID;
 import jade.core.behaviours.Behaviour;
 import jade.lang.acl.ACLMessage;
 import jade.lang.acl.MessageTemplate;
+import jade.tools.sniffer.Message;
 import jade.util.Logger;
 
 import java.util.HashSet;
@@ -19,18 +20,34 @@ import static chessagents.agents.pieceagent.behaviours.turn.states.RequestSpeake
 
 public class ChoosingSpeaker extends Behaviour implements PieceStateBehaviour {
 
-    private static final MessageTemplate mt = MessageTemplate.MatchProtocol(SPEAKER_CONTRACT_NET_PROTOCOL);
     private final Random random = new Random();
     private final Logger logger = Logger.getMyLogger(getClass().getName());
     private final PieceContext pieceContext;
     private final TurnContext turnContext;
     private final Set<ACLMessage> speakerProposals = new HashSet<>();
+    private MessageTemplate mt = null;
     private PieceTransition transition = null;
 
     public ChoosingSpeaker(PieceAgent pieceAgent, PieceContext pieceContext, TurnContext turnContext) {
         super(pieceAgent);
         this.pieceContext = pieceContext;
         this.turnContext = turnContext;
+    }
+
+    @Override
+    public void onStart() {
+        transition = null;
+        speakerProposals.clear();
+
+        var conversationID = turnContext.getCurrentMessage().getConversationId();
+
+        mt = MessageTemplate.and(
+                MessageTemplate.MatchProtocol(SPEAKER_CONTRACT_NET_PROTOCOL),
+                MessageTemplate.and(
+                        MessageTemplate.MatchPerformative(ACLMessage.PROPOSE),
+                        MessageTemplate.MatchConversationId(conversationID)
+                )
+        );
     }
 
     @Override
@@ -95,13 +112,6 @@ public class ChoosingSpeaker extends Behaviour implements PieceStateBehaviour {
     @Override
     public int getNextTransition() {
         return transition.ordinal();
-    }
-
-    @Override
-    public void reset() {
-        transition = null;
-        speakerProposals.clear();
-        super.reset();
     }
 
     @Override

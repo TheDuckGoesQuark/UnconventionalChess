@@ -77,11 +77,6 @@ public class RequestPieceIds extends SimpleAchieveREInitiator {
     }
 
     @Override
-    protected void handleAgree(ACLMessage agree) {
-        logger.info("GameAgent agreed to give list of pieces! GET EXCITED");
-    }
-
-    @Override
     protected void handleInform(ACLMessage inform) {
         try {
             var contentManager = myAgent.getContentManager();

@@ -55,13 +55,15 @@ public abstract class PieceAgent extends ChessAgent {
     }
 
     public ACLMessage constructProposalToSpeak(ACLMessage cfp) {
+        // Construct message
+        var proposal = cfp.createReply();
+        proposal.setPerformative(ACLMessage.PROPOSE);
+
+        // Construct contents
         var myAID = getAID();
         var ontoAID = new OntoAID(myAID.getName(), AID.ISGUID);
         var becomeSpeaker = new BecomeSpeaker(ontoAID);
         var action = new Action(myAID, becomeSpeaker);
-        var proposal = cfp.createReply();
-        proposal.setPerformative(ACLMessage.PROPOSE);
-
         try {
             getContentManager().fillContent(proposal, action);
         } catch (Codec.CodecException | OntologyException e) {

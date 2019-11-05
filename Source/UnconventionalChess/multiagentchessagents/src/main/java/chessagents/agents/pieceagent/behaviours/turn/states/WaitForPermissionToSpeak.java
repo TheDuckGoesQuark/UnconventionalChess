@@ -28,6 +28,8 @@ public class WaitForPermissionToSpeak extends SimpleBehaviour implements PieceSt
 
     @Override
     public void onStart() {
+        transition = null;
+
         var cfp = turnContext.getCurrentMessage();
         mt = MessageTemplate.and(
                 MessageTemplate.MatchConversationId(cfp.getConversationId()),
@@ -60,13 +62,6 @@ public class WaitForPermissionToSpeak extends SimpleBehaviour implements PieceSt
         } else {
             block();
         }
-    }
-
-    @Override
-    public void reset() {
-        transition = null;
-        mt = null;
-        super.reset();
     }
 
     @Override

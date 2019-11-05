@@ -75,7 +75,6 @@ public class RequestGameAgentMove extends SimpleBehaviour {
         switch (this.state) {
             case SENDING_REQUEST:
                 request = prepareRequest(ChessMessageBuilder.constructMessage(ACLMessage.REQUEST));
-                logger.info("Sending " + request.toString());
                 myAgent.send(request);
                 state = RECEIVE_RESPONSE;
                 break;
