@@ -26,7 +26,7 @@ public class ElectLeaderAgent extends SimpleBehaviour {
     public static final String ELECT_SPEAKER_PROTOCOL_NAME = "ELECT_LEADER_PROTOCOL_NAME";
     private static final Random random = new Random();
     private final Logger logger = Logger.getMyLogger(getClass().getName());
-    private final GameContext context;
+    private final GameAgentContext context;
     private final Set<ACLMessage> requests = new HashSet<>();
     private boolean leaderChosen = false;
 
@@ -43,7 +43,6 @@ public class ElectLeaderAgent extends SimpleBehaviour {
         if (message != null && message.getPerformative() == ACLMessage.QUERY_REF) {
             if (isLeaderQuery(message)) {
                 handleQuery(message);
-                printStillWaiting();
             } else {
                 logger.info("Did not understand message: " + message.toString());
                 replyNotUnderstood(message);
@@ -51,12 +50,6 @@ public class ElectLeaderAgent extends SimpleBehaviour {
         } else {
             block();
         }
-    }
-
-    private void printStillWaiting() {
-        logger.info("Still waiting on query for leader from:");
-        var received = requests.stream().map(ACLMessage::getSender).collect(Collectors.toSet());
-        context.getAidToPiece().keySet().stream().filter(a -> !received.contains(a)).forEach(a -> logger.info(a.getLocalName()));
     }
 
     private void replyNotUnderstood(ACLMessage message) {
@@ -78,7 +71,7 @@ public class ElectLeaderAgent extends SimpleBehaviour {
     }
 
     private boolean receivedRequestFromEveryone() {
-        return requests.size() == context.getAidToPiece().size();
+        return requests.size() == context.getGameContext().getAidToPiece().size();
     }
 
     private void handleQuery(ACLMessage message) {

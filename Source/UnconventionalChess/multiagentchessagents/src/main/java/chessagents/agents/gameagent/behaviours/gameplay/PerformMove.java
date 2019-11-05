@@ -12,7 +12,7 @@ import static chessagents.agents.gameagent.behaviours.gameplay.HandleGame.MOVE_K
 
 public class PerformMove extends OneShotBehaviour {
 
-    private final GameContext context;
+    private final GameAgentContext context;
 
     PerformMove(GameAgent myAgent, GameAgentContext context, DataStore datastore) {
         super(myAgent);
@@ -23,9 +23,9 @@ public class PerformMove extends OneShotBehaviour {
     @Override
     public void action() {
         var move = (Move) getDataStore().get(MOVE_KEY);
-        var from = move.getSource().getCoordinates();
-        var to = move.getTarget().getCoordinates();
-        context.getBoard().makeMove(from, to);
+        var from = move.getSource();
+        var to = move.getTarget();
+        context.getGameContext().makeMove(from, to);
     }
 
     @Override

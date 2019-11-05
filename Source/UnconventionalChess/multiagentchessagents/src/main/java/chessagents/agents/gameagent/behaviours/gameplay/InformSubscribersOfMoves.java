@@ -26,7 +26,7 @@ public class InformSubscribersOfMoves extends OneShotBehaviour {
     private final Logger logger = Logger.getMyLogger(getClass().getName());
     private final AbsIRE absIRE = new AbsIRE(SLVocabulary.IOTA);
     private final Set<Subscription> subs = new HashSet<>();
-    private final GameContext context;
+    private final GameAgentContext context;
     private int turnIndex = 0;
 
     InformSubscribersOfMoves(GameAgentContext context) {
@@ -64,7 +64,7 @@ public class InformSubscribersOfMoves extends OneShotBehaviour {
     }
 
     private void sendNextTurn(int indexOfNextTurn) throws OntologyException {
-        var move = context.getBoard().getMove(indexOfNextTurn);
+        var move = context.getGameContext().getBoard().getMove(indexOfNextTurn);
         var content = constructMessageContent(move);
         subs.stream().map(s -> createInform(s, content)).forEach(inform -> myAgent.send(inform));
     }

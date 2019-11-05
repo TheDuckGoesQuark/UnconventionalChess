@@ -21,7 +21,7 @@ import static chessagents.agents.gameagent.behaviours.gameplay.HandleGame.MOVE_M
 public class VerifyMove extends OneShotBehaviour {
 
     private final Logger logger = Logger.getMyLogger(getClass().getName());
-    private final GameContext context;
+    private final GameAgentContext context;
 
     private GamePlayTransition nextTransition = null;
 
@@ -52,7 +52,7 @@ public class VerifyMove extends OneShotBehaviour {
     }
 
     private boolean isValidMove(Move move) {
-        return context.getBoard().isValidMove(move.getSource().getCoordinates(), move.getTarget().getCoordinates());
+        return context.getGameContext().getBoard().isValidMove(move.getSource().getCoordinates(), move.getTarget().getCoordinates());
     }
 
     private Move extractMove(ACLMessage message) throws Codec.CodecException, OntologyException, NotUnderstoodException {
