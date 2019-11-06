@@ -28,7 +28,6 @@ public class WaitForMove extends SimpleBehaviour {
 
     @Override
     public void action() {
-        logger.info("Waiting for move");
         var message = myAgent.receive(MT);
 
         if (message != null) {

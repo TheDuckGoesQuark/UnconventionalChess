@@ -44,7 +44,6 @@ public class RequestToRemainSpeaker extends SimpleBehaviour implements PieceStat
         var message = myAgent.receive(mt);
 
         if (message != null) {
-            logger.info("Received CFP to self");
             turnContext.setCurrentMessage(message);
             var proposal = ((PieceAgent) myAgent).constructProposalToSpeak(message);
             myAgent.send(proposal);

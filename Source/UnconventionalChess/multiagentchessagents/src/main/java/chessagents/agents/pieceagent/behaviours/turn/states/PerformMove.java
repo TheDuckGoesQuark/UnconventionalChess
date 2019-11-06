@@ -29,8 +29,12 @@ public class PerformMove extends OneShotBehaviour implements PieceStateBehaviour
     public void action() {
         var move = turnContext.getCurrentMove();
 
-        pieceContext.makeMove(move.getSource(), move.getTarget());
-        logger.info("Performed move " + move.getSource().getCoordinates() + ":" + move.getTarget().getCoordinates());
+        if (move != null) {
+            pieceContext.makeMove(move.getSource(), move.getTarget());
+            logger.info("Performed move " + move.getSource().getCoordinates() + ":" + move.getTarget().getCoordinates());
+        } else {
+            logger.warning("UNABLE TO MAKE MOVE, MOVE WAS NULL");
+        }
     }
 
     @Override

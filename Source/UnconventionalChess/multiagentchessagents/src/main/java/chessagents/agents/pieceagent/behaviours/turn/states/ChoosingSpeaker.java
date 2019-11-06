@@ -55,6 +55,7 @@ public class ChoosingSpeaker extends Behaviour implements PieceStateBehaviour {
         if (receivedRequestFromEveryone()) {
             var speaker = chooseSpeaker();
             sendResults(speaker);
+            transition = PieceTransition.SPEAKER_CHOSEN;
         } else {
             // receive all messages for this protocol
             var message = myAgent.receive(mt);
@@ -101,7 +102,9 @@ public class ChoosingSpeaker extends Behaviour implements PieceStateBehaviour {
     }
 
     private boolean receivedRequestFromEveryone() {
-        return speakerProposals.size() == (pieceContext.getGameContext().getAllPieceAgentAIDs().size());
+        var numAgents = pieceContext.getGameContext().getAllPieceAgentAIDs().size();
+        logger.info("Received request to speak from " + speakerProposals.size() + "/" + numAgents + " of agents");
+        return speakerProposals.size() == numAgents;
     }
 
     @Override
