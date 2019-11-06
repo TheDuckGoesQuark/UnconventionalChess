@@ -1,19 +1,9 @@
 package chessagents.agents.pieceagent.behaviours.turn.states;
 
-import chessagents.agents.ChessAgent;
 import chessagents.agents.pieceagent.PieceContext;
 import chessagents.agents.pieceagent.behaviours.turn.TurnContext;
-import chessagents.agents.pieceagent.behaviours.turn.fsm.PieceStateBehaviour;
 import chessagents.agents.pieceagent.pieces.PieceAgent;
-import chessagents.ontology.schemas.actions.BecomeSpeaker;
-import jade.content.OntoAID;
-import jade.content.lang.Codec;
-import jade.content.onto.OntologyException;
-import jade.content.onto.basic.Action;
-import jade.core.AID;
-import jade.core.behaviours.Behaviour;
 import jade.core.behaviours.OneShotBehaviour;
-import jade.lang.acl.ACLMessage;
 import jade.util.Logger;
 
 import static chessagents.agents.pieceagent.behaviours.turn.fsm.PieceTransition.REQUESTED_TO_SPEAK;

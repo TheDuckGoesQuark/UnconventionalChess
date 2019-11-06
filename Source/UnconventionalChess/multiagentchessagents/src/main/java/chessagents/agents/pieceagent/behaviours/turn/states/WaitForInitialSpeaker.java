@@ -1,10 +1,8 @@
 package chessagents.agents.pieceagent.behaviours.turn.states;
 
-import chessagents.agents.ChessAgent;
 import chessagents.agents.ChessMessageBuilder;
 import chessagents.agents.pieceagent.PieceContext;
 import chessagents.agents.pieceagent.behaviours.turn.TurnContext;
-import chessagents.agents.pieceagent.behaviours.turn.fsm.PieceStateBehaviour;
 import chessagents.agents.pieceagent.pieces.PieceAgent;
 import chessagents.ontology.ChessOntology;
 import jade.content.OntoAID;
@@ -16,7 +14,6 @@ import jade.content.lang.sl.SLVocabulary;
 import jade.content.onto.BasicOntology;
 import jade.content.onto.OntologyException;
 import jade.domain.FIPAAgentManagement.NotUnderstoodException;
-import jade.domain.FIPANames;
 import jade.lang.acl.ACLMessage;
 import jade.proto.SimpleAchieveREInitiator;
 import jade.util.Logger;

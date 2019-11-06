@@ -1,15 +1,11 @@
 package chessagents.agents.pieceagent.behaviours.turn.states;
 
-import chessagents.agents.ChessAgent;
 import chessagents.agents.ChessMessageBuilder;
 import chessagents.agents.pieceagent.PieceContext;
 import chessagents.agents.pieceagent.behaviours.turn.TurnContext;
-import chessagents.agents.pieceagent.behaviours.turn.fsm.PieceStateBehaviour;
 import chessagents.agents.pieceagent.pieces.PieceAgent;
 import chessagents.ontology.schemas.actions.MakeMove;
 import chessagents.ontology.schemas.concepts.Move;
-import chessagents.ontology.schemas.concepts.Piece;
-import chessagents.ontology.schemas.concepts.Position;
 import jade.content.lang.Codec;
 import jade.content.onto.OntologyException;
 import jade.content.onto.basic.Action;

@@ -2,7 +2,6 @@ package chessagents.agents.pieceagent.behaviours.turn.states;
 
 import chessagents.agents.pieceagent.PieceContext;
 import chessagents.agents.pieceagent.behaviours.turn.TurnContext;
-import chessagents.agents.pieceagent.behaviours.turn.fsm.PieceStateBehaviour;
 import chessagents.agents.pieceagent.pieces.PieceAgent;
 import jade.core.behaviours.OneShotBehaviour;
 import jade.util.Logger;
@@ -23,6 +22,7 @@ public class PerformMove extends OneShotBehaviour implements PieceStateBehaviour
     @Override
     public void action() {
         var move = turnContext.getCurrentMove();
+
         pieceContext.makeMove(move.getSource(), move.getTarget());
         logger.info("Performed move " + move.getSource().getCoordinates() + ":" + move.getTarget().getCoordinates());
     }

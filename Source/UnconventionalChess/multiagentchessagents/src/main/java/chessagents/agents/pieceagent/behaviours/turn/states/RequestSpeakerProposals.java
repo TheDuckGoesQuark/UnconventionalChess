@@ -1,24 +1,12 @@
 package chessagents.agents.pieceagent.behaviours.turn.states;
 
-import chessagents.agents.ChessAgent;
 import chessagents.agents.ChessMessageBuilder;
 import chessagents.agents.pieceagent.PieceContext;
 import chessagents.agents.pieceagent.behaviours.turn.TurnContext;
-import chessagents.agents.pieceagent.behaviours.turn.fsm.PieceStateBehaviour;
 import chessagents.agents.pieceagent.pieces.PieceAgent;
-import chessagents.ontology.ChessOntology;
-import chessagents.ontology.schemas.actions.BecomeSpeaker;
-import jade.content.ContentElement;
-import jade.content.abs.AbsConcept;
-import jade.content.abs.AbsVariable;
-import jade.content.lang.Codec;
-import jade.content.onto.OntologyException;
-import jade.core.behaviours.Behaviour;
 import jade.core.behaviours.OneShotBehaviour;
 import jade.lang.acl.ACLMessage;
 import jade.util.Logger;
-
-import java.util.UUID;
 
 import static chessagents.agents.pieceagent.behaviours.turn.fsm.PieceTransition.PROPOSALS_REQUESTED;
 

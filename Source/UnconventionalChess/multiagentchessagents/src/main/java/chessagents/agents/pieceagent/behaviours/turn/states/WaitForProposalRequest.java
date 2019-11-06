@@ -2,7 +2,6 @@ package chessagents.agents.pieceagent.behaviours.turn.states;
 
 import chessagents.agents.pieceagent.PieceContext;
 import chessagents.agents.pieceagent.behaviours.turn.TurnContext;
-import chessagents.agents.pieceagent.behaviours.turn.fsm.PieceStateBehaviour;
 import chessagents.agents.pieceagent.behaviours.turn.fsm.PieceTransition;
 import chessagents.agents.pieceagent.pieces.PieceAgent;
 import jade.content.lang.Codec;
@@ -75,9 +74,11 @@ public class WaitForProposalRequest extends SimpleBehaviour implements PieceStat
                 turnContext.setCurrentMessage(message);
                 break;
             case ACLMessage.INFORM:
-                // TODO better verify this
+                logger.info("DUMB STUPID FKN MACHINE: " + message.toString());
                 logger.info("Move arrived late.");
                 nextTransition = MOVE_RECEIVED_LATE;
+                // TODO better verify this
+                // TODO extract move
                 turnContext.setCurrentMessage(message);
                 break;
             default:

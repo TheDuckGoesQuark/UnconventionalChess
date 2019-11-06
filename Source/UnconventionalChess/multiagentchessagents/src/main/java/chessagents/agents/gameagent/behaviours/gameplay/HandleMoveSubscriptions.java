@@ -48,7 +48,7 @@ public class HandleMoveSubscriptions extends SubscriptionResponder {
                 informSubscribersOfMoves.addSubscriber(sub);
             }
         } catch (Codec.CodecException | OntologyException e) {
-            logger.warning("Failed: " + e.getMessage());
+            logger.warning("Failed: " + e.getMessage() + " message: " + subscription.toString());
             throw new NotUnderstoodException(e.getMessage());
         }
 

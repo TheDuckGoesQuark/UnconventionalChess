@@ -1,6 +1,5 @@
 package chessagents.agents.pieceagent.behaviours.turn.states;
 
-import chessagents.agents.pieceagent.behaviours.turn.fsm.PieceStateBehaviour;
 import jade.core.behaviours.Behaviour;
 
 public class GameOver extends Behaviour implements PieceStateBehaviour {

@@ -78,10 +78,20 @@ public class ElectLeaderAgent extends SimpleBehaviour {
         sendAgree(message);
         requests.add(message);
 
+        printStillWaiting();
+
         if (receivedRequestFromEveryone()) {
             var chosenOne = chooseLeader();
             informEveryoneOfTheChosenOne(chosenOne);
         }
+    }
+
+    private void printStillWaiting() {
+        logger.info("Still waiting on query for leader from:");
+        var received = requests.stream().map(ACLMessage::getSender).collect(Collectors.toSet());
+        context.getGameContext().getAllPieceAgentAIDs().stream()
+                .filter(a -> !received.contains(a))
+                .forEach(a -> logger.info(a.getLocalName()));
     }
 
     private void informEveryoneOfTheChosenOne(AID chosenOne) {
