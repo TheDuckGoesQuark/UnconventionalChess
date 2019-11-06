@@ -2,6 +2,7 @@ package chessagents.agents.pieceagent.behaviours.turn.states;
 
 import chessagents.agents.pieceagent.PieceContext;
 import chessagents.agents.pieceagent.behaviours.turn.TurnContext;
+import chessagents.agents.pieceagent.behaviours.turn.fsm.PieceState;
 import chessagents.agents.pieceagent.pieces.PieceAgent;
 import chessagents.ontology.schemas.actions.BecomeSpeaker;
 import jade.content.lang.Codec;
@@ -33,6 +34,7 @@ public class WaitForSpeakerConfirmation extends SimpleBehaviour implements Piece
 
     @Override
     public void onStart() {
+        logCurrentState(logger, PieceState.WAIT_FOR_SPEAKER_CONFIRMATION);
         speakerUpdated = false;
 
         var rejectProposalMessage = turnContext.getCurrentMessage();

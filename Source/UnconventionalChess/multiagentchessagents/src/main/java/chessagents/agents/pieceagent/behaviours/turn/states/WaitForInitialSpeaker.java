@@ -3,6 +3,7 @@ package chessagents.agents.pieceagent.behaviours.turn.states;
 import chessagents.agents.ChessMessageBuilder;
 import chessagents.agents.pieceagent.PieceContext;
 import chessagents.agents.pieceagent.behaviours.turn.TurnContext;
+import chessagents.agents.pieceagent.behaviours.turn.fsm.PieceState;
 import chessagents.agents.pieceagent.pieces.PieceAgent;
 import chessagents.ontology.ChessOntology;
 import jade.content.OntoAID;
@@ -39,8 +40,7 @@ public class WaitForInitialSpeaker extends SimpleAchieveREInitiator implements P
 
     @Override
     public void onStart() {
-        logger.info("Waiting for leader");
-        super.onStart();
+        logCurrentState(logger, PieceState.WAIT_FOR_INITIAL_SPEAKER);
     }
 
     @Override

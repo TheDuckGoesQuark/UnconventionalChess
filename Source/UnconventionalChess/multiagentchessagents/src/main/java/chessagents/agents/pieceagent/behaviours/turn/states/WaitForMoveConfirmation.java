@@ -2,6 +2,7 @@ package chessagents.agents.pieceagent.behaviours.turn.states;
 
 import chessagents.agents.pieceagent.PieceContext;
 import chessagents.agents.pieceagent.behaviours.turn.TurnContext;
+import chessagents.agents.pieceagent.behaviours.turn.fsm.PieceState;
 import chessagents.agents.pieceagent.pieces.PieceAgent;
 import chessagents.ontology.ChessOntology;
 import chessagents.ontology.schemas.concepts.Move;
@@ -30,6 +31,12 @@ public class WaitForMoveConfirmation extends SimpleBehaviour implements PieceSta
         super(pieceAgent);
         this.pieceContext = pieceContext;
         this.turnContext = turnContext;
+    }
+
+    @Override
+    public void onStart() {
+        logCurrentState(logger, PieceState.WAIT_FOR_MOVE_CONFIRMATION);
+        received = false;
     }
 
     @Override
@@ -72,12 +79,6 @@ public class WaitForMoveConfirmation extends SimpleBehaviour implements PieceSta
     @Override
     public int getNextTransition() {
         return MOVE_CONFIRMATION_RECEIVED.ordinal();
-    }
-
-    @Override
-    public void reset() {
-        received = false;
-        super.reset();
     }
 
     @Override

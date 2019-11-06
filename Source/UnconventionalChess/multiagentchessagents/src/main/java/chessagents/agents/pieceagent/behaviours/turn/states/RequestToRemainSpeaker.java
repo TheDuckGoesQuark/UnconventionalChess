@@ -2,6 +2,7 @@ package chessagents.agents.pieceagent.behaviours.turn.states;
 
 import chessagents.agents.pieceagent.PieceContext;
 import chessagents.agents.pieceagent.behaviours.turn.TurnContext;
+import chessagents.agents.pieceagent.behaviours.turn.fsm.PieceState;
 import chessagents.agents.pieceagent.pieces.PieceAgent;
 import jade.core.behaviours.SimpleBehaviour;
 import jade.lang.acl.MessageTemplate;
@@ -29,6 +30,7 @@ public class RequestToRemainSpeaker extends SimpleBehaviour implements PieceStat
 
     @Override
     public void onStart() {
+        logCurrentState(logger, PieceState.REQUEST_TO_REMAIN_SPEAKER);
         done = false;
     }
 

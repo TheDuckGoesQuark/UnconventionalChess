@@ -3,14 +3,18 @@ package chessagents.agents.pieceagent.behaviours.turn.states;
 import chessagents.agents.commonbehaviours.RequestGameAgentMove;
 import chessagents.agents.pieceagent.PieceContext;
 import chessagents.agents.pieceagent.behaviours.turn.TurnContext;
+import chessagents.agents.pieceagent.behaviours.turn.fsm.PieceState;
 import chessagents.agents.pieceagent.pieces.PieceAgent;
 import chessagents.ontology.schemas.actions.MakeMove;
 import jade.core.behaviours.SimpleBehaviour;
 import jade.lang.acl.MessageTemplate;
+import jade.util.Logger;
 
 import static chessagents.agents.pieceagent.behaviours.turn.fsm.PieceTransition.MOVE_CONFIRMATION_RECEIVED;
 
 public class RequestMoveMade extends SimpleBehaviour implements PieceStateBehaviour {
+
+    private final Logger logger = Logger.getMyLogger(getClass().getName());
 
     enum State {
         MAKE_REQUEST,
@@ -33,6 +37,7 @@ public class RequestMoveMade extends SimpleBehaviour implements PieceStateBehavi
     @Override
     public void onStart() {
         state = State.MAKE_REQUEST;
+        logCurrentState(logger, PieceState.REQUEST_MOVE_MADE);
     }
 
     @Override

@@ -2,6 +2,7 @@ package chessagents.agents.pieceagent.behaviours.turn.states;
 
 import chessagents.agents.pieceagent.PieceContext;
 import chessagents.agents.pieceagent.behaviours.turn.TurnContext;
+import chessagents.agents.pieceagent.behaviours.turn.fsm.PieceState;
 import chessagents.agents.pieceagent.behaviours.turn.fsm.PieceTransition;
 import chessagents.agents.pieceagent.pieces.PieceAgent;
 import jade.core.AID;
@@ -34,6 +35,7 @@ public class ChoosingSpeaker extends Behaviour implements PieceStateBehaviour {
 
     @Override
     public void onStart() {
+        logCurrentState(logger, PieceState.CHOOSING_SPEAKER);
         transition = null;
         speakerProposals.clear();
 

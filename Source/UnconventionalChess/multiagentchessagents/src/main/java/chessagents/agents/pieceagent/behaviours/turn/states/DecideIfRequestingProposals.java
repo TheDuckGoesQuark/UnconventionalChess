@@ -2,6 +2,7 @@ package chessagents.agents.pieceagent.behaviours.turn.states;
 
 import chessagents.agents.pieceagent.PieceContext;
 import chessagents.agents.pieceagent.behaviours.turn.TurnContext;
+import chessagents.agents.pieceagent.behaviours.turn.fsm.PieceState;
 import chessagents.agents.pieceagent.behaviours.turn.fsm.PieceTransition;
 import chessagents.agents.pieceagent.pieces.PieceAgent;
 import jade.core.behaviours.OneShotBehaviour;
@@ -28,6 +29,7 @@ public class DecideIfRequestingProposals extends OneShotBehaviour implements Pie
 
     @Override
     public void onStart() {
+        logCurrentState(logger, PieceState.DECIDE_IF_REQUESTING_PROPOSALS);
         pieceTransition = null;
     }
 

@@ -2,17 +2,20 @@ package chessagents.agents.pieceagent.behaviours.turn.states;
 
 import chessagents.agents.pieceagent.PieceContext;
 import chessagents.agents.pieceagent.behaviours.turn.TurnContext;
+import chessagents.agents.pieceagent.behaviours.turn.fsm.PieceState;
 import chessagents.agents.pieceagent.behaviours.turn.fsm.PieceTransition;
 import chessagents.agents.pieceagent.pieces.PieceAgent;
 import jade.core.behaviours.SimpleBehaviour;
 import jade.lang.acl.ACLMessage;
 import jade.lang.acl.MessageTemplate;
+import jade.util.Logger;
 
 import static chessagents.agents.pieceagent.behaviours.turn.fsm.PieceTransition.PIECE_AGREED_TO_MOVE;
 import static chessagents.agents.pieceagent.behaviours.turn.fsm.PieceTransition.PIECE_REFUSED_TO_MOVE;
 
 public class WaitForPieceResponseToMoveRequest extends SimpleBehaviour implements PieceStateBehaviour {
 
+    private final Logger logger = Logger.getMyLogger(getClass().getName());
     private final PieceContext pieceContext;
     private final TurnContext turnContext;
     private PieceTransition transition = null;
@@ -26,6 +29,7 @@ public class WaitForPieceResponseToMoveRequest extends SimpleBehaviour implement
 
     @Override
     public void onStart() {
+        logCurrentState(logger, PieceState.WAIT_FOR_PIECE_RESPONSE_TO_MOVE_REQUEST);
         transition = null;
 
         var requestMoveMessage = turnContext.getCurrentMessage();

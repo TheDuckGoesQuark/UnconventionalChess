@@ -2,6 +2,7 @@ package chessagents.agents.pieceagent.behaviours.turn.states;
 
 import chessagents.agents.pieceagent.PieceContext;
 import chessagents.agents.pieceagent.behaviours.turn.TurnContext;
+import chessagents.agents.pieceagent.behaviours.turn.fsm.PieceState;
 import chessagents.agents.pieceagent.pieces.PieceAgent;
 import chessagents.ontology.ChessOntology;
 import chessagents.ontology.schemas.concepts.Move;
@@ -34,6 +35,7 @@ public class WaitForMove extends SimpleBehaviour implements PieceStateBehaviour 
 
     @Override
     public void onStart() {
+        logCurrentState(logger, PieceState.WAIT_FOR_MOVE);
         messageTemplate = MessageTemplate.MatchConversationId(pieceContext.getMoveSubscriptionId());
     }
 
@@ -70,11 +72,6 @@ public class WaitForMove extends SimpleBehaviour implements PieceStateBehaviour 
     @Override
     public boolean done() {
         return turnContext.getCurrentMove() != null;
-    }
-
-    @Override
-    public void reset() {
-        super.reset();
     }
 
     @Override

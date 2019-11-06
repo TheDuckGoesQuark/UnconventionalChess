@@ -2,6 +2,7 @@ package chessagents.agents.pieceagent.behaviours.turn.states;
 
 import chessagents.agents.pieceagent.PieceContext;
 import chessagents.agents.pieceagent.behaviours.turn.TurnContext;
+import chessagents.agents.pieceagent.behaviours.turn.fsm.PieceState;
 import chessagents.agents.pieceagent.pieces.PieceAgent;
 import chessagents.ontology.schemas.actions.MakeMove;
 import jade.content.lang.Codec;
@@ -24,6 +25,13 @@ public class DecideIfMoving extends SimpleBehaviour implements PieceStateBehavio
         super(pieceAgent);
         this.pieceContext = pieceContext;
         this.turnContext = turnContext;
+    }
+
+    @Override
+    public void onStart() {
+        logCurrentState(logger, PieceState.DECIDE_IF_MOVING);
+        agreed = false;
+        super.onStart();
     }
 
     @Override
@@ -61,12 +69,6 @@ public class DecideIfMoving extends SimpleBehaviour implements PieceStateBehavio
     @Override
     public int getNextTransition() {
         return AGREED_TO_MAKE_MOVE.ordinal();
-    }
-
-    @Override
-    public void reset() {
-        agreed = false;
-        super.reset();
     }
 
     @Override

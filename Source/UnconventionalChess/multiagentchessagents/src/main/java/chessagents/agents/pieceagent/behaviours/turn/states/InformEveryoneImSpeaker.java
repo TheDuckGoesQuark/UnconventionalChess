@@ -2,6 +2,7 @@ package chessagents.agents.pieceagent.behaviours.turn.states;
 
 import chessagents.agents.pieceagent.PieceContext;
 import chessagents.agents.pieceagent.behaviours.turn.TurnContext;
+import chessagents.agents.pieceagent.behaviours.turn.fsm.PieceState;
 import chessagents.agents.pieceagent.pieces.PieceAgent;
 import chessagents.ontology.schemas.actions.BecomeSpeaker;
 import jade.content.OntoAID;
@@ -26,6 +27,11 @@ public class InformEveryoneImSpeaker extends OneShotBehaviour implements PieceSt
         super(pieceAgent);
         this.pieceContext = pieceContext;
         this.turnContext = turnContext;
+    }
+
+    @Override
+    public void onStart() {
+        logCurrentState(logger, PieceState.INFORM_EVERYONE_IM_SPEAKER);
     }
 
     @Override
