@@ -84,7 +84,6 @@ public class PlayFSM extends PieceFSM {
         registerTransition(WAIT_FOR_PROPOSAL_REQUEST, REQUEST_TO_SPEAK, PROPOSAL_REQUESTED);
         registerTransition(WAIT_FOR_PROPOSAL_REQUEST, DECIDE_IF_MOVING, TOLD_TO_MOVE);
         registerTransition(WAIT_FOR_PROPOSAL_REQUEST, WAIT_FOR_PIECE_RESPONSE_TO_MOVE_REQUEST, OTHER_PIECE_TOLD_TO_MOVE);
-        registerTransition(WAIT_FOR_PROPOSAL_REQUEST, PERFORM_MOVE, MOVE_RECEIVED_LATE);
 
         registerState(new RequestToSpeak(pieceAgent, pieceContext, turnContext), REQUEST_TO_SPEAK);
         registerTransition(REQUEST_TO_SPEAK, WAIT_FOR_PERMISSION_TO_SPEAK, REQUESTED_TO_SPEAK);
@@ -102,7 +101,7 @@ public class PlayFSM extends PieceFSM {
 
         registerState(new WaitForMoveConfirmation(pieceAgent, pieceContext, turnContext), WAIT_FOR_MOVE_CONFIRMATION);
         registerTransition(WAIT_FOR_MOVE_CONFIRMATION, PERFORM_MOVE, MOVE_CONFIRMATION_RECEIVED);
-        registerTransition(WAIT_FOR_MOVE_CONFIRMATION, WAIT_FOR_PROPOSAL_REQUEST, NO_MOVE_CONFIRMATION);
+        registerTransition(WAIT_FOR_MOVE_CONFIRMATION, WAIT_FOR_PROPOSAL_REQUEST, OTHER_PIECE_FAILED_TO_MOVE);
 
     }
 }

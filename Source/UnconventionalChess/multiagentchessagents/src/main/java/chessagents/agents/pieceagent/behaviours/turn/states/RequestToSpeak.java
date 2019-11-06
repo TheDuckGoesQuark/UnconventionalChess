@@ -4,12 +4,12 @@ import chessagents.agents.pieceagent.PieceContext;
 import chessagents.agents.pieceagent.behaviours.turn.TurnContext;
 import chessagents.agents.pieceagent.behaviours.turn.fsm.PieceState;
 import chessagents.agents.pieceagent.pieces.PieceAgent;
-import jade.core.behaviours.OneShotBehaviour;
+import jade.core.behaviours.SimpleBehaviour;
 import jade.util.Logger;
 
 import static chessagents.agents.pieceagent.behaviours.turn.fsm.PieceTransition.REQUESTED_TO_SPEAK;
 
-public class RequestToSpeak extends OneShotBehaviour implements PieceStateBehaviour {
+public class RequestToSpeak extends SimpleBehaviour implements PieceStateBehaviour {
     private final Logger logger = Logger.getMyLogger(getClass().getName());
     private final PieceContext pieceContext;
     private final TurnContext turnContext;
@@ -32,10 +32,14 @@ public class RequestToSpeak extends OneShotBehaviour implements PieceStateBehavi
 
     @Override
     public void action() {
-        logger.info("Requesting to speak");
         var cfp = turnContext.getCurrentMessage();
         var proposal = ((PieceAgent) myAgent).constructProposalToSpeak(cfp);
         myAgent.send(proposal);
+    }
+
+    @Override
+    public boolean done() {
+        return true;
     }
 
     @Override

@@ -14,6 +14,7 @@ import jade.util.Logger;
 import java.util.HashSet;
 import java.util.Random;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 import static chessagents.agents.pieceagent.behaviours.turn.states.RequestSpeakerProposals.SPEAKER_CONTRACT_NET_PROTOCOL;
 
@@ -104,6 +105,12 @@ public class ChoosingSpeaker extends Behaviour implements PieceStateBehaviour {
     private boolean receivedRequestFromEveryone() {
         var numAgents = pieceContext.getGameContext().getAllPieceAgentAIDs().size();
         logger.info("Received request to speak from " + speakerProposals.size() + "/" + numAgents + " of agents");
+        logger.info("Waiting for: ");
+        var received = speakerProposals.stream().map(ACLMessage::getSender).collect(Collectors.toSet());
+        pieceContext.getGameContext().getAllPieceAgentAIDs().stream()
+                .filter(a -> !received.contains(a))
+                .forEach(a -> logger.info(a.getLocalName()));
+
         return speakerProposals.size() == numAgents;
     }
 

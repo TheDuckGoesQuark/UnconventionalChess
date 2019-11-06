@@ -58,7 +58,7 @@ public class WaitForSpeakerConfirmation extends SimpleBehaviour implements Piece
             speakerUpdated = true;
             logger.info("Speaker updated: " + newSpeaker);
         } else {
-            block();
+            if (!speakerUpdated) block();
         }
     }
 

@@ -18,11 +18,8 @@ import static chessagents.agents.pieceagent.behaviours.turn.fsm.PieceTransition.
 public class WaitForProposalRequest extends SimpleBehaviour implements PieceStateBehaviour {
 
     private static final MessageTemplate MESSAGE_TEMPLATE = MessageTemplate.or(
-            MessageTemplate.or(
-                    MessageTemplate.MatchPerformative(ACLMessage.CFP),
-                    MessageTemplate.MatchPerformative(ACLMessage.REQUEST)
-            ),
-            MessageTemplate.MatchPerformative(ACLMessage.INFORM)
+            MessageTemplate.MatchPerformative(ACLMessage.CFP),
+            MessageTemplate.MatchPerformative(ACLMessage.REQUEST)
     );
     private final Logger logger = Logger.getMyLogger(getClass().getName());
     private final PieceContext pieceContext;
@@ -72,14 +69,6 @@ public class WaitForProposalRequest extends SimpleBehaviour implements PieceStat
                     nextTransition = OTHER_PIECE_TOLD_TO_MOVE;
                 }
 
-                turnContext.setCurrentMessage(message);
-                break;
-            case ACLMessage.INFORM:
-                logger.info("DUMB STUPID FKN MACHINE: " + message.toString());
-                logger.info("Move arrived late.");
-                nextTransition = MOVE_RECEIVED_LATE;
-                // TODO better verify this
-                // TODO extract move
                 turnContext.setCurrentMessage(message);
                 break;
             default:

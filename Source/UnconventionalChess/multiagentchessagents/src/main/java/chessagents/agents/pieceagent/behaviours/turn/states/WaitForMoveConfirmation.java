@@ -3,6 +3,7 @@ package chessagents.agents.pieceagent.behaviours.turn.states;
 import chessagents.agents.pieceagent.PieceContext;
 import chessagents.agents.pieceagent.behaviours.turn.TurnContext;
 import chessagents.agents.pieceagent.behaviours.turn.fsm.PieceState;
+import chessagents.agents.pieceagent.behaviours.turn.fsm.PieceTransition;
 import chessagents.agents.pieceagent.pieces.PieceAgent;
 import chessagents.ontology.ChessOntology;
 import chessagents.ontology.schemas.concepts.Move;
@@ -19,13 +20,16 @@ import jade.util.Logger;
 import java.util.Optional;
 
 import static chessagents.agents.pieceagent.behaviours.turn.fsm.PieceTransition.MOVE_CONFIRMATION_RECEIVED;
+import static chessagents.agents.pieceagent.behaviours.turn.fsm.PieceTransition.OTHER_PIECE_FAILED_TO_MOVE;
 
 public class WaitForMoveConfirmation extends SimpleBehaviour implements PieceStateBehaviour {
 
     private final Logger logger = Logger.getMyLogger(getClass().getName());
     private final PieceContext pieceContext;
     private final TurnContext turnContext;
+    private MessageTemplate mt = null;
     private boolean received = false;
+    private PieceTransition transition = null;
 
     public WaitForMoveConfirmation(PieceAgent pieceAgent, PieceContext pieceContext, TurnContext turnContext) {
         super(pieceAgent);
@@ -37,17 +41,29 @@ public class WaitForMoveConfirmation extends SimpleBehaviour implements PieceSta
     public void onStart() {
         logCurrentState(logger, PieceState.WAIT_FOR_MOVE_CONFIRMATION);
         received = false;
+        transition = null;
+        mt = MessageTemplate.or(
+                MessageTemplate.MatchConversationId(pieceContext.getMoveSubscriptionId()),
+                MessageTemplate.and(
+                        MessageTemplate.MatchPerformative(ACLMessage.FAILURE),
+                        MessageTemplate.MatchConversationId(turnContext.getCurrentMessage().getConversationId())
+                )
+        );
     }
 
     @Override
     public void action() {
-        // TODO add timeout for no move confirmation
-        var message = myAgent.receive(MessageTemplate.MatchConversationId(pieceContext.getMoveSubscriptionId()));
+        var message = myAgent.receive(mt);
 
         if (message != null) {
-            extractMove(message).ifPresent(turnContext::setCurrentMove);
+            if (message.getPerformative() == ACLMessage.FAILURE) {
+                transition = OTHER_PIECE_FAILED_TO_MOVE;
+            } else {
+                extractMove(message).ifPresent(turnContext::setCurrentMove);
+                transition = MOVE_CONFIRMATION_RECEIVED;
+            }
         } else {
-            block();
+            if (transition == null) block();
         }
     }
 
@@ -73,12 +89,12 @@ public class WaitForMoveConfirmation extends SimpleBehaviour implements PieceSta
 
     @Override
     public boolean done() {
-        return received;
+        return transition != null;
     }
 
     @Override
     public int getNextTransition() {
-        return MOVE_CONFIRMATION_RECEIVED.ordinal();
+        return transition.ordinal();
     }
 
     @Override
