@@ -1,5 +1,6 @@
 package stacs.chessgateway.controllers;
 
+import chessagents.agents.gatewayagent.messages.MoveMessage;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,7 +13,6 @@ import org.springframework.web.bind.annotation.RestController;
 import stacs.chessgateway.exceptions.GatewayFailureException;
 import stacs.chessgateway.models.GameConfiguration;
 import stacs.chessgateway.models.Message;
-import stacs.chessgateway.models.MoveMessage;
 import stacs.chessgateway.services.GatewayService;
 
 

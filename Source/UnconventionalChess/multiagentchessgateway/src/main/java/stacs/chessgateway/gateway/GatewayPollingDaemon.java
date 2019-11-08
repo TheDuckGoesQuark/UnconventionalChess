@@ -1,9 +1,8 @@
 package stacs.chessgateway.gateway;
 
-import chessagents.agents.gatewayagent.behaviours.CallbackOnMove;
-import chessagents.agents.gatewayagent.behaviours.MessageHandler;
-import chessagents.ontology.schemas.predicates.MoveMade;
-import jade.lang.acl.ACLMessage;
+import chessagents.agents.gatewayagent.behaviours.ListenForGameAgentMessages;
+import chessagents.agents.gatewayagent.messages.MoveMessage;
+import chessagents.agents.gatewayagent.messages.OntologyTranslator;
 import jade.wrapper.ControllerException;
 import jade.wrapper.gateway.GatewayListener;
 import jade.wrapper.gateway.JadeGateway;
@@ -12,15 +11,12 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import stacs.chessgateway.models.Message;
-import stacs.chessgateway.models.MessageType;
-import stacs.chessgateway.models.MoveMessage;
 import stacs.chessgateway.services.GatewayService;
 import stacs.chessgateway.util.GameContextStore;
-import stacs.chessgateway.util.OntologyTranslator;
 
 import java.util.concurrent.*;
 
-import static stacs.chessgateway.models.MessageType.MOVE_MESSAGE;
+import static chessagents.agents.gatewayagent.messages.MessageType.MOVE_MESSAGE;
 
 @Component
 public class GatewayPollingDaemon implements GatewayListener, Runnable {
@@ -29,15 +25,15 @@ public class GatewayPollingDaemon implements GatewayListener, Runnable {
 
     private final ExecutorService executorService = Executors.newSingleThreadExecutor();
     private final GatewayService gatewayService;
-    private final OntologyTranslator ontologyTranslator;
+    private final OntologyTranslator<Message> ontologyMessageMapper;
     private final GameContextStore gameContextStore;
 
     private Future task;
 
     @Autowired
-    public GatewayPollingDaemon(GatewayService gatewayService, OntologyTranslator ontologyTranslator, GameContextStore gameContextStore) {
+    public GatewayPollingDaemon(GatewayService gatewayService, OntologyTranslator<Message> ontologyMessageMapper, GameContextStore gameContextStore) {
         this.gatewayService = gatewayService;
-        this.ontologyTranslator = ontologyTranslator;
+        this.ontologyMessageMapper = ontologyMessageMapper;
         this.gameContextStore = gameContextStore;
         JadeGateway.addListener(this);
     }
@@ -50,7 +46,7 @@ public class GatewayPollingDaemon implements GatewayListener, Runnable {
 
     @Override
     public void handleGatewayDisconnected() {
-        logger.info("Gateway disconnected");
+        logger.warn("Gateway disconnected");
         task.cancel(true);
     }
 
@@ -59,24 +55,14 @@ public class GatewayPollingDaemon implements GatewayListener, Runnable {
     public void run() {
         while (JadeGateway.isGatewayActive()) {
             logger.info("Listening for messages from gateway");
-            var handler = new MessageHandler() {
-                @Override
-                public Void call() {
-                    forwardMessage(this);
-                    return null;
-                }
-            };
+            var listener = new ListenForGameAgentMessages<Message>(ontologyMessageMapper, gatewayService);
+
             try {
-                JadeGateway.execute(new CallbackOnMove(handler));
+                JadeGateway.execute(listener);
             } catch (ControllerException | InterruptedException e) {
                 logger.warn("Failed to start callback on move listener");
             }
         }
     }
 
-    private void forwardMessage(MessageHandler handler) {
-        var move = handler.getMove();
-        var moveMessage = new MoveMessage(move.getSource().getCoordinates(), move.getTarget().getCoordinates());
-        gatewayService.handleAgentMessage(new Message<>(MOVE_MESSAGE, moveMessage), handler.getAgentID());
-    }
 }

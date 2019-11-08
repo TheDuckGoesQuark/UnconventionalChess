@@ -1,7 +1,7 @@
 package chessagents.agents.gameagent;
 
-import chessagents.GameContext;
 import chessagents.agents.ChessAgent;
+import chessagents.agents.gameagent.behaviours.chat.HandleChat;
 import chessagents.agents.gameagent.behaviours.gameplay.HandleGame;
 import chessagents.agents.gameagent.behaviours.meta.CleanupGame;
 import chessagents.agents.gameagent.behaviours.meta.HandleGameCreationRequests;
@@ -9,6 +9,7 @@ import chessagents.agents.gameagent.behaviours.meta.HandleGameStatusSubscription
 import chessagents.agents.gameagent.behaviours.meta.SpawnPieceAgents;
 import chessagents.ontology.schemas.concepts.Game;
 import jade.core.AID;
+import jade.core.behaviours.ParallelBehaviour;
 import jade.core.behaviours.SequentialBehaviour;
 
 
@@ -42,6 +43,16 @@ public class GameAgent extends ChessAgent {
         gameSequence.addSubBehaviour(new SpawnPieceAgents(this, myContext));
         gameSequence.addSubBehaviour(new HandleGame(this, myContext));
         gameSequence.addSubBehaviour(new CleanupGame(this, myContext));
-        addBehaviour(gameSequence);
+
+        var chatHandler = new HandleChat(this, myContext);
+
+        // Game agent handles game logic and messaging in parallel
+        // rather than adding more message handling transitions to the move FSA
+        // both behaviours terminate when either chat fails or game ends
+        var parallel = new ParallelBehaviour(ParallelBehaviour.WHEN_ANY);
+        parallel.addSubBehaviour(gameSequence);
+        parallel.addSubBehaviour(chatHandler);
+
+        addBehaviour(parallel);
     }
 }

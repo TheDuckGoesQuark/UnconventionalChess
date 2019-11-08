@@ -1,12 +1,13 @@
 package stacs.chessgateway.services;
 
+import chessagents.agents.gatewayagent.MessageHandler;
+import chessagents.agents.gatewayagent.messages.MoveMessage;
 import jade.core.AID;
 import stacs.chessgateway.exceptions.GatewayFailureException;
 import stacs.chessgateway.models.GameConfiguration;
 import stacs.chessgateway.models.Message;
-import stacs.chessgateway.models.MoveMessage;
 
-public interface GatewayService {
+public interface GatewayService extends MessageHandler<Message> {
 
     /**
      * Sends the given move to the agents
@@ -24,13 +25,5 @@ public interface GatewayService {
      * @return configuration with game id
      */
     Message<GameConfiguration> createGame(GameConfiguration gameConfiguration) throws GatewayFailureException;
-
-    /**
-     * Handles message that originated from an agent
-     *
-     * @param message message received from an agent
-     * @param agentId
-     */
-    void handleAgentMessage(Message message, AID agentId);
 
 }

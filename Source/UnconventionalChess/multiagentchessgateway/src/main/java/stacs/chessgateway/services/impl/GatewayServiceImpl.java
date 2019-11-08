@@ -2,9 +2,13 @@ package stacs.chessgateway.services.impl;
 
 import chessagents.agents.gameagent.GameProperties;
 import chessagents.agents.gatewayagent.behaviours.RequestCreateGame;
+import chessagents.agents.gatewayagent.messages.MoveMessage;
+import chessagents.agents.gatewayagent.messages.OntologyTranslator;
 import chessagents.agents.pieceagent.PieceContext;
 import chessagents.agents.pieceagent.behaviours.turn.SubscribeToMoves;
+import chessagents.ontology.schemas.actions.MakeMove;
 import jade.core.AID;
+import jade.core.behaviours.Behaviour;
 import jade.wrapper.ControllerException;
 import jade.wrapper.gateway.JadeGateway;
 import org.slf4j.Logger;
@@ -17,13 +21,13 @@ import chessagents.agents.gatewayagent.behaviours.CreateGameAgent;
 import chessagents.agents.commonbehaviours.RequestGameAgentMove;
 import stacs.chessgateway.models.GameConfiguration;
 import stacs.chessgateway.models.Message;
-import stacs.chessgateway.models.MessageType;
-import stacs.chessgateway.models.MoveMessage;
+import chessagents.agents.gatewayagent.messages.MessageType;
 import stacs.chessgateway.services.GatewayService;
 import stacs.chessgateway.services.WebsocketService;
 import stacs.chessgateway.util.GameContextStore;
-import stacs.chessgateway.util.OntologyTranslator;
+import stacs.chessgateway.util.OntologyMessageTranslator;
 
+import java.time.Instant;
 import java.util.Arrays;
 
 @Service
@@ -33,35 +37,43 @@ public class GatewayServiceImpl implements GatewayService {
 
     private final GameContextStore gameContextStore;
     private final WebsocketService websocketService;
-    private final OntologyTranslator ontologyTranslator;
+    private final OntologyTranslator<Message> ontologyMessageMapper;
     private final String platformName;
 
     @Autowired
-    public GatewayServiceImpl(GameContextStore gameContextStore, WebsocketService websocketService, OntologyTranslator ontologyTranslator, GatewayProperties properties) {
+    public GatewayServiceImpl(GameContextStore gameContextStore, WebsocketService websocketService, OntologyTranslator<Message> ontologyMessageTranslator, GatewayProperties properties) {
         this.gameContextStore = gameContextStore;
         this.websocketService = websocketService;
-        this.ontologyTranslator = ontologyTranslator;
+        this.ontologyMessageMapper = ontologyMessageTranslator;
         this.platformName = properties.getPlatformName();
+    }
+
+    /**
+     * Attempts to execute the given behaviour in the jade gateway agent.
+     * Returns same behaviour to allow functional usage.
+     *
+     * @param behaviour behaviour to execute
+     * @return the behaviour executed
+     */
+    private Behaviour executeBehaviour(Behaviour behaviour) {
+        try {
+            JadeGateway.execute(behaviour);
+        } catch (ControllerException | InterruptedException e) {
+            logger.warn("Failed to execute behaviour: " + e.getMessage());
+        }
+
+        return behaviour;
     }
 
     @Override
     public void sendMoveToGameAgent(Message<MoveMessage> move, int gameId) throws GatewayFailureException {
-        try {
-            var gameAgentAID = gameContextStore.getAgentByGameId(gameId);
-            var makeMove = ontologyTranslator.translateToOntology(move.getBody());
-
-            var requestGameAgentMove = new RequestGameAgentMove(makeMove, gameAgentAID);
-            JadeGateway.execute(requestGameAgentMove);
-
-            if (requestGameAgentMove.wasSuccessful()) {
-                websocketService.sendMessageToClient(move, gameId);
-            } else {
-                logger.warn("Human move was refused!");
-                // TODO send error
-            }
-        } catch (InterruptedException | ControllerException e) {
-            throw new GatewayFailureException(Arrays.toString(e.getStackTrace()));
-        }
+        ontologyMessageMapper.toOntology(move, MessageType.MOVE_MESSAGE)
+                .map(makeMove -> new RequestGameAgentMove((MakeMove) makeMove, gameContextStore.getAgentByGameId(gameId)))
+                .map(this::executeBehaviour)
+                .map(command -> ((RequestGameAgentMove) command))
+                .filter(RequestGameAgentMove::wasSuccessful)
+                .ifPresent(wasSuccessful -> websocketService.sendMessageToClient(move, gameId));
+        // TODO send error
     }
 
     @Override
@@ -91,7 +103,7 @@ public class GatewayServiceImpl implements GatewayService {
             // Game creation successful, remember mapping and inform client
             gameContextStore.addMapping(gameId, gameAgentId);
             gameConfiguration.setGameId(gameId);
-            return new Message<>(MessageType.GAME_CONFIGURATION_MESSAGE, gameConfiguration);
+            return new Message<GameConfiguration>(Instant.now(), MessageType.GAME_CONFIGURATION_MESSAGE, gameConfiguration);
         } catch (InterruptedException | ControllerException e) {
             throw new GatewayFailureException(Arrays.toString(e.getStackTrace()));
         }
@@ -99,9 +111,6 @@ public class GatewayServiceImpl implements GatewayService {
 
     @Override
     public void handleAgentMessage(Message message, AID agentId) {
-        websocketService.sendMessageToClient(
-                message,
-                gameContextStore.getGameIdByAgent(agentId)
-        );
+        websocketService.sendMessageToClient(message, gameContextStore.getGameIdByAgent(agentId));
     }
 }
