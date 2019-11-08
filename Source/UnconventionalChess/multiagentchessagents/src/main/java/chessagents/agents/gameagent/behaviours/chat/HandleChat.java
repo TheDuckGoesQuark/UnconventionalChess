@@ -4,6 +4,8 @@ import chessagents.agents.gameagent.GameAgent;
 import chessagents.agents.gameagent.GameAgentContext;
 import jade.core.behaviours.SimpleBehaviour;
 
+// TODO create behaviour for subscribing to chat messages and handling those subscriptions
+// TODO route chat messages to gateway agent
 public class HandleChat extends SimpleBehaviour {
 
     public static final String CHAT_PROTOCOL = "CHAT_PROTOCOL";
