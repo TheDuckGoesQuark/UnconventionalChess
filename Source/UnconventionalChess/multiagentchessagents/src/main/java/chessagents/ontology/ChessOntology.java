@@ -5,6 +5,7 @@ import chessagents.ontology.schemas.actions.CreateGame;
 import chessagents.ontology.schemas.actions.MakeMove;
 import chessagents.ontology.schemas.concepts.*;
 import chessagents.ontology.schemas.predicates.*;
+import jade.content.Predicate;
 import jade.content.onto.BasicOntology;
 import jade.content.onto.Ontology;
 import jade.content.onto.OntologyException;
@@ -60,6 +61,11 @@ public class ChessOntology extends Ontology {
 
     public static final String IS_SPEAKER = "Is Speaker";
     public static final String IS_SPEAKER_AGENT = "Agent";
+
+    public static final String SAID_TO = "Said To";
+    public static final String SAID_TO_SPEAKER = "Speaker";
+    public static final String SAID_TO_LISTENER = "Listener";
+    public static final String SAID_TO_PHRASE = "Phrase";
 
     // Actions
     public static final String MAKE_MOVE = "Make Move";
@@ -137,6 +143,12 @@ public class ChessOntology extends Ontology {
             isSpeakerSchema.add(IS_SPEAKER_AGENT, getSchema(BasicOntology.AID));
             add(isSpeakerSchema);
 
+            final var saidToSchema = new PredicateSchema(SAID_TO);
+            saidToSchema.add(SAID_TO_LISTENER, getSchema(BasicOntology.AID));
+            saidToSchema.add(SAID_TO_SPEAKER, getSchema(BasicOntology.AID));
+            saidToSchema.add(SAID_TO_PHRASE, getSchema(BasicOntology.STRING));
+            add(saidToSchema);
+
             // Actions
             final var makeMoveSchema = new AgentActionSchema(MAKE_MOVE);
             makeMoveSchema.add(MAKE_MOVE_MOVE, (ConceptSchema) getSchema(MOVE));
@@ -149,6 +161,7 @@ public class ChessOntology extends Ontology {
             final var becomeSpeakerSchema = new AgentActionSchema(BECOME_SPEAKER);
             becomeSpeakerSchema.add(BECOME_SPEAKER_AGENT, (ConceptSchema) getSchema(BasicOntology.AID));
             add(becomeSpeakerSchema, BecomeSpeaker.class);
+
 
         } catch (OntologyException e) {
             e.printStackTrace();

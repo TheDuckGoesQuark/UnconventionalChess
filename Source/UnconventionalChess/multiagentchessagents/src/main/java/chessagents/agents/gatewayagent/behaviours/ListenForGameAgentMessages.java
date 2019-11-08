@@ -22,6 +22,7 @@ import java.util.Optional;
 import java.util.Queue;
 import java.util.concurrent.LinkedBlockingQueue;
 
+import static chessagents.agents.gameagent.behaviours.chat.HandleChat.CHAT_PROTOCOL;
 import static chessagents.agents.gameagent.behaviours.gameplay.HandleMoveSubscriptions.MOVE_SUBSCRIPTION_PROTOCOL;
 
 /**
@@ -66,10 +67,11 @@ public class ListenForGameAgentMessages<M> extends CyclicBehaviour {
      * @return type of message
      */
     private Optional<MessageType> determineMessageType(ACLMessage agentMessage) {
-        // TODO add chat protocol
         switch (agentMessage.getConversationId()) {
             case MOVE_SUBSCRIPTION_PROTOCOL:
                 return Optional.of(MessageType.MOVE_MESSAGE);
+            case CHAT_PROTOCOL:
+                return Optional.of(MessageType.CHAT_MESSAGE);
             default:
                 logger.warning("Unknown message type or protocol: " + agentMessage.getConversationId());
                 return Optional.empty();
