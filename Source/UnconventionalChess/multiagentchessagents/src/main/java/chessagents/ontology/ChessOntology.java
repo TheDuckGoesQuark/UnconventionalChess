@@ -64,7 +64,6 @@ public class ChessOntology extends Ontology {
 
     public static final String SAID_TO = "Said To";
     public static final String SAID_TO_SPEAKER = "Speaker";
-    public static final String SAID_TO_LISTENER = "Listener";
     public static final String SAID_TO_PHRASE = "Phrase";
 
     // Actions
@@ -144,7 +143,6 @@ public class ChessOntology extends Ontology {
             add(isSpeakerSchema);
 
             final var saidToSchema = new PredicateSchema(SAID_TO);
-            saidToSchema.add(SAID_TO_LISTENER, getSchema(BasicOntology.AID));
             saidToSchema.add(SAID_TO_SPEAKER, getSchema(BasicOntology.AID));
             saidToSchema.add(SAID_TO_PHRASE, getSchema(BasicOntology.STRING));
             add(saidToSchema);

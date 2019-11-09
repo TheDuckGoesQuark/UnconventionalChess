@@ -4,8 +4,6 @@ import chessagents.agents.gameagent.GameAgent;
 import chessagents.ontology.schemas.predicates.SaidTo;
 import jade.content.lang.Codec;
 import jade.content.onto.OntologyException;
-import jade.content.onto.basic.Action;
-import jade.content.onto.basic.Done;
 import jade.core.behaviours.CyclicBehaviour;
 import jade.lang.acl.ACLMessage;
 import jade.lang.acl.MessageTemplate;
@@ -52,9 +50,7 @@ public class HandleChat extends CyclicBehaviour {
         Optional<SaidTo> result = Optional.empty();
 
         try {
-            var done = (Done) myAgent.getContentManager().extractContent(message);
-            var action = (Action) done.getAction();
-            var saidTo = (SaidTo) action.getAction();
+            var saidTo = (SaidTo) myAgent.getContentManager().extractContent(message);
             result = Optional.of(saidTo);
         } catch (Codec.CodecException | ClassCastException | OntologyException e) {
             logger.warning("Failed to extract contents: " + e.getMessage());

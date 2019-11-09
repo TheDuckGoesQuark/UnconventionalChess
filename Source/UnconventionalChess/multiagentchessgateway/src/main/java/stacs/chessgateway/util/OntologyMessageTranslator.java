@@ -21,6 +21,7 @@ import jade.domain.FIPAAgentManagement.NotUnderstoodException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
+import stacs.chessgateway.exceptions.GatewayFailureException;
 import stacs.chessgateway.models.Message;
 
 import java.time.Instant;
@@ -89,10 +90,6 @@ public class OntologyMessageTranslator implements OntologyTranslator<Message> {
                         var speaker = (OntoAID) ChessOntology.getInstance().toObject(values.get(i));
                         chatMessage.setFromId(speaker.getLocalName());
                         break;
-                    case ChessOntology.SAID_TO_LISTENER:
-                        var listener = (OntoAID) ChessOntology.getInstance().toObject(values.get(i));
-                        chatMessage.setToId(listener.getLocalName());
-                        break;
                     case ChessOntology.SAID_TO_PHRASE:
                         var messageBody = (String) ChessOntology.getInstance().toObject(values.get(i));
                         chatMessage.setMessageBody(messageBody);
@@ -123,7 +120,7 @@ public class OntologyMessageTranslator implements OntologyTranslator<Message> {
     private Optional<ContentElement> createChatOnto(Message message) {
         var chat = (ChatMessage) message.getBody();
 
-        // TODO  construct chat onto
+        logger.warn("Client shouldn't be sending chat messages, so this hasn't been implemented.");
 
         return Optional.empty();
     }
