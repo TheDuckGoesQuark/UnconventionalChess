@@ -44,11 +44,11 @@ public class GameAgent extends ChessAgent {
         gameSequence.addSubBehaviour(new HandleGame(this, myContext));
         gameSequence.addSubBehaviour(new CleanupGame(this, myContext));
 
-        var chatHandler = new HandleChat(this, myContext);
+        var chatHandler = new HandleChat(this);
 
         // Game agent handles game logic and messaging in parallel
-        // rather than adding more message handling transitions to the move FSA
-        // both behaviours terminate when either chat fails or game ends
+        // rather than adding more message handling transitions to the move FSA.
+        // Both behaviours terminate when either chat fails or game ends
         var parallel = new ParallelBehaviour(ParallelBehaviour.WHEN_ANY);
         parallel.addSubBehaviour(gameSequence);
         parallel.addSubBehaviour(chatHandler);

@@ -20,17 +20,13 @@ import static jade.proto.SubscriptionResponder.Subscription;
 /**
  *
  */
-public class InformSubscribersOfMoves extends SubscriptionInform {
+public class InformSubscribersOfMoves extends SubscriptionInform<Move> {
 
     private final Logger logger = Logger.getMyLogger(getClass().getName());
     private final AbsIRE absIRE = new AbsIRE(SLVocabulary.IOTA);
-    private final GameAgentContext context;
-    private int turnIndex = 0;
 
-    InformSubscribersOfMoves(GameAgentContext context) {
-        this.context = context;
-
-        // construct IRE
+    InformSubscribersOfMoves() {
+        // construct IRE for left hand side
         var absVariableMove = new AbsVariable("Move", ChessOntology.MOVE_MADE_MOVE);
         absIRE.setVariable(absVariableMove);
 
@@ -40,11 +36,7 @@ public class InformSubscribersOfMoves extends SubscriptionInform {
     }
 
     @Override
-    public ContentElement buildInformContents() {
-        logger.info("Sending moves for turn " + turnIndex);
-
-        var move = context.getGameContext().getBoard().getMove(turnIndex);
-
+    public ContentElement buildInformContents(Move move) {
         AbsObject absMove = null;
         try {
             absMove = ChessOntology.getInstance().fromObject(move);
@@ -58,11 +50,5 @@ public class InformSubscribersOfMoves extends SubscriptionInform {
         equals.set(BasicOntology.EQUALS_RIGHT, absMove);
 
         return equals;
-    }
-
-    @Override
-    public int onEnd() {
-        turnIndex++;
-        return super.onEnd();
     }
 }

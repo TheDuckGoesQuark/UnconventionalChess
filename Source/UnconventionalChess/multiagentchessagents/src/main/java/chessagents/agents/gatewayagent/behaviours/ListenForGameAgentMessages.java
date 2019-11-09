@@ -3,24 +3,15 @@ package chessagents.agents.gatewayagent.behaviours;
 import chessagents.agents.gatewayagent.MessageHandler;
 import chessagents.agents.gatewayagent.messages.MessageType;
 import chessagents.agents.gatewayagent.messages.OntologyTranslator;
-import chessagents.ontology.ChessOntology;
-import chessagents.ontology.schemas.concepts.Move;
 import jade.content.ContentElement;
-import jade.content.abs.AbsContentElement;
-import jade.content.abs.AbsPredicate;
 import jade.content.lang.Codec;
-import jade.content.onto.BasicOntology;
 import jade.content.onto.OntologyException;
 import jade.core.behaviours.CyclicBehaviour;
-import jade.domain.FIPAAgentManagement.NotUnderstoodException;
 import jade.lang.acl.ACLMessage;
 import jade.lang.acl.MessageTemplate;
 import jade.util.Logger;
 
-import javax.swing.text.html.Option;
 import java.util.Optional;
-import java.util.Queue;
-import java.util.concurrent.LinkedBlockingQueue;
 
 import static chessagents.agents.gameagent.behaviours.chat.HandleChat.CHAT_PROTOCOL;
 import static chessagents.agents.gameagent.behaviours.gameplay.HandleMoveSubscriptions.MOVE_SUBSCRIPTION_PROTOCOL;

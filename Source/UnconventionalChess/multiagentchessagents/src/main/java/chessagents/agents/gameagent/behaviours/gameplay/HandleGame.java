@@ -22,7 +22,7 @@ public class HandleGame extends GamePlayFSMBehaviour {
     public HandleGame(GameAgent gameAgent, GameAgentContext context) {
         super(gameAgent);
 
-        var informSubscribersOfMove = new InformSubscribersOfMoves(context);
+        var informSubscribersOfMove = new InformSubscribersOfMoves();
         myAgent.addBehaviour(new HandleMoveSubscriptions((GameAgent) myAgent, context, informSubscribersOfMove));
         var dataStore = getDataStore();
         registerFirstState(new InitTurn((GameAgent) myAgent, context));
