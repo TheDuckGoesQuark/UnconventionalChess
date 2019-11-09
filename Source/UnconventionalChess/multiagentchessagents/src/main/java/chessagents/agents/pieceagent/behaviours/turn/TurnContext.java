@@ -11,6 +11,7 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 public class TurnContext {
+
     private AID currentSpeaker = null;
     private Move currentMove = null;
     private ACLMessage currentMessage = null;

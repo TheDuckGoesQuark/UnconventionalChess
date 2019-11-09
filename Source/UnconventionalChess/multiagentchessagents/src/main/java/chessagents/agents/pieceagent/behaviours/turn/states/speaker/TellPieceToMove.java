@@ -2,6 +2,7 @@ package chessagents.agents.pieceagent.behaviours.turn.states.speaker;
 
 import chessagents.agents.ChessMessageBuilder;
 import chessagents.agents.pieceagent.PieceContext;
+import chessagents.agents.pieceagent.behaviours.chat.SendChatMessage;
 import chessagents.agents.pieceagent.behaviours.turn.TurnContext;
 import chessagents.agents.pieceagent.behaviours.turn.fsm.PieceState;
 import chessagents.agents.pieceagent.behaviours.turn.states.PieceStateBehaviour;

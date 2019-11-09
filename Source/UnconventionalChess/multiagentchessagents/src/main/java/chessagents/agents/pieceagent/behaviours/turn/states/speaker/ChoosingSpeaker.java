@@ -21,7 +21,6 @@ import static chessagents.agents.pieceagent.behaviours.turn.states.speaker.Reque
 
 public class ChoosingSpeaker extends Behaviour implements PieceStateBehaviour {
 
-    private final Random random = new Random();
     private final Logger logger = Logger.getMyLogger(getClass().getName());
     private final PieceContext pieceContext;
     private final TurnContext turnContext;
@@ -99,8 +98,7 @@ public class ChoosingSpeaker extends Behaviour implements PieceStateBehaviour {
     }
 
     private AID chooseSpeaker() {
-        var arr = speakerProposals.toArray(new ACLMessage[0]);
-        return arr[random.nextInt(arr.length)].getSender();
+        return ((PieceAgent) myAgent).chooseSpeaker(speakerProposals);
     }
 
     private boolean receivedRequestFromEveryone() {

@@ -2,10 +2,13 @@ package chessagents.agents.pieceagent.pieces;
 
 import chessagents.agents.ChessAgent;
 import chessagents.agents.pieceagent.PieceContext;
+import chessagents.agents.pieceagent.behaviours.chat.SendChatMessage;
 import chessagents.agents.pieceagent.behaviours.turn.PlayFSM;
 import chessagents.agents.pieceagent.behaviours.initial.RequestPieceIds;
 import chessagents.agents.pieceagent.behaviours.initial.SubscribeToGameStatus;
 import chessagents.agents.pieceagent.behaviours.turn.SubscribeToMoves;
+import chessagents.agents.pieceagent.eventhandlers.PieceEventHandler;
+import chessagents.agents.pieceagent.events.Event;
 import chessagents.ontology.schemas.actions.BecomeSpeaker;
 import chessagents.ontology.schemas.concepts.Colour;
 import chessagents.ontology.schemas.concepts.Position;
@@ -18,10 +21,33 @@ import jade.core.behaviours.SequentialBehaviour;
 import jade.lang.acl.ACLMessage;
 import jade.util.Logger;
 
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Random;
+import java.util.Set;
+
 public abstract class PieceAgent extends ChessAgent {
 
+    private final Map<Class, PieceEventHandler> handlers = new HashMap<>();
+    private final Random random = new Random();
     private Logger logger;
     private PieceContext context;
+
+    public PieceAgent() {
+        // TODO put all handlers and the event classes in this map
+        // TODO pass self and event to handler
+        // TODO implement each handler
+        // TODO handlers should be applied to personality, plan, and trigger verbalisation of agent response
+        handlers.put()
+    }
+
+    @Override
+    protected void setup() {
+        super.setup();
+        logger = Logger.getMyLogger(getName());
+        constructContextFromArgs();
+        addInitialBehaviours();
+    }
 
     private void constructContextFromArgs() {
         var args = getArguments();
@@ -46,14 +72,6 @@ public abstract class PieceAgent extends ChessAgent {
         addBehaviour(sequence);
     }
 
-    @Override
-    protected void setup() {
-        super.setup();
-        logger = Logger.getMyLogger(getName());
-        constructContextFromArgs();
-        addInitialBehaviours();
-    }
-
     public ACLMessage constructProposalToSpeak(ACLMessage cfp) {
         // Construct message
         var proposal = cfp.createReply();
@@ -73,4 +91,26 @@ public abstract class PieceAgent extends ChessAgent {
         return proposal;
     }
 
+    /**
+     * Chooses speaker from the given set of speaker proposals
+     *
+     * @param speakerProposals set of speaker proposal messages
+     * @return the chosen speaker
+     */
+    public AID chooseSpeaker(Set<ACLMessage> speakerProposals) {
+        var arr = speakerProposals.toArray(new ACLMessage[0]);
+        var speaker = arr[random.nextInt(arr.length)].getSender();
+
+        if (speaker.equals(getAID())) {
+            addBehaviour(new SendChatMessage("I think I should speak.", getAID(), context.getGameAgentAID()));
+        } else {
+            addBehaviour(new SendChatMessage("I think " + speaker.getName() + " should speak.", getAID(), context.getGameAgentAID()));
+        }
+
+        return speaker;
+    }
+
+    public void experience(Event e) {
+        this.handlers.get(e.getClass()).apply(e, this);
+    }
 }
