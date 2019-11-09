@@ -33,7 +33,7 @@ public class ListenForGameAgentMessages<M> extends CyclicBehaviour {
                     MessageTemplate.MatchProtocol(MOVE_SUBSCRIPTION_PROTOCOL),
                     MessageTemplate.MatchProtocol(CHAT_PROTOCOL)
             ),
-            MessageTemplate.MatchPerformative(ACLMessage.INFORM_REF)
+            MessageTemplate.MatchPerformative(ACLMessage.INFORM)
     );
 
     public ListenForGameAgentMessages(OntologyTranslator<M> ontologyTranslator, MessageHandler<M> messageHandler) {

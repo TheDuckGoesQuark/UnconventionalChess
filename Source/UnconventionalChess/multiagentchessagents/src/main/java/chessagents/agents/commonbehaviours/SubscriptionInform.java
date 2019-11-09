@@ -53,7 +53,7 @@ public abstract class SubscriptionInform<E> extends CyclicBehaviour {
 
     private ACLMessage createSubscriptionInform(ACLMessage subscription, ContentElement content) {
         var reply = subscription.createReply();
-        reply.setPerformative(ACLMessage.INFORM_REF);
+        reply.setPerformative(ACLMessage.INFORM);
 
         try {
             myAgent.getContentManager().fillContent(reply, content);
