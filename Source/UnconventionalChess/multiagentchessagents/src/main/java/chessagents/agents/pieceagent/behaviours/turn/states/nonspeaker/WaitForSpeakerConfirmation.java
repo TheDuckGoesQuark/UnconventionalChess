@@ -1,8 +1,9 @@
-package chessagents.agents.pieceagent.behaviours.turn.states;
+package chessagents.agents.pieceagent.behaviours.turn.states.nonspeaker;
 
 import chessagents.agents.pieceagent.PieceContext;
 import chessagents.agents.pieceagent.behaviours.turn.TurnContext;
 import chessagents.agents.pieceagent.behaviours.turn.fsm.PieceState;
+import chessagents.agents.pieceagent.behaviours.turn.states.PieceStateBehaviour;
 import chessagents.agents.pieceagent.pieces.PieceAgent;
 import chessagents.ontology.schemas.actions.BecomeSpeaker;
 import jade.content.lang.Codec;
@@ -16,7 +17,7 @@ import jade.lang.acl.MessageTemplate;
 import jade.util.Logger;
 
 import static chessagents.agents.pieceagent.behaviours.turn.fsm.PieceTransition.SPEAKER_UPDATED;
-import static chessagents.agents.pieceagent.behaviours.turn.states.RequestSpeakerProposals.SPEAKER_CONTRACT_NET_PROTOCOL;
+import static chessagents.agents.pieceagent.behaviours.turn.states.speaker.RequestSpeakerProposals.SPEAKER_CONTRACT_NET_PROTOCOL;
 
 public class WaitForSpeakerConfirmation extends SimpleBehaviour implements PieceStateBehaviour {
 

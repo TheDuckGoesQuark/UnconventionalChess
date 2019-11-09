@@ -1,9 +1,10 @@
-package chessagents.agents.pieceagent.behaviours.turn.states;
+package chessagents.agents.pieceagent.behaviours.turn.states.speaker;
 
 import chessagents.agents.pieceagent.PieceContext;
 import chessagents.agents.pieceagent.behaviours.turn.TurnContext;
 import chessagents.agents.pieceagent.behaviours.turn.fsm.PieceState;
 import chessagents.agents.pieceagent.behaviours.turn.fsm.PieceTransition;
+import chessagents.agents.pieceagent.behaviours.turn.states.PieceStateBehaviour;
 import chessagents.agents.pieceagent.pieces.PieceAgent;
 import jade.core.AID;
 import jade.core.behaviours.Behaviour;
@@ -16,7 +17,7 @@ import java.util.Random;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-import static chessagents.agents.pieceagent.behaviours.turn.states.RequestSpeakerProposals.SPEAKER_CONTRACT_NET_PROTOCOL;
+import static chessagents.agents.pieceagent.behaviours.turn.states.speaker.RequestSpeakerProposals.SPEAKER_CONTRACT_NET_PROTOCOL;
 
 public class ChoosingSpeaker extends Behaviour implements PieceStateBehaviour {
 
