@@ -29,7 +29,6 @@ public class WaitForMoveConfirmation extends SimpleBehaviour implements PieceSta
     private final PieceContext pieceContext;
     private final TurnContext turnContext;
     private MessageTemplate mt = null;
-    private boolean received = false;
     private PieceTransition transition = null;
 
     public WaitForMoveConfirmation(PieceAgent pieceAgent, PieceContext pieceContext, TurnContext turnContext) {
@@ -41,7 +40,6 @@ public class WaitForMoveConfirmation extends SimpleBehaviour implements PieceSta
     @Override
     public void onStart() {
         logCurrentState(logger, PieceState.WAIT_FOR_MOVE_CONFIRMATION);
-        received = false;
         transition = null;
         mt = MessageTemplate.or(
                 MessageTemplate.MatchConversationId(pieceContext.getMoveSubscriptionId()),
@@ -81,7 +79,6 @@ public class WaitForMoveConfirmation extends SimpleBehaviour implements PieceSta
             var absRight = absEquals.getAbsTerm(BasicOntology.EQUALS_RIGHT);
             var move = (Move) ChessOntology.getInstance().toObject(absRight);
             result = Optional.of(move);
-            received = true;
         } catch (Codec.CodecException | OntologyException | NotUnderstoodException e) {
             logger.warning("Failed to deserialize move message: " + e.getMessage());
         }
