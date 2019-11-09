@@ -1,15 +1,14 @@
 package chessagents.agents.gameagent.behaviours.gameplay;
 
-import chessagents.GameContext;
+import chessagents.agents.commonbehaviours.SubscriptionInform;
 import chessagents.agents.gameagent.GameAgentContext;
 import chessagents.ontology.ChessOntology;
 import chessagents.ontology.schemas.concepts.Move;
+import jade.content.ContentElement;
 import jade.content.abs.*;
-import jade.content.lang.Codec;
 import jade.content.lang.sl.SLVocabulary;
 import jade.content.onto.BasicOntology;
 import jade.content.onto.OntologyException;
-import jade.core.behaviours.OneShotBehaviour;
 import jade.lang.acl.ACLMessage;
 import jade.util.Logger;
 
@@ -21,11 +20,10 @@ import static jade.proto.SubscriptionResponder.Subscription;
 /**
  *
  */
-public class InformSubscribersOfMoves extends OneShotBehaviour {
+public class InformSubscribersOfMoves extends SubscriptionInform {
 
     private final Logger logger = Logger.getMyLogger(getClass().getName());
     private final AbsIRE absIRE = new AbsIRE(SLVocabulary.IOTA);
-    private final Set<Subscription> subs = new HashSet<>();
     private final GameAgentContext context;
     private int turnIndex = 0;
 
@@ -42,19 +40,18 @@ public class InformSubscribersOfMoves extends OneShotBehaviour {
     }
 
     @Override
-    public void action() {
-        try {
-            logger.info("Sending moves for turn " + turnIndex);
-            sendNextTurn(turnIndex);
-        } catch (OntologyException e) {
-            logger.warning("Failed to serialise move: " + e.getMessage());
-        } finally {
-            turnIndex++;
-        }
-    }
+    public ContentElement buildInformContents() {
+        logger.info("Sending moves for turn " + turnIndex);
 
-    private AbsContentElement constructMessageContent(Move move) throws OntologyException {
-        var absMove = ChessOntology.getInstance().fromObject(move);
+        var move = context.getGameContext().getBoard().getMove(turnIndex);
+
+        AbsObject absMove = null;
+        try {
+            absMove = ChessOntology.getInstance().fromObject(move);
+        } catch (OntologyException e) {
+            logger.warning("Failed to put move into inform: " + e.getMessage());
+        }
+
         var equals = new AbsPredicate(BasicOntology.EQUALS);
 
         equals.set(BasicOntology.EQUALS_LEFT, absIRE);
@@ -63,34 +60,9 @@ public class InformSubscribersOfMoves extends OneShotBehaviour {
         return equals;
     }
 
-    private void sendNextTurn(int indexOfNextTurn) throws OntologyException {
-        var move = context.getGameContext().getBoard().getMove(indexOfNextTurn);
-        var content = constructMessageContent(move);
-        subs.stream().map(s -> createInform(s, content)).forEach(inform -> myAgent.send(inform));
-    }
-
-    private ACLMessage createInform(Subscription subscription, AbsContentElement content) {
-        var reply = subscription.getMessage().createReply();
-        reply.setPerformative(ACLMessage.INFORM_REF);
-
-        try {
-            myAgent.getContentManager().fillContent(reply, content);
-        } catch (Codec.CodecException | OntologyException e) {
-            logger.warning("Failed to serialise inform message: " + e.getMessage());
-        }
-
-        return reply;
-    }
-
-    void addSubscriber(Subscription sub) {
-        logger.info("New subscriber to moves: " + sub.getMessage().getSender());
-        subs.add(sub);
-    }
-
-    void removeSubscriber(String conversationId) {
-        subs.stream()
-                .filter(s -> s.getMessage().getConversationId().equals(conversationId))
-                .findFirst()
-                .ifPresent(subs::remove);
+    @Override
+    public int onEnd() {
+        turnIndex++;
+        return super.onEnd();
     }
 }

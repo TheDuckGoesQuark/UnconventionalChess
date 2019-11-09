@@ -1,6 +1,7 @@
 package chessagents.agents.pieceagent.behaviours.turn;
 
 import chessagents.agents.ChessMessageBuilder;
+import chessagents.agents.commonbehaviours.SubscriptionInitiator;
 import chessagents.agents.pieceagent.PieceContext;
 import chessagents.ontology.ChessOntology;
 import jade.content.abs.AbsIRE;
@@ -18,40 +19,23 @@ import jade.util.Logger;
 import java.util.UUID;
 
 import static chessagents.agents.gameagent.behaviours.gameplay.HandleMoveSubscriptions.MOVE_SUBSCRIPTION_PROTOCOL;
-import static chessagents.agents.pieceagent.behaviours.turn.SubscribeToMoves.SubscriptionState.*;
 import static chessagents.ontology.ChessOntology.*;
 
 /**
  * Subscribes the given agent to moves being made in the game
  */
-public class SubscribeToMoves extends SimpleBehaviour {
+public class SubscribeToMoves extends SubscriptionInitiator {
 
-    enum SubscriptionState {
-        PREPARE_SUBSCRIPTION,
-        SEND_SUBSCRIPTION_REQUEST,
-        WAIT_FOR_RESPONSE,
-        HANDLE_RESPONSE,
-        SUBSCRIBED,
-    }
-
-    private static final MessageTemplate MESSAGE_TEMPLATE = MessageTemplate.and(
-            MessageTemplate.MatchProtocol(MOVE_SUBSCRIPTION_PROTOCOL),
-            MessageTemplate.MatchOntology(ChessOntology.ONTOLOGY_NAME)
-    );
-
-    private static final String REQUEST_KEY = "_REQUEST";
-    private static final String RESPONSE_KEY = "_RESPONSE";
     private final Logger logger = Logger.getMyLogger(getClass().getName());
     private final PieceContext context;
 
-    private SubscriptionState state = PREPARE_SUBSCRIPTION;
-
-    public SubscribeToMoves(Agent agent, PieceContext context) {
-        super(agent);
+    public SubscribeToMoves(PieceContext context) {
+        super(MOVE_SUBSCRIPTION_PROTOCOL);
         this.context = context;
     }
 
-    private ACLMessage prepareSubscription(ACLMessage subscription) {
+    @Override
+    public ACLMessage prepareSubscription(ACLMessage subscription) {
         subscription.addReceiver(context.getGameAgentAID());
         subscription.setProtocol(MOVE_SUBSCRIPTION_PROTOCOL);
         subscription.setConversationId(UUID.randomUUID().toString());
@@ -74,57 +58,7 @@ public class SubscribeToMoves extends SimpleBehaviour {
     }
 
     @Override
-    public void action() {
-        ACLMessage request, response;
-
-        switch (this.state) {
-            case PREPARE_SUBSCRIPTION:
-                logger.info("Preparing subscription");
-                request = this.prepareSubscription(ChessMessageBuilder.constructMessage(ACLMessage.SUBSCRIBE));
-                getDataStore().put(REQUEST_KEY, request);
-                state = SubscriptionState.SEND_SUBSCRIPTION_REQUEST;
-                break;
-            case SEND_SUBSCRIPTION_REQUEST:
-                logger.info("Sending subscription");
-                request = (ACLMessage) getDataStore().get(REQUEST_KEY);
-                myAgent.send(request);
-                state = SubscriptionState.WAIT_FOR_RESPONSE;
-                break;
-            case WAIT_FOR_RESPONSE:
-                if (receiveResponse()) {
-                    logger.info("Received subscription response");
-                    state = SubscriptionState.HANDLE_RESPONSE;
-                } else {
-                    block();
-                }
-                break;
-            case HANDLE_RESPONSE:
-                response = (ACLMessage) getDataStore().get(RESPONSE_KEY);
-                if (response.getPerformative() == ACLMessage.AGREE) {
-                    logger.info("Subscription AGREE received");
-                    context.setMoveSubscriptionId(response.getConversationId());
-                    state = SUBSCRIBED;
-                } else {
-                    logger.warning("Received non-agree to subscription:" + response.getPerformative());
-                    state = PREPARE_SUBSCRIPTION;
-                }
-                break;
-        }
-    }
-
-    private boolean receiveResponse() {
-        var response = myAgent.receive(MESSAGE_TEMPLATE);
-        var responseReceived = response != null;
-
-        if (responseReceived) {
-            getDataStore().put(SubscribeToMoves.RESPONSE_KEY, response);
-        }
-
-        return responseReceived;
-    }
-
-    @Override
-    public boolean done() {
-        return this.state == SUBSCRIBED;
+    public void handleAgree(ACLMessage agree) {
+        context.setMoveSubscriptionId(agree.getConversationId());
     }
 }

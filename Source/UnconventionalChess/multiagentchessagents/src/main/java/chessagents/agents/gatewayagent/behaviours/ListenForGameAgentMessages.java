@@ -36,8 +36,12 @@ public class ListenForGameAgentMessages<M> extends CyclicBehaviour {
     private final Logger logger = Logger.getMyLogger(getClass().getName());
     private final OntologyTranslator<M> ontologyTranslator;
     private final MessageHandler<M> messageHandler;
+
     private final MessageTemplate mt = MessageTemplate.and(
-            MessageTemplate.MatchProtocol(MOVE_SUBSCRIPTION_PROTOCOL),
+            MessageTemplate.or(
+                    MessageTemplate.MatchProtocol(MOVE_SUBSCRIPTION_PROTOCOL),
+                    MessageTemplate.MatchProtocol(CHAT_PROTOCOL)
+            ),
             MessageTemplate.MatchPerformative(ACLMessage.INFORM_REF)
     );
 
@@ -67,7 +71,7 @@ public class ListenForGameAgentMessages<M> extends CyclicBehaviour {
      * @return type of message
      */
     private Optional<MessageType> determineMessageType(ACLMessage agentMessage) {
-        switch (agentMessage.getConversationId()) {
+        switch (agentMessage.getProtocol()) {
             case MOVE_SUBSCRIPTION_PROTOCOL:
                 return Optional.of(MessageType.MOVE_MESSAGE);
             case CHAT_PROTOCOL:

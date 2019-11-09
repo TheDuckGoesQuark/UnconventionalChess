@@ -2,6 +2,7 @@ package stacs.chessgateway.services.impl;
 
 import chessagents.agents.gameagent.GameProperties;
 import chessagents.agents.gatewayagent.behaviours.RequestCreateGame;
+import chessagents.agents.gatewayagent.behaviours.SubscribeToChatter;
 import chessagents.agents.gatewayagent.messages.MoveMessage;
 import chessagents.agents.gatewayagent.messages.OntologyTranslator;
 import chessagents.agents.pieceagent.PieceContext;
@@ -97,13 +98,17 @@ public class GatewayServiceImpl implements GatewayService {
 
             // Subscribe to moves
             var pieceContext = new PieceContext(gameId, null, gameAgentId, null, 0);
-            var subscribeToMoves = new SubscribeToMoves(createGameAgent.getAgent(), pieceContext);
+            var subscribeToMoves = new SubscribeToMoves(pieceContext);
             JadeGateway.execute(subscribeToMoves);
+
+            // Subscribe to chat
+            var subscribeToChat = new SubscribeToChatter(gameAgentId);
+            JadeGateway.execute(subscribeToChat);
 
             // Game creation successful, remember mapping and inform client
             gameContextStore.addMapping(gameId, gameAgentId);
             gameConfiguration.setGameId(gameId);
-            return new Message<GameConfiguration>(Instant.now(), MessageType.GAME_CONFIGURATION_MESSAGE, gameConfiguration);
+            return new Message<>(Instant.now(), MessageType.GAME_CONFIGURATION_MESSAGE, gameConfiguration);
         } catch (InterruptedException | ControllerException e) {
             throw new GatewayFailureException(Arrays.toString(e.getStackTrace()));
         }

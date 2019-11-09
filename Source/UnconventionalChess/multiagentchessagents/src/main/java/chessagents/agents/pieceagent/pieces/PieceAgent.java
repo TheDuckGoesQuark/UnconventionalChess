@@ -40,7 +40,7 @@ public abstract class PieceAgent extends ChessAgent {
         // ask for the AID <-> piece mapping so we know who to talk to
         sequence.addSubBehaviour(new RequestPieceIds(this, context));
         // subscribe to updates about moves
-        sequence.addSubBehaviour(new SubscribeToMoves(this, context));
+        sequence.addSubBehaviour(new SubscribeToMoves(context));
         // start making moves
         sequence.addSubBehaviour(new PlayFSM(this, context));
         addBehaviour(sequence);

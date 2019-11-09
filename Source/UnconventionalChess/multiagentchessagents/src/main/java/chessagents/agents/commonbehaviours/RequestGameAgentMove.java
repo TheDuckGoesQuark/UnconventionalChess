@@ -1,8 +1,6 @@
 package chessagents.agents.commonbehaviours;
 
-import chessagents.agents.ChessAgent;
 import chessagents.agents.ChessMessageBuilder;
-import chessagents.ontology.ChessOntology;
 import chessagents.ontology.schemas.actions.MakeMove;
 import jade.content.onto.OntologyException;
 import jade.content.onto.basic.Action;
@@ -10,7 +8,6 @@ import jade.core.AID;
 import jade.core.behaviours.SimpleBehaviour;
 import jade.domain.FIPANames;
 import jade.lang.acl.ACLMessage;
-import jade.lang.acl.MessageTemplate;
 import jade.util.Logger;
 
 import static jade.content.lang.Codec.CodecException;

@@ -24,17 +24,13 @@ public class GatewayPollingDaemon implements GatewayListener, Runnable {
     private static final Logger logger = LoggerFactory.getLogger(GatewayPollingDaemon.class);
 
     private final ExecutorService executorService = Executors.newSingleThreadExecutor();
-    private final GatewayService gatewayService;
-    private final OntologyTranslator<Message> ontologyMessageMapper;
-    private final GameContextStore gameContextStore;
+    private final ListenForGameAgentMessages<Message> listenerBehaviour;
 
     private Future task;
 
     @Autowired
-    public GatewayPollingDaemon(GatewayService gatewayService, OntologyTranslator<Message> ontologyMessageMapper, GameContextStore gameContextStore) {
-        this.gatewayService = gatewayService;
-        this.ontologyMessageMapper = ontologyMessageMapper;
-        this.gameContextStore = gameContextStore;
+    public GatewayPollingDaemon(GatewayService gatewayService, OntologyTranslator<Message> ontologyMessageMapper) {
+        this.listenerBehaviour = new ListenForGameAgentMessages<>(ontologyMessageMapper, gatewayService);
         JadeGateway.addListener(this);
     }
 
@@ -50,17 +46,16 @@ public class GatewayPollingDaemon implements GatewayListener, Runnable {
         task.cancel(true);
     }
 
-
     @Override
     public void run() {
         while (JadeGateway.isGatewayActive()) {
-            logger.info("Listening for messages from gateway");
-            var listener = new ListenForGameAgentMessages<Message>(ontologyMessageMapper, gatewayService);
-
             try {
-                JadeGateway.execute(listener);
+                logger.info("Listening for messages from gateway");
+
+                listenerBehaviour.reset();
+                JadeGateway.execute(listenerBehaviour);
             } catch (ControllerException | InterruptedException e) {
-                logger.warn("Failed to start callback on move listener");
+                logger.warn("Failed to start callback on move listener: " + e.getMessage());
             }
         }
     }
