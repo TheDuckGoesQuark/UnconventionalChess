@@ -1,0 +1,105 @@
+package chessagents.agents.pieceagent.behaviours.turn.statebehaviours;
+
+import chessagents.agents.ChessMessageBuilder;
+import chessagents.agents.pieceagent.PieceContext;
+import chessagents.agents.pieceagent.behaviours.turn.TurnContext;
+import chessagents.agents.pieceagent.behaviours.turn.PieceState;
+import chessagents.agents.pieceagent.pieces.PieceAgent;
+import chessagents.ontology.ChessOntology;
+import jade.content.OntoAID;
+import jade.content.abs.AbsIRE;
+import jade.content.abs.AbsPredicate;
+import jade.content.abs.AbsVariable;
+import jade.content.lang.Codec;
+import jade.content.lang.sl.SLVocabulary;
+import jade.content.onto.BasicOntology;
+import jade.content.onto.OntologyException;
+import jade.domain.FIPAAgentManagement.NotUnderstoodException;
+import jade.lang.acl.ACLMessage;
+import jade.proto.SimpleAchieveREInitiator;
+import jade.util.Logger;
+
+import static chessagents.agents.gameagent.behaviours.gameplay.ElectLeaderAgent.ELECT_SPEAKER_PROTOCOL_NAME;
+import static chessagents.agents.pieceagent.behaviours.turn.PieceTransition.I_AM_SPEAKER;
+import static chessagents.agents.pieceagent.behaviours.turn.PieceTransition.I_AM_NOT_SPEAKER;
+
+/**
+ * Requests to know who the speaker is at the start of the turn
+ */
+public class WaitForInitialSpeaker extends SimpleAchieveREInitiator implements PieceStateBehaviour {
+
+    private final Logger logger = Logger.getMyLogger(getClass().getName());
+    private final TurnContext turnContext;
+    private final PieceContext pieceContext;
+
+    public WaitForInitialSpeaker(PieceAgent pieceAgent, PieceContext pieceContext, TurnContext turnContext) {
+        super(pieceAgent, ChessMessageBuilder.constructMessage(ACLMessage.QUERY_REF));
+        this.turnContext = turnContext;
+        this.pieceContext = pieceContext;
+    }
+
+    @Override
+    public void onStart() {
+        logCurrentState(logger, PieceState.WAIT_FOR_INITIAL_SPEAKER);
+    }
+
+    @Override
+    protected ACLMessage prepareRequest(ACLMessage request) {
+        // JADE Impl resets the internal data store which nulls our request we gave it in the constructor.
+        // I lost at least two hours to that nonsense. So now we need this check.
+        if (request == null) request = ChessMessageBuilder.constructMessage(ACLMessage.QUERY_REF);
+
+        request.addReceiver(pieceContext.getGameAgentAID());
+        request.setProtocol(ELECT_SPEAKER_PROTOCOL_NAME);
+
+        var absAID = new AbsVariable("leader", ChessOntology.IS_SPEAKER_AGENT);
+        var absIsSpeaker = new AbsPredicate(ChessOntology.IS_SPEAKER);
+        absIsSpeaker.set(ChessOntology.IS_SPEAKER_AGENT, absAID);
+
+        var ire = new AbsIRE(SLVocabulary.IOTA);
+        ire.setVariable(absAID);
+        ire.setProposition(absIsSpeaker);
+
+        try {
+            myAgent.getContentManager().fillContent(request, ire);
+        } catch (Codec.CodecException | OntologyException e) {
+            logger.warning("Failed to construct request for leader: " + e.getMessage());
+        }
+
+        return super.prepareRequest(request);
+    }
+
+    @Override
+    protected void handleInform(ACLMessage inform) {
+        try {
+            var abs = (AbsPredicate) myAgent.getContentManager().extractAbsContent(inform);
+
+            if (abs.getTypeName().equals(BasicOntology.EQUALS)) {
+                var right = abs.getAbsTerm(BasicOntology.EQUALS_RIGHT);
+                var leaderAID = (OntoAID) ChessOntology.getInstance().toObject(right);
+                turnContext.setCurrentSpeaker(leaderAID);
+                logger.info("Speaker realised as " + turnContext.getCurrentSpeaker().getName());
+            } else {
+                throw new NotUnderstoodException("Did not receive answer to query?");
+            }
+
+        } catch (Codec.CodecException | OntologyException | NotUnderstoodException e) {
+            logger.warning("Failed when receiving inform to speaker query: " + e.getMessage());
+        }
+    }
+
+    @Override
+    public boolean done() {
+        return turnContext.getCurrentSpeaker() != null;
+    }
+
+    @Override
+    public int getNextTransition() {
+        return (turnContext.getCurrentSpeaker().equals(myAgent.getAID()) ? I_AM_SPEAKER : I_AM_NOT_SPEAKER).ordinal();
+    }
+
+    @Override
+    public int onEnd() {
+        return getNextTransition();
+    }
+}

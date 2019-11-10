@@ -1,16 +1,14 @@
 package chessagents.agents.pieceagent.behaviours.turn;
 
-import chessagents.agents.pieceagent.behaviours.turn.fsm.PieceFSM;
-import chessagents.agents.pieceagent.behaviours.turn.fsm.PieceState;
-import chessagents.agents.pieceagent.behaviours.turn.states.*;
-import chessagents.agents.pieceagent.behaviours.turn.states.nonspeaker.*;
-import chessagents.agents.pieceagent.behaviours.turn.states.speaker.*;
+import chessagents.agents.pieceagent.behaviours.turn.statebehaviours.*;
+import chessagents.agents.pieceagent.behaviours.turn.statebehaviours.nonspeaker.*;
+import chessagents.agents.pieceagent.behaviours.turn.statebehaviours.speaker.*;
 import chessagents.agents.pieceagent.pieces.PieceAgent;
 import chessagents.agents.pieceagent.PieceContext;
 import jade.core.behaviours.DataStore;
 
-import static chessagents.agents.pieceagent.behaviours.turn.fsm.PieceState.*;
-import static chessagents.agents.pieceagent.behaviours.turn.fsm.PieceTransition.*;
+import static chessagents.agents.pieceagent.behaviours.turn.PieceState.*;
+import static chessagents.agents.pieceagent.behaviours.turn.PieceTransition.*;
 
 /**
  * Implementation of the FSM found at

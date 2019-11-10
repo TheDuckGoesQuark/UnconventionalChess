@@ -3,7 +3,7 @@ package chessagents.agents.pieceagent.eventhandlers;
 import chessagents.agents.pieceagent.events.Event;
 import chessagents.agents.pieceagent.pieces.PieceAgent;
 
-public interface PieceEventHandler<E> {
+public abstract class PieceEventHandler<E extends Event> {
 
     /**
      * Applies the given event to the given agent
@@ -11,8 +11,7 @@ public interface PieceEventHandler<E> {
      * @param e     event to apply
      * @param agent agent experiencing the event
      */
-    default void apply(Event e, PieceAgent agent) {
+    public void apply(E e, PieceAgent agent) {
         // do nothing
     }
-
 }

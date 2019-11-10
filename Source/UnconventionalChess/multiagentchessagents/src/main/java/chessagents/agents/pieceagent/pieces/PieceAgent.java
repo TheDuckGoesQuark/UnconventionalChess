@@ -28,7 +28,7 @@ import java.util.Set;
 
 public abstract class PieceAgent extends ChessAgent {
 
-    private final Map<Class, PieceEventHandler> handlers = new HashMap<>();
+    private final Map<Class<? extends Event>, PieceEventHandler<?>> handlers = new HashMap<>();
     private final Random random = new Random();
     private Logger logger;
     private PieceContext context;
@@ -111,6 +111,7 @@ public abstract class PieceAgent extends ChessAgent {
     }
 
     public void experience(Event e) {
-        this.handlers.get(e.getClass()).apply(e, this);
+        this.handlers.getOrDefault(e.getClass(), new PieceEventHandler() {
+        }).apply(e, this);
     }
 }
