@@ -10,6 +10,10 @@ import lombok.Setter;
 
 import java.util.List;
 
+/**
+ * PieceContext provides information about the current state of the piece, and any static information such as
+ * its colour or the game agent.
+ */
 @Getter
 @Setter
 public class PieceContext {
@@ -21,7 +25,7 @@ public class PieceContext {
 
     private String moveSubscriptionId = null;
 
-    public PieceContext(int gameId, Colour myColour, AID gameAgentAID, Position myPosition, int maxDebateCycle) {
+    public PieceContext(int gameId, Colour myColour, AID gameAgentAID, int maxDebateCycle) {
         gameContext.setGameId(gameId);
         this.myColour = myColour;
         this.gameAgentAID = gameAgentAID;

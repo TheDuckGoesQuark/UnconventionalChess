@@ -3,15 +3,12 @@ package chessagents.agents.pieceagent.pieces;
 import chessagents.agents.ChessAgent;
 import chessagents.agents.pieceagent.PieceContext;
 import chessagents.agents.pieceagent.behaviours.chat.SendChatMessage;
-import chessagents.agents.pieceagent.behaviours.turn.PlayFSM;
 import chessagents.agents.pieceagent.behaviours.initial.RequestPieceIds;
 import chessagents.agents.pieceagent.behaviours.initial.SubscribeToGameStatus;
+import chessagents.agents.pieceagent.behaviours.turn.PlayFSM;
 import chessagents.agents.pieceagent.behaviours.turn.SubscribeToMoves;
-import chessagents.agents.pieceagent.eventhandlers.PieceEventHandler;
-import chessagents.agents.pieceagent.events.Event;
 import chessagents.ontology.schemas.actions.BecomeSpeaker;
 import chessagents.ontology.schemas.concepts.Colour;
-import chessagents.ontology.schemas.concepts.Position;
 import jade.content.OntoAID;
 import jade.content.lang.Codec;
 import jade.content.onto.OntologyException;
@@ -21,25 +18,14 @@ import jade.core.behaviours.SequentialBehaviour;
 import jade.lang.acl.ACLMessage;
 import jade.util.Logger;
 
-import java.util.HashMap;
-import java.util.Map;
 import java.util.Random;
 import java.util.Set;
 
 public abstract class PieceAgent extends ChessAgent {
 
-    private final Map<Class<? extends Event>, PieceEventHandler<?>> handlers = new HashMap<>();
     private final Random random = new Random();
     private Logger logger;
     private PieceContext context;
-
-    public PieceAgent() {
-        // TODO put all handlers and the event classes in this map
-        // TODO pass self and event to handler
-        // TODO implement each handler
-        // TODO handlers should be applied to personality, plan, and trigger verbalisation of agent response
-        handlers.put()
-    }
 
     @Override
     protected void setup() {
@@ -51,12 +37,11 @@ public abstract class PieceAgent extends ChessAgent {
 
     private void constructContextFromArgs() {
         var args = getArguments();
-        var startingSquare = (String) args[0];
         var myColour = (String) args[1];
         var gameAgentAID = (String) args[2];
         var gameId = Integer.parseInt((String) args[3]);
         var maxDebateCycle = Integer.parseInt((String) args[4]);
-        context = new PieceContext(gameId, new Colour(myColour), new AID(gameAgentAID, AID.ISGUID), new Position(startingSquare), maxDebateCycle);
+        context = new PieceContext(gameId, new Colour(myColour), new AID(gameAgentAID, AID.ISGUID), maxDebateCycle);
     }
 
     private void addInitialBehaviours() {
@@ -108,10 +93,5 @@ public abstract class PieceAgent extends ChessAgent {
         }
 
         return speaker;
-    }
-
-    public void experience(Event e) {
-        this.handlers.getOrDefault(e.getClass(), new PieceEventHandler() {
-        }).apply(e, this);
     }
 }
