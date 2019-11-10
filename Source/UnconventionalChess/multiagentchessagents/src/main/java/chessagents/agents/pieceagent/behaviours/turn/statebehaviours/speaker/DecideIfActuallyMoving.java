@@ -5,41 +5,36 @@ import chessagents.agents.pieceagent.behaviours.turn.TurnContext;
 import chessagents.agents.pieceagent.behaviours.turn.PieceState;
 import chessagents.agents.pieceagent.behaviours.turn.statebehaviours.PieceStateBehaviour;
 import chessagents.agents.pieceagent.pieces.PieceAgent;
+import jade.core.Agent;
 import jade.core.behaviours.SimpleBehaviour;
 import jade.util.Logger;
 
 import static chessagents.agents.pieceagent.behaviours.turn.PieceTransition.ACTUALLY_MOVING;
+import static chessagents.agents.pieceagent.behaviours.turn.PieceTransition.FAILED_TO_MOVE;
 
-public class DecideIfActuallyMoving extends SimpleBehaviour implements PieceStateBehaviour {
+public class DecideIfActuallyMoving extends PieceStateBehaviour {
 
-    private final Logger logger = Logger.getMyLogger(getClass().getName());
+    private final PieceContext pieceContext;
+    private final TurnContext turnContext;
 
     public DecideIfActuallyMoving(PieceAgent pieceAgent, PieceContext pieceContext, TurnContext turnContext) {
-    }
-
-    @Override
-    public void onStart() {
-        logCurrentState(logger, PieceState.DECIDE_IF_ACTUALLY_MOVING);
+        super(pieceAgent, PieceState.DECIDE_IF_ACTUALLY_MOVING);
+        this.pieceContext = pieceContext;
+        this.turnContext = turnContext;
     }
 
     @Override
     public void action() {
-        // TODO implement
-        // TODO send failure to everyone if not actually moving
-    }
+        var pieceAgent = getAgent();
 
-    @Override
-    public boolean done() {
-        return true;
-    }
-
-    @Override
-    public int getNextTransition() {
-        return ACTUALLY_MOVING.ordinal();
-    }
-
-    @Override
-    public int onEnd() {
-        return getNextTransition();
+        if (pieceAgent.isActuallyMoving()) {
+            // Give piece opportunity to actually perform different move
+            // TODO commented out until able to fetch next move from plan
+//            turnContext.setCurrentMove(pieceAgent.getNextMove());
+            setEvent(ACTUALLY_MOVING);
+        } else {
+            // TODO send failure to everyone if not actually moving
+            setEvent(FAILED_TO_MOVE);
+        }
     }
 }

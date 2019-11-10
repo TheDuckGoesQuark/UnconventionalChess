@@ -6,13 +6,17 @@ import chessagents.ontology.ChessOntology;
 import chessagents.ontology.schemas.concepts.Move;
 import jade.content.ContentElement;
 import jade.content.abs.*;
+import jade.content.lang.Codec;
 import jade.content.lang.sl.SLVocabulary;
 import jade.content.onto.BasicOntology;
 import jade.content.onto.OntologyException;
+import jade.core.Agent;
+import jade.domain.FIPAAgentManagement.NotUnderstoodException;
 import jade.lang.acl.ACLMessage;
 import jade.util.Logger;
 
 import java.util.HashSet;
+import java.util.Optional;
 import java.util.Set;
 
 import static jade.proto.SubscriptionResponder.Subscription;

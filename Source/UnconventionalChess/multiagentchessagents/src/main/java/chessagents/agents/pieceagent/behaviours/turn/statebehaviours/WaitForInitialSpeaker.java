@@ -16,7 +16,7 @@ import jade.content.onto.BasicOntology;
 import jade.content.onto.OntologyException;
 import jade.domain.FIPAAgentManagement.NotUnderstoodException;
 import jade.lang.acl.ACLMessage;
-import jade.proto.SimpleAchieveREInitiator;
+import jade.lang.acl.MessageTemplate;
 import jade.util.Logger;
 
 import static chessagents.agents.gameagent.behaviours.gameplay.ElectLeaderAgent.ELECT_SPEAKER_PROTOCOL_NAME;
@@ -26,29 +26,60 @@ import static chessagents.agents.pieceagent.behaviours.turn.PieceTransition.I_AM
 /**
  * Requests to know who the speaker is at the start of the turn
  */
-public class WaitForInitialSpeaker extends SimpleAchieveREInitiator implements PieceStateBehaviour {
+public class WaitForInitialSpeaker extends PieceStateBehaviour {
+
+    enum RequestState {
+        REQUESTING, WAIT_ON_AGREE, WAIT_ON_INFORM, INFORMED
+    }
 
     private final Logger logger = Logger.getMyLogger(getClass().getName());
     private final TurnContext turnContext;
     private final PieceContext pieceContext;
+    private RequestState requestState = RequestState.REQUESTING;
+    private ACLMessage request;
+    private MessageTemplate conversationIDMatcher = null;
 
     public WaitForInitialSpeaker(PieceAgent pieceAgent, PieceContext pieceContext, TurnContext turnContext) {
-        super(pieceAgent, ChessMessageBuilder.constructMessage(ACLMessage.QUERY_REF));
+        super(pieceAgent, PieceState.WAIT_FOR_INITIAL_SPEAKER);
         this.turnContext = turnContext;
         this.pieceContext = pieceContext;
     }
 
     @Override
-    public void onStart() {
-        logCurrentState(logger, PieceState.WAIT_FOR_INITIAL_SPEAKER);
+    protected void initialiseState() {
+        requestState = RequestState.REQUESTING;
+        request = prepareRequest(ChessMessageBuilder.constructMessage(ACLMessage.QUERY_REF));
+        conversationIDMatcher = MessageTemplate.MatchConversationId(request.getConversationId());
     }
 
     @Override
-    protected ACLMessage prepareRequest(ACLMessage request) {
-        // JADE Impl resets the internal data store which nulls our request we gave it in the constructor.
-        // I lost at least two hours to that nonsense. So now we need this check.
-        if (request == null) request = ChessMessageBuilder.constructMessage(ACLMessage.QUERY_REF);
+    public void action() {
+        switch (requestState) {
+            case REQUESTING:
+                // send request
+                myAgent.send(request);
+                requestState = RequestState.WAIT_ON_AGREE;
+                break;
+            case WAIT_ON_AGREE:
+                var agree = myAgent.receive(MessageTemplate.and(MessageTemplate.MatchPerformative(ACLMessage.AGREE), conversationIDMatcher));
 
+                if (agree != null) requestState = RequestState.WAIT_ON_INFORM;
+                else block();
+                break;
+            case WAIT_ON_INFORM:
+                var inform = myAgent.receive(MessageTemplate.and(MessageTemplate.MatchPerformative(ACLMessage.INFORM), conversationIDMatcher));
+
+                if (inform != null) {
+                    handleInform(inform);
+                    requestState = RequestState.INFORMED;
+                } else block();
+                break;
+            case INFORMED:
+                break;
+        }
+    }
+
+    private ACLMessage prepareRequest(ACLMessage request) {
         request.addReceiver(pieceContext.getGameAgentAID());
         request.setProtocol(ELECT_SPEAKER_PROTOCOL_NAME);
 
@@ -66,11 +97,10 @@ public class WaitForInitialSpeaker extends SimpleAchieveREInitiator implements P
             logger.warning("Failed to construct request for leader: " + e.getMessage());
         }
 
-        return super.prepareRequest(request);
+        return request;
     }
 
-    @Override
-    protected void handleInform(ACLMessage inform) {
+    private void handleInform(ACLMessage inform) {
         try {
             var abs = (AbsPredicate) myAgent.getContentManager().extractAbsContent(inform);
 
@@ -78,28 +108,13 @@ public class WaitForInitialSpeaker extends SimpleAchieveREInitiator implements P
                 var right = abs.getAbsTerm(BasicOntology.EQUALS_RIGHT);
                 var leaderAID = (OntoAID) ChessOntology.getInstance().toObject(right);
                 turnContext.setCurrentSpeaker(leaderAID);
-                logger.info("Speaker realised as " + turnContext.getCurrentSpeaker().getName());
+                var imSpeaker = turnContext.getCurrentSpeaker().equals(myAgent.getAID());
+                setEvent(imSpeaker ? I_AM_SPEAKER : I_AM_NOT_SPEAKER);
             } else {
                 throw new NotUnderstoodException("Did not receive answer to query?");
             }
-
         } catch (Codec.CodecException | OntologyException | NotUnderstoodException e) {
             logger.warning("Failed when receiving inform to speaker query: " + e.getMessage());
         }
-    }
-
-    @Override
-    public boolean done() {
-        return turnContext.getCurrentSpeaker() != null;
-    }
-
-    @Override
-    public int getNextTransition() {
-        return (turnContext.getCurrentSpeaker().equals(myAgent.getAID()) ? I_AM_SPEAKER : I_AM_NOT_SPEAKER).ordinal();
-    }
-
-    @Override
-    public int onEnd() {
-        return getNextTransition();
     }
 }

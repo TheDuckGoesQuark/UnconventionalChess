@@ -10,25 +10,14 @@ import jade.util.Logger;
 
 import static chessagents.agents.pieceagent.behaviours.turn.PieceTransition.REQUESTED_TO_SPEAK;
 
-public class RequestToSpeak extends SimpleBehaviour implements PieceStateBehaviour {
-    private final Logger logger = Logger.getMyLogger(getClass().getName());
+public class RequestToSpeak extends PieceStateBehaviour {
     private final PieceContext pieceContext;
     private final TurnContext turnContext;
 
     public RequestToSpeak(PieceAgent pieceAgent, PieceContext pieceContext, TurnContext turnContext) {
-        super(pieceAgent);
+        super(pieceAgent, PieceState.REQUEST_TO_SPEAK);
         this.pieceContext = pieceContext;
         this.turnContext = turnContext;
-    }
-
-    @Override
-    public void onStart() {
-        logCurrentState(logger, PieceState.REQUEST_TO_SPEAK);
-    }
-
-    @Override
-    public int getNextTransition() {
-        return REQUESTED_TO_SPEAK.ordinal();
     }
 
     @Override
@@ -36,15 +25,6 @@ public class RequestToSpeak extends SimpleBehaviour implements PieceStateBehavio
         var cfp = turnContext.getCurrentMessage();
         var proposal = ((PieceAgent) myAgent).constructProposalToSpeak(cfp);
         myAgent.send(proposal);
-    }
-
-    @Override
-    public boolean done() {
-        return true;
-    }
-
-    @Override
-    public int onEnd() {
-        return getNextTransition();
+        setEvent(REQUESTED_TO_SPEAK);
     }
 }

@@ -16,30 +16,19 @@ import jade.util.Logger;
 
 import static chessagents.agents.pieceagent.behaviours.turn.PieceTransition.*;
 
-public class WaitForProposalRequest extends SimpleBehaviour implements PieceStateBehaviour {
+public class WaitForProposalRequest extends PieceStateBehaviour {
 
     private static final MessageTemplate MESSAGE_TEMPLATE = MessageTemplate.or(
             MessageTemplate.MatchPerformative(ACLMessage.CFP),
             MessageTemplate.MatchPerformative(ACLMessage.REQUEST)
     );
-    private final Logger logger = Logger.getMyLogger(getClass().getName());
     private final PieceContext pieceContext;
     private final TurnContext turnContext;
-    private PieceTransition nextTransition = null;
 
     public WaitForProposalRequest(PieceAgent pieceAgent, PieceContext pieceContext, TurnContext turnContext) {
-        super(pieceAgent);
+        super(pieceAgent, PieceState.WAIT_FOR_PROPOSAL_REQUEST);
         this.pieceContext = pieceContext;
         this.turnContext = turnContext;
-    }
-
-    /**
-     * restore this state behaviour to its initial values before proceeding
-     */
-    @Override
-    public void onStart() {
-        logCurrentState(logger, PieceState.WAIT_FOR_PROPOSAL_REQUEST);
-        nextTransition = null;
     }
 
     @Override
@@ -57,17 +46,17 @@ public class WaitForProposalRequest extends SimpleBehaviour implements PieceStat
         switch (message.getPerformative()) {
             case ACLMessage.CFP:
                 logger.info("Call for proposal received!");
-                nextTransition = PROPOSAL_REQUESTED;
+                setEvent(PROPOSAL_REQUESTED);
                 turnContext.setDebateCycles(turnContext.getDebateCycles() + 1);
                 turnContext.setCurrentMessage(message);
                 break;
             case ACLMessage.REQUEST:
                 if (asksMeToMove(message)) {
                     logger.info("Asked me to move!");
-                    nextTransition = TOLD_TO_MOVE;
+                    setEvent(TOLD_TO_MOVE);
                 } else {
                     logger.info("Asked other piece to move!");
-                    nextTransition = OTHER_PIECE_TOLD_TO_MOVE;
+                    setEvent(OTHER_PIECE_TOLD_TO_MOVE);
                 }
 
                 turnContext.setCurrentMessage(message);
@@ -86,20 +75,5 @@ public class WaitForProposalRequest extends SimpleBehaviour implements PieceStat
             logger.warning("Failed to read message: " + e.getMessage());
         }
         return asksMeToMove;
-    }
-
-    @Override
-    public boolean done() {
-        return nextTransition != null;
-    }
-
-    @Override
-    public int getNextTransition() {
-        return (nextTransition != null ? nextTransition : OTHER_PIECE_TOLD_TO_MOVE).ordinal();
-    }
-
-    @Override
-    public int onEnd() {
-        return getNextTransition();
     }
 }

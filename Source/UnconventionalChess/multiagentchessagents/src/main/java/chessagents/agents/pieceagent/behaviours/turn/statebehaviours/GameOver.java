@@ -1,31 +1,21 @@
 package chessagents.agents.pieceagent.behaviours.turn.statebehaviours;
 
 import chessagents.agents.pieceagent.behaviours.turn.PieceState;
+import chessagents.agents.pieceagent.behaviours.turn.PieceTransition;
+import chessagents.agents.pieceagent.events.Event;
+import chessagents.agents.pieceagent.pieces.PieceAgent;
 import jade.core.behaviours.Behaviour;
 import jade.util.Logger;
 
-public class GameOver extends Behaviour implements PieceStateBehaviour {
+public class GameOver extends PieceStateBehaviour {
 
-    private final Logger logger = Logger.getMyLogger(getClass().getName());
-
-    @Override
-    public void onStart() {
-        logCurrentState(logger, PieceState.END_TURN);
+    public GameOver(PieceAgent pieceAgent) {
+        super(pieceAgent, PieceState.GAME_OVER);
     }
 
     @Override
     public void action() {
         // TODO something?
-    }
-
-    @Override
-    public boolean done() {
-        return true;
-    }
-
-    @Override
-    public int getNextTransition() {
-        // Special case, no transitions
-        return 0;
+        setEvent(PieceTransition.GAME_IS_OVER);
     }
 }

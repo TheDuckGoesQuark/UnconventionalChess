@@ -18,20 +18,14 @@ import jade.util.Logger;
 
 import static chessagents.agents.pieceagent.behaviours.turn.PieceTransition.TOLD_PIECE_TO_MOVE;
 
-public class TellPieceToMove extends SimpleBehaviour implements PieceStateBehaviour {
-    private final Logger logger = Logger.getMyLogger(getClass().getName());
+public class TellPieceToMove extends PieceStateBehaviour {
     private final PieceContext pieceContext;
     private final TurnContext turnContext;
 
     public TellPieceToMove(PieceAgent pieceAgent, PieceContext pieceContext, TurnContext turnContext) {
-        super(pieceAgent);
+        super(pieceAgent, PieceState.TELL_PIECE_TO_MOVE);
         this.pieceContext = pieceContext;
         this.turnContext = turnContext;
-    }
-
-    @Override
-    public void onStart() {
-        logCurrentState(logger, PieceState.TELL_PIECE_TO_MOVE);
     }
 
     @Override
@@ -41,6 +35,7 @@ public class TellPieceToMove extends SimpleBehaviour implements PieceStateBehavi
             logger.info("Telling " + movingPiece.get().getAgentAID() + " to move");
             var request = createRequestToMove(movingPiece.get().getAgentAID(), move);
             sendRequestMove(request);
+            setEvent(TOLD_PIECE_TO_MOVE);
         });
     }
 
@@ -68,20 +63,5 @@ public class TellPieceToMove extends SimpleBehaviour implements PieceStateBehavi
         }
 
         return request;
-    }
-
-    @Override
-    public boolean done() {
-        return true;
-    }
-
-    @Override
-    public int getNextTransition() {
-        return TOLD_PIECE_TO_MOVE.ordinal();
-    }
-
-    @Override
-    public int onEnd() {
-        return getNextTransition();
     }
 }

@@ -11,25 +11,20 @@ import jade.lang.acl.ACLMessage;
 import jade.lang.acl.MessageTemplate;
 import jade.util.Logger;
 
-public class WaitForPermissionToSpeak extends SimpleBehaviour implements PieceStateBehaviour {
+public class WaitForPermissionToSpeak extends PieceStateBehaviour {
 
-    private final Logger logger = Logger.getMyLogger(getClass().getName());
     private final PieceContext pieceContext;
     private final TurnContext turnContext;
-    private PieceTransition transition = null;
     private MessageTemplate mt = null;
 
     public WaitForPermissionToSpeak(PieceAgent pieceAgent, PieceContext pieceContext, TurnContext turnContext) {
-        super(pieceAgent);
+        super(pieceAgent, PieceState.WAIT_FOR_PERMISSION_TO_SPEAK);
         this.pieceContext = pieceContext;
         this.turnContext = turnContext;
     }
 
     @Override
-    public void onStart() {
-        logCurrentState(logger, PieceState.WAIT_FOR_PERMISSION_TO_SPEAK);
-        transition = null;
-
+    protected void initialiseState() {
         var cfp = turnContext.getCurrentMessage();
         mt = MessageTemplate.and(
                 MessageTemplate.MatchConversationId(cfp.getConversationId()),
@@ -49,12 +44,12 @@ public class WaitForPermissionToSpeak extends SimpleBehaviour implements PieceSt
                 case ACLMessage.ACCEPT_PROPOSAL:
                     logger.info("Proposal accepted!");
                     turnContext.setCurrentMessage(response);
-                    transition = PieceTransition.CHOSEN_TO_SPEAK;
+                    setEvent(PieceTransition.CHOSEN_TO_SPEAK);
                     break;
                 case ACLMessage.REJECT_PROPOSAL:
                     logger.info("Proposal rejected!");
                     turnContext.setCurrentMessage(response);
-                    transition = PieceTransition.REJECTED_TO_SPEAK;
+                    setEvent(PieceTransition.REJECTED_TO_SPEAK);
                     break;
                 default:
                     logger.warning("Unknown response to CFP: " + response.toString());
@@ -63,20 +58,5 @@ public class WaitForPermissionToSpeak extends SimpleBehaviour implements PieceSt
         } else {
             block();
         }
-    }
-
-    @Override
-    public int getNextTransition() {
-        return transition.ordinal();
-    }
-
-    @Override
-    public boolean done() {
-        return transition != null;
-    }
-
-    @Override
-    public int onEnd() {
-        return getNextTransition();
     }
 }

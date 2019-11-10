@@ -12,55 +12,33 @@ import jade.util.Logger;
 import static chessagents.agents.pieceagent.behaviours.turn.PieceTransition.REQUESTED_TO_REMAIN_SPEAKER;
 import static chessagents.agents.pieceagent.behaviours.turn.statebehaviours.speaker.RequestSpeakerProposals.SPEAKER_CONTRACT_NET_PROTOCOL;
 
-public class RequestToRemainSpeaker extends SimpleBehaviour implements PieceStateBehaviour {
+public class RequestToRemainSpeaker extends PieceStateBehaviour {
 
-    private final Logger logger = Logger.getMyLogger(getClass().getName());
     private final MessageTemplate mt = MessageTemplate.and(
             MessageTemplate.MatchProtocol(SPEAKER_CONTRACT_NET_PROTOCOL),
             MessageTemplate.MatchSender(myAgent.getAID())
     );
     private final PieceContext pieceContext;
     private final TurnContext turnContext;
-    private boolean done = false;
 
     public RequestToRemainSpeaker(PieceAgent pieceAgent, PieceContext pieceContext, TurnContext turnContext) {
-        super(pieceAgent);
+        super(pieceAgent, PieceState.REQUEST_TO_REMAIN_SPEAKER);
         this.pieceContext = pieceContext;
         this.turnContext = turnContext;
     }
 
     @Override
-    public void onStart() {
-        logCurrentState(logger, PieceState.REQUEST_TO_REMAIN_SPEAKER);
-        done = false;
-    }
-
-    @Override
-    public int getNextTransition() {
-        return REQUESTED_TO_REMAIN_SPEAKER.ordinal();
-    }
-
-    @Override
     public void action() {
+        // Wait until received CFP from self to then propose self as speaker
         var message = myAgent.receive(mt);
 
         if (message != null) {
             turnContext.setCurrentMessage(message);
             var proposal = ((PieceAgent) myAgent).constructProposalToSpeak(message);
             myAgent.send(proposal);
-            done = true;
+            setEvent(REQUESTED_TO_REMAIN_SPEAKER);
         } else {
             block();
         }
-    }
-
-    @Override
-    public boolean done() {
-        return done;
-    }
-
-    @Override
-    public int onEnd() {
-        return getNextTransition();
     }
 }

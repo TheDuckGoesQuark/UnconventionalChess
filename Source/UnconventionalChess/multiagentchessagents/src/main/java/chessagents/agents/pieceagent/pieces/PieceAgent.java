@@ -1,14 +1,17 @@
 package chessagents.agents.pieceagent.pieces;
 
 import chessagents.agents.ChessAgent;
+import chessagents.agents.pieceagent.History;
 import chessagents.agents.pieceagent.PieceContext;
 import chessagents.agents.pieceagent.behaviours.chat.SendChatMessage;
 import chessagents.agents.pieceagent.behaviours.initial.RequestPieceIds;
 import chessagents.agents.pieceagent.behaviours.initial.SubscribeToGameStatus;
 import chessagents.agents.pieceagent.behaviours.turn.PlayFSM;
 import chessagents.agents.pieceagent.behaviours.turn.SubscribeToMoves;
+import chessagents.agents.pieceagent.events.Event;
 import chessagents.ontology.schemas.actions.BecomeSpeaker;
 import chessagents.ontology.schemas.concepts.Colour;
+import chessagents.ontology.schemas.concepts.Move;
 import jade.content.OntoAID;
 import jade.content.lang.Codec;
 import jade.content.onto.OntologyException;
@@ -23,6 +26,7 @@ import java.util.Set;
 
 public abstract class PieceAgent extends ChessAgent {
 
+    private final History history = new History();
     private final Random random = new Random();
     private Logger logger;
     private PieceContext context;
@@ -93,5 +97,91 @@ public abstract class PieceAgent extends ChessAgent {
         }
 
         return speaker;
+    }
+
+    public boolean requestingProposals() {
+        return random.nextBoolean();
+    }
+
+    public boolean willAgreeToMove(Move suggestedMove) {
+        // TODO or not
+        return true;
+    }
+
+    public boolean isActuallyMoving() {
+        // TODO or not
+        return true;
+    }
+
+    public Move getNextMove() {
+        // TODO fetch move from plan
+        return null;
+    }
+
+    public void experienceEvent(Event event) {
+        switch (event.getTransition()) {
+            case MY_TURN:
+                break;
+            case NOT_MY_TURN:
+                break;
+            case GAME_IS_OVER:
+                break;
+            case OTHER_MOVE_RECEIVED:
+                break;
+            case MOVE_PERFORMED:
+                break;
+            case TURN_ENDED:
+                break;
+            case I_AM_SPEAKER:
+                break;
+            case I_AM_NOT_SPEAKER:
+                break;
+            case NOT_REQUESTING_PROPOSALS:
+                break;
+            case REQUESTING_PROPOSALS:
+                break;
+            case PROPOSALS_REQUESTED:
+                break;
+            case REQUESTED_TO_REMAIN_SPEAKER:
+                break;
+            case SPEAKER_CHOSEN:
+                break;
+            case SPEAKER_UPDATED:
+                break;
+            case SPEAKER_UPDATE_SENT:
+                break;
+            case PROPOSAL_REQUESTED:
+                break;
+            case TOLD_TO_MOVE:
+                break;
+            case OTHER_PIECE_TOLD_TO_MOVE:
+                break;
+            case REQUESTED_TO_SPEAK:
+                break;
+            case REJECTED_TO_SPEAK:
+                break;
+            case CHOSEN_TO_SPEAK:
+                break;
+            case REACTED_TO_PREVIOUS_PROPOSAL:
+                break;
+            case TOLD_PIECE_TO_MOVE:
+                break;
+            case PIECE_AGREED_TO_MOVE:
+                break;
+            case PIECE_REFUSED_TO_MOVE:
+                break;
+            case AGREED_TO_MAKE_MOVE:
+                break;
+            case NOT_MOVING:
+                break;
+            case ACTUALLY_MOVING:
+                break;
+            case FAILED_TO_MOVE:
+                break;
+            case MOVE_CONFIRMATION_RECEIVED:
+                break;
+            case OTHER_PIECE_FAILED_TO_MOVE:
+                break;
+        }
     }
 }

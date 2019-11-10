@@ -1,16 +1,14 @@
 package chessagents.agents.pieceagent.behaviours.turn.statebehaviours.speaker;
 
 import chessagents.agents.pieceagent.PieceContext;
-import chessagents.agents.pieceagent.behaviours.turn.TurnContext;
 import chessagents.agents.pieceagent.behaviours.turn.PieceState;
 import chessagents.agents.pieceagent.behaviours.turn.PieceTransition;
+import chessagents.agents.pieceagent.behaviours.turn.TurnContext;
 import chessagents.agents.pieceagent.behaviours.turn.statebehaviours.PieceStateBehaviour;
 import chessagents.agents.pieceagent.pieces.PieceAgent;
 import jade.core.AID;
-import jade.core.behaviours.Behaviour;
 import jade.lang.acl.ACLMessage;
 import jade.lang.acl.MessageTemplate;
-import jade.util.Logger;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -18,25 +16,21 @@ import java.util.stream.Collectors;
 
 import static chessagents.agents.pieceagent.behaviours.turn.statebehaviours.speaker.RequestSpeakerProposals.SPEAKER_CONTRACT_NET_PROTOCOL;
 
-public class ChoosingSpeaker extends Behaviour implements PieceStateBehaviour {
+public class ChoosingSpeaker extends PieceStateBehaviour {
 
-    private final Logger logger = Logger.getMyLogger(getClass().getName());
     private final PieceContext pieceContext;
     private final TurnContext turnContext;
     private final Set<ACLMessage> speakerProposals = new HashSet<>();
     private MessageTemplate mt = null;
-    private PieceTransition transition = null;
 
     public ChoosingSpeaker(PieceAgent pieceAgent, PieceContext pieceContext, TurnContext turnContext) {
-        super(pieceAgent);
+        super(pieceAgent, PieceState.CHOOSING_SPEAKER);
         this.pieceContext = pieceContext;
         this.turnContext = turnContext;
     }
 
     @Override
-    public void onStart() {
-        logCurrentState(logger, PieceState.CHOOSING_SPEAKER);
-        transition = null;
+    protected void initialiseState() {
         speakerProposals.clear();
 
         var conversationID = turnContext.getCurrentMessage().getConversationId();
@@ -55,7 +49,10 @@ public class ChoosingSpeaker extends Behaviour implements PieceStateBehaviour {
         if (receivedRequestFromEveryone()) {
             var speaker = chooseSpeaker();
             sendResults(speaker);
-            transition = PieceTransition.SPEAKER_CHOSEN;
+
+            // Clear speaker to avoid confusion in future states
+            turnContext.setCurrentSpeaker(null);
+            setEvent(PieceTransition.SPEAKER_CHOSEN);
         } else {
             // receive all messages for this protocol
             var message = myAgent.receive(mt);
@@ -110,21 +107,5 @@ public class ChoosingSpeaker extends Behaviour implements PieceStateBehaviour {
                 .forEach(a -> logger.info(a.getLocalName()));
 
         return speakerProposals.size() == numAgents;
-    }
-
-    @Override
-    public boolean done() {
-        return transition != null;
-    }
-
-    @Override
-    public int getNextTransition() {
-        return transition.ordinal();
-    }
-
-    @Override
-    public int onEnd() {
-        turnContext.setCurrentSpeaker(null);
-        return getNextTransition();
     }
 }

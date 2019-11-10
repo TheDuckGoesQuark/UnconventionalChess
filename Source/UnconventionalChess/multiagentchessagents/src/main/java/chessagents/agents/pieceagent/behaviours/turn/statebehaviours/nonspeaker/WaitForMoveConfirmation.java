@@ -23,24 +23,21 @@ import java.util.Optional;
 import static chessagents.agents.pieceagent.behaviours.turn.PieceTransition.MOVE_CONFIRMATION_RECEIVED;
 import static chessagents.agents.pieceagent.behaviours.turn.PieceTransition.OTHER_PIECE_FAILED_TO_MOVE;
 
-public class WaitForMoveConfirmation extends SimpleBehaviour implements PieceStateBehaviour {
+public class WaitForMoveConfirmation extends PieceStateBehaviour {
 
     private final Logger logger = Logger.getMyLogger(getClass().getName());
     private final PieceContext pieceContext;
     private final TurnContext turnContext;
     private MessageTemplate mt = null;
-    private PieceTransition transition = null;
 
     public WaitForMoveConfirmation(PieceAgent pieceAgent, PieceContext pieceContext, TurnContext turnContext) {
-        super(pieceAgent);
+        super(pieceAgent, PieceState.WAIT_FOR_MOVE_CONFIRMATION);
         this.pieceContext = pieceContext;
         this.turnContext = turnContext;
     }
 
     @Override
-    public void onStart() {
-        logCurrentState(logger, PieceState.WAIT_FOR_MOVE_CONFIRMATION);
-        transition = null;
+    protected void initialiseState() {
         mt = MessageTemplate.or(
                 MessageTemplate.MatchConversationId(pieceContext.getMoveSubscriptionId()),
                 MessageTemplate.and(
@@ -56,13 +53,14 @@ public class WaitForMoveConfirmation extends SimpleBehaviour implements PieceSta
 
         if (message != null) {
             if (message.getPerformative() == ACLMessage.FAILURE) {
-                transition = OTHER_PIECE_FAILED_TO_MOVE;
+                setEvent(OTHER_PIECE_FAILED_TO_MOVE);
             } else {
                 extractMove(message).ifPresent(turnContext::setCurrentMove);
-                transition = MOVE_CONFIRMATION_RECEIVED;
+                setEvent(MOVE_CONFIRMATION_RECEIVED);
             }
         } else {
-            if (transition == null) block();
+            // TODO shouldn't need this check, check if we do.
+            if (event == null) block();
         }
     }
 
@@ -83,20 +81,5 @@ public class WaitForMoveConfirmation extends SimpleBehaviour implements PieceSta
             logger.warning("Failed to deserialize move message: " + e.getMessage());
         }
         return result;
-    }
-
-    @Override
-    public boolean done() {
-        return transition != null;
-    }
-
-    @Override
-    public int getNextTransition() {
-        return transition.ordinal();
-    }
-
-    @Override
-    public int onEnd() {
-        return getNextTransition();
     }
 }

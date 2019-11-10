@@ -10,35 +10,20 @@ import jade.util.Logger;
 
 import static chessagents.agents.pieceagent.behaviours.turn.PieceTransition.REACTED_TO_PREVIOUS_PROPOSAL;
 
-public class ReactToPreviousProposal extends OneShotBehaviour implements PieceStateBehaviour {
-    private final Logger logger = Logger.getMyLogger(getClass().getName());
+public class ReactToPreviousProposal extends PieceStateBehaviour {
     private final PieceContext pieceContext;
     private final TurnContext turnContext;
 
     public ReactToPreviousProposal(PieceAgent pieceAgent, PieceContext pieceContext, TurnContext turnContext) {
-        super(pieceAgent);
+        super(pieceAgent, PieceState.REACT_TO_PREVIOUS_PROPOSAL);
         this.pieceContext = pieceContext;
         this.turnContext = turnContext;
     }
 
     @Override
-    public void onStart() {
-        logCurrentState(logger, PieceState.REACT_TO_PREVIOUS_PROPOSAL);
-    }
-
-    @Override
-    public int getNextTransition() {
-        return REACTED_TO_PREVIOUS_PROPOSAL.ordinal();
-    }
-
-    @Override
     public void action() {
         logger.info("Reacting to previous proposal");
-        // TODO
-    }
-
-    @Override
-    public int onEnd() {
-        return getNextTransition();
+        setEvent(REACTED_TO_PREVIOUS_PROPOSAL);
+        // TODO react to previous proposal
     }
 }

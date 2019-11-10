@@ -3,6 +3,7 @@ package chessagents.agents.pieceagent.behaviours.turn.statebehaviours;
 import chessagents.agents.pieceagent.PieceContext;
 import chessagents.agents.pieceagent.behaviours.turn.TurnContext;
 import chessagents.agents.pieceagent.behaviours.turn.PieceState;
+import chessagents.agents.pieceagent.events.Event;
 import chessagents.agents.pieceagent.pieces.PieceAgent;
 import chessagents.ontology.ChessOntology;
 import chessagents.ontology.schemas.concepts.Move;
@@ -20,22 +21,20 @@ import java.util.Optional;
 
 import static chessagents.agents.pieceagent.behaviours.turn.PieceTransition.OTHER_MOVE_RECEIVED;
 
-public class WaitForMove extends SimpleBehaviour implements PieceStateBehaviour {
+public class WaitForMove extends PieceStateBehaviour {
 
-    private final Logger logger = Logger.getMyLogger(getClass().getName());
     private final PieceContext pieceContext;
     private final TurnContext turnContext;
     private MessageTemplate messageTemplate;
 
     public WaitForMove(PieceAgent pieceAgent, PieceContext pieceContext, TurnContext turnContext) {
-        super(pieceAgent);
+        super(pieceAgent, PieceState.WAIT_FOR_MOVE);
         this.pieceContext = pieceContext;
         this.turnContext = turnContext;
     }
 
     @Override
-    public void onStart() {
-        logCurrentState(logger, PieceState.WAIT_FOR_MOVE);
+    protected void initialiseState() {
         messageTemplate = MessageTemplate.MatchConversationId(pieceContext.getMoveSubscriptionId());
     }
 
@@ -44,10 +43,14 @@ public class WaitForMove extends SimpleBehaviour implements PieceStateBehaviour 
         var message = myAgent.receive(messageTemplate);
 
         if (message != null) {
-            extractMove(message).ifPresent(turnContext::setCurrentMove);
+            extractMove(message).ifPresentOrElse(move -> {
+                turnContext.setCurrentMove(move);
+                setEvent(OTHER_MOVE_RECEIVED);
+            }, () -> logger.warning("Unable to extract move from message: " + message.toString()));
         } else {
             block();
         }
+
     }
 
     private Optional<Move> extractMove(ACLMessage message) {
@@ -67,20 +70,5 @@ public class WaitForMove extends SimpleBehaviour implements PieceStateBehaviour 
             logger.warning("Failed to deserialize move message: " + e.getMessage());
         }
         return result;
-    }
-
-    @Override
-    public boolean done() {
-        return turnContext.getCurrentMove() != null;
-    }
-
-    @Override
-    public int onEnd() {
-        return getNextTransition();
-    }
-
-    @Override
-    public int getNextTransition() {
-        return OTHER_MOVE_RECEIVED.ordinal();
     }
 }

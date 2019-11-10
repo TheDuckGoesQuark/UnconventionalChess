@@ -14,35 +14,30 @@ import jade.lang.acl.ACLMessage;
 import jade.util.Logger;
 
 import static chessagents.agents.pieceagent.behaviours.turn.PieceTransition.AGREED_TO_MAKE_MOVE;
+import static chessagents.agents.pieceagent.behaviours.turn.PieceTransition.NOT_MOVING;
 
-public class DecideIfMoving extends SimpleBehaviour implements PieceStateBehaviour {
+public class DecideIfMoving extends PieceStateBehaviour {
 
-    private final Logger logger = Logger.getMyLogger(getClass().getName());
     private final PieceContext pieceContext;
     private final TurnContext turnContext;
-    private boolean agreed = false;
 
     public DecideIfMoving(PieceAgent pieceAgent, PieceContext pieceContext, TurnContext turnContext) {
-        super(pieceAgent);
+        super(pieceAgent, PieceState.DECIDE_IF_MOVING);
         this.pieceContext = pieceContext;
         this.turnContext = turnContext;
     }
 
     @Override
-    public void onStart() {
-        logCurrentState(logger, PieceState.DECIDE_IF_MOVING);
-        agreed = false;
-        super.onStart();
-    }
-
-    @Override
     public void action() {
         var message = turnContext.getCurrentMessage();
-        sendAgree(message);
         saveMove(message);
-        agreed = true;
 
-        // TODO not agree transition
+        if (((PieceAgent) myAgent).willAgreeToMove(turnContext.getCurrentMove())) {
+            sendAgree(message);
+            setEvent(AGREED_TO_MAKE_MOVE);
+        } else {
+            setEvent(NOT_MOVING);
+        }
     }
 
     private void saveMove(ACLMessage message) {
@@ -60,20 +55,5 @@ public class DecideIfMoving extends SimpleBehaviour implements PieceStateBehavio
         agree.setPerformative(ACLMessage.AGREE);
         agree.removeReceiver(myAgent.getAID());
         myAgent.send(agree);
-    }
-
-    @Override
-    public boolean done() {
-        return agreed;
-    }
-
-    @Override
-    public int getNextTransition() {
-        return AGREED_TO_MAKE_MOVE.ordinal();
-    }
-
-    @Override
-    public int onEnd() {
-        return getNextTransition();
     }
 }

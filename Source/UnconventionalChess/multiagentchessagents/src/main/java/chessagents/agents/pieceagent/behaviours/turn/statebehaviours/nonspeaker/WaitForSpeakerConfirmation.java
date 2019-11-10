@@ -19,23 +19,23 @@ import jade.util.Logger;
 import static chessagents.agents.pieceagent.behaviours.turn.PieceTransition.SPEAKER_UPDATED;
 import static chessagents.agents.pieceagent.behaviours.turn.statebehaviours.speaker.RequestSpeakerProposals.SPEAKER_CONTRACT_NET_PROTOCOL;
 
-public class WaitForSpeakerConfirmation extends SimpleBehaviour implements PieceStateBehaviour {
+public class WaitForSpeakerConfirmation extends PieceStateBehaviour {
 
     private final Logger logger = Logger.getMyLogger(getClass().getName());
     private final PieceContext pieceContext;
     private final TurnContext turnContext;
     private MessageTemplate mt = null;
+    // TODO see if we get stuck if we get rid of this
     private boolean speakerUpdated = false;
 
     public WaitForSpeakerConfirmation(PieceAgent pieceAgent, PieceContext pieceContext, TurnContext turnContext) {
-        super(pieceAgent);
+        super(pieceAgent, PieceState.WAIT_FOR_SPEAKER_CONFIRMATION);
         this.pieceContext = pieceContext;
         this.turnContext = turnContext;
     }
 
     @Override
-    public void onStart() {
-        logCurrentState(logger, PieceState.WAIT_FOR_SPEAKER_CONFIRMATION);
+    protected void initialiseState() {
         speakerUpdated = false;
 
         var rejectProposalMessage = turnContext.getCurrentMessage();
@@ -48,7 +48,6 @@ public class WaitForSpeakerConfirmation extends SimpleBehaviour implements Piece
         );
     }
 
-
     @Override
     public void action() {
         var inform = myAgent.receive(mt);
@@ -57,6 +56,7 @@ public class WaitForSpeakerConfirmation extends SimpleBehaviour implements Piece
             var newSpeaker = extractNewSpeaker(inform);
             turnContext.setCurrentSpeaker(newSpeaker);
             speakerUpdated = true;
+            setEvent(SPEAKER_UPDATED);
             logger.info("Speaker updated: " + newSpeaker);
         } else {
             if (!speakerUpdated) block();
@@ -74,20 +74,5 @@ public class WaitForSpeakerConfirmation extends SimpleBehaviour implements Piece
             logger.warning("Failed to extract new speaker: " + e.getMessage());
         }
         return speaker;
-    }
-
-    @Override
-    public int getNextTransition() {
-        return SPEAKER_UPDATED.ordinal();
-    }
-
-    @Override
-    public boolean done() {
-        return speakerUpdated;
-    }
-
-    @Override
-    public int onEnd() {
-        return getNextTransition();
     }
 }

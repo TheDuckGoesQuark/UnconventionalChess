@@ -18,26 +18,16 @@ import jade.util.Logger;
 
 import static chessagents.agents.pieceagent.behaviours.turn.PieceTransition.SPEAKER_UPDATE_SENT;
 
-public class InformEveryoneImSpeaker extends OneShotBehaviour implements PieceStateBehaviour {
+public class InformEveryoneImSpeaker extends PieceStateBehaviour {
 
     private final Logger logger = Logger.getMyLogger(getClass().getName());
     private final PieceContext pieceContext;
     private final TurnContext turnContext;
 
     public InformEveryoneImSpeaker(PieceAgent pieceAgent, PieceContext pieceContext, TurnContext turnContext) {
-        super(pieceAgent);
+        super(pieceAgent, PieceState.INFORM_EVERYONE_IM_SPEAKER);
         this.pieceContext = pieceContext;
         this.turnContext = turnContext;
-    }
-
-    @Override
-    public void onStart() {
-        logCurrentState(logger, PieceState.INFORM_EVERYONE_IM_SPEAKER);
-    }
-
-    @Override
-    public int getNextTransition() {
-        return SPEAKER_UPDATE_SENT.ordinal();
     }
 
     @Override
@@ -51,6 +41,7 @@ public class InformEveryoneImSpeaker extends OneShotBehaviour implements PieceSt
         addContent(informSpeakerUpdated);
 
         myAgent.send(informSpeakerUpdated);
+        setEvent(SPEAKER_UPDATE_SENT);
     }
 
     private void addContent(ACLMessage informSpeakerUpdated) {
@@ -65,10 +56,5 @@ public class InformEveryoneImSpeaker extends OneShotBehaviour implements PieceSt
         } catch (Codec.CodecException | OntologyException e) {
             logger.warning("Failed to fill contents of inform new speaker: " + e.getMessage());
         }
-    }
-
-    @Override
-    public int onEnd() {
-        return getNextTransition();
     }
 }

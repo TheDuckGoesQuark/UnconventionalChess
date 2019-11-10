@@ -14,47 +14,27 @@ import java.util.Random;
 import static chessagents.agents.pieceagent.behaviours.turn.PieceTransition.NOT_REQUESTING_PROPOSALS;
 import static chessagents.agents.pieceagent.behaviours.turn.PieceTransition.REQUESTING_PROPOSALS;
 
-public class DecideIfRequestingProposals extends OneShotBehaviour implements PieceStateBehaviour {
+public class DecideIfRequestingProposals extends PieceStateBehaviour {
 
-    private final Logger logger = Logger.getMyLogger(getClass().getName());
-    private final Random random = new Random();
     private final PieceContext pieceContext;
     private final TurnContext turnContext;
-    private PieceTransition pieceTransition = null;
 
     public DecideIfRequestingProposals(PieceAgent pieceAgent, PieceContext pieceContext, TurnContext turnContext) {
-        super(pieceAgent);
+        super(pieceAgent, PieceState.DECIDE_IF_REQUESTING_PROPOSALS);
         this.pieceContext = pieceContext;
         this.turnContext = turnContext;
     }
 
     @Override
-    public void onStart() {
-        logCurrentState(logger, PieceState.DECIDE_IF_REQUESTING_PROPOSALS);
-        pieceTransition = null;
-    }
-
-    @Override
     public void action() {
         if (turnContext.getDebateCycles() < pieceContext.getMaxDebateCycle() && requestingProposals()) {
-            pieceTransition = REQUESTING_PROPOSALS;
+            setEvent(REQUESTING_PROPOSALS);
         } else {
-            pieceTransition = NOT_REQUESTING_PROPOSALS;
+            setEvent(NOT_REQUESTING_PROPOSALS);
         }
     }
 
     private boolean requestingProposals() {
-        // TODO change from random chance to personality affected decision
-        return random.nextBoolean();
-    }
-
-    @Override
-    public int getNextTransition() {
-        return (pieceTransition != null ? pieceTransition : NOT_REQUESTING_PROPOSALS).ordinal();
-    }
-
-    @Override
-    public int onEnd() {
-        return getNextTransition();
+        return ((PieceAgent) myAgent).requestingProposals();
     }
 }
