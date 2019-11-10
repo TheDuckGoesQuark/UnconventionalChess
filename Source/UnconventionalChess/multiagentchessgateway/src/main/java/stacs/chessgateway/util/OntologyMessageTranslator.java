@@ -85,12 +85,12 @@ public class OntologyMessageTranslator implements OntologyTranslator<Message> {
             for (var i = 0; i < variables.getCount(); i++) {
                 var variable = (AbsVariable) variables.get(i);
 
-                switch (variable.getType()) {
-                    case ChessOntology.SAID_TO_SPEAKER:
+                switch (variable.getName()) {
+                    case "speaker":
                         var speaker = (OntoAID) ChessOntology.getInstance().toObject(values.get(i));
                         chatMessage.setFromId(speaker.getLocalName());
                         break;
-                    case ChessOntology.SAID_TO_PHRASE:
+                    case "phrase":
                         var messageBody = (String) ChessOntology.getInstance().toObject(values.get(i));
                         chatMessage.setMessageBody(messageBody);
                         break;

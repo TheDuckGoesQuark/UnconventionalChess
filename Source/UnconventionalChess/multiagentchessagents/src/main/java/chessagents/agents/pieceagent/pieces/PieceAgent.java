@@ -112,11 +112,11 @@ public abstract class PieceAgent extends ChessAgent {
         var arr = speakerProposals.toArray(new ACLMessage[0]);
         var speaker = arr[random.nextInt(arr.length)].getSender();
 
-        if (speaker.equals(getAID())) {
-            addBehaviour(new SendChatMessage("I think I should speak.", getAID(), context.getGameAgentAID()));
-        } else {
-            addBehaviour(new SendChatMessage("I think " + speaker.getName() + " should speak.", getAID(), context.getGameAgentAID()));
-        }
+//        if (speaker.equals(getAID())) {
+//            addBehaviour(new SendChatMessage("I think I should speak.", getAID(), context.getGameAgentAID()));
+//        } else {
+//            addBehaviour(new SendChatMessage("I think " + speaker.getName() + " should speak.", getAID(), context.getGameAgentAID()));
+//        }
 
         return speaker;
     }

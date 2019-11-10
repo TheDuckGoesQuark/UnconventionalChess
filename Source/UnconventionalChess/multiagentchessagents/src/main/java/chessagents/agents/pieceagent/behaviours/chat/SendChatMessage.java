@@ -10,6 +10,8 @@ import jade.core.behaviours.OneShotBehaviour;
 import jade.lang.acl.ACLMessage;
 import jade.util.Logger;
 
+import static chessagents.agents.gameagent.behaviours.chat.HandleChat.CHAT_PROTOCOL;
+
 public class SendChatMessage extends OneShotBehaviour {
 
     private final Logger logger = Logger.getMyLogger(getClass().getName());
@@ -28,6 +30,7 @@ public class SendChatMessage extends OneShotBehaviour {
         var saidTo = new SaidTo(new OntoAID(speaker.getName(), AID.ISGUID), contents);
         var message = ChessMessageBuilder.constructMessage(ACLMessage.INFORM);
         message.addReceiver(messageBroker);
+        message.setProtocol(CHAT_PROTOCOL);
 
         try {
             myAgent.getContentManager().fillContent(message, saidTo);

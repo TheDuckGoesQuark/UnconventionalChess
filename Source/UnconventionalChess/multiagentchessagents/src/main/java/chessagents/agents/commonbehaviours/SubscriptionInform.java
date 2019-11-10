@@ -4,14 +4,17 @@ import jade.content.ContentElement;
 import jade.content.lang.Codec;
 import jade.content.onto.OntologyException;
 import jade.core.behaviours.CyclicBehaviour;
+import jade.core.behaviours.OneShotBehaviour;
 import jade.lang.acl.ACLMessage;
 import jade.proto.SubscriptionResponder;
 import jade.util.Logger;
 
+import java.util.Collection;
 import java.util.HashSet;
 import java.util.Queue;
 import java.util.Set;
 import java.util.concurrent.LinkedBlockingQueue;
+import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 /**
@@ -19,7 +22,7 @@ import java.util.stream.Stream;
  */
 public abstract class SubscriptionInform<E> extends CyclicBehaviour {
 
-    private final Logger logger = Logger.getMyLogger(getClass().getName());
+    protected final Logger logger = Logger.getMyLogger(getClass().getName());
     private final Set<SubscriptionResponder.Subscription> subs = new HashSet<>();
     private final Queue<E> events = new LinkedBlockingQueue<>();
 
@@ -39,15 +42,18 @@ public abstract class SubscriptionInform<E> extends CyclicBehaviour {
         var event = events.poll();
 
         if (event != null) {
-            buildInformMessages(event).forEach(inform -> myAgent.send(inform));
+            var stream = buildInformMessages(event);
+            for (ACLMessage inform : stream) {
+                myAgent.send(inform);
+            }
         } else {
             block();
         }
     }
 
-    private Stream<ACLMessage> buildInformMessages(E event) {
+    private Collection<ACLMessage> buildInformMessages(E event) {
         var content = buildInformContents(event);
-        return subs.stream().map(sub -> createSubscriptionInform(sub.getMessage(), content));
+        return subs.stream().map(sub -> createSubscriptionInform(sub.getMessage(), content)).collect(Collectors.toUnmodifiableList());
     }
 
     private ACLMessage createSubscriptionInform(ACLMessage subscription, ContentElement content) {

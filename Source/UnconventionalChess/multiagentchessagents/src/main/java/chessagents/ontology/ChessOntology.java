@@ -145,7 +145,7 @@ public class ChessOntology extends Ontology {
             final var saidToSchema = new PredicateSchema(SAID_TO);
             saidToSchema.add(SAID_TO_SPEAKER, getSchema(BasicOntology.AID));
             saidToSchema.add(SAID_TO_PHRASE, getSchema(BasicOntology.STRING));
-            add(saidToSchema);
+            add(saidToSchema, SaidTo.class);
 
             // Actions
             final var makeMoveSchema = new AgentActionSchema(MAKE_MOVE);

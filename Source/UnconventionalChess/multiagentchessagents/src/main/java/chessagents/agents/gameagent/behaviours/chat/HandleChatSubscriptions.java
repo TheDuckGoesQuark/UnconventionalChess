@@ -12,7 +12,13 @@ public class HandleChatSubscriptions extends SubscriptionResponder {
     private final InformSubscribersOfChat informSubscribersOfChat;
 
     public HandleChatSubscriptions(Agent a, InformSubscribersOfChat informSubscribersOfChat) {
-        super(a, MessageTemplate.MatchProtocol(CHAT_PROTOCOL));
+        super(a, MessageTemplate.and(
+                MessageTemplate.MatchProtocol(CHAT_PROTOCOL),
+                MessageTemplate.or(
+                        MessageTemplate.MatchPerformative(ACLMessage.CANCEL),
+                        MessageTemplate.MatchPerformative(ACLMessage.SUBSCRIBE)
+                )
+        ));
         this.informSubscribersOfChat = informSubscribersOfChat;
         a.addBehaviour(informSubscribersOfChat);
     }

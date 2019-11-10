@@ -26,7 +26,6 @@ import static jade.proto.SubscriptionResponder.Subscription;
  */
 public class InformSubscribersOfMoves extends SubscriptionInform<Move> {
 
-    private final Logger logger = Logger.getMyLogger(getClass().getName());
     private final AbsIRE absIRE = new AbsIRE(SLVocabulary.IOTA);
 
     InformSubscribersOfMoves() {
