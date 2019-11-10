@@ -13,6 +13,8 @@ const initialState = {
 export default function chatReducer(state = initialState, action) {
     switch (action.type) {
         case CHAT_MESSAGE_RECEIVE:
+            console.log(action);
+
             return {
                 ...state,
                 timeOrderedMessages: [...state.timeOrderedMessages, action.payload.message]

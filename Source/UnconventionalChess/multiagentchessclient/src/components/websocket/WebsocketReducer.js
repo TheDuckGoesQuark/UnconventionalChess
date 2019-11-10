@@ -1,6 +1,5 @@
 import {WS_CONNECTED, WS_DISCONNECTED, WS_INITIALISED} from "./WebsocketActions";
 import {MOVE_SEND} from "../board/BoardActions";
-import {Message, MoveMessage} from "../../models/Message";
 
 const initialState = {
     connected: false,
@@ -19,13 +18,12 @@ export default function websocketReducer(state = initialState, action) {
                 ...state,
                 connected: false
             };
-        case MOVE_SEND:
-            return state;
         case WS_INITIALISED:
             return {
                 ...state,
                 clientRef: action.payload.clientRef,
             };
+        case MOVE_SEND:
         default:
             return state;
     }

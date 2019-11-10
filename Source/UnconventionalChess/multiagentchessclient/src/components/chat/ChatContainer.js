@@ -7,7 +7,7 @@ const mapMessageToComponent = (message, index) => {
                     style={messageStyle}>Move: {message.sourceSquare},{message.targetSquare}</div>
     } else {
         return <div key={index}
-                    style={messageStyle}>{message.entries}</div>
+                    style={messageStyle}>{message.fromId}: {message.messageBody}</div>
     }
 };
 
