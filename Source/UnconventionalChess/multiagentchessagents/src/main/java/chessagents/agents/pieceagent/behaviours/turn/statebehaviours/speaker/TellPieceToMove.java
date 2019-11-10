@@ -5,6 +5,7 @@ import chessagents.agents.pieceagent.PieceContext;
 import chessagents.agents.pieceagent.behaviours.turn.TurnContext;
 import chessagents.agents.pieceagent.behaviours.turn.PieceState;
 import chessagents.agents.pieceagent.behaviours.turn.statebehaviours.PieceStateBehaviour;
+import chessagents.agents.pieceagent.events.ToldPieceToMoveEvent;
 import chessagents.agents.pieceagent.pieces.PieceAgent;
 import chessagents.ontology.schemas.actions.MakeMove;
 import chessagents.ontology.schemas.concepts.Move;
@@ -31,11 +32,11 @@ public class TellPieceToMove extends PieceStateBehaviour {
     @Override
     public void action() {
         pieceContext.getGameContext().getBoard().getRandomMove().ifPresent(move -> {
-            var movingPiece = pieceContext.getGameContext().getPieceAtPosition(move.getSource());
-            logger.info("Telling " + movingPiece.get().getAgentAID() + " to move");
-            var request = createRequestToMove(movingPiece.get().getAgentAID(), move);
+            var movingPiece = pieceContext.getGameContext().getPieceAtPosition(move.getSource()).get();
+            logger.info("Telling " + movingPiece.getAgentAID() + " to move");
+            var request = createRequestToMove(movingPiece.getAgentAID(), move);
             sendRequestMove(request);
-            setEvent(TOLD_PIECE_TO_MOVE);
+            setEvent(new ToldPieceToMoveEvent(movingPiece, move));
         });
     }
 

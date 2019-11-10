@@ -24,7 +24,6 @@ public abstract class SubscriptionInform<E> extends CyclicBehaviour {
     private final Queue<E> events = new LinkedBlockingQueue<>();
 
     public void addSubscriber(SubscriptionResponder.Subscription sub) {
-        logger.info("New subscriber to moves: " + sub.getMessage().getSender());
         subs.add(sub);
     }
 
@@ -70,6 +69,7 @@ public abstract class SubscriptionInform<E> extends CyclicBehaviour {
      * @param event
      */
     public void addEvent(E event) {
+        this.reset();
         events.add(event);
     }
 

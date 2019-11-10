@@ -97,7 +97,7 @@ public class GatewayServiceImpl implements GatewayService {
             JadeGateway.execute(requestCreateGame);
 
             // Subscribe to moves
-            var pieceContext = new PieceContext(gameId, null, gameAgentId, null, 0);
+            var pieceContext = new PieceContext(gameId, null, gameAgentId, 0);
             var subscribeToMoves = new SubscribeToMoves(pieceContext);
             JadeGateway.execute(subscribeToMoves);
 
