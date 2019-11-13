@@ -1,16 +1,14 @@
-package chessagents.agents.pieceagent.pieces;
+package chessagents.agents.pieceagent;
 
 import chessagents.agents.ChessAgent;
 import chessagents.agents.pieceagent.events.ToldPieceToMoveEvent;
-import chessagents.agents.pieceagent.intentions.History;
-import chessagents.agents.pieceagent.PieceContext;
+import chessagents.agents.pieceagent.planner.History;
 import chessagents.agents.pieceagent.behaviours.chat.SendChatMessage;
 import chessagents.agents.pieceagent.behaviours.initial.RequestPieceIds;
 import chessagents.agents.pieceagent.behaviours.initial.SubscribeToGameStatus;
 import chessagents.agents.pieceagent.behaviours.turn.PlayFSM;
 import chessagents.agents.pieceagent.behaviours.turn.SubscribeToMoves;
-import chessagents.agents.pieceagent.events.Event;
-import chessagents.agents.pieceagent.intentions.Plan;
+import chessagents.agents.pieceagent.events.TransitionEvent;
 import chessagents.ontology.schemas.actions.BecomeSpeaker;
 import chessagents.ontology.schemas.concepts.Colour;
 import chessagents.ontology.schemas.concepts.Move;
@@ -25,20 +23,12 @@ import jade.lang.acl.ACLMessage;
 import java.util.Random;
 import java.util.Set;
 
-public abstract class PieceAgent extends ChessAgent {
+public class PieceAgent extends ChessAgent {
 
     /**
      * Random generator for ensuring that behaviour does not become predictable
      */
     private final Random random = new Random();
-    /**
-     * History of events seen so far in game
-     */
-    private final History history = new History();
-    /**
-     * Plan of events this piece wants to occur
-     */
-    private final Plan plan = new Plan();
     /**
      * Piece static properties, and container for game context
      */
@@ -146,10 +136,10 @@ public abstract class PieceAgent extends ChessAgent {
      * the current state of the piece agent will will affect decisions made elsewhere such as next move
      * to make. The only 'side-effect' of these reducers will be chat messages sent in reaction to certain events.
      *
-     * @param event event to be experienced.
+     * @param transitionEvent event to be experienced.
      */
-    public void experienceEvent(Event event) {
-        switch (event.getTransition()) {
+    public void experienceEvent(TransitionEvent transitionEvent) {
+        switch (transitionEvent.getTransition()) {
             case MY_TURN:
                 break;
             case NOT_MY_TURN:
@@ -195,7 +185,7 @@ public abstract class PieceAgent extends ChessAgent {
             case REACTED_TO_PREVIOUS_PROPOSAL:
                 break;
             case TOLD_PIECE_TO_MOVE:
-                handleToldPieceToMoveEvent((ToldPieceToMoveEvent) event);
+                handleToldPieceToMoveEvent((ToldPieceToMoveEvent) transitionEvent);
                 break;
             case PIECE_AGREED_TO_MOVE:
                 break;
@@ -214,8 +204,6 @@ public abstract class PieceAgent extends ChessAgent {
             case OTHER_PIECE_FAILED_TO_MOVE:
                 break;
         }
-
-        history.add(event);
     }
 
     private void handleToldPieceToMoveEvent(ToldPieceToMoveEvent event) {

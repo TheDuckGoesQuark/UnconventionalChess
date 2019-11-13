@@ -3,7 +3,7 @@ package chessagents.agents.pieceagent.behaviours.turn;
 import chessagents.agents.pieceagent.behaviours.turn.statebehaviours.*;
 import chessagents.agents.pieceagent.behaviours.turn.statebehaviours.nonspeaker.*;
 import chessagents.agents.pieceagent.behaviours.turn.statebehaviours.speaker.*;
-import chessagents.agents.pieceagent.pieces.PieceAgent;
+import chessagents.agents.pieceagent.PieceAgent;
 import chessagents.agents.pieceagent.PieceContext;
 import jade.core.behaviours.DataStore;
 

@@ -3,8 +3,7 @@ package chessagents.agents.pieceagent.behaviours.turn.statebehaviours;
 import chessagents.agents.pieceagent.PieceContext;
 import chessagents.agents.pieceagent.behaviours.turn.TurnContext;
 import chessagents.agents.pieceagent.behaviours.turn.PieceState;
-import chessagents.agents.pieceagent.pieces.PieceAgent;
-import jade.core.behaviours.OneShotBehaviour;
+import chessagents.agents.pieceagent.PieceAgent;
 import jade.util.Logger;
 
 import static chessagents.agents.pieceagent.behaviours.turn.PieceTransition.TURN_ENDED;

@@ -3,16 +3,14 @@ package chessagents.agents.pieceagent.behaviours.turn.statebehaviours.nonspeaker
 import chessagents.agents.pieceagent.PieceContext;
 import chessagents.agents.pieceagent.behaviours.turn.TurnContext;
 import chessagents.agents.pieceagent.behaviours.turn.PieceState;
-import chessagents.agents.pieceagent.behaviours.turn.PieceTransition;
 import chessagents.agents.pieceagent.behaviours.turn.statebehaviours.PieceStateBehaviour;
-import chessagents.agents.pieceagent.pieces.PieceAgent;
+import chessagents.agents.pieceagent.PieceAgent;
 import chessagents.ontology.ChessOntology;
 import chessagents.ontology.schemas.concepts.Move;
 import jade.content.abs.AbsPredicate;
 import jade.content.lang.Codec;
 import jade.content.onto.BasicOntology;
 import jade.content.onto.OntologyException;
-import jade.core.behaviours.SimpleBehaviour;
 import jade.domain.FIPAAgentManagement.NotUnderstoodException;
 import jade.lang.acl.ACLMessage;
 import jade.lang.acl.MessageTemplate;
@@ -60,7 +58,7 @@ public class WaitForMoveConfirmation extends PieceStateBehaviour {
             }
         } else {
             // TODO shouldn't need this check, check if we do.
-            if (event == null) block();
+            if (transitionEvent == null) block();
         }
     }
 

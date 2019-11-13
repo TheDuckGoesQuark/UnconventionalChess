@@ -1,6 +1,6 @@
 package chessagents;
 
-import chessagents.chess.BoardWrapper;
+import chessagents.chess.ChessBoard;
 import chessagents.ontology.schemas.concepts.Colour;
 import chessagents.ontology.schemas.concepts.Piece;
 import chessagents.ontology.schemas.concepts.Position;
@@ -11,15 +11,12 @@ import lombok.Setter;
 import java.util.*;
 import java.util.stream.Collectors;
 
-import static chessagents.ontology.schemas.concepts.Colour.BLACK;
-import static chessagents.ontology.schemas.concepts.Colour.WHITE;
-
 @Getter
 @Setter
 public class GameContext {
 
     private final Map<AID, Piece> aidToPiece = new HashMap<>();
-    private final BoardWrapper board = new BoardWrapper();
+    private final ChessBoard board = new ChessBoard();
     private int gameId;
 
     public List<AID> getAllPieceAgentAIDs() {

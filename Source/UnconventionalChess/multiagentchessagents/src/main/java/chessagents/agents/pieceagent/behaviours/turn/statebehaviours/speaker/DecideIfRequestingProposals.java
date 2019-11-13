@@ -3,13 +3,8 @@ package chessagents.agents.pieceagent.behaviours.turn.statebehaviours.speaker;
 import chessagents.agents.pieceagent.PieceContext;
 import chessagents.agents.pieceagent.behaviours.turn.TurnContext;
 import chessagents.agents.pieceagent.behaviours.turn.PieceState;
-import chessagents.agents.pieceagent.behaviours.turn.PieceTransition;
 import chessagents.agents.pieceagent.behaviours.turn.statebehaviours.PieceStateBehaviour;
-import chessagents.agents.pieceagent.pieces.PieceAgent;
-import jade.core.behaviours.OneShotBehaviour;
-import jade.util.Logger;
-
-import java.util.Random;
+import chessagents.agents.pieceagent.PieceAgent;
 
 import static chessagents.agents.pieceagent.behaviours.turn.PieceTransition.NOT_REQUESTING_PROPOSALS;
 import static chessagents.agents.pieceagent.behaviours.turn.PieceTransition.REQUESTING_PROPOSALS;

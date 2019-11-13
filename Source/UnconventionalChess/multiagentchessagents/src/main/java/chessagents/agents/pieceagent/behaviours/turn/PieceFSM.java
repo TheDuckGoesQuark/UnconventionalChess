@@ -1,8 +1,6 @@
 package chessagents.agents.pieceagent.behaviours.turn;
 
-import chessagents.agents.pieceagent.behaviours.turn.PieceState;
-import chessagents.agents.pieceagent.behaviours.turn.PieceTransition;
-import chessagents.agents.pieceagent.pieces.PieceAgent;
+import chessagents.agents.pieceagent.PieceAgent;
 import jade.core.behaviours.Behaviour;
 import jade.core.behaviours.FSMBehaviour;
 

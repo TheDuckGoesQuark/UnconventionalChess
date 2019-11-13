@@ -1,5 +1,5 @@
 package chessagents.agents.gameagent;
 
-public enum GameStatus {
+public enum GameCreationStatus {
     NOT_EXIST, BEING_CREATED, READY
 }

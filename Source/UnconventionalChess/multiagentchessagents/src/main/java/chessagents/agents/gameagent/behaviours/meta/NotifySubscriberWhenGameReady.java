@@ -1,8 +1,7 @@
 package chessagents.agents.gameagent.behaviours.meta;
 
-import chessagents.GameContext;
 import chessagents.agents.gameagent.GameAgentContext;
-import chessagents.agents.gameagent.GameStatus;
+import chessagents.agents.gameagent.GameCreationStatus;
 import jade.core.behaviours.SimpleBehaviour;
 import jade.lang.acl.ACLMessage;
 import jade.proto.SubscriptionResponder.Subscription;
@@ -22,7 +21,7 @@ public class NotifySubscriberWhenGameReady extends SimpleBehaviour {
     }
 
     private boolean gameIsReady() {
-        return context.getGameStatus() == GameStatus.READY;
+        return context.getGameCreationStatus() == GameCreationStatus.READY;
     }
 
     @Override

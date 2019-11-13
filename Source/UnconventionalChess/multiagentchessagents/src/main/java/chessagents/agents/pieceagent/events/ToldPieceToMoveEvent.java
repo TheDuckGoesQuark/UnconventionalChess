@@ -6,7 +6,7 @@ import chessagents.ontology.schemas.concepts.Piece;
 import lombok.Getter;
 
 @Getter
-public class ToldPieceToMoveEvent extends Event {
+public class ToldPieceToMoveEvent extends TransitionEvent {
     private final Piece toldPiece;
     private final Move move;
 

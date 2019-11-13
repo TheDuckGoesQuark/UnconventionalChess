@@ -1,9 +1,8 @@
 package chessagents.agents.gameagent.behaviours.meta;
 
 import chessagents.agents.gameagent.GameAgent;
-import chessagents.GameContext;
 import chessagents.agents.gameagent.GameAgentContext;
-import chessagents.agents.gameagent.GameStatus;
+import chessagents.agents.gameagent.GameCreationStatus;
 import chessagents.ontology.ChessOntology;
 import chessagents.ontology.schemas.concepts.Colour;
 import chessagents.ontology.schemas.concepts.Piece;
@@ -22,7 +21,6 @@ import jade.proto.SimpleAchieveREResponder;
 import jade.util.Logger;
 
 import java.util.Set;
-import java.util.stream.Collectors;
 
 import static chessagents.ontology.ChessOntology.IS_COLOUR_COLOUR;
 
@@ -44,7 +42,7 @@ public class HandlePieceListRequests extends SimpleAchieveREResponder {
     protected ACLMessage prepareResponse(ACLMessage request) {
         var reply = request.createReply();
 
-        if (context.getGameStatus() != GameStatus.READY) {
+        if (context.getGameCreationStatus() != GameCreationStatus.READY) {
             reply.setPerformative(ACLMessage.REFUSE);
         } else {
             reply.setPerformative(ACLMessage.AGREE);

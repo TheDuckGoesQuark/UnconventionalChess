@@ -6,18 +6,14 @@ import chessagents.agents.pieceagent.behaviours.turn.TurnContext;
 import chessagents.agents.pieceagent.behaviours.turn.PieceState;
 import chessagents.agents.pieceagent.behaviours.turn.statebehaviours.PieceStateBehaviour;
 import chessagents.agents.pieceagent.events.ToldPieceToMoveEvent;
-import chessagents.agents.pieceagent.pieces.PieceAgent;
+import chessagents.agents.pieceagent.PieceAgent;
 import chessagents.ontology.schemas.actions.MakeMove;
 import chessagents.ontology.schemas.concepts.Move;
 import jade.content.lang.Codec;
 import jade.content.onto.OntologyException;
 import jade.content.onto.basic.Action;
 import jade.core.AID;
-import jade.core.behaviours.SimpleBehaviour;
 import jade.lang.acl.ACLMessage;
-import jade.util.Logger;
-
-import static chessagents.agents.pieceagent.behaviours.turn.PieceTransition.TOLD_PIECE_TO_MOVE;
 
 public class TellPieceToMove extends PieceStateBehaviour {
     private final PieceContext pieceContext;
@@ -36,7 +32,7 @@ public class TellPieceToMove extends PieceStateBehaviour {
             logger.info("Telling " + movingPiece.getAgentAID() + " to move");
             var request = createRequestToMove(movingPiece.getAgentAID(), move);
             sendRequestMove(request);
-            setEvent(new ToldPieceToMoveEvent(movingPiece, move));
+            setTransitionEvent(new ToldPieceToMoveEvent(movingPiece, move));
         });
     }
 

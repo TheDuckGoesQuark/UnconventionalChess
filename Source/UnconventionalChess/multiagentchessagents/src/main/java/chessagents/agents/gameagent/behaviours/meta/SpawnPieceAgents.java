@@ -1,14 +1,12 @@
 package chessagents.agents.gameagent.behaviours.meta;
 
 import chessagents.agents.gameagent.GameAgent;
-import chessagents.GameContext;
 import chessagents.agents.gameagent.GameAgentContext;
-import chessagents.agents.gameagent.GameStatus;
-import chessagents.agents.pieceagent.pieces.*;
+import chessagents.agents.gameagent.GameCreationStatus;
+import chessagents.agents.pieceagent.PieceAgent;
 import chessagents.ontology.schemas.concepts.Colour;
 import chessagents.ontology.schemas.concepts.Piece;
 import chessagents.ontology.schemas.concepts.Position;
-import com.github.bhlangonijr.chesslib.PieceType;
 import jade.content.OntoAID;
 import jade.content.lang.sl.SLCodec;
 import jade.content.onto.basic.Action;
@@ -24,7 +22,6 @@ import jade.util.Logger;
 import jade.wrapper.ControllerException;
 
 import java.util.HashSet;
-import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -50,27 +47,6 @@ public class SpawnPieceAgents extends SimpleBehaviour {
         return context.getGameContext().getGameId() + "-" + startingSquare + "-" + colour + "-" + pieceType;
     }
 
-    private static Optional<String> mapPieceTypeToAgentClass(String type) {
-        final PieceType pieceType = PieceType.valueOf(type);
-        switch (pieceType) {
-            case PAWN:
-                return Optional.ofNullable(PawnAgent.class.getName());
-            case KNIGHT:
-                return Optional.ofNullable(KnightAgent.class.getName());
-            case BISHOP:
-                return Optional.ofNullable(BishopAgent.class.getName());
-            case ROOK:
-                return Optional.ofNullable(RookAgent.class.getName());
-            case QUEEN:
-                return Optional.ofNullable(QueenAgent.class.getName());
-            case KING:
-                return Optional.ofNullable(KingAgent.class.getName());
-            case NONE:
-            default:
-                return Optional.empty();
-        }
-    }
-
     @Override
     public void action() {
         switch (creationState) {
@@ -79,7 +55,7 @@ public class SpawnPieceAgents extends SimpleBehaviour {
                 creationState = CreationState.CREATING;
                 break;
             case CREATING:
-                if (context.getGameStatus() == GameStatus.READY) {
+                if (context.getGameCreationStatus() == GameCreationStatus.READY) {
                     creationState = CreationState.CREATED;
                 } else {
                     block();
@@ -114,7 +90,7 @@ public class SpawnPieceAgents extends SimpleBehaviour {
         sequence.addSubBehaviour(new OneShotBehaviour() {
             @Override
             public void action() {
-                context.setGameStatus(GameStatus.READY);
+                context.setGameCreationStatus(GameCreationStatus.READY);
             }
         });
 
@@ -137,8 +113,7 @@ public class SpawnPieceAgents extends SimpleBehaviour {
 
     private Behaviour createSpawnPieceBehaviour(String startingSquare, String colour, String type) {
         final String agentName = generatePieceAgentName(type, colour, startingSquare);
-        final String agentClassName = mapPieceTypeToAgentClass(type)
-                .orElseThrow(IllegalArgumentException::new);
+        final String agentClassName = PieceAgent.class.getName();
 
         String containerName;
         try {

@@ -1,8 +1,7 @@
 package chessagents.agents.pieceagent.behaviours.initial;
 
-import chessagents.agents.ChessAgent;
 import chessagents.agents.ChessMessageBuilder;
-import chessagents.agents.pieceagent.pieces.PieceAgent;
+import chessagents.agents.pieceagent.PieceAgent;
 import chessagents.agents.pieceagent.PieceContext;
 import chessagents.ontology.ChessOntology;
 import chessagents.ontology.schemas.concepts.Game;
@@ -10,7 +9,6 @@ import chessagents.ontology.schemas.predicates.IsReady;
 import jade.content.lang.Codec;
 import jade.content.onto.OntologyException;
 import jade.core.behaviours.SimpleBehaviour;
-import jade.domain.FIPANames;
 import jade.lang.acl.ACLMessage;
 import jade.lang.acl.MessageTemplate;
 import jade.util.Logger;

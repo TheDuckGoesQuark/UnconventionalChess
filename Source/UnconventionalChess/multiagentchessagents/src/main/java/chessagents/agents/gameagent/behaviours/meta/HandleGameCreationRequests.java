@@ -1,7 +1,6 @@
 package chessagents.agents.gameagent.behaviours.meta;
 
 import chessagents.agents.gameagent.GameAgent;
-import chessagents.GameContext;
 import chessagents.agents.gameagent.GameAgentContext;
 import chessagents.ontology.ChessOntology;
 import chessagents.ontology.schemas.actions.CreateGame;
@@ -24,7 +23,7 @@ import jade.lang.acl.ACLMessage;
 import jade.lang.acl.MessageTemplate;
 import jade.util.Logger;
 
-import static chessagents.agents.gameagent.GameStatus.*;
+import static chessagents.agents.gameagent.GameCreationStatus.*;
 
 /**
  *
@@ -71,14 +70,14 @@ public class HandleGameCreationRequests extends SimpleBehaviour {
         var action = extractAction(request);
         Game game;
 
-        var gameStatus = context.getGameStatus();
+        var gameStatus = context.getGameCreationStatus();
         switch (gameStatus) {
             case NOT_EXIST:
                 LOGGER.info("Agreeing to request to create game");
                 createAgreeResponse(action, reply);
                 game = ((CreateGame) (action.getAction())).getGame();
                 ((GameAgent) myAgent).createGame(game);
-                context.setGameStatus(BEING_CREATED);
+                context.setGameCreationStatus(BEING_CREATED);
                 break;
             case BEING_CREATED:
                 LOGGER.info("Can't create game, already being created");
@@ -244,7 +243,7 @@ public class HandleGameCreationRequests extends SimpleBehaviour {
                 }
                 break;
             case PREPARE_RESULT_NOTIFICATION:
-                var gameStatus = context.getGameStatus();
+                var gameStatus = context.getGameCreationStatus();
                 if (gameStatus != READY) {
                     break;
                 }

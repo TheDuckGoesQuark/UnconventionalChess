@@ -4,10 +4,7 @@ import chessagents.agents.pieceagent.PieceContext;
 import chessagents.agents.pieceagent.behaviours.turn.TurnContext;
 import chessagents.agents.pieceagent.behaviours.turn.PieceState;
 import chessagents.agents.pieceagent.behaviours.turn.PieceTransition;
-import chessagents.agents.pieceagent.events.Event;
-import chessagents.agents.pieceagent.pieces.PieceAgent;
-import jade.core.behaviours.SimpleBehaviour;
-import jade.util.Logger;
+import chessagents.agents.pieceagent.PieceAgent;
 
 public class Initial extends PieceStateBehaviour {
 

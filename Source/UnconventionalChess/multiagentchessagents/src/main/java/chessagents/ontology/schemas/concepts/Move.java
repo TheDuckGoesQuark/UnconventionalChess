@@ -32,4 +32,5 @@ public class Move implements Concept {
     public void setTarget(Position target) {
         this.target = target;
     }
+
 }

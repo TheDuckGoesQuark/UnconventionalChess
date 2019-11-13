@@ -2,8 +2,8 @@ package chessagents.agents.pieceagent.behaviours.turn.statebehaviours;
 
 import chessagents.agents.pieceagent.behaviours.turn.PieceState;
 import chessagents.agents.pieceagent.behaviours.turn.PieceTransition;
-import chessagents.agents.pieceagent.events.Event;
-import chessagents.agents.pieceagent.pieces.PieceAgent;
+import chessagents.agents.pieceagent.events.TransitionEvent;
+import chessagents.agents.pieceagent.PieceAgent;
 import jade.core.behaviours.SimpleBehaviour;
 import jade.util.Logger;
 
@@ -11,7 +11,7 @@ public abstract class PieceStateBehaviour extends SimpleBehaviour {
 
     private final PieceState pieceState;
     protected final Logger logger = Logger.getMyLogger(getClass().getName());
-    protected Event event;
+    protected TransitionEvent transitionEvent;
 
     /**
      * Constructor ensures that each piece state behaviour corresponds to a piece state enum value, and that
@@ -36,7 +36,7 @@ public abstract class PieceStateBehaviour extends SimpleBehaviour {
     @Override
     public final void onStart() {
         logCurrentState();
-        event = null;
+        transitionEvent = null;
         initialiseState();
         super.onStart();
     }
@@ -56,7 +56,7 @@ public abstract class PieceStateBehaviour extends SimpleBehaviour {
      */
     @Override
     public final boolean done() {
-        return event != null;
+        return transitionEvent != null;
     }
 
     /**
@@ -69,9 +69,9 @@ public abstract class PieceStateBehaviour extends SimpleBehaviour {
     public final int onEnd() {
         int transition = 0;
 
-        if (event != null) {
-            ((PieceAgent) myAgent).experienceEvent(event);
-            transition = event.getTransition().ordinal();
+        if (transitionEvent != null) {
+            ((PieceAgent) myAgent).experienceEvent(transitionEvent);
+            transition = transitionEvent.getTransition().ordinal();
         }
 
         return transition;
@@ -87,10 +87,10 @@ public abstract class PieceStateBehaviour extends SimpleBehaviour {
     /**
      * Sets the event occurred at the end of the execution of this behaviour
      *
-     * @param event event
+     * @param transitionEvent event
      */
-    public final void setEvent(Event event) {
-        this.event = event;
+    public final void setTransitionEvent(TransitionEvent transitionEvent) {
+        this.transitionEvent = transitionEvent;
     }
 
     /**
@@ -99,7 +99,7 @@ public abstract class PieceStateBehaviour extends SimpleBehaviour {
      * @param transition transition that will occur next
      */
     public final void setEvent(PieceTransition transition) {
-        this.event = new Event(transition);
+        this.transitionEvent = new TransitionEvent(transition);
     }
 
 }

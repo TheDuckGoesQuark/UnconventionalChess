@@ -1,0 +1,206 @@
+package chessagents.chess;
+
+import chessagents.ontology.schemas.concepts.Position;
+import com.github.bhlangonijr.chesslib.Board;
+import com.github.bhlangonijr.chesslib.Piece;
+import com.github.bhlangonijr.chesslib.Side;
+import com.github.bhlangonijr.chesslib.Square;
+import com.github.bhlangonijr.chesslib.move.Move;
+import com.github.bhlangonijr.chesslib.move.MoveGenerator;
+import com.github.bhlangonijr.chesslib.move.MoveGeneratorException;
+import com.github.bhlangonijr.chesslib.move.MoveList;
+
+import java.util.*;
+import java.util.function.Predicate;
+import java.util.stream.Collectors;
+
+/**
+ * Middleware for translating from ontological chess classes and chess library classes using string representations
+ */
+public class ChessBoard {
+
+    private static final Random random = new Random();
+    private final Board board;
+
+    public ChessBoard() {
+        board = new Board();
+    }
+
+    private ChessBoard(Board board) {
+        this.board = board;
+    }
+
+    /**
+     * Constructs an instance of library move object from string coordinates
+     *
+     * @param source source square
+     * @param target target square
+     * @return move instance
+     */
+    private static Move constructMove(String source, String target) {
+        final Square from = Square.fromValue(source);
+        final Square to = Square.fromValue(target);
+        return new Move(from, to);
+    }
+
+    /**
+     * Constructs move concept from chess lib move
+     *
+     * @param move chess lib move instance
+     * @return concept move
+     */
+    private static chessagents.ontology.schemas.concepts.Move constructMoveConcept(Move move) {
+        return new chessagents.ontology.schemas.concepts.Move(
+                move.getFrom().value(),
+                move.getTo().value()
+        );
+    }
+
+    private Set<Square> getPositionsOfAllPieces() {
+        return Arrays.stream(Square.values())
+                .filter(sq -> board.getPiece(sq) != Piece.NONE)
+                .collect(Collectors.toSet());
+    }
+
+    /**
+     * @param colour colour of pieces to query for
+     * @return all the current positions for pieces of the given colour
+     */
+    public Set<String> getPositionsOfAllPiecesForColour(String colour) {
+        final Side side = Side.valueOf(colour);
+
+        return Arrays.stream(Square.values())
+                .filter(sq -> board.getPiece(sq) != Piece.NONE)
+                .filter(sq -> board.getPiece(sq).getPieceSide().equals(side))
+                .map(Square::value)
+                .collect(Collectors.toSet());
+    }
+
+    public Optional<chessagents.ontology.schemas.concepts.Move> getRandomMove() {
+        try {
+            MoveList moves = MoveGenerator.generateLegalMoves(board);
+            Move move = moves.get(random.nextInt(moves.size()));
+
+            return Optional.of(constructMoveConcept(move));
+        } catch (MoveGeneratorException e) {
+            return Optional.empty();
+        }
+    }
+
+    public int getTurnCount() {
+        return board.getBackup().size();
+    }
+
+    public boolean gameIsOver() {
+        return board.isMated() || board.isDraw() || board.isStaleMate() || board.isInsufficientMaterial();
+    }
+
+    public chessagents.ontology.schemas.concepts.Move getMove(int indexOfNextTurn) {
+        var move = board.getBackup().get(indexOfNextTurn).getMove();
+        return constructMoveConcept(move);
+    }
+
+    /**
+     * Performs move from given source to given target
+     *
+     * @param source source coordinate
+     * @param target target coordinate
+     */
+    public void makeMove(String source, String target) {
+        board.doMove(constructMove(source, target));
+    }
+
+    /**
+     * @param source source of move
+     * @param target target of move
+     * @return true if move can currently be performed
+     */
+    public boolean isValidMove(String source, String target) {
+        try {
+            final Move move = constructMove(source, target);
+            return MoveGenerator.generateLegalMoves(board).contains(move);
+        } catch (MoveGeneratorException e) {
+            return false;
+        }
+    }
+
+    /**
+     * @param colour colour to query
+     * @return true if the given colour is next to go
+     */
+    public boolean isSideToGo(String colour) {
+        return board.getSideToMove().value().equals(colour);
+    }
+
+    /**
+     * @param sq the square to query for
+     * @return the name of the piece at the given square
+     */
+    public String getPieceTypeAtSquare(String sq) {
+        return board.getPiece(Square.valueOf(sq)).getPieceType().value();
+    }
+
+    /**
+     * Creates a copy of the current board, and performs the given move on the copy, then returns the copy
+     *
+     * @param move move to be performed
+     * @return copy of this board with move performed
+     */
+    public ChessBoard copyOnMove(chessagents.ontology.schemas.concepts.Move move) {
+        var copy = board.clone();
+        copy.doMove(constructMove(move.getSource().getCoordinates(), move.getTarget().getCoordinates()));
+        return new ChessBoard(copy);
+    }
+
+    /**
+     * Gets the set of pieces that are currently threatened
+     *
+     * @return the set of pieces that are currently threatened
+     */
+    public Set<chessagents.ontology.schemas.concepts.Piece> getThreatenedPieces(Set<chessagents.ontology.schemas.concepts.Piece> pieces) {
+        var threatened = new HashSet<chessagents.ontology.schemas.concepts.Piece>();
+        var originalSide = board.getSideToMove();
+
+        var currentPositions = getPositionsOfAllPieces();
+
+        for (Side side : Side.values()) {
+            board.setSideToMove(side);
+            try {
+                // from the set of all moves, get all that end in the place of any other piece and return the position
+                var threatenedPositions = MoveGenerator.generateLegalMoves(board).stream()
+                        .filter(m -> currentPositions.contains(m.getTo()))
+                        .map(Move::getTo)
+                        .map(Square::value)
+                        .map(Position::new)
+                        .collect(Collectors.toSet());
+
+                // get all the pieces that fall in the positions in the set of threatened positions
+                pieces.stream()
+                        .filter(p -> threatenedPositions.contains(p.getPosition()))
+                        .forEach(threatened::add);
+            } catch (MoveGeneratorException e) {
+                // do nothing
+            }
+        }
+
+        // restore board
+        board.setSideToMove(originalSide);
+
+        return threatened;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        ChessBoard that = (ChessBoard) o;
+        return board.equals(that.board);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(board);
+    }
+
+
+}

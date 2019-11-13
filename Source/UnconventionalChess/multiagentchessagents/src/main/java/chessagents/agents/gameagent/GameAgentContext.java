@@ -15,7 +15,7 @@ public class GameAgentContext {
     private final AID gatewayAgentAID;
     private final GameProperties gameProperties;
     private final GameContext gameContext = new GameContext();
-    private GameStatus gameStatus = GameStatus.NOT_EXIST;
+    private GameCreationStatus gameCreationStatus = GameCreationStatus.NOT_EXIST;
 
     public GameAgentContext(AID gatewayAgentAID, GameProperties gameProperties) {
         this.gatewayAgentAID = gatewayAgentAID;
