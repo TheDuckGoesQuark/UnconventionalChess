@@ -1,5 +1,4 @@
 import React, {Component} from "react";
-import {ChatMessage} from "../../models/Message";
 import {connect} from "react-redux";
 
 class DialogueBox extends Component {
