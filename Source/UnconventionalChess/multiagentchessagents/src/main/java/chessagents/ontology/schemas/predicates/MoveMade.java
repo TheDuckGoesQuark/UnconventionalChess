@@ -1,7 +1,7 @@
 package chessagents.ontology.schemas.predicates;
 
 
-import chessagents.ontology.schemas.concepts.Move;
+import chessagents.ontology.schemas.concepts.PieceMove;
 import jade.content.Predicate;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -14,6 +14,6 @@ import lombok.Setter;
 @AllArgsConstructor
 public class MoveMade implements Predicate {
 
-    private Move move;
+    private PieceMove move;
 
 }

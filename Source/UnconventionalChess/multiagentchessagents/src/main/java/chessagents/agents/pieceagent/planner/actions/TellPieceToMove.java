@@ -1,33 +1,33 @@
 package chessagents.agents.pieceagent.planner.actions;
 
 import chessagents.agents.pieceagent.planner.PieceAction;
-import chessagents.ontology.schemas.concepts.Move;
-import chessagents.ontology.schemas.concepts.Piece;
+import chessagents.ontology.schemas.concepts.ChessPiece;
+import chessagents.ontology.schemas.concepts.PieceMove;
 
 import java.util.Optional;
 
 public class TellPieceToMove extends PieceAction {
-    private final Move move;
-    private final Piece otherPiece;
+    private final PieceMove move;
+    private final ChessPiece otherChessPiece;
 
-    protected TellPieceToMove(Piece actor, Move move, Piece otherPiece) {
-        super("Tell piece to move", actor);
+    protected TellPieceToMove(ChessPiece actor, PieceMove move, ChessPiece otherChessPiece) {
+        super(pieceTransition, "Tell piece to move", actor);
         this.move = move;
-        this.otherPiece = otherPiece;
+        this.otherChessPiece = otherChessPiece;
     }
 
     @Override
-    public Piece getActor() {
+    public ChessPiece getActor() {
         return null;
     }
 
     @Override
-    public Optional<Move> getMove() {
+    public Optional<PieceMove> getMove() {
         return Optional.of(move);
     }
 
-    /**
-     * TODO READ THIS AND DO THIS YOU SCHMUCH
+    /*
+     * TODO READ THIS AND DO THIS YOU SCHMUK
      *
      * Each piece state transition behaviour call PieceAgent.chooseNextAction(Set<Action>):Action and provides a set
      * of possible next actions (i.e. choose x as speaker, tell x to move, make move x)

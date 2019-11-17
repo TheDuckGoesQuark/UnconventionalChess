@@ -8,7 +8,7 @@ import chessagents.agents.pieceagent.behaviours.turn.statebehaviours.PieceStateB
 import chessagents.agents.pieceagent.events.ToldPieceToMoveEvent;
 import chessagents.agents.pieceagent.PieceAgent;
 import chessagents.ontology.schemas.actions.MakeMove;
-import chessagents.ontology.schemas.concepts.Move;
+import chessagents.ontology.schemas.concepts.PieceMove;
 import jade.content.lang.Codec;
 import jade.content.onto.OntologyException;
 import jade.content.onto.basic.Action;
@@ -48,7 +48,7 @@ public class TellPieceToMove extends PieceStateBehaviour {
         myAgent.send(request);
     }
 
-    private ACLMessage createRequestToMove(AID movingPiece, Move move) {
+    private ACLMessage createRequestToMove(AID movingPiece, PieceMove move) {
         var request = ChessMessageBuilder.constructMessage(ACLMessage.REQUEST);
         var makeMove = new MakeMove(move);
         var action = new Action(movingPiece, makeMove);

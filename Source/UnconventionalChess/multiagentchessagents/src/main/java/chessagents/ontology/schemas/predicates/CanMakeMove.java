@@ -1,27 +1,27 @@
 package chessagents.ontology.schemas.predicates;
 
-import chessagents.ontology.schemas.concepts.Move;
-import chessagents.ontology.schemas.concepts.Piece;
+import chessagents.ontology.schemas.concepts.PieceMove;
+import chessagents.ontology.schemas.concepts.ChessPiece;
 import jade.content.Predicate;
 
 public class CanMakeMove implements Predicate {
 
-    private Piece piece;
-    private Move move;
+    private ChessPiece chessPiece;
+    private PieceMove move;
 
-    public Piece getPiece() {
-        return piece;
+    public ChessPiece getChessPiece() {
+        return chessPiece;
     }
 
-    public void setPiece(Piece piece) {
-        this.piece = piece;
+    public void setChessPiece(ChessPiece chessPiece) {
+        this.chessPiece = chessPiece;
     }
 
-    public Move getMove() {
+    public PieceMove getMove() {
         return move;
     }
 
-    public void setMove(Move move) {
+    public void setMove(PieceMove move) {
         this.move = move;
     }
 }

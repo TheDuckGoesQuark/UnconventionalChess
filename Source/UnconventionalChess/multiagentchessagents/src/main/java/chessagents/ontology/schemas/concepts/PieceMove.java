@@ -2,15 +2,17 @@ package chessagents.ontology.schemas.concepts;
 
 import jade.content.Concept;
 
-public class Move implements Concept {
+import java.util.Objects;
+
+public class PieceMove implements Concept {
 
     private Position source;
     private Position target;
 
-    public Move() {
+    public PieceMove() {
     }
 
-    public Move(String source, String target) {
+    public PieceMove(String source, String target) {
         this.source = new Position();
         this.source.setCoordinates(source);
         this.target = new Position();
@@ -33,4 +35,17 @@ public class Move implements Concept {
         this.target = target;
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        PieceMove pieceMove = (PieceMove) o;
+        return source.equals(pieceMove.source) &&
+                target.equals(pieceMove.target);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(source, target);
+    }
 }

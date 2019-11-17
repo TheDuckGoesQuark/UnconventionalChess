@@ -2,7 +2,7 @@
 
 ## Client
 
-- Add piece dialogue component
+- Add chessPiece dialogue component
 
 ## Gateway
 

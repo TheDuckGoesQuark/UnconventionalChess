@@ -1,18 +1,18 @@
 package chessagents.agents.pieceagent.events;
 
 import chessagents.agents.pieceagent.behaviours.turn.PieceTransition;
-import chessagents.ontology.schemas.concepts.Move;
-import chessagents.ontology.schemas.concepts.Piece;
+import chessagents.ontology.schemas.concepts.ChessPiece;
+import chessagents.ontology.schemas.concepts.PieceMove;
 import lombok.Getter;
 
 @Getter
 public class ToldPieceToMoveEvent extends TransitionEvent {
-    private final Piece toldPiece;
-    private final Move move;
+    private final ChessPiece toldChessPiece;
+    private final PieceMove move;
 
-    public ToldPieceToMoveEvent(Piece toldPiece, Move move) {
+    public ToldPieceToMoveEvent(ChessPiece toldChessPiece, PieceMove move) {
         super(PieceTransition.TOLD_PIECE_TO_MOVE);
-        this.toldPiece = toldPiece;
+        this.toldChessPiece = toldChessPiece;
         this.move = move;
     }
 }

@@ -1,7 +1,7 @@
 package chessagents.agents.gameagent.behaviours.gameplay;
 
 import chessagents.agents.gameagent.GameAgent;
-import chessagents.ontology.schemas.concepts.Move;
+import chessagents.ontology.schemas.concepts.PieceMove;
 import jade.core.behaviours.DataStore;
 import jade.core.behaviours.OneShotBehaviour;
 import jade.lang.acl.ACLMessage;
@@ -29,7 +29,7 @@ public class SendInformMoveMessage extends OneShotBehaviour {
         myAgent.send(inform);
 
         // inform subscribers of move
-        var move = (Move) getDataStore().get(MOVE_KEY);
+        var move = (PieceMove) getDataStore().get(MOVE_KEY);
         informSubscribersOfMove.addEvent(move);
     }
 

@@ -5,7 +5,7 @@ import chessagents.agents.pieceagent.behaviours.turn.TurnContext;
 import chessagents.agents.pieceagent.behaviours.turn.PieceState;
 import chessagents.agents.pieceagent.PieceAgent;
 import chessagents.ontology.ChessOntology;
-import chessagents.ontology.schemas.concepts.Move;
+import chessagents.ontology.schemas.concepts.PieceMove;
 import jade.content.abs.AbsPredicate;
 import jade.content.lang.Codec;
 import jade.content.onto.BasicOntology;
@@ -50,9 +50,9 @@ public class WaitForMove extends PieceStateBehaviour {
 
     }
 
-    private Optional<Move> extractMove(ACLMessage message) {
+    private Optional<PieceMove> extractMove(ACLMessage message) {
         // TODO move this logic to another state to be resused
-        Optional<Move> result = Optional.empty();
+        Optional<PieceMove> result = Optional.empty();
         try {
             var absEquals = (AbsPredicate) myAgent.getContentManager().extractAbsContent(message);
 
@@ -61,7 +61,7 @@ public class WaitForMove extends PieceStateBehaviour {
             }
 
             var absRight = absEquals.getAbsTerm(BasicOntology.EQUALS_RIGHT);
-            var move = (Move) ChessOntology.getInstance().toObject(absRight);
+            var move = (PieceMove) ChessOntology.getInstance().toObject(absRight);
             result = Optional.of(move);
         } catch (Codec.CodecException | OntologyException | NotUnderstoodException e) {
             logger.warning("Failed to deserialize move message: " + e.getMessage());

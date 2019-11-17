@@ -1,9 +1,8 @@
 package chessagents.agents.gameagent.behaviours.gameplay;
 
 import chessagents.agents.gameagent.GameAgent;
-import chessagents.GameContext;
 import chessagents.agents.gameagent.GameAgentContext;
-import chessagents.ontology.schemas.concepts.Move;
+import chessagents.ontology.schemas.concepts.PieceMove;
 import jade.core.behaviours.DataStore;
 import jade.core.behaviours.OneShotBehaviour;
 
@@ -22,7 +21,7 @@ public class PerformMove extends OneShotBehaviour {
 
     @Override
     public void action() {
-        var move = (Move) getDataStore().get(MOVE_KEY);
+        var move = (PieceMove) getDataStore().get(MOVE_KEY);
         var from = move.getSource();
         var to = move.getTarget();
         context.getGameContext().makeMove(from, to);

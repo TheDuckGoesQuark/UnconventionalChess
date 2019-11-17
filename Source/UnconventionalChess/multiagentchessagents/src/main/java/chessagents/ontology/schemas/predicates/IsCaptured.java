@@ -1,17 +1,17 @@
 package chessagents.ontology.schemas.predicates;
 
-import chessagents.ontology.schemas.concepts.Piece;
+import chessagents.ontology.schemas.concepts.ChessPiece;
 import jade.content.Predicate;
 
 public class IsCaptured implements Predicate {
 
-    private Piece piece;
+    private ChessPiece chessPiece;
 
-    public Piece getPiece() {
-        return piece;
+    public ChessPiece getChessPiece() {
+        return chessPiece;
     }
 
-    public void setPiece(Piece piece) {
-        this.piece = piece;
+    public void setChessPiece(ChessPiece chessPiece) {
+        this.chessPiece = chessPiece;
     }
 }

@@ -1,10 +1,9 @@
 package chessagents.agents.gameagent.behaviours.gameplay;
 
 import chessagents.agents.gameagent.GameAgent;
-import chessagents.GameContext;
 import chessagents.agents.gameagent.GameAgentContext;
 import chessagents.ontology.schemas.actions.MakeMove;
-import chessagents.ontology.schemas.concepts.Move;
+import chessagents.ontology.schemas.concepts.PieceMove;
 import jade.content.lang.Codec;
 import jade.content.onto.OntologyException;
 import jade.content.onto.basic.Action;
@@ -51,11 +50,11 @@ public class VerifyMove extends OneShotBehaviour {
         }
     }
 
-    private boolean isValidMove(Move move) {
+    private boolean isValidMove(PieceMove move) {
         return context.getGameContext().getBoard().isValidMove(move.getSource().getCoordinates(), move.getTarget().getCoordinates());
     }
 
-    private Move extractMove(ACLMessage message) throws Codec.CodecException, OntologyException, NotUnderstoodException {
+    private PieceMove extractMove(ACLMessage message) throws Codec.CodecException, OntologyException, NotUnderstoodException {
         var action = (Action) myAgent.getContentManager().extractContent(message);
         var absAction = action.getAction();
 

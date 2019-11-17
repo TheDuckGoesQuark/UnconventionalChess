@@ -1,16 +1,19 @@
 package chessagents.agents.pieceagent.planner;
 
-import chessagents.ontology.schemas.concepts.Move;
-import chessagents.ontology.schemas.concepts.Piece;
+import chessagents.agents.pieceagent.behaviours.turn.PieceTransition;
+import chessagents.ontology.schemas.concepts.ChessPiece;
+import chessagents.ontology.schemas.concepts.PieceMove;
 
 import java.util.Optional;
 
 public abstract class PieceAction {
 
-    private String name;
-    private Piece actor;
+    private final PieceTransition resultingTransition;
+    private final String name;
+    private final ChessPiece actor;
 
-    protected PieceAction(String name, Piece actor) {
+    protected PieceAction(PieceTransition resultingTransition, String name, ChessPiece actor) {
+        this.resultingTransition = resultingTransition;
         this.name = name;
         this.actor = actor;
     }
@@ -20,7 +23,7 @@ public abstract class PieceAction {
      *
      * @return piece that performed this action
      */
-    public Piece getActor() {
+    public ChessPiece getActor() {
         return actor;
     }
 
@@ -34,11 +37,20 @@ public abstract class PieceAction {
     }
 
     /**
+     * Gets the transition that should be taken once this action is performed
+     *
+     * @return the transition that should be taken once this action is performed
+     */
+    public PieceTransition getTransition() {
+        return resultingTransition;
+    }
+
+    /**
      * Gets the move if the action involves making one
      *
      * @return move made as part of this action
      */
-    public Optional<Move> getMove() {
+    public Optional<PieceMove> getMove() {
         return Optional.empty();
     }
 
@@ -47,7 +59,7 @@ public abstract class PieceAction {
      *
      * @return the piece captured as part of this action
      */
-    public Optional<Piece> getCapturedPiece() {
+    public Optional<ChessPiece> getCapturedPiece() {
         return Optional.empty();
     }
 }

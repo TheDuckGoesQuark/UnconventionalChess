@@ -1,24 +1,24 @@
 package chessagents.ontology.schemas.actions;
 
-import chessagents.ontology.schemas.concepts.Move;
+import chessagents.ontology.schemas.concepts.PieceMove;
 import jade.content.AgentAction;
 
 public class MakeMove implements AgentAction {
 
-    private Move move;
+    private PieceMove move;
 
     public MakeMove() {
     }
 
-    public MakeMove(Move move) {
+    public MakeMove(PieceMove move) {
         this.move = move;
     }
 
-    public Move getMove() {
+    public PieceMove getMove() {
         return move;
     }
 
-    public void setMove(Move move) {
+    public void setMove(PieceMove move) {
         this.move = move;
     }
 }

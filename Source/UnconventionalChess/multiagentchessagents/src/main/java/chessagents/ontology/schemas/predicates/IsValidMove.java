@@ -1,6 +1,6 @@
 package chessagents.ontology.schemas.predicates;
 
-import chessagents.ontology.schemas.concepts.Move;
+import chessagents.ontology.schemas.concepts.PieceMove;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -12,6 +12,6 @@ import lombok.Setter;
 @NoArgsConstructor
 public class IsValidMove {
 
-    private Move move;
+    private PieceMove move;
 
 }

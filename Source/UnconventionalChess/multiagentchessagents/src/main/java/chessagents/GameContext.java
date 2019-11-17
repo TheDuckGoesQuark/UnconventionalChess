@@ -1,8 +1,8 @@
 package chessagents;
 
 import chessagents.chess.ChessBoard;
+import chessagents.ontology.schemas.concepts.ChessPiece;
 import chessagents.ontology.schemas.concepts.Colour;
-import chessagents.ontology.schemas.concepts.Piece;
 import chessagents.ontology.schemas.concepts.Position;
 import jade.core.AID;
 import lombok.Getter;
@@ -15,38 +15,32 @@ import java.util.stream.Collectors;
 @Setter
 public class GameContext {
 
-    private final Map<AID, Piece> aidToPiece = new HashMap<>();
     private final ChessBoard board = new ChessBoard();
     private int gameId;
 
     public List<AID> getAllPieceAgentAIDs() {
         return aidToPiece.values().stream()
-                .map(Piece::getAgentAID)
+                .map(ChessPiece::getAgentAID)
                 .collect(Collectors.toUnmodifiableList());
     }
 
     public void makeMove(Position from, Position to) {
         board.makeMove(from.getCoordinates(), to.getCoordinates());
 
-        // update position of piece agent (if exist)
-        aidToPiece.values().stream()
-                .map(Piece::getPosition)
-                .filter(p -> p.equals(from))
-                .forEach(p -> p.setCoordinates(to.getCoordinates()));
     }
 
-    public Set<Piece> getPiecesForColour(Colour colour) {
+    public Set<ChessPiece> getPiecesForColour(Colour colour) {
         return getAidToPiece().values()
                 .stream()
                 .filter(p -> p.getColour().equals(colour))
                 .collect(Collectors.toSet());
     }
 
-    public void addPiece(Piece piece) {
-        aidToPiece.put(piece.getAgentAID(), piece);
+    public void addPiece(ChessPiece chessPiece) {
+        aidToPiece.put(chessPiece.getAgentAID(), chessPiece);
     }
 
-    public Optional<Piece> getPieceAtPosition(Position source) {
+    public Optional<ChessPiece> getPieceAtPosition(Position source) {
         return aidToPiece.values().stream()
                 .filter(p -> p.getPosition().equals(source))
                 .findFirst();

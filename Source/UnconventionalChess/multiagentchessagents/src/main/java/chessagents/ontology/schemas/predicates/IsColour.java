@@ -1,7 +1,7 @@
 package chessagents.ontology.schemas.predicates;
 
+import chessagents.ontology.schemas.concepts.ChessPiece;
 import chessagents.ontology.schemas.concepts.Colour;
-import chessagents.ontology.schemas.concepts.Piece;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -13,7 +13,7 @@ import lombok.Setter;
 @AllArgsConstructor
 public class IsColour {
 
-    private Piece piece;
+    private ChessPiece chessPiece;
     private Colour colour;
 
 }

@@ -5,7 +5,7 @@ import chessagents.agents.gameagent.GameAgentContext;
 import chessagents.agents.gameagent.GameCreationStatus;
 import chessagents.agents.pieceagent.PieceAgent;
 import chessagents.ontology.schemas.concepts.Colour;
-import chessagents.ontology.schemas.concepts.Piece;
+import chessagents.ontology.schemas.concepts.ChessPiece;
 import chessagents.ontology.schemas.concepts.Position;
 import jade.content.OntoAID;
 import jade.content.lang.sl.SLCodec;
@@ -160,7 +160,7 @@ public class SpawnPieceAgents extends SimpleBehaviour {
                     var ontoAid = new OntoAID(aid.getLocalName(), AID.ISLOCALNAME);
                     var colourConcept = new Colour(colour);
                     var position = new Position(startingSquare);
-                    pieces.put(aid, new Piece(ontoAid, colourConcept, type, position));
+                    pieces.put(aid, new ChessPiece(ontoAid, colourConcept, type, position));
                 }
 
                 protected void handleFailure(ACLMessage failure) {

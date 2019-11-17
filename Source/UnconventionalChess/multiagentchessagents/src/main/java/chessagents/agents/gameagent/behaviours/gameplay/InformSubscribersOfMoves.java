@@ -1,30 +1,18 @@
 package chessagents.agents.gameagent.behaviours.gameplay;
 
 import chessagents.agents.commonbehaviours.SubscriptionInform;
-import chessagents.agents.gameagent.GameAgentContext;
 import chessagents.ontology.ChessOntology;
-import chessagents.ontology.schemas.concepts.Move;
+import chessagents.ontology.schemas.concepts.PieceMove;
 import jade.content.ContentElement;
 import jade.content.abs.*;
-import jade.content.lang.Codec;
 import jade.content.lang.sl.SLVocabulary;
 import jade.content.onto.BasicOntology;
 import jade.content.onto.OntologyException;
-import jade.core.Agent;
-import jade.domain.FIPAAgentManagement.NotUnderstoodException;
-import jade.lang.acl.ACLMessage;
-import jade.util.Logger;
-
-import java.util.HashSet;
-import java.util.Optional;
-import java.util.Set;
-
-import static jade.proto.SubscriptionResponder.Subscription;
 
 /**
  *
  */
-public class InformSubscribersOfMoves extends SubscriptionInform<Move> {
+public class InformSubscribersOfMoves extends SubscriptionInform<PieceMove> {
 
     private final AbsIRE absIRE = new AbsIRE(SLVocabulary.IOTA);
 
@@ -39,7 +27,7 @@ public class InformSubscribersOfMoves extends SubscriptionInform<Move> {
     }
 
     @Override
-    public ContentElement buildInformContents(Move move) {
+    public ContentElement buildInformContents(PieceMove move) {
         AbsObject absMove = null;
         try {
             absMove = ChessOntology.getInstance().fromObject(move);

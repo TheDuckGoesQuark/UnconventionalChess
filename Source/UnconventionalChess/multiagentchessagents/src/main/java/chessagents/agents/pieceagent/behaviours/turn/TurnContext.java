@@ -1,6 +1,6 @@
 package chessagents.agents.pieceagent.behaviours.turn;
 
-import chessagents.ontology.schemas.concepts.Move;
+import chessagents.ontology.schemas.concepts.PieceMove;
 import jade.core.AID;
 import jade.lang.acl.ACLMessage;
 import lombok.Getter;
@@ -13,7 +13,7 @@ import lombok.Setter;
 public class TurnContext {
 
     private AID currentSpeaker = null;
-    private Move currentMove = null;
+    private PieceMove currentMove = null;
     private ACLMessage currentMessage = null;
     private int debateCycles = 0;
 

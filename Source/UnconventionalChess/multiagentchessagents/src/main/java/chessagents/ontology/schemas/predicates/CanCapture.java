@@ -1,27 +1,27 @@
 package chessagents.ontology.schemas.predicates;
 
 
-import chessagents.ontology.schemas.concepts.Piece;
+import chessagents.ontology.schemas.concepts.ChessPiece;
 import jade.content.Predicate;
 
 public class CanCapture implements Predicate {
 
-    private Piece attacker;
-    private Piece victim;
+    private ChessPiece attacker;
+    private ChessPiece victim;
 
-    public Piece getAttacker() {
+    public ChessPiece getAttacker() {
         return attacker;
     }
 
-    public void setAttacker(Piece attacker) {
+    public void setAttacker(ChessPiece attacker) {
         this.attacker = attacker;
     }
 
-    public Piece getVictim() {
+    public ChessPiece getVictim() {
         return victim;
     }
 
-    public void setVictim(Piece victim) {
+    public void setVictim(ChessPiece victim) {
         this.victim = victim;
     }
 }

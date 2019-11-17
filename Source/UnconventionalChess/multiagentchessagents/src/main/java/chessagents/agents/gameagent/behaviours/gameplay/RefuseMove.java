@@ -2,7 +2,7 @@ package chessagents.agents.gameagent.behaviours.gameplay;
 
 import chessagents.agents.gameagent.GameAgent;
 import chessagents.ontology.ChessOntology;
-import chessagents.ontology.schemas.concepts.Move;
+import chessagents.ontology.schemas.concepts.PieceMove;
 import chessagents.ontology.schemas.predicates.IsValidMove;
 import jade.content.ContentElement;
 import jade.content.ContentElementList;
@@ -52,7 +52,7 @@ public class RefuseMove extends OneShotBehaviour {
 
     private ContentElement constructNotValidMovePredicate() throws OntologyException {
         var not = new AbsPredicate(SLVocabulary.NOT);
-        var move = (Move) getDataStore().get(MOVE_KEY);
+        var move = (PieceMove) getDataStore().get(MOVE_KEY);
         var validMove = new IsValidMove(move);
         var absValidMove = ChessOntology.getInstance().fromObject(validMove);
         not.set(SLVocabulary.NOT_WHAT, absValidMove);

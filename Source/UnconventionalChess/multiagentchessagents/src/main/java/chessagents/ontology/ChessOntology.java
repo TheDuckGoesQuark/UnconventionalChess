@@ -5,7 +5,6 @@ import chessagents.ontology.schemas.actions.CreateGame;
 import chessagents.ontology.schemas.actions.MakeMove;
 import chessagents.ontology.schemas.concepts.*;
 import chessagents.ontology.schemas.predicates.*;
-import jade.content.Predicate;
 import jade.content.onto.BasicOntology;
 import jade.content.onto.Ontology;
 import jade.content.onto.OntologyException;
@@ -92,16 +91,17 @@ public class ChessOntology extends Ontology {
             add(positionSchema, Position.class);
 
             final var pieceSchema = new ConceptSchema(PIECE);
-            pieceSchema.add(PIECE_AGENT, (ConceptSchema) getSchema(BasicOntology.AID));
+            // not all pieces will have an agent so this field may not be present
+            pieceSchema.add(PIECE_AGENT, (ConceptSchema) getSchema(BasicOntology.AID), ObjectSchema.OPTIONAL);
             pieceSchema.add(PIECE_TYPE, (PrimitiveSchema) getSchema(BasicOntology.STRING));
             pieceSchema.add(PIECE_COLOUR, (ConceptSchema) getSchema(COLOUR));
             pieceSchema.add(PIECE_POSITION, (ConceptSchema) getSchema(POSITION));
-            add(pieceSchema, Piece.class);
+            add(pieceSchema, ChessPiece.class);
 
             final var moveSchema = new ConceptSchema(MOVE);
             moveSchema.add(MOVE_SOURCE, (ConceptSchema) getSchema(POSITION));
             moveSchema.add(MOVE_TARGET, (ConceptSchema) getSchema(POSITION));
-            add(moveSchema, Move.class);
+            add(moveSchema, PieceMove.class);
 
             final var gameSchema = new ConceptSchema(GAME);
             gameSchema.add(GAME_ID, (PrimitiveSchema) getSchema(BasicOntology.INTEGER));

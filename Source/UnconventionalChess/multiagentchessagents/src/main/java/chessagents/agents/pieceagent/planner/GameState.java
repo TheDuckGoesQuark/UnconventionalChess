@@ -1,7 +1,7 @@
 package chessagents.agents.pieceagent.planner;
 
 import chessagents.chess.ChessBoard;
-import chessagents.ontology.schemas.concepts.Piece;
+import chessagents.ontology.schemas.concepts.ChessPiece;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -9,26 +9,26 @@ import java.util.stream.Collectors;
 
 public class GameState {
 
-    private final Set<Piece> livePieces;
-    private final Piece observer;
+    private final Set<ChessPiece> liveChessPieces;
+    private final ChessPiece observer;
     private final ChessBoard chessboard;
-    private final Set<Piece> threatenedPieces;
-    private final Set<Piece> capturedPieces;
+    private final Set<ChessPiece> threatenedChessPieces;
+    private final Set<ChessPiece> capturedChessPieces;
 
-    public GameState(Piece observer, Set<Piece> livePieces) {
-        this.livePieces = livePieces;
+    public GameState(ChessPiece observer, Set<ChessPiece> liveChessPieces) {
+        this.liveChessPieces = liveChessPieces;
         this.observer = observer;
         this.chessboard = new ChessBoard();
-        threatenedPieces = new HashSet<>();
-        capturedPieces = new HashSet<>();
+        threatenedChessPieces = new HashSet<>();
+        capturedChessPieces = new HashSet<>();
     }
 
-    private GameState(Piece observer, Set<Piece> livePieces, ChessBoard board, Set<Piece> capturedPieces) {
+    private GameState(ChessPiece observer, Set<ChessPiece> liveChessPieces, ChessBoard board, Set<ChessPiece> capturedChessPieces) {
         this.observer = observer;
-        this.livePieces = livePieces;
+        this.liveChessPieces = liveChessPieces;
         this.chessboard = board;
-        this.capturedPieces = capturedPieces;
-        this.threatenedPieces = board.getThreatenedPieces(livePieces);
+        this.capturedChessPieces = capturedChessPieces;
+        this.threatenedChessPieces = board.getThreatenedPieces(liveChessPieces);
     }
 
     /**
@@ -44,8 +44,8 @@ public class GameState {
         // or if no move is actually performed as part of this action
         if (newBoard.equals(chessboard)) return this;
         else {
-            var newCaptured = new HashSet<>(capturedPieces);
-            var newLive = new HashSet<>(livePieces);
+            var newCaptured = new HashSet<>(capturedChessPieces);
+            var newLive = new HashSet<>(liveChessPieces);
 
             pieceAction.getCapturedPiece().ifPresent(piece -> {
                 newLive.remove(piece);
@@ -59,8 +59,8 @@ public class GameState {
     /**
      * @return the set of pieces the same colour as the observer that are currently threatened
      */
-    public Set<Piece> getFriendlyThreatenedPieces() {
-        return threatenedPieces.stream()
+    public Set<ChessPiece> getFriendlyThreatenedPieces() {
+        return threatenedChessPieces.stream()
                 .filter(p -> p.getColour().equals(observer.getColour()))
                 .collect(Collectors.toSet());
     }
@@ -68,8 +68,8 @@ public class GameState {
     /**
      * @return the set of enemies the opposite colour as the observer that have been captured
      */
-    public Set<Piece> getEnemiesCaptured() {
-        return capturedPieces.stream()
+    public Set<ChessPiece> getEnemiesCaptured() {
+        return capturedChessPieces.stream()
                 .filter(p -> !p.getColour().equals(observer.getColour()))
                 .collect(Collectors.toSet());
     }

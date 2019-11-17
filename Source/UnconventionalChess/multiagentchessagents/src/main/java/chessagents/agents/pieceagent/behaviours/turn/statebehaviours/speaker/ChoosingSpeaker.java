@@ -6,6 +6,7 @@ import chessagents.agents.pieceagent.behaviours.turn.PieceTransition;
 import chessagents.agents.pieceagent.behaviours.turn.TurnContext;
 import chessagents.agents.pieceagent.behaviours.turn.statebehaviours.PieceStateBehaviour;
 import chessagents.agents.pieceagent.PieceAgent;
+import chessagents.agents.pieceagent.planner.actions.ChoosePieceToSpeak;
 import jade.core.AID;
 import jade.lang.acl.ACLMessage;
 import jade.lang.acl.MessageTemplate;
@@ -94,7 +95,9 @@ public class ChoosingSpeaker extends PieceStateBehaviour {
     }
 
     private AID chooseSpeaker() {
-        return ((PieceAgent) myAgent).chooseSpeaker(speakerProposals);
+        var actions = speakerProposals.stream().map(ACLMessage::getSender).map(sender -> new ChoosePieceToSpeak());
+        var action = ((PieceAgent) myAgent).chooseAction(actions);
+
     }
 
     private boolean receivedRequestFromEveryone() {

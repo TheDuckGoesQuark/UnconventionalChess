@@ -4,8 +4,8 @@ import chessagents.agents.gameagent.GameAgent;
 import chessagents.agents.gameagent.GameAgentContext;
 import chessagents.agents.gameagent.GameCreationStatus;
 import chessagents.ontology.ChessOntology;
+import chessagents.ontology.schemas.concepts.ChessPiece;
 import chessagents.ontology.schemas.concepts.Colour;
-import chessagents.ontology.schemas.concepts.Piece;
 import jade.content.abs.AbsAggregate;
 import jade.content.abs.AbsConcept;
 import jade.content.abs.AbsIRE;
@@ -77,11 +77,11 @@ public class HandlePieceListRequests extends SimpleAchieveREResponder {
         return reply;
     }
 
-    private AbsPredicate createAnswer(AbsIRE ire, Set<Piece> matchingPieces, Ontology ontology) throws OntologyException {
+    private AbsPredicate createAnswer(AbsIRE ire, Set<ChessPiece> matchingChessPieces, Ontology ontology) throws OntologyException {
         var aggregate = new AbsAggregate(BasicOntology.SET);
 
-        for (Piece matchingPiece : matchingPieces) {
-            aggregate.add((AbsConcept) ontology.fromObject(matchingPiece));
+        for (ChessPiece matchingChessPiece : matchingChessPieces) {
+            aggregate.add((AbsConcept) ontology.fromObject(matchingChessPiece));
         }
 
         var equals = new AbsPredicate(BasicOntology.EQUALS);

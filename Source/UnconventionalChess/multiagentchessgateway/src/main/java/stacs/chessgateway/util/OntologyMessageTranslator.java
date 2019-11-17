@@ -6,7 +6,7 @@ import chessagents.agents.gatewayagent.messages.MoveMessage;
 import chessagents.agents.gatewayagent.messages.OntologyTranslator;
 import chessagents.ontology.ChessOntology;
 import chessagents.ontology.schemas.actions.MakeMove;
-import chessagents.ontology.schemas.concepts.Move;
+import chessagents.ontology.schemas.concepts.PieceMove;
 import jade.content.ContentElement;
 import jade.content.ContentManager;
 import jade.content.OntoAID;
@@ -21,7 +21,6 @@ import jade.domain.FIPAAgentManagement.NotUnderstoodException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
-import stacs.chessgateway.exceptions.GatewayFailureException;
 import stacs.chessgateway.models.Message;
 
 import java.time.Instant;
@@ -50,7 +49,7 @@ public class OntologyMessageTranslator implements OntologyTranslator<Message> {
             }
 
             var absRight = absEquals.getAbsTerm(BasicOntology.EQUALS_RIGHT);
-            var move = (Move) ChessOntology.getInstance().toObject(absRight);
+            var move = (PieceMove) ChessOntology.getInstance().toObject(absRight);
 
             var moveMessage = new MoveMessage();
             moveMessage.setSourceSquare(move.getSource().getCoordinates());
@@ -112,7 +111,7 @@ public class OntologyMessageTranslator implements OntologyTranslator<Message> {
         var move = (MoveMessage) message.getBody();
 
         final MakeMove makeMove = new MakeMove();
-        makeMove.setMove(new Move(move.getSourceSquare(), move.getTargetSquare()));
+        makeMove.setMove(new PieceMove(move.getSourceSquare(), move.getTargetSquare()));
 
         return Optional.of(makeMove);
     }

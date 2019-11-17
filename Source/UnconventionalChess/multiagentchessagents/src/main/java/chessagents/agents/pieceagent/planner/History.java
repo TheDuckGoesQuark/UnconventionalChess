@@ -4,5 +4,5 @@ import chessagents.agents.pieceagent.events.TransitionEvent;
 
 import java.util.concurrent.LinkedBlockingDeque;
 
-public class History extends LinkedBlockingDeque<TransitionEvent> {
+public class History extends LinkedBlockingDeque<GameState> {
 }

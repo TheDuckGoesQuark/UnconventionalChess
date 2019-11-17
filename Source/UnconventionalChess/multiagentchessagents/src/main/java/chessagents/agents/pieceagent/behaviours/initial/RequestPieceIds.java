@@ -4,7 +4,7 @@ import chessagents.agents.ChessMessageBuilder;
 import chessagents.agents.pieceagent.PieceAgent;
 import chessagents.agents.pieceagent.PieceContext;
 import chessagents.ontology.ChessOntology;
-import chessagents.ontology.schemas.concepts.Piece;
+import chessagents.ontology.schemas.concepts.ChessPiece;
 import jade.content.abs.*;
 import jade.content.lang.Codec;
 import jade.content.lang.sl.SLVocabulary;
@@ -88,11 +88,11 @@ public class RequestPieceIds extends SimpleAchieveREInitiator {
         }
     }
 
-    private Set<Piece> extractPieces(AbsAggregate absSet, Ontology ontology) throws OntologyException {
-        var pieces = new HashSet<Piece>(absSet.getCount());
+    private Set<ChessPiece> extractPieces(AbsAggregate absSet, Ontology ontology) throws OntologyException {
+        var pieces = new HashSet<ChessPiece>(absSet.getCount());
 
         for (int i = 0; i < absSet.getCount(); i++) {
-            pieces.add((Piece) ontology.toObject(absSet.get(i)));
+            pieces.add((ChessPiece) ontology.toObject(absSet.get(i)));
         }
 
         return pieces;
