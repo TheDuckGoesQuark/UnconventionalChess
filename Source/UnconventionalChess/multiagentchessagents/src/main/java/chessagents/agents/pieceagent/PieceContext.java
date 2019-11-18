@@ -1,50 +1,52 @@
 package chessagents.agents.pieceagent;
 
-import chessagents.GameContext;
+import chessagents.GameState;
 import chessagents.agents.pieceagent.planner.PieceAction;
+import chessagents.ontology.schemas.concepts.ChessPiece;
 import chessagents.ontology.schemas.concepts.Colour;
-import chessagents.ontology.schemas.concepts.Position;
 import jade.core.AID;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.util.Optional;
 import java.util.Set;
 
-/**
- * PieceContext provides information about the current state of the piece, and any static information such as
- * its colour or the game agent.
- */
 @Getter
 @Setter
 public class PieceContext {
 
-    private final GameContext gameContext = new GameContext();
     private final Colour myColour;
     private final AID gameAgentAID;
     private final int maxDebateCycle;
-
     private String moveSubscriptionId = null;
+    private GameState gameState;
 
     public PieceContext(int gameId, Colour myColour, AID gameAgentAID, int maxDebateCycle) {
-        gameContext.setGameId(gameId);
+        this.gameState = new GameState(gameId);
         this.myColour = myColour;
         this.gameAgentAID = gameAgentAID;
         this.maxDebateCycle = maxDebateCycle;
     }
 
-    public void makeMove(Position from, Position to) {
-        gameContext.makeMove(from, to);
-    }
-
+    /**
+     * @return true if it is my side to go
+     */
     public boolean isMyTurnToGo() {
-        return gameContext.getBoard().isSideToGo(myColour.getColour());
+        return gameState.isSideToGo(myColour);
     }
 
     public void performAction(PieceAction action) {
-        // TODO
+        gameState = gameState.apply(action);
     }
 
     public PieceAction chooseAction(Set<PieceAction> possibleActions) {
+        // TODO an actual implementation
+        return possibleActions.iterator().next();
+    }
 
+    public Optional<ChessPiece> getPieceForAID(AID aid) {
+        return gameState.getAllPieces().stream()
+                .filter(p -> p.getAgentAID().getLocalName().equals(aid.getLocalName()))
+                .findFirst();
     }
 }

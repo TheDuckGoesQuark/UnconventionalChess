@@ -4,6 +4,7 @@ import chessagents.agents.pieceagent.behaviours.turn.PieceState;
 import chessagents.agents.pieceagent.behaviours.turn.PieceTransition;
 import chessagents.agents.pieceagent.events.TransitionEvent;
 import chessagents.agents.pieceagent.PieceAgent;
+import chessagents.agents.pieceagent.planner.PieceAction;
 import jade.core.behaviours.SimpleBehaviour;
 import jade.util.Logger;
 
@@ -11,7 +12,7 @@ public abstract class PieceStateBehaviour extends SimpleBehaviour {
 
     private final PieceState pieceState;
     protected final Logger logger = Logger.getMyLogger(getClass().getName());
-    protected TransitionEvent transitionEvent;
+    protected PieceAction pieceAction;
 
     /**
      * Constructor ensures that each piece state behaviour corresponds to a piece state enum value, and that
@@ -36,7 +37,7 @@ public abstract class PieceStateBehaviour extends SimpleBehaviour {
     @Override
     public final void onStart() {
         logCurrentState();
-        transitionEvent = null;
+        pieceAction = null;
         initialiseState();
         super.onStart();
     }
@@ -56,7 +57,7 @@ public abstract class PieceStateBehaviour extends SimpleBehaviour {
      */
     @Override
     public final boolean done() {
-        return transitionEvent != null;
+        return pieceAction != null;
     }
 
     /**
@@ -69,9 +70,8 @@ public abstract class PieceStateBehaviour extends SimpleBehaviour {
     public final int onEnd() {
         int transition = 0;
 
-        if (transitionEvent != null) {
-            ((PieceAgent) myAgent).experienceEvent(transitionEvent);
-            transition = transitionEvent.getTransition().ordinal();
+        if (pieceAction != null) {
+            transition = pieceAction.getTransition().ordinal();
         }
 
         return transition;
@@ -80,26 +80,16 @@ public abstract class PieceStateBehaviour extends SimpleBehaviour {
     /**
      * Logs the current state name
      */
-    public final void logCurrentState() {
+    private void logCurrentState() {
         logger.info("STATE: " + pieceState.name());
     }
 
     /**
      * Sets the event occurred at the end of the execution of this behaviour
      *
-     * @param transitionEvent event
+     * @param pieceAction action to be performed during this state
      */
-    public final void setTransitionEvent(TransitionEvent transitionEvent) {
-        this.transitionEvent = transitionEvent;
+    public final void setChosenAction(PieceAction pieceAction) {
+        this.pieceAction = pieceAction;
     }
-
-    /**
-     * Overloaded setter that creates the basic event using the given transition
-     *
-     * @param transition transition that will occur next
-     */
-    public final void setEvent(PieceTransition transition) {
-        this.transitionEvent = new TransitionEvent(transition);
-    }
-
 }

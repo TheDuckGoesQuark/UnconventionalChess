@@ -58,7 +58,7 @@ public class WaitForMoveConfirmation extends PieceStateBehaviour {
             }
         } else {
             // TODO shouldn't need this check, check if we do.
-            if (transitionEvent == null) block();
+            if (pieceAction == null) block();
         }
     }
 

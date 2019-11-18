@@ -1,5 +1,6 @@
 package chessagents.agents.gameagent;
 
+import chessagents.GameState;
 import chessagents.agents.ChessAgent;
 import chessagents.agents.gameagent.behaviours.chat.HandleChat;
 import chessagents.agents.gameagent.behaviours.gameplay.HandleGame;
@@ -37,7 +38,7 @@ public class GameAgent extends ChessAgent {
     }
 
     public void createGame(Game game) {
-        myContext.getGameContext().setGameId(game.getGameId());
+        myContext.setGameState(new GameState(game.getGameId()));
 
         var gameSequence = new SequentialBehaviour();
         gameSequence.addSubBehaviour(new SpawnPieceAgents(this, myContext));

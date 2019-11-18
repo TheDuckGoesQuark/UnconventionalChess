@@ -51,7 +51,7 @@ public class VerifyMove extends OneShotBehaviour {
     }
 
     private boolean isValidMove(PieceMove move) {
-        return context.getGameContext().getBoard().isValidMove(move.getSource().getCoordinates(), move.getTarget().getCoordinates());
+        return context.getGameState().getBoard().isValidMove(move.getSource().getCoordinates(), move.getTarget().getCoordinates());
     }
 
     private PieceMove extractMove(ACLMessage message) throws Codec.CodecException, OntologyException, NotUnderstoodException {

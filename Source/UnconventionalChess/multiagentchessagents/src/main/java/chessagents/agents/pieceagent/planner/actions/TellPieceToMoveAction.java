@@ -1,17 +1,18 @@
 package chessagents.agents.pieceagent.planner.actions;
 
+import chessagents.agents.pieceagent.behaviours.turn.PieceTransition;
 import chessagents.agents.pieceagent.planner.PieceAction;
 import chessagents.ontology.schemas.concepts.ChessPiece;
 import chessagents.ontology.schemas.concepts.PieceMove;
 
 import java.util.Optional;
 
-public class TellPieceToMove extends PieceAction {
+public class TellPieceToMoveAction extends PieceAction {
     private final PieceMove move;
     private final ChessPiece otherChessPiece;
 
-    protected TellPieceToMove(ChessPiece actor, PieceMove move, ChessPiece otherChessPiece) {
-        super(pieceTransition, "Tell piece to move", actor);
+    public TellPieceToMoveAction(ChessPiece actor, PieceMove move, ChessPiece otherChessPiece) {
+        super(PieceTransition.TOLD_PIECE_TO_MOVE, "Tell piece to move", actor);
         this.move = move;
         this.otherChessPiece = otherChessPiece;
     }

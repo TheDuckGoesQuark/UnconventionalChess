@@ -15,8 +15,8 @@ import java.util.Objects;
 @AllArgsConstructor
 public class Colour implements Concept {
 
-    public static final String WHITE = Side.WHITE.value();
-    public static final String BLACK = Side.BLACK.value();
+    public static final Colour WHITE = new Colour(Side.WHITE.value());
+    public static final Colour BLACK = new Colour(Side.BLACK.value());
 
     private String colour;
 

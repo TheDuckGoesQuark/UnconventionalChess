@@ -1,7 +1,8 @@
 package chessagents.agents.pieceagent.planner.goal;
 
-import chessagents.agents.pieceagent.planner.GameState;
+import chessagents.GameState;
 import chessagents.agents.pieceagent.planner.PieceAction;
+import chessagents.ontology.schemas.concepts.ChessPiece;
 
 /**
  * A goal is a game state that can be achieved
@@ -14,7 +15,7 @@ public abstract class Value {
         this.name = name;
     }
 
-    public abstract boolean actionMaintainsValue(GameState gameState, PieceAction pieceAction);
+    public abstract boolean actionMaintainsValue(ChessPiece pieceWithValue, GameState gameState, PieceAction pieceAction);
 
     /**
      * Get the name of this goal

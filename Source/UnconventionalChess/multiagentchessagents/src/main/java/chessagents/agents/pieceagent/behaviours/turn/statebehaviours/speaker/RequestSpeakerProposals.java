@@ -6,6 +6,7 @@ import chessagents.agents.pieceagent.behaviours.turn.TurnContext;
 import chessagents.agents.pieceagent.behaviours.turn.PieceState;
 import chessagents.agents.pieceagent.behaviours.turn.statebehaviours.PieceStateBehaviour;
 import chessagents.agents.pieceagent.PieceAgent;
+import chessagents.ontology.schemas.concepts.ChessPiece;
 import jade.lang.acl.ACLMessage;
 
 import static chessagents.agents.pieceagent.behaviours.turn.PieceTransition.PROPOSALS_REQUESTED;
@@ -31,8 +32,13 @@ public class RequestSpeakerProposals extends PieceStateBehaviour {
     private void requestProposals() {
         var cfp = ChessMessageBuilder.constructMessage(ACLMessage.CFP);
 
-        // send to everyone (including myself!)
-        pieceContext.getGameContext().getAllPieceAgentAIDs().forEach(cfp::addReceiver);
+        // send to everyone on my side (including myself!)
+        pieceContext.getGameState().getAllPieces().stream()
+                .filter(p -> p.getAgentAID() != null)
+                .filter(p -> p.getColour().equals(pieceContext.getMyColour()))
+                .map(ChessPiece::getAgentAID)
+                .forEach(cfp::addReceiver);
+
         cfp.setProtocol(SPEAKER_CONTRACT_NET_PROTOCOL);
 
         // Store CFP

@@ -10,7 +10,6 @@ import com.github.bhlangonijr.chesslib.move.MoveGenerator;
 import com.github.bhlangonijr.chesslib.move.MoveGeneratorException;
 import com.github.bhlangonijr.chesslib.move.MoveList;
 import jade.content.OntoAID;
-import jade.core.AID;
 
 import java.util.*;
 import java.util.stream.Collectors;
@@ -28,6 +27,9 @@ public class ChessBoard {
      * The set of pieces on the board
      */
     private final Set<ChessPiece> chessPieces;
+
+    private final Set<ChessPiece> capturedPieces;
+
     /**
      * The actual board with game logic implemented
      */
@@ -38,6 +40,7 @@ public class ChessBoard {
      */
     public ChessBoard() {
         board = new Board();
+        capturedPieces = new HashSet<>();
         chessPieces = Arrays.stream(Square.values())
                 .filter(sq -> board.getPiece(sq) != Piece.NONE)
                 .map(sq -> {
@@ -56,9 +59,10 @@ public class ChessBoard {
      * @param board  current board
      * @param pieces set of pieces
      */
-    private ChessBoard(Board board, Set<ChessPiece> pieces) {
+    private ChessBoard(Board board, Set<ChessPiece> pieces, Set<ChessPiece> capturedPieces) {
         this.board = board;
         this.chessPieces = pieces;
+        this.capturedPieces = capturedPieces;
     }
 
     /**
@@ -86,21 +90,6 @@ public class ChessBoard {
         );
     }
 
-    public Optional<PieceMove> getRandomMove() {
-        try {
-            MoveList moves = MoveGenerator.generateLegalMoves(board);
-            Move move = moves.get(random.nextInt(moves.size()));
-
-            return Optional.of(constructPieceMove(move));
-        } catch (MoveGeneratorException e) {
-            return Optional.empty();
-        }
-    }
-
-    public boolean gameIsOver() {
-        return board.isMated() || board.isDraw() || board.isStaleMate() || board.isInsufficientMaterial();
-    }
-
     /**
      * Performs move from given source to given target
      *
@@ -109,7 +98,13 @@ public class ChessBoard {
     public void makeMove(PieceMove move) {
         board.doMove(constructChessLibMove(move));
 
-        // update position of piece concept
+        // update piece captured piece if there is one
+        getPieceAtPosition(move.getTarget()).ifPresent(p -> {
+            capturedPieces.add(p);
+            p.setPosition(null);
+        });
+
+        // update position of piece that moved
         chessPieces.stream()
                 .map(ChessPiece::getPosition)
                 .filter(p -> p.equals(move.getSource()))
@@ -138,13 +133,24 @@ public class ChessBoard {
     }
 
     /**
+     * Gets the colour of the side to go
+     *
+     * @return colour of the side to go
+     */
+    public Colour getSideToGo() {
+        return new Colour(board.getSideToMove().value());
+    }
+
+    /**
      * Creates a copy of the current board, and performs the given move on the copy, then returns the copy
      *
      * @param move move to be performed
      * @return copy of this board with move performed
      */
     public ChessBoard copyOnMove(PieceMove move) {
-        var thisCopy = new ChessBoard(board.clone(), chessPieces);
+        // determine if we need to make a copy of the set of captured pieces
+        final Set<ChessPiece> newCapturedPieces = getPieceAtPosition(move.getTarget()).isPresent() ? new HashSet<>(capturedPieces) : capturedPieces;
+        var thisCopy = new ChessBoard(board.clone(), chessPieces, newCapturedPieces);
         thisCopy.makeMove(move);
         return thisCopy;
     }
@@ -154,7 +160,7 @@ public class ChessBoard {
      *
      * @return the set of pieces that are currently threatened
      */
-    public Set<ChessPiece> getThreatenedPieces(Set<ChessPiece> chessPieces) {
+    public Set<ChessPiece> getThreatenedPieces() {
         var threatened = new HashSet<ChessPiece>();
         var currentSideToGo = board.getSideToMove();
 
@@ -191,11 +197,31 @@ public class ChessBoard {
 
     /**
      * Registers a piece with an agent AID
-     * @param piece piece to have AID attached to it
+     *
+     * @param piece         piece to have AID attached to it
      * @param pieceAgentAID AID of agent representing that piece
      */
     public void registerAgentPiece(ChessPiece piece, OntoAID pieceAgentAID) {
         chessPieces.stream().filter(p -> p.equals(piece)).findFirst().ifPresent(p -> p.setAgentAID(pieceAgentAID));
+    }
+
+    public Set<ChessPiece> getAllPieces() {
+        return chessPieces;
+    }
+
+    public Optional<PieceMove> getRandomMove() {
+        try {
+            MoveList moves = MoveGenerator.generateLegalMoves(board);
+            Move move = moves.get(random.nextInt(moves.size()));
+
+            return Optional.of(constructPieceMove(move));
+        } catch (MoveGeneratorException e) {
+            return Optional.empty();
+        }
+    }
+
+    public boolean gameIsOver() {
+        return board.isMated() || board.isDraw() || board.isStaleMate() || board.isInsufficientMaterial();
     }
 
     @Override
@@ -209,5 +235,21 @@ public class ChessBoard {
     @Override
     public int hashCode() {
         return Objects.hash(board);
+    }
+
+    public Optional<ChessPiece> getPieceAtPosition(Position position) {
+        return getAllPieces().stream().filter(p -> p.getPosition().equals(position)).findFirst();
+    }
+
+    public Set<ChessPiece> getCapturedPieces() {
+        return capturedPieces;
+    }
+
+    public Set<PieceMove> getAllLegalMoves() {
+        try {
+            return MoveGenerator.generateLegalMoves(board).stream().map(ChessBoard::constructPieceMove).collect(Collectors.toSet());
+        } catch (MoveGeneratorException e) {
+            return Collections.emptySet();
+        }
     }
 }

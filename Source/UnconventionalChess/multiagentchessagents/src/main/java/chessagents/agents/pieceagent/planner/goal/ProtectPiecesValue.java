@@ -1,7 +1,8 @@
 package chessagents.agents.pieceagent.planner.goal;
 
-import chessagents.agents.pieceagent.planner.GameState;
+import chessagents.GameState;
 import chessagents.agents.pieceagent.planner.PieceAction;
+import chessagents.ontology.schemas.concepts.ChessPiece;
 
 public class ProtectPiecesValue extends Value {
     public ProtectPiecesValue() {
@@ -9,7 +10,9 @@ public class ProtectPiecesValue extends Value {
     }
 
     @Override
-    public boolean actionMaintainsValue(GameState gameState, PieceAction pieceAction) {
-        return gameState.getFriendlyThreatenedPieces().size() < gameState.apply(pieceAction).getFriendlyThreatenedPieces().size();
+    public boolean actionMaintainsValue(ChessPiece pieceWithValue, GameState gameState, PieceAction pieceAction) {
+        var threatenedPiecesBefore = gameState.getThreatenedPieces();
+        var threatenedPiecesAfter = gameState.apply(pieceAction).getThreatenedPieces();
+        return threatenedPiecesBefore.size() > threatenedPiecesAfter.size();
     }
 }

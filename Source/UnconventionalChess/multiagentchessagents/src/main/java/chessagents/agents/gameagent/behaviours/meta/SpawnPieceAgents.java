@@ -44,7 +44,7 @@ public class SpawnPieceAgents extends SimpleBehaviour {
     }
 
     private String generatePieceAgentName(String pieceType, String colour, String startingSquare) {
-        return context.getGameContext().getGameId() + "-" + startingSquare + "-" + colour + "-" + pieceType;
+        return context.getGameState().getGameId() + "-" + startingSquare + "-" + colour + "-" + pieceType;
     }
 
     @Override
@@ -104,7 +104,7 @@ public class SpawnPieceAgents extends SimpleBehaviour {
 
     private Set<Behaviour> getBehavioursForSpawningAllPiecesOnSide(String colour) {
         logger.info("Spawning agents for side " + colour);
-        var board = context.getGameContext().getBoard();
+        var board = context.getGameState().getBoard();
         return board.getPositionsOfAllPiecesForColour(colour)
                 .stream()
                 .map(sq -> createSpawnPieceBehaviour(sq, colour, board.getPieceTypeAtSquare(sq)))
@@ -132,7 +132,7 @@ public class SpawnPieceAgents extends SimpleBehaviour {
         createAgent.addArguments(startingSquare);
         createAgent.addArguments(colour);
         createAgent.addArguments(myAgent.getAID().getName());
-        createAgent.addArguments(Integer.toString(context.getGameContext().getGameId()));
+        createAgent.addArguments(Integer.toString(context.getGameState().getGameId()));
         createAgent.addArguments(Integer.toString(MAX_DEBATE_CYCLES));
 
         final Action requestAction = new Action(myAgent.getAMS(), createAgent);
@@ -155,7 +155,7 @@ public class SpawnPieceAgents extends SimpleBehaviour {
             requestCreateAgentBehaviour = new AchieveREInitiator(myAgent, request) {
                 protected void handleInform(ACLMessage inform) {
                     logger.info("Agent " + agentName + " successfully created");
-                    var pieces = context.getGameContext().getAidToPiece();
+                    var pieces = context.getGameState().getAidToPiece();
                     var aid = new AID(agentName, AID.ISLOCALNAME);
                     var ontoAid = new OntoAID(aid.getLocalName(), AID.ISLOCALNAME);
                     var colourConcept = new Colour(colour);

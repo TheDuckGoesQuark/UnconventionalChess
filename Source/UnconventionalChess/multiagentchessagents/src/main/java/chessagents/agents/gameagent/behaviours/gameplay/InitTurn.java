@@ -1,7 +1,6 @@
 package chessagents.agents.gameagent.behaviours.gameplay;
 
 import chessagents.agents.gameagent.GameAgent;
-import chessagents.GameContext;
 import chessagents.agents.gameagent.GameAgentContext;
 import jade.core.behaviours.SimpleBehaviour;
 
@@ -17,7 +16,7 @@ public class InitTurn extends SimpleBehaviour {
 
     @Override
     public void action() {
-        if (context.getGameContext().getBoard().gameIsOver()) {
+        if (context.getGameState().getBoard().gameIsOver()) {
             nextState = GamePlayTransition.GAME_COMPLETE;
         } else if (context.isHumanTurn()) {
             nextState = GamePlayTransition.IS_HUMAN_MOVE;

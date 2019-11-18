@@ -1,7 +1,6 @@
 package chessagents.agents.gameagent.behaviours.meta;
 
 import chessagents.agents.gameagent.GameAgent;
-import chessagents.GameContext;
 import chessagents.agents.gameagent.GameAgentContext;
 import chessagents.ontology.ChessOntology;
 import chessagents.ontology.schemas.predicates.IsReady;

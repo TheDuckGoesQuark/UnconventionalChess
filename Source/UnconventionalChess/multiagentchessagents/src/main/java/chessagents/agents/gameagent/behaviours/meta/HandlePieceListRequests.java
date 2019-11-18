@@ -64,7 +64,7 @@ public class HandlePieceListRequests extends SimpleAchieveREResponder {
                 var ire = (AbsIRE) abs;
                 var prop = ontology.fromObject(ire.getProposition());
                 var colour = (Colour) ontology.toObject(prop.getAbsObject(IS_COLOUR_COLOUR));
-                var matchingPieces = context.getGameContext().getPiecesForColour(colour);
+                var matchingPieces = context.getGameState().getAllAgentPiecesForColour(colour);
                 var answer = createAnswer(ire, matchingPieces, ontology);
                 reply.setPerformative(ACLMessage.INFORM);
                 contentManager.fillContent(reply, answer);

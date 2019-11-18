@@ -1,7 +1,8 @@
 package chessagents.agents.pieceagent.planner.goal;
 
-import chessagents.agents.pieceagent.planner.GameState;
+import chessagents.GameState;
 import chessagents.agents.pieceagent.planner.PieceAction;
+import chessagents.ontology.schemas.concepts.ChessPiece;
 
 public class MaximiseCapturedPieces extends Value {
 
@@ -10,7 +11,9 @@ public class MaximiseCapturedPieces extends Value {
     }
 
     @Override
-    public boolean actionMaintainsValue(GameState gameState, PieceAction pieceAction) {
-        return gameState.getEnemiesCaptured().size() < gameState.apply(pieceAction).getEnemiesCaptured().size();
+    public boolean actionMaintainsValue(ChessPiece pieceWithValue, GameState gameState, PieceAction pieceAction) {
+        var enemiesCapturedBefore = gameState.getCapturedForColour(pieceWithValue.getColour()).size();
+        var enemiesCapturedAfter = gameState.apply(pieceAction).getCapturedForColour(pieceWithValue.getColour()).size();
+        return enemiesCapturedBefore < enemiesCapturedAfter;
     }
 }

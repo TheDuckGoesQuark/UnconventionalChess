@@ -5,9 +5,14 @@ import chessagents.agents.pieceagent.behaviours.turn.TurnContext;
 import chessagents.agents.pieceagent.behaviours.turn.PieceState;
 import chessagents.agents.pieceagent.behaviours.turn.statebehaviours.PieceStateBehaviour;
 import chessagents.agents.pieceagent.PieceAgent;
+import chessagents.agents.pieceagent.planner.PieceAction;
+import chessagents.agents.pieceagent.planner.actions.AskWhatMoveWeShouldDoAction;
+import chessagents.agents.pieceagent.planner.actions.TellPieceToMoveAction;
+import chessagents.ontology.schemas.concepts.ChessPiece;
 
-import static chessagents.agents.pieceagent.behaviours.turn.PieceTransition.NOT_REQUESTING_PROPOSALS;
-import static chessagents.agents.pieceagent.behaviours.turn.PieceTransition.REQUESTING_PROPOSALS;
+import java.util.HashSet;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 public class DecideIfRequestingProposals extends PieceStateBehaviour {
 
@@ -22,14 +27,28 @@ public class DecideIfRequestingProposals extends PieceStateBehaviour {
 
     @Override
     public void action() {
-        if (turnContext.getDebateCycles() < pieceContext.getMaxDebateCycle() && requestingProposals()) {
-            setEvent(REQUESTING_PROPOSALS);
-        } else {
-            setEvent(NOT_REQUESTING_PROPOSALS);
-        }
+        setChosenAction(pieceContext.chooseAction(createPossibleActions(turnContext.getDebateCycles() < pieceContext.getMaxDebateCycle())));
     }
 
-    private boolean requestingProposals() {
-        return ((PieceAgent) myAgent).requestingProposals();
+    private Set<PieceAction> createPossibleActions(boolean canDebateFurther) {
+        var possibleActions = new HashSet<PieceAction>();
+
+        var me = pieceContext.getPieceForAID(myAgent.getAID()).get();
+
+        if (canDebateFurther) {
+            // we could ask everyone what move we should make
+            possibleActions.add(new AskWhatMoveWeShouldDoAction(me));
+        }
+
+        // we could tell any of the other pieces to move (or oneself!)
+        possibleActions.addAll(generateActionForAllMoves(me));
+
+        return possibleActions;
+    }
+
+    private Set<PieceAction> generateActionForAllMoves(ChessPiece me) {
+        return pieceContext.getGameState().getAllLegalMoves().stream()
+                .map(move -> new TellPieceToMoveAction(me, move, pieceContext.getGameState().getPieceAtPosition(move.getSource()).get()))
+                .collect(Collectors.toSet());
     }
 }

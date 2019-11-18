@@ -82,7 +82,7 @@ public class RequestPieceIds extends SimpleAchieveREInitiator {
             var absEquals = (AbsPredicate) contentManager.extractAbsContent(inform);
             var absSet = (AbsAggregate) absEquals.getAbsTerm(BasicOntology.EQUALS_RIGHT);
             var pieces = extractPieces(absSet, contentManager.getOntology(inform));
-            pieces.forEach(piece -> context.getGameContext().addPiece(piece));
+            context.getGameState().registerPiecesAsAgents(pieces);
         } catch (Codec.CodecException | OntologyException e) {
             logger.warning("Failed to extract message: " + e.getMessage());
         }

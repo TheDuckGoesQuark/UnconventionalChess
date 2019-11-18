@@ -24,7 +24,7 @@ public class PerformMove extends OneShotBehaviour {
         var move = (PieceMove) getDataStore().get(MOVE_KEY);
         var from = move.getSource();
         var to = move.getTarget();
-        context.getGameContext().makeMove(from, to);
+        context.getGameState().makeMove(from, to);
     }
 
     @Override

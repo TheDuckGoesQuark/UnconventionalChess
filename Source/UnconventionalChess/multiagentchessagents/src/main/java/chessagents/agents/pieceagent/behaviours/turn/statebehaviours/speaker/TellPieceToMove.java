@@ -8,12 +8,15 @@ import chessagents.agents.pieceagent.behaviours.turn.statebehaviours.PieceStateB
 import chessagents.agents.pieceagent.events.ToldPieceToMoveEvent;
 import chessagents.agents.pieceagent.PieceAgent;
 import chessagents.ontology.schemas.actions.MakeMove;
+import chessagents.ontology.schemas.concepts.ChessPiece;
 import chessagents.ontology.schemas.concepts.PieceMove;
 import jade.content.lang.Codec;
 import jade.content.onto.OntologyException;
 import jade.content.onto.basic.Action;
 import jade.core.AID;
 import jade.lang.acl.ACLMessage;
+
+import java.util.stream.Collectors;
 
 public class TellPieceToMove extends PieceStateBehaviour {
     private final PieceContext pieceContext;
@@ -27,8 +30,8 @@ public class TellPieceToMove extends PieceStateBehaviour {
 
     @Override
     public void action() {
-        pieceContext.getGameContext().getBoard().getRandomMove().ifPresent(move -> {
-            var movingPiece = pieceContext.getGameContext().getPieceAtPosition(move.getSource()).get();
+        pieceContext.getGameState().getRandomMove().ifPresent(move -> {
+            var movingPiece = pieceContext.getGameState().getPieceAtPosition(move.getSource()).get();
             logger.info("Telling " + movingPiece.getAgentAID() + " to move");
             var request = createRequestToMove(movingPiece.getAgentAID(), move);
             sendRequestMove(request);
@@ -37,7 +40,9 @@ public class TellPieceToMove extends PieceStateBehaviour {
     }
 
     private void sendRequestMove(ACLMessage request) {
-        var aids = pieceContext.getGameContext().getAllPieceAgentAIDs();
+        var aids = pieceContext.getGameState().getAllPieces().stream()
+                .map(ChessPiece::getAgentAID)
+                .collect(Collectors.toSet());
 
         // send to everyone so they know not to expect a CFP to speak
         aids.forEach(request::addReceiver);

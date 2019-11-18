@@ -101,11 +101,11 @@ public class ChoosingSpeaker extends PieceStateBehaviour {
     }
 
     private boolean receivedRequestFromEveryone() {
-        var numAgents = pieceContext.getGameContext().getAllPieceAgentAIDs().size();
+        var numAgents = pieceContext.getGameState().getAllPieces().size();
         logger.info("Received request to speak from " + speakerProposals.size() + "/" + numAgents + " of agents");
         logger.info("Waiting for: ");
         var received = speakerProposals.stream().map(ACLMessage::getSender).collect(Collectors.toSet());
-        pieceContext.getGameContext().getAllPieceAgentAIDs().stream()
+        pieceContext.getGameState().getAllPieces().stream()
                 .filter(a -> !received.contains(a))
                 .forEach(a -> logger.info(a.getLocalName()));
 

@@ -24,7 +24,7 @@ public class PerformMove extends PieceStateBehaviour {
         var move = turnContext.getCurrentMove();
 
         if (move != null) {
-            pieceContext.makeMove(move.getSource(), move.getTarget());
+            pieceContext.getGameState().makeMove(move);
             logger.info("Performed move " + move.getSource().getCoordinates() + ":" + move.getTarget().getCoordinates());
             setEvent(MOVE_PERFORMED);
         } else {

@@ -70,7 +70,9 @@ public class ElectLeaderAgent extends SimpleBehaviour {
     }
 
     private boolean receivedRequestFromEveryone() {
-        return requests.size() == context.getGameContext().getAidToPiece().size();
+        var sideToGo = context.getGameState().getSideToGo();
+        var numPiecesForColour = context.getGameState().getAllAgentPiecesForColour(sideToGo).size();
+        return requests.size() == numPiecesForColour;
     }
 
     private void handleQuery(ACLMessage message) {
