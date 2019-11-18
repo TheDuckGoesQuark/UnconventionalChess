@@ -1,5 +1,6 @@
 package chessagents.agents.pieceagent.planner;
 
+import chessagents.GameState;
 import chessagents.agents.pieceagent.behaviours.turn.PieceTransition;
 import chessagents.ontology.schemas.concepts.ChessPiece;
 import chessagents.ontology.schemas.concepts.PieceMove;
@@ -12,6 +13,11 @@ public abstract class PieceAction {
     private final String name;
     private final ChessPiece actor;
 
+    /**
+     * @param resultingTransition the transition to be taken if this action is chosen
+     * @param name                name of this action
+     * @param actor               piece performing the action
+     */
     protected PieceAction(PieceTransition resultingTransition, String name, ChessPiece actor) {
         this.resultingTransition = resultingTransition;
         this.name = name;
@@ -62,4 +68,6 @@ public abstract class PieceAction {
     public Optional<ChessPiece> getCapturedPiece() {
         return Optional.empty();
     }
+
+    public abstract void perform(GameState gameState);
 }

@@ -7,6 +7,8 @@ import chessagents.agents.pieceagent.behaviours.turn.PieceState;
 import chessagents.agents.pieceagent.behaviours.turn.statebehaviours.PieceStateBehaviour;
 import chessagents.agents.pieceagent.events.ToldPieceToMoveEvent;
 import chessagents.agents.pieceagent.PieceAgent;
+import chessagents.agents.pieceagent.planner.PieceAction;
+import chessagents.agents.pieceagent.planner.actions.TellPieceToMoveAction;
 import chessagents.ontology.schemas.actions.MakeMove;
 import chessagents.ontology.schemas.concepts.ChessPiece;
 import chessagents.ontology.schemas.concepts.PieceMove;
@@ -16,6 +18,7 @@ import jade.content.onto.basic.Action;
 import jade.core.AID;
 import jade.lang.acl.ACLMessage;
 
+import java.util.Set;
 import java.util.stream.Collectors;
 
 public class TellPieceToMove extends PieceStateBehaviour {
@@ -23,47 +26,22 @@ public class TellPieceToMove extends PieceStateBehaviour {
     private final TurnContext turnContext;
 
     public TellPieceToMove(PieceAgent pieceAgent, PieceContext pieceContext, TurnContext turnContext) {
-        super(pieceAgent, PieceState.TELL_PIECE_TO_MOVE);
+        super(pieceContext, pieceAgent, PieceState.TELL_PIECE_TO_MOVE);
         this.pieceContext = pieceContext;
         this.turnContext = turnContext;
     }
 
     @Override
     public void action() {
-        pieceContext.getGameState().getRandomMove().ifPresent(move -> {
-            var movingPiece = pieceContext.getGameState().getPieceAtPosition(move.getSource()).get();
-            logger.info("Telling " + movingPiece.getAgentAID() + " to move");
-            var request = createRequestToMove(movingPiece.getAgentAID(), move);
-            sendRequestMove(request);
-            setTransitionEvent(new ToldPieceToMoveEvent(movingPiece, move));
-        });
+        setChosenAction(pieceContext.chooseAction(generatePossibleActions()));
     }
 
-    private void sendRequestMove(ACLMessage request) {
-        var aids = pieceContext.getGameState().getAllPieces().stream()
-                .map(ChessPiece::getAgentAID)
+    private Set<PieceAction> generatePossibleActions() {
+        var me = pieceContext.getPieceForAID(myAgent.getAID()).get();
+
+        return pieceContext.getGameState().getAllLegalMoves().stream()
+                .map(move -> new TellPieceToMoveAction(me, move, pieceContext.getGameState().getPieceAtPosition(move.getSource()).get()))
                 .collect(Collectors.toSet());
-
-        // send to everyone so they know not to expect a CFP to speak
-        aids.forEach(request::addReceiver);
-
-        // tell actual recipient that they should also let everyone know of their response
-        aids.forEach(request::addReplyTo);
-
-        myAgent.send(request);
     }
 
-    private ACLMessage createRequestToMove(AID movingPiece, PieceMove move) {
-        var request = ChessMessageBuilder.constructMessage(ACLMessage.REQUEST);
-        var makeMove = new MakeMove(move);
-        var action = new Action(movingPiece, makeMove);
-
-        try {
-            myAgent.getContentManager().fillContent(request, action);
-        } catch (Codec.CodecException | OntologyException e) {
-            logger.warning("Failed to create make move request: " + e.getMessage());
-        }
-
-        return request;
-    }
 }

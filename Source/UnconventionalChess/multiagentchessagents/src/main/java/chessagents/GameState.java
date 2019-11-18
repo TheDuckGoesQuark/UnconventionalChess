@@ -6,7 +6,6 @@ import chessagents.ontology.schemas.concepts.ChessPiece;
 import chessagents.ontology.schemas.concepts.Colour;
 import chessagents.ontology.schemas.concepts.PieceMove;
 import chessagents.ontology.schemas.concepts.Position;
-import com.github.bhlangonijr.chesslib.move.Move;
 
 import java.util.Optional;
 import java.util.Set;
@@ -92,6 +91,9 @@ public class GameState {
      */
     public GameState apply(PieceAction pieceAction) {
         var newBoard = pieceAction.getMove().map(board::copyOnMove).orElse(board);
+
+        // TODO get the agent to this point somehow?
+        pieceAction.perform();
 
         // if board is equal just return this state. board may be equal if attempting to perform an invalid move
         // or if no move is actually performed as part of this action

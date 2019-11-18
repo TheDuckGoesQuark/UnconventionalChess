@@ -1,5 +1,6 @@
 package chessagents.agents.pieceagent.behaviours.turn.statebehaviours;
 
+import chessagents.agents.pieceagent.PieceContext;
 import chessagents.agents.pieceagent.behaviours.turn.PieceState;
 import chessagents.agents.pieceagent.behaviours.turn.PieceTransition;
 import chessagents.agents.pieceagent.events.TransitionEvent;
@@ -12,6 +13,7 @@ public abstract class PieceStateBehaviour extends SimpleBehaviour {
 
     private final PieceState pieceState;
     protected final Logger logger = Logger.getMyLogger(getClass().getName());
+    protected final PieceContext pieceContext;
     protected PieceAction pieceAction;
 
     /**
@@ -21,8 +23,9 @@ public abstract class PieceStateBehaviour extends SimpleBehaviour {
      * @param pieceAgent pieceAgent that will execute this behaviour
      * @param pieceState state this behaviour handles
      */
-    protected PieceStateBehaviour(PieceAgent pieceAgent, PieceState pieceState) {
+    protected PieceStateBehaviour(PieceContext pieceContext, PieceAgent pieceAgent, PieceState pieceState) {
         super(pieceAgent);
+        this.pieceContext = pieceContext;
         this.pieceState = pieceState;
     }
 
@@ -62,7 +65,7 @@ public abstract class PieceStateBehaviour extends SimpleBehaviour {
 
     /**
      * On end, each state behaviour needs to return the int value for the transition, and also
-     * inform the agent of each event so it can update its personality, plan, and social understanding.
+     * perform the action on the given state
      *
      * @return ordinal value of the next transition to take
      */
@@ -72,6 +75,7 @@ public abstract class PieceStateBehaviour extends SimpleBehaviour {
 
         if (pieceAction != null) {
             transition = pieceAction.getTransition().ordinal();
+            pieceContext.performAction(pieceAction);
         }
 
         return transition;
