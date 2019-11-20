@@ -1,6 +1,6 @@
 package chessagents;
 
-import chessagents.agents.pieceagent.planner.PieceAction;
+import chessagents.agents.pieceagent.actions.PieceAction;
 import chessagents.chess.ChessBoard;
 import chessagents.ontology.schemas.concepts.ChessPiece;
 import chessagents.ontology.schemas.concepts.Colour;
@@ -90,12 +90,7 @@ public class GameState {
      * @return copy of this game state with the given action applied
      */
     public GameState apply(PieceAction pieceAction) {
-        var newBoard = pieceAction.getMove().map(board::copyOnMove).orElse(board);
-
-        // if board is equal just return this state. board may be equal if attempting to perform an invalid move
-        // or if no move is actually performed as part of this action
-        if (newBoard.equals(board)) return this;
-        else return new GameState(gameId, newBoard);
+        return pieceAction.performOnStateOnly(this);
     }
 
     public Set<ChessPiece> getCapturedForColour(Colour colour) {

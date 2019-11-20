@@ -1,9 +1,9 @@
 package chessagents.agents.pieceagent.personality;
 
-import chessagents.agents.pieceagent.planner.goal.MaximiseCapturedPieces;
-import chessagents.agents.pieceagent.planner.goal.RandomValue;
-import chessagents.agents.pieceagent.planner.goal.Value;
-import chessagents.agents.pieceagent.planner.goal.ProtectPiecesValue;
+import chessagents.agents.pieceagent.goals.MaximiseCapturedPieces;
+import chessagents.agents.pieceagent.goals.RandomValue;
+import chessagents.agents.pieceagent.goals.Value;
+import chessagents.agents.pieceagent.goals.ProtectPiecesValue;
 import lombok.Getter;
 
 import java.util.Arrays;

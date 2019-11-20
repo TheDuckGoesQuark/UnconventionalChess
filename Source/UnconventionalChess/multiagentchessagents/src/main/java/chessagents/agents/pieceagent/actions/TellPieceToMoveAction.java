@@ -1,10 +1,9 @@
-package chessagents.agents.pieceagent.planner.actions;
+package chessagents.agents.pieceagent.actions;
 
 import chessagents.GameState;
 import chessagents.agents.ChessMessageBuilder;
 import chessagents.agents.pieceagent.PieceAgent;
 import chessagents.agents.pieceagent.behaviours.turn.PieceTransition;
-import chessagents.agents.pieceagent.planner.PieceAction;
 import chessagents.ontology.schemas.actions.MakeMove;
 import chessagents.ontology.schemas.concepts.ChessPiece;
 import chessagents.ontology.schemas.concepts.PieceMove;
@@ -14,10 +13,10 @@ import jade.content.onto.basic.Action;
 import jade.core.AID;
 import jade.lang.acl.ACLMessage;
 
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 public class TellPieceToMoveAction extends PieceAction {
+    private PieceAgent actor;
     private final PieceMove move;
     private final ChessPiece otherChessPiece;
 
@@ -28,22 +27,30 @@ public class TellPieceToMoveAction extends PieceAction {
     }
 
     @Override
-    public ChessPiece getActor() {
-        return null;
+    public GameState perform(PieceAgent actor, GameState gameState) {
+        this.actor = actor;
+
+        var request = createRequestToMove(otherChessPiece.getAgentAID(), move);
+
+        sendRequestMove(gameState, request);
+
+        return performOnStateOnly(gameState);
     }
 
     @Override
-    public Optional<PieceMove> getMove() {
-        return Optional.of(move);
+    public GameState performOnStateOnly(GameState gameState) {
+        // this action doesn't change the current game state
+        return gameState;
     }
 
-    @Override
-    public void perform(PieceAgent actor, GameState gameState) {
-        var request = createRequestToMove(actor, gameState.getPieceAtPosition(move.getSource()).get().getAgentAID(), move);
-        sendRequestMove(actor, gameState, request);
-    }
-
-    private void sendRequestMove(PieceAgent actor, GameState gameState, ACLMessage request) {
+    /**
+     * Sends the request to move to everyone so that all agents know that proposals to speak are not occuring,
+     * and requests the agent told to move to reply-all with their response.
+     *
+     * @param gameState current game state
+     * @param request   request to send
+     */
+    private void sendRequestMove(GameState gameState, ACLMessage request) {
         var aids = gameState.getAllPieces().stream()
                 .map(ChessPiece::getAgentAID)
                 .collect(Collectors.toSet());
@@ -57,7 +64,7 @@ public class TellPieceToMoveAction extends PieceAction {
         actor.send(request);
     }
 
-    private ACLMessage createRequestToMove(PieceAgent actor, AID movingPiece, PieceMove move) {
+    private ACLMessage createRequestToMove(AID movingPiece, PieceMove move) {
         var request = ChessMessageBuilder.constructMessage(ACLMessage.REQUEST);
         var makeMove = new MakeMove(move);
         var action = new Action(movingPiece, makeMove);

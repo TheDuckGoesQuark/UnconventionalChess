@@ -2,10 +2,8 @@ package chessagents.agents.pieceagent.behaviours.turn.statebehaviours;
 
 import chessagents.agents.pieceagent.PieceContext;
 import chessagents.agents.pieceagent.behaviours.turn.PieceState;
-import chessagents.agents.pieceagent.behaviours.turn.PieceTransition;
-import chessagents.agents.pieceagent.events.TransitionEvent;
 import chessagents.agents.pieceagent.PieceAgent;
-import chessagents.agents.pieceagent.planner.PieceAction;
+import chessagents.agents.pieceagent.actions.PieceAction;
 import jade.core.behaviours.SimpleBehaviour;
 import jade.util.Logger;
 
@@ -74,8 +72,7 @@ public abstract class PieceStateBehaviour extends SimpleBehaviour {
         int transition = 0;
 
         if (pieceAction != null) {
-            transition = pieceAction.getTransition().ordinal();
-            pieceContext.performAction(pieceAction);
+            transition = getAgent().performAction(pieceAction).ordinal();
         }
 
         return transition;

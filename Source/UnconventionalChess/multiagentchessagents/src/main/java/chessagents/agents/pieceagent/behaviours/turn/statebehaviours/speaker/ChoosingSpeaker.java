@@ -6,7 +6,7 @@ import chessagents.agents.pieceagent.behaviours.turn.PieceTransition;
 import chessagents.agents.pieceagent.behaviours.turn.TurnContext;
 import chessagents.agents.pieceagent.behaviours.turn.statebehaviours.PieceStateBehaviour;
 import chessagents.agents.pieceagent.PieceAgent;
-import chessagents.agents.pieceagent.planner.actions.ChoosePieceToSpeak;
+import chessagents.agents.pieceagent.actions.ChoosePieceToSpeak;
 import jade.core.AID;
 import jade.lang.acl.ACLMessage;
 import jade.lang.acl.MessageTemplate;

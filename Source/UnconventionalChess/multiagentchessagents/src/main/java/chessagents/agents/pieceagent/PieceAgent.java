@@ -6,7 +6,7 @@ import chessagents.agents.pieceagent.behaviours.initial.SubscribeToGameStatus;
 import chessagents.agents.pieceagent.behaviours.turn.PieceTransition;
 import chessagents.agents.pieceagent.behaviours.turn.PlayFSM;
 import chessagents.agents.pieceagent.behaviours.turn.SubscribeToMoves;
-import chessagents.agents.pieceagent.planner.PieceAction;
+import chessagents.agents.pieceagent.actions.PieceAction;
 import chessagents.ontology.schemas.actions.BecomeSpeaker;
 import chessagents.ontology.schemas.concepts.Colour;
 import jade.content.OntoAID;

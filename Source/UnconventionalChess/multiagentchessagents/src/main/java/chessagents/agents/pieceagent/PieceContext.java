@@ -1,7 +1,7 @@
 package chessagents.agents.pieceagent;
 
 import chessagents.GameState;
-import chessagents.agents.pieceagent.planner.PieceAction;
+import chessagents.agents.pieceagent.actions.PieceAction;
 import chessagents.ontology.schemas.concepts.ChessPiece;
 import chessagents.ontology.schemas.concepts.Colour;
 import jade.core.AID;
@@ -35,16 +35,20 @@ public class PieceContext {
         return gameState.isSideToGo(myColour);
     }
 
-    public void performAction(PieceAgent actor, PieceAction action) {
-        // have agent perform action
-        action.perform(actor, gameState);
-
-        // update game state with outcome of action
-        gameState = gameState.apply(action);
+    /**
+     * Performs the given action with the given piece as the actor, including all side effects such as sending messages
+     * to other agents
+     *
+     * @param actor  piece agent thats performing the action
+     * @param action action be performed
+     */
+    void performAction(PieceAgent actor, PieceAction action) {
+        // have agent perform action and update this game state
+        gameState = action.perform(actor, gameState);
     }
 
     public PieceAction chooseAction(Set<PieceAction> possibleActions) {
-        // TODO an actual implementation
+        // TODO an actual implementation that isn't just pick first
         return possibleActions.iterator().next();
     }
 

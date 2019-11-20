@@ -1,7 +1,7 @@
-package chessagents.agents.pieceagent.planner.goal;
+package chessagents.agents.pieceagent.goals;
 
 import chessagents.GameState;
-import chessagents.agents.pieceagent.planner.PieceAction;
+import chessagents.agents.pieceagent.actions.PieceAction;
 import chessagents.ontology.schemas.concepts.ChessPiece;
 
 /**

@@ -1,7 +1,6 @@
-package chessagents.agents.pieceagent.planner.actions;
+package chessagents.agents.pieceagent.actions;
 
 import chessagents.agents.pieceagent.behaviours.turn.PieceTransition;
-import chessagents.agents.pieceagent.planner.PieceAction;
 import chessagents.ontology.schemas.concepts.ChessPiece;
 
 public class AskForProposalsAction extends PieceAction {

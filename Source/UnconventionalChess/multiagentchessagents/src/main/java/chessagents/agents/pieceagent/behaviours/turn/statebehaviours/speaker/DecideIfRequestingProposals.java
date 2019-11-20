@@ -5,15 +5,12 @@ import chessagents.agents.pieceagent.behaviours.turn.TurnContext;
 import chessagents.agents.pieceagent.behaviours.turn.PieceState;
 import chessagents.agents.pieceagent.behaviours.turn.statebehaviours.PieceStateBehaviour;
 import chessagents.agents.pieceagent.PieceAgent;
-import chessagents.agents.pieceagent.planner.PieceAction;
-import chessagents.agents.pieceagent.planner.actions.AskForProposalsAction;
-import chessagents.agents.pieceagent.planner.actions.TellPieceToMoveAction;
-import chessagents.agents.pieceagent.planner.actions.TryTellPieceToMoveAction;
-import chessagents.ontology.schemas.concepts.ChessPiece;
+import chessagents.agents.pieceagent.actions.PieceAction;
+import chessagents.agents.pieceagent.actions.AskForProposalsAction;
+import chessagents.agents.pieceagent.actions.TryTellPieceToMoveAction;
 
 import java.util.HashSet;
 import java.util.Set;
-import java.util.stream.Collectors;
 
 public class DecideIfRequestingProposals extends PieceStateBehaviour {
 
