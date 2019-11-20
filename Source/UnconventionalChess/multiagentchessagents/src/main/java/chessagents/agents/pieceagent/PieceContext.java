@@ -35,7 +35,11 @@ public class PieceContext {
         return gameState.isSideToGo(myColour);
     }
 
-    public void performAction(PieceAction action) {
+    public void performAction(PieceAgent actor, PieceAction action) {
+        // have agent perform action
+        action.perform(actor, gameState);
+
+        // update game state with outcome of action
         gameState = gameState.apply(action);
     }
 

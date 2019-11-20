@@ -100,7 +100,7 @@ public class PieceAgent extends ChessAgent {
      * @param action action to perform
      */
     public PieceTransition performAction(PieceAction action) {
-        context.performAction(action);
+        context.performAction(this, action);
         return action.getTransition();
     }
 }

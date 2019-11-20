@@ -2,7 +2,7 @@ package chessagents.agents.pieceagent.planner.actions;
 
 import chessagents.GameState;
 import chessagents.agents.ChessMessageBuilder;
-import chessagents.agents.pieceagent.PieceContext;
+import chessagents.agents.pieceagent.PieceAgent;
 import chessagents.agents.pieceagent.behaviours.turn.PieceTransition;
 import chessagents.agents.pieceagent.planner.PieceAction;
 import chessagents.ontology.schemas.actions.MakeMove;
@@ -38,12 +38,13 @@ public class TellPieceToMoveAction extends PieceAction {
     }
 
     @Override
-    public void perform(GameState gameState) {
-        createRequestToMove(gameState.getPieceAtPosition(move.getSource()).get().getAgentAID(), move);
+    public void perform(PieceAgent actor, GameState gameState) {
+        var request = createRequestToMove(actor, gameState.getPieceAtPosition(move.getSource()).get().getAgentAID(), move);
+        sendRequestMove(actor, gameState, request);
     }
 
-    private void sendRequestMove(ACLMessage request) {
-        var aids = getAllPieces().stream()
+    private void sendRequestMove(PieceAgent actor, GameState gameState, ACLMessage request) {
+        var aids = gameState.getAllPieces().stream()
                 .map(ChessPiece::getAgentAID)
                 .collect(Collectors.toSet());
 
@@ -53,35 +54,20 @@ public class TellPieceToMoveAction extends PieceAction {
         // tell actual recipient that they should also let everyone know of their response
         aids.forEach(request::addReplyTo);
 
-        myAgent.send(request);
+        actor.send(request);
     }
 
-    private ACLMessage createRequestToMove(AID movingPiece, PieceMove move) {
+    private ACLMessage createRequestToMove(PieceAgent actor, AID movingPiece, PieceMove move) {
         var request = ChessMessageBuilder.constructMessage(ACLMessage.REQUEST);
         var makeMove = new MakeMove(move);
         var action = new Action(movingPiece, makeMove);
 
         try {
-            myAgent.getContentManager().fillContent(request, action);
+            actor.getContentManager().fillContent(request, action);
         } catch (Codec.CodecException | OntologyException e) {
             logger.warning("Failed to create make move request: " + e.getMessage());
         }
 
         return request;
     }
-    /*
-     * TODO READ THIS AND DO THIS YOU SCHMUK
-     *
-     * Each piece state transition behaviour call PieceAgent.chooseNextAction(Set<Action>):Action and provides a set
-     * of possible next actions (i.e. choose x as speaker, tell x to move, make move x)
-     *
-     * Planner checks if any of the possible actions will help attain the goal, and returns whatever action
-     * does so best.
-     *
-     * If none, random?
-     *
-     * Once the agent chooses its action (or another agent receives knowledge of the action that was chosen), they
-     * call PieceAgent.performAction(Action):PieceTransition which will update their game state accordingly,
-     * and provide the next transition as an outcome of the action.
-     */
 }

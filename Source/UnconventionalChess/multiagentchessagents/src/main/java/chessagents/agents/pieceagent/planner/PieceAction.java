@@ -1,14 +1,17 @@
 package chessagents.agents.pieceagent.planner;
 
 import chessagents.GameState;
+import chessagents.agents.pieceagent.PieceAgent;
 import chessagents.agents.pieceagent.behaviours.turn.PieceTransition;
 import chessagents.ontology.schemas.concepts.ChessPiece;
 import chessagents.ontology.schemas.concepts.PieceMove;
+import jade.util.Logger;
 
 import java.util.Optional;
 
 public abstract class PieceAction {
 
+    protected final Logger logger = Logger.getMyLogger(getClass().getName());
     private final PieceTransition resultingTransition;
     private final String name;
     private final ChessPiece actor;
@@ -69,5 +72,11 @@ public abstract class PieceAction {
         return Optional.empty();
     }
 
-    public abstract void perform(GameState gameState);
+    /**
+     * Agent performs given action according to current game state
+     *
+     * @param actor     agent that will perform the action
+     * @param gameState current game state
+     */
+    public abstract void perform(PieceAgent actor, GameState gameState);
 }
