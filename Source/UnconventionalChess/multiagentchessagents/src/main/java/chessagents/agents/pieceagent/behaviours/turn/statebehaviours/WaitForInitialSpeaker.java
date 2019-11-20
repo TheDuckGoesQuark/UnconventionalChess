@@ -2,6 +2,8 @@ package chessagents.agents.pieceagent.behaviours.turn.statebehaviours;
 
 import chessagents.agents.ChessMessageBuilder;
 import chessagents.agents.pieceagent.PieceContext;
+import chessagents.agents.pieceagent.actions.NoAction;
+import chessagents.agents.pieceagent.actions.PieceAction;
 import chessagents.agents.pieceagent.behaviours.turn.TurnContext;
 import chessagents.agents.pieceagent.behaviours.turn.PieceState;
 import chessagents.agents.pieceagent.PieceAgent;
@@ -32,17 +34,18 @@ public class WaitForInitialSpeaker extends PieceStateBehaviour {
         REQUESTING, WAIT_ON_AGREE, WAIT_ON_INFORM, INFORMED
     }
 
-    private final Logger logger = Logger.getMyLogger(getClass().getName());
     private final TurnContext turnContext;
-    private final PieceContext pieceContext;
+    private final PieceAction becomeSpeakerAction;
+    private final PieceAction recogniseOtherSpeakerAction;
     private RequestState requestState = RequestState.REQUESTING;
     private ACLMessage request;
     private MessageTemplate conversationIDMatcher = null;
 
     public WaitForInitialSpeaker(PieceAgent pieceAgent, PieceContext pieceContext, TurnContext turnContext) {
-        super(pieceAgent, PieceState.WAIT_FOR_INITIAL_SPEAKER);
+        super(pieceContext, pieceAgent, PieceState.WAIT_FOR_INITIAL_SPEAKER);
         this.turnContext = turnContext;
-        this.pieceContext = pieceContext;
+        recogniseOtherSpeakerAction = new NoAction(I_AM_NOT_SPEAKER, "Recognise other piece as speaker", getMyPiece());
+        becomeSpeakerAction = new NoAction(I_AM_SPEAKER, "Become speaker", getMyPiece());
     }
 
     @Override
@@ -108,8 +111,9 @@ public class WaitForInitialSpeaker extends PieceStateBehaviour {
                 var right = abs.getAbsTerm(BasicOntology.EQUALS_RIGHT);
                 var leaderAID = (OntoAID) ChessOntology.getInstance().toObject(right);
                 turnContext.setCurrentSpeaker(leaderAID);
-                var imSpeaker = turnContext.getCurrentSpeaker().equals(myAgent.getAID());
-                setEvent(imSpeaker ? I_AM_SPEAKER : I_AM_NOT_SPEAKER);
+
+                var imSpeaker = leaderAID.equals(myAgent.getAID());
+                setChosenAction(imSpeaker ? becomeSpeakerAction : recogniseOtherSpeakerAction);
             } else {
                 throw new NotUnderstoodException("Did not receive answer to query?");
             }

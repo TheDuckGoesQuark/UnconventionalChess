@@ -1,6 +1,8 @@
 package chessagents.agents.pieceagent.behaviours.turn.statebehaviours;
 
 import chessagents.agents.pieceagent.PieceContext;
+import chessagents.agents.pieceagent.actions.NoAction;
+import chessagents.agents.pieceagent.actions.PieceAction;
 import chessagents.agents.pieceagent.behaviours.turn.TurnContext;
 import chessagents.agents.pieceagent.behaviours.turn.PieceState;
 import chessagents.agents.pieceagent.PieceAgent;
@@ -20,14 +22,14 @@ import static chessagents.agents.pieceagent.behaviours.turn.PieceTransition.OTHE
 
 public class WaitForMove extends PieceStateBehaviour {
 
-    private final PieceContext pieceContext;
     private final TurnContext turnContext;
+    private final PieceAction receiveOtherMoveAction;
     private MessageTemplate messageTemplate;
 
     public WaitForMove(PieceAgent pieceAgent, PieceContext pieceContext, TurnContext turnContext) {
-        super(pieceAgent, PieceState.WAIT_FOR_MOVE);
-        this.pieceContext = pieceContext;
+        super(pieceContext, pieceAgent, PieceState.WAIT_FOR_MOVE);
         this.turnContext = turnContext;
+        this.receiveOtherMoveAction = new NoAction(OTHER_MOVE_RECEIVED, "Received other side move", getMyPiece());
     }
 
     @Override
@@ -42,7 +44,7 @@ public class WaitForMove extends PieceStateBehaviour {
         if (message != null) {
             extractMove(message).ifPresentOrElse(move -> {
                 turnContext.setCurrentMove(move);
-                setEvent(OTHER_MOVE_RECEIVED);
+                setChosenAction(receiveOtherMoveAction);
             }, () -> logger.warning("Unable to extract move from message: " + message.toString()));
         } else {
             block();

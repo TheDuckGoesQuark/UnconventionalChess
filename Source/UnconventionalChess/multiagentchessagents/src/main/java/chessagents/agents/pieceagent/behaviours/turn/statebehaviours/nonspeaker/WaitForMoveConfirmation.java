@@ -1,6 +1,8 @@
 package chessagents.agents.pieceagent.behaviours.turn.statebehaviours.nonspeaker;
 
 import chessagents.agents.pieceagent.PieceContext;
+import chessagents.agents.pieceagent.actions.NoAction;
+import chessagents.agents.pieceagent.actions.PieceAction;
 import chessagents.agents.pieceagent.behaviours.turn.TurnContext;
 import chessagents.agents.pieceagent.behaviours.turn.PieceState;
 import chessagents.agents.pieceagent.behaviours.turn.statebehaviours.PieceStateBehaviour;
@@ -23,15 +25,16 @@ import static chessagents.agents.pieceagent.behaviours.turn.PieceTransition.OTHE
 
 public class WaitForMoveConfirmation extends PieceStateBehaviour {
 
-    private final Logger logger = Logger.getMyLogger(getClass().getName());
-    private final PieceContext pieceContext;
     private final TurnContext turnContext;
+    private final PieceAction otherPieceFailedToMoveAction;
+    private final PieceAction moveWasConfirmed;
     private MessageTemplate mt = null;
 
     public WaitForMoveConfirmation(PieceAgent pieceAgent, PieceContext pieceContext, TurnContext turnContext) {
-        super(pieceAgent, PieceState.WAIT_FOR_MOVE_CONFIRMATION);
-        this.pieceContext = pieceContext;
+        super(pieceContext, pieceAgent, PieceState.WAIT_FOR_MOVE_CONFIRMATION);
         this.turnContext = turnContext;
+        this.otherPieceFailedToMoveAction = new NoAction(OTHER_PIECE_FAILED_TO_MOVE, "Recognise other piece failed to move", getMyPiece());
+        this.moveWasConfirmed = new NoAction(MOVE_CONFIRMATION_RECEIVED, "Recognise move confirmed", getMyPiece());
     }
 
     @Override
@@ -51,15 +54,16 @@ public class WaitForMoveConfirmation extends PieceStateBehaviour {
 
         if (message != null) {
             if (message.getPerformative() == ACLMessage.FAILURE) {
-                setEvent(OTHER_PIECE_FAILED_TO_MOVE);
+                setChosenAction(otherPieceFailedToMoveAction);
             } else {
                 extractMove(message).ifPresent(turnContext::setCurrentMove);
-                setEvent(MOVE_CONFIRMATION_RECEIVED);
+                setChosenAction(moveWasConfirmed);
             }
-        } else {
-            // TODO shouldn't need this check, check if we do.
-            if (pieceAction == null) block();
         }
+//        else {
+//            // TODO shouldn't need this check, check if we do.
+//            if (pieceAction == null) block();
+//        }
     }
 
     private Optional<PieceMove> extractMove(ACLMessage message) {

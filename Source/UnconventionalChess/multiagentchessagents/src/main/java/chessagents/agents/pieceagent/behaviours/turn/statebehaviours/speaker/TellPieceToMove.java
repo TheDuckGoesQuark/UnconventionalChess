@@ -27,7 +27,7 @@ public class TellPieceToMove extends PieceStateBehaviour {
     }
 
     private Set<PieceAction> generatePossibleActions() {
-        var me = pieceContext.getPieceForAID(myAgent.getAID()).get();
+        var me = getMyPiece();
 
         return pieceContext.getGameState().getAllLegalMoves().stream()
                 .map(move -> new TellPieceToMoveAction(me, move, pieceContext.getGameState().getPieceAtPosition(move.getSource()).get()))

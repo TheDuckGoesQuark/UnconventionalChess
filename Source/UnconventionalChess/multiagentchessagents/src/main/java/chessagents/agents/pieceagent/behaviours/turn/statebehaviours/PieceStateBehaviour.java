@@ -4,6 +4,7 @@ import chessagents.agents.pieceagent.PieceContext;
 import chessagents.agents.pieceagent.behaviours.turn.PieceState;
 import chessagents.agents.pieceagent.PieceAgent;
 import chessagents.agents.pieceagent.actions.PieceAction;
+import chessagents.ontology.schemas.concepts.ChessPiece;
 import jade.core.behaviours.SimpleBehaviour;
 import jade.util.Logger;
 
@@ -12,7 +13,7 @@ public abstract class PieceStateBehaviour extends SimpleBehaviour {
     private final PieceState pieceState;
     protected final Logger logger = Logger.getMyLogger(getClass().getName());
     protected final PieceContext pieceContext;
-    protected PieceAction pieceAction;
+    private PieceAction pieceAction;
 
     /**
      * Constructor ensures that each piece state behaviour corresponds to a piece state enum value, and that
@@ -25,6 +26,15 @@ public abstract class PieceStateBehaviour extends SimpleBehaviour {
         super(pieceAgent);
         this.pieceContext = pieceContext;
         this.pieceState = pieceState;
+    }
+
+    /**
+     * Returns the chesspiece for the agent executing this behaviour
+     *
+     * @return the chesspiece for the agent exucuting this behaviour
+     */
+    public ChessPiece getMyPiece() {
+        return pieceContext.getPieceForAID(myAgent.getAID()).get();
     }
 
     @Override
@@ -86,11 +96,11 @@ public abstract class PieceStateBehaviour extends SimpleBehaviour {
     }
 
     /**
-     * Sets the event occurred at the end of the execution of this behaviour
+     * Sets the action to be performed at the end of this state
      *
      * @param pieceAction action to be performed during this state
      */
-    public final void setChosenAction(PieceAction pieceAction) {
+    protected final void setChosenAction(PieceAction pieceAction) {
         this.pieceAction = pieceAction;
     }
 }

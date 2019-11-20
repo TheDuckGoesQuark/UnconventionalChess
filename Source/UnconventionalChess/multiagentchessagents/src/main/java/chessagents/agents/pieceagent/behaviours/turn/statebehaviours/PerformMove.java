@@ -23,7 +23,6 @@ public class PerformMove extends PieceStateBehaviour {
         var move = turnContext.getCurrentMove();
 
         if (move != null) {
-            pieceContext.getGameState().makeMove(move);
             setChosenAction(new PerformMoveAction(pieceContext.getPieceForAID(getAgent().getAID()).get(), move));
         } else {
             logger.warning("UNABLE TO MAKE MOVE, MOVE WAS NULL");
