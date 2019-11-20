@@ -24,8 +24,7 @@ public class PerformMove extends PieceStateBehaviour {
 
         if (move != null) {
             pieceContext.getGameState().makeMove(move);
-            logger.info("Performed move " + move.getSource().getCoordinates() + ":" + move.getTarget().getCoordinates());
-            setChosenAction(new PerformMoveAction(pieceContext.getPieceForAID(getAgent().getAID()).get()));
+            setChosenAction(new PerformMoveAction(pieceContext.getPieceForAID(getAgent().getAID()).get(), move));
         } else {
             logger.warning("UNABLE TO MAKE MOVE, MOVE WAS NULL");
         }

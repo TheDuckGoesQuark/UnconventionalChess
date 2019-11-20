@@ -75,8 +75,14 @@ public class GameState {
         pieces.forEach(p -> board.registerAgentPiece(p, p.getAgentAID()));
     }
 
-    public void makeMove(PieceMove move) {
-        board.makeMove(move);
+    /**
+     * Makes the given move, returning the new game state after the move is made
+     *
+     * @param move move to make
+     * @return game state after move is made
+     */
+    public GameState makeMove(PieceMove move) {
+        return new GameState(gameId, board.copyOnMove(move));
     }
 
     public boolean isSideToGo(Colour colour) {

@@ -1,6 +1,7 @@
 package chessagents.agents.gameagent;
 
 import chessagents.GameState;
+import chessagents.ontology.schemas.concepts.PieceMove;
 import jade.core.AID;
 import lombok.Getter;
 import lombok.Setter;
@@ -24,5 +25,9 @@ public class GameAgentContext {
 
     public boolean isHumanTurn() {
         return gameProperties.isHumanPlays() && (gameProperties.isHumanPlaysAsWhite() ? gameState.isSideToGo(WHITE) : gameState.isSideToGo(BLACK));
+    }
+
+    public void makeMove(PieceMove move) {
+        gameState = gameState.makeMove(move);
     }
 }
