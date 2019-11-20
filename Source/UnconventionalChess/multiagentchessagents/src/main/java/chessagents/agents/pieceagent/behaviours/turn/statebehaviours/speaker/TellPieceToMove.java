@@ -12,18 +12,16 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 public class TellPieceToMove extends PieceStateBehaviour {
-    private final PieceContext pieceContext;
     private final TurnContext turnContext;
 
     public TellPieceToMove(PieceAgent pieceAgent, PieceContext pieceContext, TurnContext turnContext) {
         super(pieceContext, pieceAgent, PieceState.TELL_PIECE_TO_MOVE);
-        this.pieceContext = pieceContext;
         this.turnContext = turnContext;
     }
 
     @Override
     public void action() {
-        setChosenAction(pieceContext.chooseAction(generatePossibleActions()));
+        setChosenAction(getAgent().chooseAction(generatePossibleActions()));
     }
 
     private Set<PieceAction> generatePossibleActions() {

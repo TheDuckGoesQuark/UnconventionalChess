@@ -34,11 +34,11 @@ public class TellPieceToMoveAction extends PieceAction {
 
         sendRequestMove(gameState, request);
 
-        return performOnStateOnly(gameState);
+        return getOutcomeOfAction(gameState);
     }
 
     @Override
-    public GameState performOnStateOnly(GameState gameState) {
+    public GameState getOutcomeOfAction(GameState gameState) {
         // this action doesn't change the current game state
         return gameState;
     }

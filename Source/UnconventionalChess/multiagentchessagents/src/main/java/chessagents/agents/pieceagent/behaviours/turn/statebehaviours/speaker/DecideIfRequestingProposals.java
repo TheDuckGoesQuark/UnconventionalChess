@@ -1,6 +1,8 @@
 package chessagents.agents.pieceagent.behaviours.turn.statebehaviours.speaker;
 
 import chessagents.agents.pieceagent.PieceContext;
+import chessagents.agents.pieceagent.actions.NoAction;
+import chessagents.agents.pieceagent.behaviours.turn.PieceTransition;
 import chessagents.agents.pieceagent.behaviours.turn.TurnContext;
 import chessagents.agents.pieceagent.behaviours.turn.PieceState;
 import chessagents.agents.pieceagent.behaviours.turn.statebehaviours.PieceStateBehaviour;
@@ -23,21 +25,24 @@ public class DecideIfRequestingProposals extends PieceStateBehaviour {
 
     @Override
     public void action() {
-        setChosenAction(pieceContext.chooseAction(createPossibleActions(turnContext.getDebateCycles() < pieceContext.getMaxDebateCycle())));
+        setChosenAction(getAgent().chooseAction(createPossibleActions(turnContext.getDebateCycles() < pieceContext.getMaxDebateCycle())));
     }
 
     private Set<PieceAction> createPossibleActions(boolean canDebateFurther) {
         var possibleActions = new HashSet<PieceAction>();
 
-        var me = pieceContext.getPieceForAID(myAgent.getAID()).get();
+        var me = getMyPiece();
 
         if (canDebateFurther) {
+            // TODO actions like this could have an unknown outcome, we should account for that?
             // we could ask everyone what move we should make
-            possibleActions.add(new AskForProposalsAction(me));
+            possibleActions.add(new NoAction(PieceTransition.REQUESTING_PROPOSALS, "Decide to request proposals", me));
         }
 
         // we try could tell any of the other pieces to move (or oneself!)
-        possibleActions.add(new TryTellPieceToMoveAction(me));
+        // (TODO during the get outcome method for this action, we should provide the side effects of all the moves so
+        // this gets evaluated better
+        possibleActions.add(new NoAction(PieceTransition.NOT_REQUESTING_PROPOSALS, "Decide to try and make a move happen", me));
 
         return possibleActions;
     }

@@ -96,7 +96,7 @@ public class GameState {
      * @return copy of this game state with the given action applied
      */
     public GameState apply(PieceAction pieceAction) {
-        return pieceAction.performOnStateOnly(this);
+        return pieceAction.getOutcomeOfAction(this);
     }
 
     public Set<ChessPiece> getCapturedForColour(Colour colour) {

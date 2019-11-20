@@ -57,5 +57,5 @@ public abstract class PieceAction {
      * @param gameState current game state
      * @return game state after action has been performed
      */
-    public abstract GameState performOnStateOnly(GameState gameState);
+    public abstract GameState getOutcomeOfAction(GameState gameState);
 }

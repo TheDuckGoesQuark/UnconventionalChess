@@ -21,11 +21,11 @@ public class PerformMoveAction extends PieceAction {
 
     @Override
     public GameState perform(PieceAgent actor, GameState gameState) {
-        return performOnStateOnly(gameState);
+        return getOutcomeOfAction(gameState);
     }
 
     @Override
-    public GameState performOnStateOnly(GameState gameState) {
+    public GameState getOutcomeOfAction(GameState gameState) {
         return gameState.makeMove(move);
     }
 }
