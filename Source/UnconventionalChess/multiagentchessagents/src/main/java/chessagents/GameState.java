@@ -95,7 +95,7 @@ public class GameState {
      * @param pieceAction action to apply
      * @return copy of this game state with the given action applied
      */
-    public GameState apply(PieceAction pieceAction) {
+    public GameState getOutcomeOfAction(PieceAction pieceAction) {
         return pieceAction.getOutcomeOfAction(this);
     }
 

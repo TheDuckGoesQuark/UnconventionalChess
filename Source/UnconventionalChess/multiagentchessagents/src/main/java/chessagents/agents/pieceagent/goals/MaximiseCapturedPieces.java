@@ -13,7 +13,7 @@ public class MaximiseCapturedPieces extends Value {
     @Override
     public boolean actionMaintainsValue(ChessPiece pieceWithValue, GameState gameState, PieceAction pieceAction) {
         var enemiesCapturedBefore = gameState.getCapturedForColour(pieceWithValue.getColour()).size();
-        var enemiesCapturedAfter = gameState.apply(pieceAction).getCapturedForColour(pieceWithValue.getColour()).size();
+        var enemiesCapturedAfter = gameState.getOutcomeOfAction(pieceAction).getCapturedForColour(pieceWithValue.getColour()).size();
         return enemiesCapturedBefore < enemiesCapturedAfter;
     }
 }

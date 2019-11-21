@@ -1,6 +1,7 @@
 package chessagents.agents.pieceagent.behaviours.turn.statebehaviours.speaker;
 
 import chessagents.agents.pieceagent.PieceContext;
+import chessagents.agents.pieceagent.actions.RequestToRemainSpeakerAction;
 import chessagents.agents.pieceagent.behaviours.turn.TurnContext;
 import chessagents.agents.pieceagent.behaviours.turn.PieceState;
 import chessagents.agents.pieceagent.behaviours.turn.statebehaviours.PieceStateBehaviour;
@@ -16,12 +17,10 @@ public class RequestToRemainSpeaker extends PieceStateBehaviour {
             MessageTemplate.MatchProtocol(SPEAKER_CONTRACT_NET_PROTOCOL),
             MessageTemplate.MatchSender(myAgent.getAID())
     );
-    private final PieceContext pieceContext;
     private final TurnContext turnContext;
 
     public RequestToRemainSpeaker(PieceAgent pieceAgent, PieceContext pieceContext, TurnContext turnContext) {
-        super(pieceAgent, PieceState.REQUEST_TO_REMAIN_SPEAKER);
-        this.pieceContext = pieceContext;
+        super(pieceContext, pieceAgent, PieceState.REQUEST_TO_REMAIN_SPEAKER);
         this.turnContext = turnContext;
     }
 
@@ -32,9 +31,7 @@ public class RequestToRemainSpeaker extends PieceStateBehaviour {
 
         if (message != null) {
             turnContext.setCurrentMessage(message);
-            var proposal = ((PieceAgent) myAgent).constructProposalToSpeak(message);
-            myAgent.send(proposal);
-            setEvent(REQUESTED_TO_REMAIN_SPEAKER);
+            setChosenAction(new RequestToRemainSpeakerAction(getMyPiece(), message));
         } else {
             block();
         }

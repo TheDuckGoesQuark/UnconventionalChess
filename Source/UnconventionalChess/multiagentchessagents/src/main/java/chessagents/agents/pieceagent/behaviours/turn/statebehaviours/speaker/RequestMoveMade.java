@@ -2,6 +2,7 @@ package chessagents.agents.pieceagent.behaviours.turn.statebehaviours.speaker;
 
 import chessagents.agents.commonbehaviours.RequestGameAgentMove;
 import chessagents.agents.pieceagent.PieceContext;
+import chessagents.agents.pieceagent.actions.NoAction;
 import chessagents.agents.pieceagent.behaviours.turn.TurnContext;
 import chessagents.agents.pieceagent.behaviours.turn.PieceState;
 import chessagents.agents.pieceagent.behaviours.turn.statebehaviours.PieceStateBehaviour;
@@ -20,20 +21,19 @@ public class RequestMoveMade extends PieceStateBehaviour {
         CONFIRMED,
     }
 
-    private final PieceContext pieceContext;
     private final TurnContext turnContext;
     private RequestGameAgentMove request = null;
     private RequestState requestState = null;
 
     public RequestMoveMade(PieceAgent pieceAgent, PieceContext pieceContext, TurnContext turnContext) {
-        super(pieceAgent, PieceState.REQUEST_MOVE_MADE);
-        this.pieceContext = pieceContext;
+        super(pieceContext, pieceAgent, PieceState.REQUEST_MOVE_MADE);
         this.turnContext = turnContext;
     }
 
     @Override
     protected void initialiseState() {
         requestState = RequestState.MAKE_REQUEST;
+        request = null;
     }
 
     @Override
@@ -63,7 +63,7 @@ public class RequestMoveMade extends PieceStateBehaviour {
                 }
                 break;
             case CONFIRMED:
-                setEvent(MOVE_CONFIRMATION_RECEIVED);
+                setChosenAction(new NoAction(MOVE_CONFIRMATION_RECEIVED, "Move confirmed received", getMyPiece()));
                 break;
         }
     }

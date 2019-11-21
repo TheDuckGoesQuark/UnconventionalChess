@@ -27,6 +27,7 @@ public class TellPieceToMove extends PieceStateBehaviour {
     private Set<PieceAction> generatePossibleActions() {
         var me = getMyPiece();
 
+        // generate all possible future moves that we can try make happen
         return pieceContext.getGameState().getAllLegalMoves().stream()
                 .map(move -> new TellPieceToMoveAction(me, move, pieceContext.getGameState().getPieceAtPosition(move.getSource()).get()))
                 .collect(Collectors.toSet());

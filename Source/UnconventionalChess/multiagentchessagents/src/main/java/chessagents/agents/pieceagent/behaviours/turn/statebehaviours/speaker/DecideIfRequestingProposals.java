@@ -8,8 +8,6 @@ import chessagents.agents.pieceagent.behaviours.turn.PieceState;
 import chessagents.agents.pieceagent.behaviours.turn.statebehaviours.PieceStateBehaviour;
 import chessagents.agents.pieceagent.PieceAgent;
 import chessagents.agents.pieceagent.actions.PieceAction;
-import chessagents.agents.pieceagent.actions.AskForProposalsAction;
-import chessagents.agents.pieceagent.actions.TryTellPieceToMoveAction;
 
 import java.util.HashSet;
 import java.util.Set;
