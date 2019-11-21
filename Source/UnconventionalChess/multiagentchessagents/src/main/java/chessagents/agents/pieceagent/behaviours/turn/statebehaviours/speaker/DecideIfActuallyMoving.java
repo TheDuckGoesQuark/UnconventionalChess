@@ -1,10 +1,7 @@
 package chessagents.agents.pieceagent.behaviours.turn.statebehaviours.speaker;
 
 import chessagents.agents.pieceagent.PieceContext;
-import chessagents.agents.pieceagent.actions.AgreeToMoveAction;
-import chessagents.agents.pieceagent.actions.FalselyAgreeToMoveAction;
-import chessagents.agents.pieceagent.actions.PieceAction;
-import chessagents.agents.pieceagent.actions.RefuseToMoveAction;
+import chessagents.agents.pieceagent.actions.*;
 import chessagents.agents.pieceagent.behaviours.turn.TurnContext;
 import chessagents.agents.pieceagent.behaviours.turn.PieceState;
 import chessagents.agents.pieceagent.behaviours.turn.statebehaviours.PieceStateBehaviour;
@@ -30,29 +27,16 @@ public class DecideIfActuallyMoving extends PieceStateBehaviour {
 
     @Override
     public void action() {
-        var pieceAgent = getAgent();
-
-        setChosenAction(getAgent().chooseAction(generatePossibleActions(message, turnContext.getCurrentMove())));
-
-        if (pieceAgent.isActuallyMoving()) {
-            // Give piece opportunity to actually perform different move
-            // TODO commented out until able to fetch next move from plan
-//            turnContext.setCurrentMove(pieceAgent.getNextMove());
-            setEvent(ACTUALLY_MOVING);
-        } else {
-            // TODO send failure to everyone if not actually moving
-            setEvent(FAILED_TO_MOVE);
-        }
+        setChosenAction(getAgent().chooseAction(generatePossibleActions()));
     }
 
-    private Set<PieceAction> generatePossibleActions(ACLMessage requestToMove, PieceMove currentMove) {
+    private Set<PieceAction> generatePossibleActions() {
         var myPiece = getMyPiece();
 
-        var agreeToMove = new AgreeToMoveAction(myPiece, requestToMove, currentMove);
-        var falslyAgreeToMove = new FalselyAgreeToMoveAction(myPiece, requestToMove, currentMove);
-        // TODO agree but perform different move?
-        var refuseToMove = new RefuseToMoveAction(myPiece);
+        // TODO add performing any other move as option too because why not
+        var performRequestedMove = new NoAction(ACTUALLY_MOVING, "Perform agreed upon move", myPiece);
+        // TODO send failure to everyone if not actually moving and add not moving as option
 
-        return new HashSet<>(Arrays.asList(agreeToMove, falslyAgreeToMove, refuseToMove));
+        return new HashSet<>(Arrays.asList(performRequestedMove));
     }
 }

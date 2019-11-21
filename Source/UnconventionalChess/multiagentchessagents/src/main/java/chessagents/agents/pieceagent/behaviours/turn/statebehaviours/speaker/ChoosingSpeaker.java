@@ -1,32 +1,33 @@
 package chessagents.agents.pieceagent.behaviours.turn.statebehaviours.speaker;
 
 import chessagents.agents.pieceagent.PieceContext;
+import chessagents.agents.pieceagent.actions.PieceAction;
 import chessagents.agents.pieceagent.behaviours.turn.PieceState;
 import chessagents.agents.pieceagent.behaviours.turn.PieceTransition;
 import chessagents.agents.pieceagent.behaviours.turn.TurnContext;
 import chessagents.agents.pieceagent.behaviours.turn.statebehaviours.PieceStateBehaviour;
 import chessagents.agents.pieceagent.PieceAgent;
 import chessagents.agents.pieceagent.actions.ChoosePieceToSpeakAction;
+import chessagents.ontology.schemas.concepts.ChessPiece;
 import jade.core.AID;
 import jade.lang.acl.ACLMessage;
 import jade.lang.acl.MessageTemplate;
 
 import java.util.HashSet;
 import java.util.Set;
+import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
 import static chessagents.agents.pieceagent.behaviours.turn.statebehaviours.speaker.RequestSpeakerProposals.SPEAKER_CONTRACT_NET_PROTOCOL;
 
 public class ChoosingSpeaker extends PieceStateBehaviour {
 
-    private final PieceContext pieceContext;
     private final TurnContext turnContext;
     private final Set<ACLMessage> speakerProposals = new HashSet<>();
     private MessageTemplate mt = null;
 
     public ChoosingSpeaker(PieceAgent pieceAgent, PieceContext pieceContext, TurnContext turnContext) {
-        super(pieceAgent, PieceState.CHOOSING_SPEAKER);
-        this.pieceContext = pieceContext;
+        super(pieceContext, pieceAgent, PieceState.CHOOSING_SPEAKER);
         this.turnContext = turnContext;
     }
 
@@ -48,12 +49,10 @@ public class ChoosingSpeaker extends PieceStateBehaviour {
     @Override
     public void action() {
         if (receivedRequestFromEveryone()) {
-            var speaker = chooseSpeaker();
-            sendResults(speaker);
+            setChosenAction(getAgent().chooseAction(generateActionForEachSpeakerProposal()));
 
             // Clear speaker to avoid confusion in future states
             turnContext.setCurrentSpeaker(null);
-            setEvent(PieceTransition.SPEAKER_CHOSEN);
         } else {
             // receive all messages for this protocol
             var message = myAgent.receive(mt);
@@ -66,49 +65,17 @@ public class ChoosingSpeaker extends PieceStateBehaviour {
         }
     }
 
-    private void sendResults(AID speaker) {
-        speakerProposals.stream()
-                .map(proposal -> constructReply(proposal, speaker))
-                .forEach(myAgent::send);
-    }
-
-    private ACLMessage constructReply(ACLMessage proposal, AID speaker) {
-        var reply = proposal.createReply();
-        var receiver = reply.getAllReceiver().next();
-
-        if (receiver.equals(speaker)) {
-            reply.setPerformative(ACLMessage.ACCEPT_PROPOSAL);
-            addReplyToAllRejected(reply, speaker);
-        } else {
-            reply.setPerformative(ACLMessage.REJECT_PROPOSAL);
-        }
-
-        return reply;
-    }
-
-    private void addReplyToAllRejected(ACLMessage reply, AID speaker) {
-        // inform everyone else when they've became the speaker
-        speakerProposals.stream()
+    private Set<PieceAction> generateActionForEachSpeakerProposal() {
+        var myPiece = getMyPiece();
+        return speakerProposals.stream()
                 .map(ACLMessage::getSender)
-                .filter(aid -> !aid.equals(speaker))
-                .forEach(reply::addReplyTo);
-    }
-
-    private AID chooseSpeaker() {
-        var actions = speakerProposals.stream().map(ACLMessage::getSender).map(sender -> new ChoosePieceToSpeakAction());
-        var action = ((PieceAgent) myAgent).chooseAction(actions);
-
+                .map(sender -> new ChoosePieceToSpeakAction(myPiece, pieceContext.getPieceForAID(sender).get()))
+                .collect(Collectors.toSet());
     }
 
     private boolean receivedRequestFromEveryone() {
         var numAgents = pieceContext.getGameState().getAllPieces().size();
         logger.info("Received request to speak from " + speakerProposals.size() + "/" + numAgents + " of agents");
-        logger.info("Waiting for: ");
-        var received = speakerProposals.stream().map(ACLMessage::getSender).collect(Collectors.toSet());
-        pieceContext.getGameState().getAllPieces().stream()
-                .filter(a -> !received.contains(a))
-                .forEach(a -> logger.info(a.getLocalName()));
-
         return speakerProposals.size() == numAgents;
     }
 }
