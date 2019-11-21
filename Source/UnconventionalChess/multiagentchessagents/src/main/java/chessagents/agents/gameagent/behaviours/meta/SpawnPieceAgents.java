@@ -43,8 +43,8 @@ public class SpawnPieceAgents extends SimpleBehaviour {
         this.context = context;
     }
 
-    private String generatePieceAgentName(String pieceType, String colour, String startingSquare) {
-        return context.getGameState().getGameId() + "-" + startingSquare + "-" + colour + "-" + pieceType;
+    private String generatePieceAgentName(String pieceType, Colour colour, Position startingSquare) {
+        return context.getGameState().getGameId() + "-" + startingSquare.getCoordinates() + "-" + colour.getColour() + "-" + pieceType;
     }
 
     @Override
@@ -65,7 +65,7 @@ public class SpawnPieceAgents extends SimpleBehaviour {
     }
 
     private void addPieceCreationBehaviours() {
-        final Set<String> agentColours = new HashSet<>(2);
+        final Set<Colour> agentColours = new HashSet<>(2);
 
         // Determine colours to generate agents for
         if (!context.getGameProperties().isHumanPlays()) {
@@ -82,7 +82,7 @@ public class SpawnPieceAgents extends SimpleBehaviour {
         // build up sequence of spawn agent behaviours followed by an update to the game status
         var sequence = new SequentialBehaviour();
 
-        for (String agentColour : agentColours) {
+        for (Colour agentColour : agentColours) {
             Set<Behaviour> behaviours = getBehavioursForSpawningAllPiecesOnSide(agentColour);
             behaviours.forEach(sequence::addSubBehaviour);
         }
@@ -102,17 +102,16 @@ public class SpawnPieceAgents extends SimpleBehaviour {
         return creationState == CreationState.CREATED;
     }
 
-    private Set<Behaviour> getBehavioursForSpawningAllPiecesOnSide(String colour) {
+    private Set<Behaviour> getBehavioursForSpawningAllPiecesOnSide(Colour colour) {
         logger.info("Spawning agents for side " + colour);
-        var board = context.getGameState().getBoard();
-        return board.getPositionsOfAllPiecesForColour(colour)
+        return context.getGameState().getAllPiecesForColour(colour)
                 .stream()
-                .map(sq -> createSpawnPieceBehaviour(sq, colour, board.getPieceTypeAtSquare(sq)))
+                .map(this::createSpawnPieceBehaviour)
                 .collect(Collectors.toSet());
     }
 
-    private Behaviour createSpawnPieceBehaviour(String startingSquare, String colour, String type) {
-        final String agentName = generatePieceAgentName(type, colour, startingSquare);
+    private Behaviour createSpawnPieceBehaviour(ChessPiece piece) {
+        final String agentName = generatePieceAgentName(piece.getType(), piece.getColour(), piece.getPosition());
         final String agentClassName = PieceAgent.class.getName();
 
         String containerName;
@@ -129,8 +128,8 @@ public class SpawnPieceAgents extends SimpleBehaviour {
         createAgent.setContainer(new ContainerID(containerName, null));
 
         // add arguments for piece
-        createAgent.addArguments(startingSquare);
-        createAgent.addArguments(colour);
+        createAgent.addArguments(piece.getPosition().getCoordinates());
+        createAgent.addArguments(piece.getColour().getColour());
         createAgent.addArguments(myAgent.getAID().getName());
         createAgent.addArguments(Integer.toString(context.getGameState().getGameId()));
         createAgent.addArguments(Integer.toString(MAX_DEBATE_CYCLES));
@@ -155,12 +154,10 @@ public class SpawnPieceAgents extends SimpleBehaviour {
             requestCreateAgentBehaviour = new AchieveREInitiator(myAgent, request) {
                 protected void handleInform(ACLMessage inform) {
                     logger.info("Agent " + agentName + " successfully created");
-                    var pieces = context.getGameState().getAidToPiece();
                     var aid = new AID(agentName, AID.ISLOCALNAME);
                     var ontoAid = new OntoAID(aid.getLocalName(), AID.ISLOCALNAME);
-                    var colourConcept = new Colour(colour);
-                    var position = new Position(startingSquare);
-                    pieces.put(aid, new ChessPiece(ontoAid, colourConcept, type, position));
+                    piece.setAgentAID(ontoAid);
+                    context.getGameState().registerPieceAsAgent(piece);
                 }
 
                 protected void handleFailure(ACLMessage failure) {

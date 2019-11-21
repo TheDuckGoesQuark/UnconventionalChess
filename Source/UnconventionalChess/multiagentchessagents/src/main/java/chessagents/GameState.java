@@ -6,6 +6,8 @@ import chessagents.ontology.schemas.concepts.ChessPiece;
 import chessagents.ontology.schemas.concepts.Colour;
 import chessagents.ontology.schemas.concepts.PieceMove;
 import chessagents.ontology.schemas.concepts.Position;
+import jade.content.OntoAID;
+import jade.core.AID;
 
 import java.util.Optional;
 import java.util.Set;
@@ -56,6 +58,12 @@ public class GameState {
                 .collect(Collectors.toSet());
     }
 
+    public Set<ChessPiece> getAllPiecesForColour(Colour colour) {
+        return getAllPieces().stream()
+                .filter(p -> p.getColour().equals(colour))
+                .collect(Collectors.toSet());
+    }
+
     /**
      * Finds the piece that is at the given position
      *
@@ -73,6 +81,15 @@ public class GameState {
      */
     public void registerPiecesAsAgents(Set<ChessPiece> pieces) {
         pieces.forEach(p -> board.registerAgentPiece(p, p.getAgentAID()));
+    }
+
+    /**
+     * Registers the given piece as an agent
+     *
+     * @param piece piece with AID populated
+     */
+    public void registerPieceAsAgent(ChessPiece piece) {
+        board.registerAgentPiece(piece, piece.getAgentAID());
     }
 
     /**

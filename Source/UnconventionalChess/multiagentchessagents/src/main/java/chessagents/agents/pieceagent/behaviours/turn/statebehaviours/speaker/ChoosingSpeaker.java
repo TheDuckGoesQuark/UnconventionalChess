@@ -69,7 +69,7 @@ public class ChoosingSpeaker extends PieceStateBehaviour {
         var myPiece = getMyPiece();
         return speakerProposals.stream()
                 .map(ACLMessage::getSender)
-                .map(sender -> new ChoosePieceToSpeakAction(myPiece, pieceContext.getPieceForAID(sender).get()))
+                .map(sender -> new ChoosePieceToSpeakAction(myPiece, pieceContext.getPieceForAID(sender).get(), speakerProposals))
                 .collect(Collectors.toSet());
     }
 
