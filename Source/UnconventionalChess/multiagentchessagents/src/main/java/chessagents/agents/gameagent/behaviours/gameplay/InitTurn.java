@@ -16,7 +16,7 @@ public class InitTurn extends SimpleBehaviour {
 
     @Override
     public void action() {
-        if (context.getGameState().getBoard().gameIsOver()) {
+        if (context.getGameState().gameIsOver()) {
             nextState = GamePlayTransition.GAME_COMPLETE;
         } else if (context.isHumanTurn()) {
             nextState = GamePlayTransition.IS_HUMAN_MOVE;

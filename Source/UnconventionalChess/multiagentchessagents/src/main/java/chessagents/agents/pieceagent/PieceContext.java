@@ -53,7 +53,7 @@ public class PieceContext {
     }
 
     public Optional<ChessPiece> getPieceForAID(AID aid) {
-        return gameState.getAllPieces().stream()
+        return gameState.getAllAgentPieces().stream()
                 .filter(p -> p.getAgentAID().getLocalName().equals(aid.getLocalName()))
                 .findFirst();
     }

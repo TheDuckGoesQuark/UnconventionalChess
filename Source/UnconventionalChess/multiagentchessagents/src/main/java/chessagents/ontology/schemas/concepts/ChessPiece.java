@@ -38,11 +38,23 @@ public class ChessPiece implements Concept {
         ChessPiece that = (ChessPiece) o;
         return colour.equals(that.colour) &&
                 type.equals(that.type) &&
-                position.equals(that.position);
+                Objects.equals(position, that.position);
     }
 
     @Override
     public int hashCode() {
         return Objects.hash(colour, type, position);
+    }
+
+    public boolean isColour(Colour colour) {
+        return colour.equals(this.colour);
+    }
+
+    public boolean isRepresentedByAgent() {
+        return agentAID != null;
+    }
+
+    public boolean isOnTheBoard() {
+        return position != null;
     }
 }

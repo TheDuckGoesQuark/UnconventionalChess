@@ -8,7 +8,9 @@ import chessagents.agents.pieceagent.behaviours.turn.PlayFSM;
 import chessagents.agents.pieceagent.behaviours.turn.SubscribeToMoves;
 import chessagents.agents.pieceagent.actions.PieceAction;
 import chessagents.ontology.schemas.actions.BecomeSpeaker;
+import chessagents.ontology.schemas.concepts.ChessPiece;
 import chessagents.ontology.schemas.concepts.Colour;
+import chessagents.ontology.schemas.concepts.Position;
 import jade.content.OntoAID;
 import jade.content.lang.Codec;
 import jade.content.onto.OntologyException;
@@ -41,11 +43,17 @@ public class PieceAgent extends ChessAgent {
      */
     private void constructContextFromArgs() {
         var args = getArguments();
-        var myColour = (String) args[1];
+        var myPosition = new Position((String) args[0]);
+        var myColour = new Colour((String) args[1]);
         var gameAgentAID = (String) args[2];
         var gameId = Integer.parseInt((String) args[3]);
         var maxDebateCycle = Integer.parseInt((String) args[4]);
-        context = new PieceContext(gameId, new Colour(myColour), new AID(gameAgentAID, AID.ISGUID), maxDebateCycle);
+        context = new PieceContext(gameId, myColour, new AID(gameAgentAID, AID.ISGUID), maxDebateCycle);
+
+        // register my piece as an agent
+        var myPiece = context.getGameState().getPieceAtPosition(myPosition).get();
+        myPiece.setAgentAID(new OntoAID(getAID().getName(), AID.ISGUID));
+        context.getGameState().registerPieceAsAgent(myPiece);
     }
 
     /**

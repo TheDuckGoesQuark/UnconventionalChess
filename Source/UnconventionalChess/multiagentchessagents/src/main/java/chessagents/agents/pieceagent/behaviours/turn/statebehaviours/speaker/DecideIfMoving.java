@@ -45,9 +45,9 @@ public class DecideIfMoving extends PieceStateBehaviour {
         var agreeToMove = new AgreeToMoveAction(myPiece, requestToMove, currentMove);
         var falslyAgreeToMove = new FalselyAgreeToMoveAction(myPiece, requestToMove, currentMove);
         // TODO agree but perform different move?
-        var refuseToMove = new RefuseToMoveAction(myPiece);
+//        var refuseToMove = new RefuseToMoveAction(myPiece);
 
-        return new HashSet<>(Arrays.asList(agreeToMove, falslyAgreeToMove, refuseToMove));
+        return new HashSet<>(Arrays.asList(agreeToMove, falslyAgreeToMove));
     }
 
     private void saveMove(ACLMessage message) {

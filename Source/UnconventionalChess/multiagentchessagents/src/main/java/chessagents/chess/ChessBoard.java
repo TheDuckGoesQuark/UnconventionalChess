@@ -107,6 +107,7 @@ public class ChessBoard {
         // update position of piece that moved
         chessPieces.stream()
                 .map(ChessPiece::getPosition)
+                .filter(p -> p != null)
                 .filter(p -> p.equals(move.getSource()))
                 .forEach(p -> p.setCoordinates(move.getTarget().getCoordinates()));
     }
@@ -238,7 +239,7 @@ public class ChessBoard {
     }
 
     public Optional<ChessPiece> getPieceAtPosition(Position position) {
-        return getAllPieces().stream().filter(p -> p.getPosition().equals(position)).findFirst();
+        return getAllPieces().stream().filter(ChessPiece::isOnTheBoard).filter(p -> p.getPosition().equals(position)).findFirst();
     }
 
     public Set<ChessPiece> getCapturedPieces() {

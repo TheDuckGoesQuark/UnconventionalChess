@@ -6,8 +6,6 @@ import chessagents.ontology.schemas.concepts.ChessPiece;
 import chessagents.ontology.schemas.concepts.Colour;
 import chessagents.ontology.schemas.concepts.PieceMove;
 import chessagents.ontology.schemas.concepts.Position;
-import jade.content.OntoAID;
-import jade.core.AID;
 
 import java.util.Optional;
 import java.util.Set;
@@ -53,14 +51,20 @@ public class GameState {
      */
     public Set<ChessPiece> getAllAgentPiecesForColour(Colour colour) {
         return getAllPieces().stream()
-                .filter(p -> p.getAgentAID() != null)
-                .filter(p -> p.getColour().equals(colour))
+                .filter(ChessPiece::isRepresentedByAgent)
+                .filter(p -> p.isColour(colour))
                 .collect(Collectors.toSet());
     }
 
     public Set<ChessPiece> getAllPiecesForColour(Colour colour) {
         return getAllPieces().stream()
-                .filter(p -> p.getColour().equals(colour))
+                .filter(p -> p.isColour(colour))
+                .collect(Collectors.toSet());
+    }
+
+    public Set<ChessPiece> getAllAgentPieces() {
+        return getAllPieces().stream()
+                .filter(ChessPiece::isRepresentedByAgent)
                 .collect(Collectors.toSet());
     }
 
@@ -136,5 +140,13 @@ public class GameState {
 
     public Set<PieceMove> getAllLegalMoves() {
         return board.getAllLegalMoves();
+    }
+
+    public boolean gameIsOver() {
+        return board.gameIsOver();
+    }
+
+    public boolean isValidMove(PieceMove move) {
+        return board.isValidMove(move);
     }
 }
