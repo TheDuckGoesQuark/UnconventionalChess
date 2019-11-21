@@ -1,6 +1,7 @@
 package chessagents.agents.pieceagent.behaviours.turn.statebehaviours.nonspeaker;
 
 import chessagents.agents.pieceagent.PieceContext;
+import chessagents.agents.pieceagent.actions.NoAction;
 import chessagents.agents.pieceagent.behaviours.turn.TurnContext;
 import chessagents.agents.pieceagent.behaviours.turn.PieceState;
 import chessagents.agents.pieceagent.behaviours.turn.statebehaviours.PieceStateBehaviour;
@@ -13,13 +14,11 @@ import static chessagents.agents.pieceagent.behaviours.turn.PieceTransition.PIEC
 
 public class WaitForPieceResponseToMoveRequest extends PieceStateBehaviour {
 
-    private final PieceContext pieceContext;
     private final TurnContext turnContext;
     private MessageTemplate messageTemplate;
 
     public WaitForPieceResponseToMoveRequest(PieceAgent pieceAgent, PieceContext pieceContext, TurnContext turnContext) {
-        super(pieceAgent, PieceState.WAIT_FOR_PIECE_RESPONSE_TO_MOVE_REQUEST);
-        this.pieceContext = pieceContext;
+        super(pieceContext, pieceAgent, PieceState.WAIT_FOR_PIECE_RESPONSE_TO_MOVE_REQUEST);
         this.turnContext = turnContext;
     }
 
@@ -42,9 +41,9 @@ public class WaitForPieceResponseToMoveRequest extends PieceStateBehaviour {
 
         if (message != null) {
             if (message.getPerformative() == ACLMessage.AGREE)
-                setEvent(PIECE_AGREED_TO_MOVE);
+                setChosenAction(new NoAction(PIECE_AGREED_TO_MOVE, "Piece agreed to move", getMyPiece()));
             else if (message.getPerformative() == ACLMessage.REFUSE)
-                setEvent(PIECE_REFUSED_TO_MOVE);
+                setChosenAction(new NoAction(PIECE_REFUSED_TO_MOVE, "Piece refused to move", getMyPiece()));
         } else {
             block();
         }

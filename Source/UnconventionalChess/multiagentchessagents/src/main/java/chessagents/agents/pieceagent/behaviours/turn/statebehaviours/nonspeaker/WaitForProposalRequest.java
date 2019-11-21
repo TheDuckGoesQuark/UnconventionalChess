@@ -1,6 +1,7 @@
 package chessagents.agents.pieceagent.behaviours.turn.statebehaviours.nonspeaker;
 
 import chessagents.agents.pieceagent.PieceContext;
+import chessagents.agents.pieceagent.actions.NoAction;
 import chessagents.agents.pieceagent.behaviours.turn.TurnContext;
 import chessagents.agents.pieceagent.behaviours.turn.PieceState;
 import chessagents.agents.pieceagent.behaviours.turn.statebehaviours.PieceStateBehaviour;
@@ -19,12 +20,10 @@ public class WaitForProposalRequest extends PieceStateBehaviour {
             MessageTemplate.MatchPerformative(ACLMessage.CFP),
             MessageTemplate.MatchPerformative(ACLMessage.REQUEST)
     );
-    private final PieceContext pieceContext;
     private final TurnContext turnContext;
 
     public WaitForProposalRequest(PieceAgent pieceAgent, PieceContext pieceContext, TurnContext turnContext) {
-        super(pieceAgent, PieceState.WAIT_FOR_PROPOSAL_REQUEST);
-        this.pieceContext = pieceContext;
+        super(pieceContext, pieceAgent, PieceState.WAIT_FOR_PROPOSAL_REQUEST);
         this.turnContext = turnContext;
     }
 
@@ -43,17 +42,17 @@ public class WaitForProposalRequest extends PieceStateBehaviour {
         switch (message.getPerformative()) {
             case ACLMessage.CFP:
                 logger.info("Call for proposal received!");
-                setEvent(PROPOSAL_REQUESTED);
+                setChosenAction(new NoAction(PROPOSAL_REQUESTED, "Proposal requested", getMyPiece()));
                 turnContext.setDebateCycles(turnContext.getDebateCycles() + 1);
                 turnContext.setCurrentMessage(message);
                 break;
             case ACLMessage.REQUEST:
                 if (asksMeToMove(message)) {
                     logger.info("Asked me to move!");
-                    setEvent(TOLD_TO_MOVE);
+                    setChosenAction(new NoAction(TOLD_TO_MOVE, "Told to move", getMyPiece()));
                 } else {
                     logger.info("Asked other piece to move!");
-                    setEvent(OTHER_PIECE_TOLD_TO_MOVE);
+                    setChosenAction(new NoAction(OTHER_PIECE_TOLD_TO_MOVE, "Other piece told to move", getMyPiece()));
                 }
 
                 turnContext.setCurrentMessage(message);

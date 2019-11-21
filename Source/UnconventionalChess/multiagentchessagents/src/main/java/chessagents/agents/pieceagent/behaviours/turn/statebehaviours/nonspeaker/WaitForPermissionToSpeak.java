@@ -1,6 +1,7 @@
 package chessagents.agents.pieceagent.behaviours.turn.statebehaviours.nonspeaker;
 
 import chessagents.agents.pieceagent.PieceContext;
+import chessagents.agents.pieceagent.actions.NoAction;
 import chessagents.agents.pieceagent.behaviours.turn.TurnContext;
 import chessagents.agents.pieceagent.behaviours.turn.PieceState;
 import chessagents.agents.pieceagent.behaviours.turn.PieceTransition;
@@ -11,13 +12,11 @@ import jade.lang.acl.MessageTemplate;
 
 public class WaitForPermissionToSpeak extends PieceStateBehaviour {
 
-    private final PieceContext pieceContext;
     private final TurnContext turnContext;
     private MessageTemplate mt = null;
 
     public WaitForPermissionToSpeak(PieceAgent pieceAgent, PieceContext pieceContext, TurnContext turnContext) {
-        super(pieceAgent, PieceState.WAIT_FOR_PERMISSION_TO_SPEAK);
-        this.pieceContext = pieceContext;
+        super(pieceContext, pieceAgent, PieceState.WAIT_FOR_PERMISSION_TO_SPEAK);
         this.turnContext = turnContext;
     }
 
@@ -42,12 +41,12 @@ public class WaitForPermissionToSpeak extends PieceStateBehaviour {
                 case ACLMessage.ACCEPT_PROPOSAL:
                     logger.info("Proposal accepted!");
                     turnContext.setCurrentMessage(response);
-                    setEvent(PieceTransition.CHOSEN_TO_SPEAK);
+                    setChosenAction(new NoAction(PieceTransition.CHOSEN_TO_SPEAK, "Chosen to speak", getMyPiece()));
                     break;
                 case ACLMessage.REJECT_PROPOSAL:
                     logger.info("Proposal rejected!");
                     turnContext.setCurrentMessage(response);
-                    setEvent(PieceTransition.REJECTED_TO_SPEAK);
+                    setChosenAction(new NoAction(PieceTransition.REJECTED_TO_SPEAK, "Rejected to speak", getMyPiece()));
                     break;
                 default:
                     logger.warning("Unknown response to CFP: " + response.toString());

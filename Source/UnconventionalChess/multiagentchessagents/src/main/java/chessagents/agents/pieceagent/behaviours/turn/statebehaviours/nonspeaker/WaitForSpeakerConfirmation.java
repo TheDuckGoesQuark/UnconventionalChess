@@ -1,6 +1,7 @@
 package chessagents.agents.pieceagent.behaviours.turn.statebehaviours.nonspeaker;
 
 import chessagents.agents.pieceagent.PieceContext;
+import chessagents.agents.pieceagent.actions.NoAction;
 import chessagents.agents.pieceagent.behaviours.turn.TurnContext;
 import chessagents.agents.pieceagent.behaviours.turn.PieceState;
 import chessagents.agents.pieceagent.behaviours.turn.statebehaviours.PieceStateBehaviour;
@@ -20,16 +21,13 @@ import static chessagents.agents.pieceagent.behaviours.turn.statebehaviours.spea
 
 public class WaitForSpeakerConfirmation extends PieceStateBehaviour {
 
-    private final Logger logger = Logger.getMyLogger(getClass().getName());
-    private final PieceContext pieceContext;
     private final TurnContext turnContext;
     private MessageTemplate mt = null;
     // TODO see if we get stuck if we get rid of this
     private boolean speakerUpdated = false;
 
     public WaitForSpeakerConfirmation(PieceAgent pieceAgent, PieceContext pieceContext, TurnContext turnContext) {
-        super(pieceAgent, PieceState.WAIT_FOR_SPEAKER_CONFIRMATION);
-        this.pieceContext = pieceContext;
+        super(pieceContext, pieceAgent, PieceState.WAIT_FOR_SPEAKER_CONFIRMATION);
         this.turnContext = turnContext;
     }
 
@@ -55,8 +53,7 @@ public class WaitForSpeakerConfirmation extends PieceStateBehaviour {
             var newSpeaker = extractNewSpeaker(inform);
             turnContext.setCurrentSpeaker(newSpeaker);
             speakerUpdated = true;
-            setEvent(SPEAKER_UPDATED);
-            logger.info("Speaker updated: " + newSpeaker);
+            setChosenAction(new NoAction(SPEAKER_UPDATED, "Speaker updated", getMyPiece()));
         } else {
             if (!speakerUpdated) block();
         }
