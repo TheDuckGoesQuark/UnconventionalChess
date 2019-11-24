@@ -26,7 +26,6 @@ import chessagents.agents.gatewayagent.messages.MessageType;
 import stacs.chessgateway.services.GatewayService;
 import stacs.chessgateway.services.WebsocketService;
 import stacs.chessgateway.util.GameContextStore;
-import stacs.chessgateway.util.OntologyMessageTranslator;
 
 import java.time.Instant;
 import java.util.Arrays;
@@ -97,7 +96,7 @@ public class GatewayServiceImpl implements GatewayService {
             JadeGateway.execute(requestCreateGame);
 
             // Subscribe to moves
-            var pieceContext = new PieceContext(gameId, null, gameAgentId, 0);
+            var pieceContext = new PieceContext(gameAgentId);
             var subscribeToMoves = new SubscribeToMoves(pieceContext);
             JadeGateway.execute(subscribeToMoves);
 

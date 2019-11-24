@@ -25,4 +25,5 @@ public abstract class Value {
     public String getName() {
         return name;
     }
+
 }

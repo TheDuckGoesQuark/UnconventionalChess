@@ -48,12 +48,8 @@ public class PieceAgent extends ChessAgent {
         var gameAgentAID = (String) args[2];
         var gameId = Integer.parseInt((String) args[3]);
         var maxDebateCycle = Integer.parseInt((String) args[4]);
-        context = new PieceContext(gameId, myColour, new AID(gameAgentAID, AID.ISGUID), maxDebateCycle);
+        context = new PieceContext(myPosition, getAID(), gameId, new AID(gameAgentAID, AID.ISGUID), maxDebateCycle);
 
-        // register my piece as an agent
-        var myPiece = context.getGameState().getPieceAtPosition(myPosition).get();
-        myPiece.setAgentAID(new OntoAID(getAID().getName(), AID.ISGUID));
-        context.getGameState().registerPieceAsAgent(myPiece);
     }
 
     /**

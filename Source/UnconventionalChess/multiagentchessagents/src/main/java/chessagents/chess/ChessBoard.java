@@ -165,6 +165,7 @@ public class ChessBoard {
         var threatened = new HashSet<ChessPiece>();
         var currentSideToGo = board.getSideToMove();
 
+        // TODO null positions being a thing is dumb
         var currentPositions = chessPieces.stream()
                 .map(ChessPiece::getPosition)
                 .map(Position::getCoordinates)

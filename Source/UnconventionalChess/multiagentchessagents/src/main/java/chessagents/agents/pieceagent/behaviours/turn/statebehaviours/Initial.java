@@ -8,6 +8,8 @@ import chessagents.agents.pieceagent.behaviours.turn.PieceState;
 import chessagents.agents.pieceagent.behaviours.turn.PieceTransition;
 import chessagents.agents.pieceagent.PieceAgent;
 
+import java.util.Objects;
+
 public class Initial extends PieceStateBehaviour {
 
     private final PieceAction myTurnAction;
@@ -28,6 +30,17 @@ public class Initial extends PieceStateBehaviour {
 
     @Override
     public void action() {
-        setChosenAction(pieceContext.isMyTurnToGo() ? myTurnAction : notMyTurnAction);
+        setChosenAction(getNextAction());
     }
+
+    private PieceAction getNextAction() {
+        if (pieceContext.getGameState().gameIsOver()) {
+            return new NoAction(PieceTransition.GAME_IS_OVER, "Game is over", getMyPiece());
+        } else if (getMyPiece().isOnTheBoard()) {
+            return pieceContext.isMyTurnToGo() ? myTurnAction : notMyTurnAction;
+        } else {
+            return new NoAction(PieceTransition.IM_CAPTURED, "I'm captured", getMyPiece());
+        }
+    }
+
 }

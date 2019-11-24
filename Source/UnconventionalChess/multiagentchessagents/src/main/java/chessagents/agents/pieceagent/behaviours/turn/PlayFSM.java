@@ -28,8 +28,12 @@ public class PlayFSM extends PieceFSM {
         registerTransition(INITIAL, WAIT_FOR_INITIAL_SPEAKER, MY_TURN);
         registerTransition(INITIAL, WAIT_FOR_MOVE, NOT_MY_TURN);
         registerTransition(INITIAL, GAME_OVER, GAME_IS_OVER);
+        registerTransition(INITIAL, CAPTURED, IM_CAPTURED);
 
         registerLastState(new GameOver(pieceContext, pieceAgent), GAME_OVER);
+
+
+        registerLastState(new ImCaptured(pieceContext, pieceAgent), CAPTURED);
 
         // common states
         registerState(new WaitForMove(pieceAgent, pieceContext, turnContext), WAIT_FOR_MOVE);

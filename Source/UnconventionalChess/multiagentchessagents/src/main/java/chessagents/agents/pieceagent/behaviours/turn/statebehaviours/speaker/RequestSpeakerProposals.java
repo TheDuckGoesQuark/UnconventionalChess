@@ -1,16 +1,11 @@
 package chessagents.agents.pieceagent.behaviours.turn.statebehaviours.speaker;
 
-import chessagents.agents.ChessMessageBuilder;
+import chessagents.agents.pieceagent.PieceAgent;
 import chessagents.agents.pieceagent.PieceContext;
 import chessagents.agents.pieceagent.actions.AskForProposalsAction;
-import chessagents.agents.pieceagent.behaviours.turn.TurnContext;
 import chessagents.agents.pieceagent.behaviours.turn.PieceState;
+import chessagents.agents.pieceagent.behaviours.turn.TurnContext;
 import chessagents.agents.pieceagent.behaviours.turn.statebehaviours.PieceStateBehaviour;
-import chessagents.agents.pieceagent.PieceAgent;
-import chessagents.ontology.schemas.concepts.ChessPiece;
-import jade.lang.acl.ACLMessage;
-
-import static chessagents.agents.pieceagent.behaviours.turn.PieceTransition.PROPOSALS_REQUESTED;
 
 public class RequestSpeakerProposals extends PieceStateBehaviour {
 

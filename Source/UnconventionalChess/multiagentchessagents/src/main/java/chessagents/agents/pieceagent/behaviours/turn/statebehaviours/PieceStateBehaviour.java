@@ -79,13 +79,14 @@ public abstract class PieceStateBehaviour extends SimpleBehaviour {
      */
     @Override
     public final int onEnd() {
-        int transition = 0;
+        int transitionOrdinal = 0;
 
         if (pieceAction != null) {
-            transition = getAgent().performAction(pieceAction).ordinal();
+            var transition = getAgent().performAction(pieceAction);
+            if (transition != null) transitionOrdinal = transition.ordinal();
         }
 
-        return transition;
+        return transitionOrdinal;
     }
 
     /**

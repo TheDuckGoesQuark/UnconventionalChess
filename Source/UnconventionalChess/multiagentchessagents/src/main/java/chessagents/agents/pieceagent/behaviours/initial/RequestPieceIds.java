@@ -51,7 +51,7 @@ public class RequestPieceIds extends SimpleAchieveREInitiator {
         var ontology = ChessOntology.getInstance();
 
         // create abstract descriptor for colour
-        var absColour = (AbsConcept) ontology.fromObject(context.getMyColour());
+        var absColour = (AbsConcept) ontology.fromObject(context.getMyPiece().getColour());
 
         // declare variable in our query to be of type piece
         var absX = new AbsVariable("x", ChessOntology.PIECE);
