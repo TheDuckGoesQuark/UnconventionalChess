@@ -1,5 +1,6 @@
 package chessagents.agents.pieceagent;
 
+import chessagents.agents.pieceagent.verbaliser.Verbaliser;
 import chessagents.chess.GameState;
 import chessagents.agents.pieceagent.actions.PieceAction;
 import chessagents.agents.pieceagent.personality.Personality;
@@ -67,6 +68,7 @@ public class PieceContext {
     void performAction(PieceAgent actor, PieceAction action) {
         // have agent perform action and update this game state
         gameState = action.perform(actor, gameState);
+
     }
 
     PieceAction chooseAction(Set<PieceAction> possibleActions) {

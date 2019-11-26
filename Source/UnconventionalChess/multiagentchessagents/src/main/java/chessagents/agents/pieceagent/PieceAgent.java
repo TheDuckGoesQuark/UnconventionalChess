@@ -7,6 +7,7 @@ import chessagents.agents.pieceagent.behaviours.turn.PieceTransition;
 import chessagents.agents.pieceagent.behaviours.turn.PlayFSM;
 import chessagents.agents.pieceagent.behaviours.turn.SubscribeToMoves;
 import chessagents.agents.pieceagent.actions.PieceAction;
+import chessagents.agents.pieceagent.verbaliser.Verbaliser;
 import chessagents.ontology.schemas.actions.BecomeSpeaker;
 import chessagents.ontology.schemas.concepts.ChessPiece;
 import chessagents.ontology.schemas.concepts.Colour;
@@ -27,6 +28,7 @@ public class PieceAgent extends ChessAgent {
      * Piece static properties, and container for game context
      */
     private PieceContext context;
+    private Verbaliser verbaliser = new Verbaliser();
 
     /**
      * Initialise piece agent using arguments and add initial behaviours
@@ -104,6 +106,7 @@ public class PieceAgent extends ChessAgent {
      * @param action action to perform
      */
     public PieceTransition performAction(PieceAction action) {
+        verbaliser.verbaliseActionForAgent(this, action);
         context.performAction(this, action);
         return action.getTransition();
     }

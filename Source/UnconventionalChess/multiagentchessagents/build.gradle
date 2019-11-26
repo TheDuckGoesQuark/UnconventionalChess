@@ -16,6 +16,7 @@ repositories {
 
 dependencies {
     implementation group: 'com.tilab.jade', name: 'jade', version: '4.5.0'
+    implementation files("${buildDir}/../../../SimpleNLG/simplenlg-v4.4.8/SimpleNLG-4.4.8.jar")
     api 'com.github.bhlangonijr:chesslib:1.1.12'
 
     // Use JUnit test framework
