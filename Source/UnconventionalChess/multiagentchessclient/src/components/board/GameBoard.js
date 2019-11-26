@@ -38,7 +38,7 @@ const handleMove = (move, game, sendMoveCallback) => {
 const GameBoard = (props) => (
     <Chessboard
         id="humanVsAgents"
-        width={"350"}
+        width={"500"}
         position={props.position}
         onDrop={(move) => handleMove(move, props.game, props.sendMove)}
         onMouseOverSquare={props.onMouseOverSquare}
