@@ -29,7 +29,8 @@ const containerStyle = {
     boxSizing: "border-box",
     height: "100%",
     padding: "4px",
-    overflowY: "hidden",
+    flexDirection: "column-reverse",
+    overflowY: "auto",
 };
 
 function mapStateToProps(state) {
