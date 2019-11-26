@@ -110,4 +110,8 @@ public class PieceAgent extends ChessAgent {
         context.performAction(this, action);
         return action.getTransition();
     }
+
+    public PieceContext getContext() {
+        return context;
+    }
 }
