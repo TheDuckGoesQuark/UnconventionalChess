@@ -30,6 +30,7 @@ const containerStyle = {
     height: "100%",
     padding: "4px",
     flexDirection: "column-reverse",
+    display: "flex",
     overflowY: "auto",
 };
 
