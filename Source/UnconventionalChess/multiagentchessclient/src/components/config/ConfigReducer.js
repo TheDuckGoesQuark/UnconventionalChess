@@ -35,7 +35,10 @@ export default function configReducer(state = initialState, action) {
                 configSubmitted: true
             };
         case CONFIG_RESET:
-            return initialState;
+            return {
+                ...state,
+                ...initialState
+            };
         default:
             return state;
     }

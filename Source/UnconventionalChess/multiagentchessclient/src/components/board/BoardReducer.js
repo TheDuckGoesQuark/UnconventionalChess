@@ -160,7 +160,8 @@ export default function boardReducer(state = initialState, action) {
         case CONFIG_RESET:
             return {
                 ...state,
-                initialState
+                ...initialState,
+                game: new Chess()
             };
         case SQUARE_CLICK :
             return handleSquareClick(state, action);
