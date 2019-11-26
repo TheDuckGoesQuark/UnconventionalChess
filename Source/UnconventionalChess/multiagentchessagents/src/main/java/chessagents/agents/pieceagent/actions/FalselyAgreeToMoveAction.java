@@ -1,6 +1,6 @@
 package chessagents.agents.pieceagent.actions;
 
-import chessagents.GameState;
+import chessagents.chess.GameState;
 import chessagents.ontology.schemas.concepts.ChessPiece;
 import chessagents.ontology.schemas.concepts.PieceMove;
 import jade.lang.acl.ACLMessage;

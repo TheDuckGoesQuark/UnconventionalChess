@@ -12,10 +12,11 @@ import com.github.bhlangonijr.chesslib.move.MoveList;
 import jade.content.OntoAID;
 
 import java.util.*;
+import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
 /**
- * Middleware for translating from ontological chess classes and chess library classes
+ * Wrapper for translating from ontological chess classes and chess library classes and managing game logic
  */
 public class ChessBoard {
 
@@ -220,6 +221,11 @@ public class ChessBoard {
         return chessPieces;
     }
 
+    public Set<ChessPiece> getPiecesFiltered(List<Predicate<ChessPiece>> filterPredicates) {
+        var compositePredicate = filterPredicates.stream().reduce(w -> true, Predicate::and);
+        return chessPieces.stream().filter(compositePredicate).collect(Collectors.toSet());
+    }
+
     public Optional<PieceMove> getRandomMove() {
         try {
             MoveList moves = MoveGenerator.generateLegalMoves(board);
@@ -235,18 +241,6 @@ public class ChessBoard {
         return board.isMated() || board.isDraw() || board.isStaleMate() || board.isInsufficientMaterial();
     }
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        ChessBoard that = (ChessBoard) o;
-        return board.equals(that.board);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(board);
-    }
 
     public Optional<ChessPiece> getPieceAtPosition(Position position) {
         return getAllPieces().stream().filter(ChessPiece::isOnTheBoard).filter(p -> p.getPosition().equals(position)).findFirst();
@@ -262,5 +256,18 @@ public class ChessBoard {
         } catch (MoveGeneratorException e) {
             return Collections.emptySet();
         }
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        ChessBoard that = (ChessBoard) o;
+        return board.equals(that.board);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(board);
     }
 }

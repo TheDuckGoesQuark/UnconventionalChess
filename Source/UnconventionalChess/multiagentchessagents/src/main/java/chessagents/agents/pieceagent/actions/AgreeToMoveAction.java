@@ -1,7 +1,7 @@
 package chessagents.agents.pieceagent.actions;
 
 
-import chessagents.GameState;
+import chessagents.chess.GameState;
 import chessagents.agents.pieceagent.PieceAgent;
 import chessagents.agents.pieceagent.behaviours.turn.PieceTransition;
 import chessagents.ontology.schemas.concepts.ChessPiece;

@@ -1,6 +1,6 @@
 package chessagents.agents.pieceagent.personality;
 
-import chessagents.GameState;
+import chessagents.chess.GameState;
 import chessagents.agents.pieceagent.actions.PieceAction;
 import chessagents.ontology.schemas.concepts.ChessPiece;
 

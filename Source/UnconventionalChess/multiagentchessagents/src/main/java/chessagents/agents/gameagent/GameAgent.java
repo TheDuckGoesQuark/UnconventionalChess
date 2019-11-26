@@ -1,6 +1,6 @@
 package chessagents.agents.gameagent;
 
-import chessagents.GameState;
+import chessagents.chess.GameState;
 import chessagents.agents.ChessAgent;
 import chessagents.agents.gameagent.behaviours.chat.HandleChat;
 import chessagents.agents.gameagent.behaviours.gameplay.HandleGame;

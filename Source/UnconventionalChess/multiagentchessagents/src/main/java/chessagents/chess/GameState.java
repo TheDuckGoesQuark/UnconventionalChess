@@ -1,17 +1,16 @@
-package chessagents;
+package chessagents.chess;
 
 import chessagents.agents.pieceagent.actions.PieceAction;
-import chessagents.chess.ChessBoard;
 import chessagents.ontology.schemas.concepts.ChessPiece;
 import chessagents.ontology.schemas.concepts.Colour;
 import chessagents.ontology.schemas.concepts.PieceMove;
 import chessagents.ontology.schemas.concepts.Position;
 import jade.content.OntoAID;
 
+import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 public class GameState {
 
@@ -36,6 +35,7 @@ public class GameState {
         return gameId;
     }
 
+
     /**
      * Returns the set of all pieces
      *
@@ -52,26 +52,22 @@ public class GameState {
      * @return set of all pieces of the given colour that are controlled by agents
      */
     public Set<ChessPiece> getAllAgentPiecesForColour(Colour colour) {
-        return getAllPieces().stream()
-                .filter(ChessPiece::isRepresentedByAgent)
-                .filter(p -> p.isColour(colour))
-                .collect(Collectors.toSet());
+        return board.getPiecesFiltered(List.of(
+                PieceFilter.isAgent(),
+                PieceFilter.isColour(colour)
+        ));
     }
 
     public Set<ChessPiece> getAllPiecesForColour(Colour colour) {
-        return getAllPieces().stream()
-                .filter(p -> p.isColour(colour))
-                .collect(Collectors.toSet());
-    }
-
-    private Stream<ChessPiece> getStreamOfAgentPieces() {
-        return getAllPieces().stream()
-                .filter(ChessPiece::isRepresentedByAgent);
+        return board.getPiecesFiltered(List.of(
+                PieceFilter.isColour(colour)
+        ));
     }
 
     public Set<ChessPiece> getAllAgentPieces() {
-        return getStreamOfAgentPieces()
-                .collect(Collectors.toSet());
+        return board.getPiecesFiltered(List.of(
+                PieceFilter.isAgent()
+        ));
     }
 
     /**
@@ -81,9 +77,11 @@ public class GameState {
      * @return the piece that is represented by an agent with the given aid
      */
     public Optional<ChessPiece> getAgentPieceWithAID(OntoAID aid) {
-        return getStreamOfAgentPieces()
-                .filter(agent -> agent.getAgentAID().equals(aid))
-                .findFirst();
+        var iter = board.getPiecesFiltered(List.of(
+                PieceFilter.hasAID(aid)
+        )).iterator();
+
+        return iter.hasNext() ? Optional.ofNullable(iter.next()) : Optional.empty();
     }
 
     /**
@@ -93,7 +91,19 @@ public class GameState {
      * @return piece if one exists at that position, empty otherwise
      */
     public Optional<ChessPiece> getPieceAtPosition(Position position) {
-        return board.getPieceAtPosition(position);
+        var iter = board.getPiecesFiltered(List.of(
+                PieceFilter.isAtPosition(position)
+        )).iterator();
+
+        return iter.hasNext() ? Optional.ofNullable(iter.next()) : Optional.empty();
+    }
+
+    public Set<ChessPiece> getAllAgentPiecesForColourOnBoard(Colour colour) {
+        return board.getPiecesFiltered(List.of(
+                PieceFilter.isAgent(),
+                PieceFilter.isNotCaptured(),
+                PieceFilter.isColour(colour)
+        ));
     }
 
     /**
@@ -167,4 +177,5 @@ public class GameState {
     public boolean isValidMove(PieceMove move) {
         return board.isValidMove(move);
     }
+
 }

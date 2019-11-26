@@ -1,10 +1,9 @@
 package chessagents.agents.pieceagent;
 
-import chessagents.GameState;
+import chessagents.chess.GameState;
 import chessagents.agents.pieceagent.actions.PieceAction;
 import chessagents.agents.pieceagent.personality.Personality;
 import chessagents.ontology.schemas.concepts.ChessPiece;
-import chessagents.ontology.schemas.concepts.Colour;
 import chessagents.ontology.schemas.concepts.Position;
 import jade.content.OntoAID;
 import jade.core.AID;

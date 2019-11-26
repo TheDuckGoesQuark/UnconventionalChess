@@ -1,6 +1,6 @@
 package chessagents.agents.gameagent;
 
-import chessagents.GameState;
+import chessagents.chess.GameState;
 import chessagents.ontology.schemas.concepts.PieceMove;
 import jade.core.AID;
 import lombok.Getter;

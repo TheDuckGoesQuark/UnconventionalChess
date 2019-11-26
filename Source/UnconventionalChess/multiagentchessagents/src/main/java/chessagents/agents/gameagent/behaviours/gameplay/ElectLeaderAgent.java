@@ -71,7 +71,7 @@ public class ElectLeaderAgent extends SimpleBehaviour {
 
     private boolean receivedRequestFromEveryone() {
         var sideToGo = context.getGameState().getSideToGo();
-        var numPiecesForColour = context.getGameState().getAllAgentPiecesForColour(sideToGo).size();
+        var numPiecesForColour = context.getGameState().getAllAgentPiecesForColourOnBoard(sideToGo).size();
         return requests.size() == numPiecesForColour;
     }
 
@@ -82,9 +82,6 @@ public class ElectLeaderAgent extends SimpleBehaviour {
         if (receivedRequestFromEveryone()) {
             var chosenOne = chooseLeader();
             informEveryoneOfTheChosenOne(chosenOne);
-        } else {
-            logger.info("Received query from:");
-            requests.forEach(r -> logger.info(r.getSender().toString()));
         }
     }
 
