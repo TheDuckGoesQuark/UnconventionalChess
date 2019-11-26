@@ -82,6 +82,9 @@ public class ElectLeaderAgent extends SimpleBehaviour {
         if (receivedRequestFromEveryone()) {
             var chosenOne = chooseLeader();
             informEveryoneOfTheChosenOne(chosenOne);
+        } else {
+            logger.info("Received query from:");
+            requests.forEach(r -> logger.info(r.getSender().toString()));
         }
     }
 

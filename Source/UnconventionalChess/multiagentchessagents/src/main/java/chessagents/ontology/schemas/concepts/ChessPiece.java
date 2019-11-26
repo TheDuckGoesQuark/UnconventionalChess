@@ -11,7 +11,7 @@ import java.util.Objects;
 @NoArgsConstructor
 @AllArgsConstructor
 @ToString
-public class ChessPiece implements Concept {
+public class ChessPiece implements Concept, Cloneable {
 
     private OntoAID agentAID;
     private Colour colour;
@@ -56,5 +56,19 @@ public class ChessPiece implements Concept {
 
     public boolean isOnTheBoard() {
         return position != null;
+    }
+
+    public void removeFromBoard() {
+        position = null;
+    }
+
+    @Override
+    public ChessPiece clone() {
+        try {
+            return (ChessPiece) super.clone();
+        } catch (CloneNotSupportedException e) {
+            e.printStackTrace();
+            return null;
+        }
     }
 }

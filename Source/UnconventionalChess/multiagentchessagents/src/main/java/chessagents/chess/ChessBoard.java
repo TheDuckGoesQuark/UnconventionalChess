@@ -96,20 +96,26 @@ public class ChessBoard {
      * @param move move to make
      */
     public void makeMove(PieceMove move) {
-        board.doMove(constructChessLibMove(move));
-
-        // update piece captured piece if there is one
+        // clone captured piece and replace it in both sets as not on the board
+        // We need to clone as to not affect other versions of the piece
+        // i.e. if we are only testing this move, we don't want a piece to be taken off the board permanently
         getPieceAtPosition(move.getTarget()).ifPresent(p -> {
-            capturedPieces.add(p);
-            p.setPosition(null);
+            var clone = p.clone();
+            clone.removeFromBoard();
+            capturedPieces.add(clone);
+            chessPieces.remove(p); // remove current version
+            chessPieces.add(clone); // replace with clone that has position off board
         });
 
-        // update position of piece that moved
-        chessPieces.stream()
-                .map(ChessPiece::getPosition)
-                .filter(p -> p != null)
-                .filter(p -> p.equals(move.getSource()))
-                .forEach(p -> p.setCoordinates(move.getTarget().getCoordinates()));
+        board.doMove(constructChessLibMove(move));
+
+        // clone and update position of piece that moved
+        getPieceAtPosition(move.getSource()).ifPresent(p -> {
+            var clone = p.clone();
+            clone.setPosition(move.getTarget());
+            chessPieces.remove(p); // remove current version
+            chessPieces.add(clone); // replace with clone that has updated position
+        });
     }
 
     /**
@@ -151,7 +157,10 @@ public class ChessBoard {
     public ChessBoard copyOnMove(PieceMove move) {
         // determine if we need to make a copy of the set of captured pieces
         final Set<ChessPiece> newCapturedPieces = getPieceAtPosition(move.getTarget()).isPresent() ? new HashSet<>(capturedPieces) : capturedPieces;
-        var thisCopy = new ChessBoard(board.clone(), chessPieces, newCapturedPieces);
+        // we always need to a new set of chess pieces since a piece moves each time and we need to clone that piece
+        final Set<ChessPiece> newChessPieces = new HashSet<>(chessPieces);
+
+        var thisCopy = new ChessBoard(board.clone(), newChessPieces, newCapturedPieces);
         thisCopy.makeMove(move);
         return thisCopy;
     }
@@ -165,8 +174,8 @@ public class ChessBoard {
         var threatened = new HashSet<ChessPiece>();
         var currentSideToGo = board.getSideToMove();
 
-        // TODO null positions being a thing is dumb
         var currentPositions = chessPieces.stream()
+                .filter(ChessPiece::isOnTheBoard)
                 .map(ChessPiece::getPosition)
                 .map(Position::getCoordinates)
                 .collect(Collectors.toSet());

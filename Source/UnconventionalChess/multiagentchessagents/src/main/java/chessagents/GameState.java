@@ -6,10 +6,12 @@ import chessagents.ontology.schemas.concepts.ChessPiece;
 import chessagents.ontology.schemas.concepts.Colour;
 import chessagents.ontology.schemas.concepts.PieceMove;
 import chessagents.ontology.schemas.concepts.Position;
+import jade.content.OntoAID;
 
 import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 public class GameState {
 
@@ -62,10 +64,26 @@ public class GameState {
                 .collect(Collectors.toSet());
     }
 
-    public Set<ChessPiece> getAllAgentPieces() {
+    private Stream<ChessPiece> getStreamOfAgentPieces() {
         return getAllPieces().stream()
-                .filter(ChessPiece::isRepresentedByAgent)
+                .filter(ChessPiece::isRepresentedByAgent);
+    }
+
+    public Set<ChessPiece> getAllAgentPieces() {
+        return getStreamOfAgentPieces()
                 .collect(Collectors.toSet());
+    }
+
+    /**
+     * Retrieves the piece that is represented by an agent with the given AID
+     *
+     * @param aid the AID to look for
+     * @return the piece that is represented by an agent with the given aid
+     */
+    public Optional<ChessPiece> getAgentPieceWithAID(OntoAID aid) {
+        return getStreamOfAgentPieces()
+                .filter(agent -> agent.getAgentAID().equals(aid))
+                .findFirst();
     }
 
     /**

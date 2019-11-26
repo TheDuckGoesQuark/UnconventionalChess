@@ -34,7 +34,7 @@ public abstract class PieceStateBehaviour extends SimpleBehaviour {
      * @return the chesspiece for the agent exucuting this behaviour
      */
     public ChessPiece getMyPiece() {
-        return pieceContext.getPieceForAID(myAgent.getAID()).get();
+        return pieceContext.getMyPiece();
     }
 
     @Override
