@@ -74,8 +74,7 @@ public class ChoosingSpeaker extends PieceStateBehaviour {
     }
 
     private boolean receivedRequestFromEveryone() {
-        var numAgents = pieceContext.getGameState().getAllAgentPiecesForColour(getMyPiece().getColour()).size();
-        logger.info("Received request to speak from " + speakerProposals.size() + "/" + numAgents + " of agents");
+        var numAgents = pieceContext.getGameState().getAllAgentPiecesForColourOnBoard(getMyPiece().getColour()).size();
         return speakerProposals.size() == numAgents;
     }
 }

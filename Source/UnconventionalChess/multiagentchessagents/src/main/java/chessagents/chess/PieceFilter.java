@@ -22,11 +22,11 @@ public final class PieceFilter {
     }
 
     public static Predicate<ChessPiece> isAtPosition(Position position) {
-        return p -> p.getPosition().equals(position);
+        return isNotCaptured().and(p -> p.getPosition().equals(position));
     }
 
     public static Predicate<ChessPiece> hasAID(OntoAID aid) {
-        return p -> p.getAgentAID().equals(aid);
+        return isAgent().and(p -> p.getAgentAID().equals(aid));
     }
 
 }
