@@ -12,7 +12,7 @@ const mapMessageToComponent = (message, index) => {
 };
 
 const ChatContainer = ({timeOrderedMessages}) => (
-    <div>
+    <div style={containerStyle}>
         {timeOrderedMessages.length > 0
             ? timeOrderedMessages.map((message, index) => mapMessageToComponent(message, index))
             : mapMessageToComponent("no message to show")}
@@ -22,6 +22,14 @@ const ChatContainer = ({timeOrderedMessages}) => (
 const messageStyle = {
     backgroundColor: "grey",
     fontcolor: "white",
+    position: "relative"
+};
+
+const containerStyle = {
+    boxSizing: "border-box",
+    height: "100%",
+    padding: "4px",
+    overflowY: "hidden",
 };
 
 function mapStateToProps(state) {
