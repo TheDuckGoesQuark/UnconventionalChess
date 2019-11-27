@@ -101,7 +101,7 @@ public class PlayFSM extends PieceFSM {
 
         registerState(new WaitForPieceResponseToMoveRequest(pieceAgent, pieceContext, turnContext), WAIT_FOR_PIECE_RESPONSE_TO_MOVE_REQUEST);
         registerTransition(WAIT_FOR_PIECE_RESPONSE_TO_MOVE_REQUEST, WAIT_FOR_MOVE_CONFIRMATION, PIECE_AGREED_TO_MOVE);
-        registerTransition(WAIT_FOR_PIECE_RESPONSE_TO_MOVE_REQUEST, REQUEST_TO_SPEAK, PIECE_REFUSED_TO_MOVE, PieceState.values());
+        registerTransition(WAIT_FOR_PIECE_RESPONSE_TO_MOVE_REQUEST, WAIT_FOR_PROPOSAL_REQUEST, PIECE_REFUSED_TO_MOVE, PieceState.values());
 
         registerState(new WaitForMoveConfirmation(pieceAgent, pieceContext, turnContext), WAIT_FOR_MOVE_CONFIRMATION);
         registerTransition(WAIT_FOR_MOVE_CONFIRMATION, PERFORM_MOVE, MOVE_CONFIRMATION_RECEIVED);
