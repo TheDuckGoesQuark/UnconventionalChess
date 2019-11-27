@@ -22,12 +22,11 @@ class Scratch {
     private static final Realiser REALISER = new Realiser(LEXICON);
 
     public static void main(String[] args) {
-        var subClause = NLG_FACTORY.createClause("you", "move", "there");
+        var clause = NLG_FACTORY.createClause("I", "agree");
+        var subClause = NLG_FACTORY.createClause("I", "move", "there");
         subClause.setFeature(Feature.TENSE, Tense.FUTURE);
-        subClause.setFeature(Feature.INTERROGATIVE_TYPE, InterrogativeType.YES_NO);
-        subClause.setFeature(Feature.MODAL, "can");
-
-        System.out.println(REALISER.realiseSentence(subClause));
+        subClause.setFeature(Feature.COMPLEMENTISER, "to");
+        clause.setComplement(subClause);
+        System.out.println(REALISER.realiseSentence(clause));
     }
-
 }

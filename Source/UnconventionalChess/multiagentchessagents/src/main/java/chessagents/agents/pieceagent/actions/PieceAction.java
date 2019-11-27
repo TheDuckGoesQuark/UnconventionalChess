@@ -1,12 +1,25 @@
 package chessagents.agents.pieceagent.actions;
 
+import chessagents.agents.pieceagent.PieceContext;
 import chessagents.chess.GameState;
 import chessagents.agents.pieceagent.PieceAgent;
 import chessagents.agents.pieceagent.behaviours.turn.PieceTransition;
 import chessagents.ontology.schemas.concepts.ChessPiece;
 import jade.util.Logger;
+import simplenlg.framework.NLGFactory;
+import simplenlg.lexicon.Lexicon;
+import simplenlg.realiser.english.Realiser;
+
+import java.util.List;
+import java.util.Optional;
+import java.util.Random;
 
 public abstract class PieceAction {
+
+    private static final Random random = new Random();
+    protected static final Lexicon LEXICON = Lexicon.getDefaultLexicon();
+    protected static final NLGFactory NLG_FACTORY = new NLGFactory(LEXICON);
+    protected static final Realiser REALISER = new Realiser(LEXICON);
 
     protected final Logger logger = Logger.getMyLogger(getClass().getName());
     private final PieceTransition resultingTransition;
@@ -44,6 +57,13 @@ public abstract class PieceAction {
     }
 
     /**
+     * @return true if this action should be verbalised when performed
+     */
+    public boolean shouldBeVerbalised() {
+        return shouldBeVerbalised;
+    }
+
+    /**
      * Agent performs given action according to current game state with all side effects such as sending messages
      * to other agents
      *
@@ -63,9 +83,17 @@ public abstract class PieceAction {
     public abstract GameState getOutcomeOfAction(GameState gameState);
 
     /**
-     * @return true if this action should be verbalised when performed
+     * Generates a human friendly string for this action if it should be verbalised, empty otherwise
+     *
+     * @param context piece context
+     * @return a human friendly string for this action
      */
-    public boolean shouldBeVerbalised() {
-        return shouldBeVerbalised;
+    public Optional<String> verbalise(PieceContext context) {
+        return Optional.empty();
+    }
+
+
+    public static String chooseRandom(List<String> strs) {
+        return strs.get(random.nextInt(strs.size()));
     }
 }

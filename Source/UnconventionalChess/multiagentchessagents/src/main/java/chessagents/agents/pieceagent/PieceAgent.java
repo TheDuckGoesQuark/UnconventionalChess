@@ -1,15 +1,14 @@
 package chessagents.agents.pieceagent;
 
 import chessagents.agents.ChessAgent;
+import chessagents.agents.pieceagent.actions.PieceAction;
+import chessagents.agents.pieceagent.behaviours.chat.SendChatMessage;
 import chessagents.agents.pieceagent.behaviours.initial.RequestPieceIds;
 import chessagents.agents.pieceagent.behaviours.initial.SubscribeToGameStatus;
 import chessagents.agents.pieceagent.behaviours.turn.PieceTransition;
 import chessagents.agents.pieceagent.behaviours.turn.PlayFSM;
 import chessagents.agents.pieceagent.behaviours.turn.SubscribeToMoves;
-import chessagents.agents.pieceagent.actions.PieceAction;
-import chessagents.agents.pieceagent.verbaliser.Verbaliser;
 import chessagents.ontology.schemas.actions.BecomeSpeaker;
-import chessagents.ontology.schemas.concepts.ChessPiece;
 import chessagents.ontology.schemas.concepts.Colour;
 import chessagents.ontology.schemas.concepts.Position;
 import jade.content.OntoAID;
@@ -28,7 +27,6 @@ public class PieceAgent extends ChessAgent {
      * Piece static properties, and container for game context
      */
     private PieceContext context;
-    private Verbaliser verbaliser = new Verbaliser();
 
     /**
      * Initialise piece agent using arguments and add initial behaviours
@@ -107,7 +105,8 @@ public class PieceAgent extends ChessAgent {
      */
     public PieceTransition performAction(PieceAction action) {
         if (action.shouldBeVerbalised()) {
-            verbaliser.verbaliseActionForAgent(this, action);
+            action.verbalise(context)
+                    .ifPresent(v -> addBehaviour(new SendChatMessage(v, getAID(), context.getGameAgentAID())));
         }
 
         context.performAction(this, action);

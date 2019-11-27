@@ -4,9 +4,9 @@ import chessagents.chess.GameState;
 import chessagents.agents.pieceagent.actions.PieceAction;
 import chessagents.ontology.schemas.concepts.ChessPiece;
 
-public class MaximiseCapturedPieces extends Value {
+public class MaximiseEnemyCapturedPieces extends Value {
 
-    public MaximiseCapturedPieces() {
+    public MaximiseEnemyCapturedPieces() {
         super("Maximise captured pieces");
     }
 

@@ -28,4 +28,5 @@ public class PerformMoveAction extends PieceAction {
     public GameState getOutcomeOfAction(GameState gameState) {
         return gameState.makeMove(move);
     }
+
 }

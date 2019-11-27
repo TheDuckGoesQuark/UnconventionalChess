@@ -24,4 +24,5 @@ public class NoAction extends PieceAction {
     public GameState getOutcomeOfAction(GameState gameState) {
         return gameState;
     }
+
 }

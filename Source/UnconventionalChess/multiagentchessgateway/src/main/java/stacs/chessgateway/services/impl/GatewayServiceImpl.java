@@ -72,7 +72,11 @@ public class GatewayServiceImpl implements GatewayService {
                 .map(this::executeBehaviour)
                 .map(command -> ((RequestGameAgentMove) command))
                 .filter(RequestGameAgentMove::wasSuccessful)
-                .ifPresent(wasSuccessful -> websocketService.sendMessageToClient(move, gameId));
+                .ifPresent(wasSuccessful -> {
+                    logger.info("Client move successful");
+                    // don't need to send response now as we are subscribed to moves and will
+                    // be informed again later
+                });
         // TODO send error
     }
 

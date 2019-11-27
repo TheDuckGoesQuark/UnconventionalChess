@@ -4,8 +4,8 @@ import chessagents.chess.GameState;
 import chessagents.agents.pieceagent.actions.PieceAction;
 import chessagents.ontology.schemas.concepts.ChessPiece;
 
-public class ProtectPiecesValue extends Value {
-    public ProtectPiecesValue() {
+public class MinimiseFriendlyThreatenedPieces extends Value {
+    public MinimiseFriendlyThreatenedPieces() {
         super("Protect pieces");
     }
 
