@@ -9,6 +9,7 @@ import chessagents.ontology.schemas.concepts.ChessPiece;
 import chessagents.ontology.schemas.concepts.PieceMove;
 import jade.lang.acl.ACLMessage;
 import simplenlg.features.Feature;
+import simplenlg.features.Tense;
 
 import java.util.List;
 import java.util.Optional;
@@ -54,10 +55,12 @@ public class AgreeToMoveAction extends PieceAction {
     @Override
     public Optional<String> verbalise(PieceContext context) {
         var clause = NLG_FACTORY.createClause();
+
         clause.setSubject("I");
         clause.setVerb(chooseRandom(VERB));
         clause.setObject(chooseRandom(OBJECTS));
         clause.setFeature(Feature.COMPLEMENTISER, chooseRandom(COMPLEMENTISERS));
+        clause.setFeature(Feature.TENSE, Tense.FUTURE);
 
         return Optional.ofNullable(REALISER.realiseSentence(clause));
     }
