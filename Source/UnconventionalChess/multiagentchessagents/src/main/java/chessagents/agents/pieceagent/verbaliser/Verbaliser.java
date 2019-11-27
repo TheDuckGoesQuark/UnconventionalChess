@@ -17,6 +17,5 @@ public class Verbaliser {
         var s1 = NLG_FACTORY.createSentence("I am " + action.getActionName());
         var output = REALISER.realiseSentence(s1);
         pieceAgent.addBehaviour(new SendChatMessage(output, pieceAgent.getAID(), pieceAgent.getContext().getGameAgentAID()));
-        // TODO flesh this out
     }
 }
