@@ -1,5 +1,6 @@
 package chessagents.agents.pieceagent.actions;
 
+import chessagents.agents.pieceagent.PieceContext;
 import chessagents.chess.GameState;
 import chessagents.agents.ChessMessageBuilder;
 import chessagents.agents.pieceagent.PieceAgent;
@@ -12,10 +13,22 @@ import jade.content.onto.OntologyException;
 import jade.content.onto.basic.Action;
 import jade.core.AID;
 import jade.lang.acl.ACLMessage;
+import simplenlg.features.Feature;
+import simplenlg.features.InterrogativeType;
+import simplenlg.features.Tense;
 
+import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 public class TellPieceToMoveAction extends PieceAction {
+
+    private static final List<String> OBJECTS = List.of("there", "position");
+    private static final List<String> VERB = List.of("move", "slide", "jump", "walk", "shift", "run");
+    private static final List<String> ADVERBS = List.of("quickly", "soon", "hastily", "carefully");
+    private static final List<String> COMPLEMENTISERS = List.of("to", "that");
+    private static final List<String> MODALS = List.of("can", "will");
+
     private PieceAgent actor;
     private final PieceMove move;
     private final ChessPiece otherChessPiece;
@@ -76,5 +89,27 @@ public class TellPieceToMoveAction extends PieceAction {
         }
 
         return request;
+    }
+
+    @Override
+    public Optional<String> verbalise(PieceContext context) {
+        var clause = NLG_FACTORY.createClause();
+
+        clause.setSubject(otherChessPiece.getAgentAID().getLocalName());
+        clause.setVerb(chooseRandom(VERB));
+        clause.setObject(chooseRandom(OBJECTS));
+        clause.setFeature(Feature.COMPLEMENTISER, chooseRandom(COMPLEMENTISERS));
+        clause.setFeature(Feature.TENSE, Tense.FUTURE);
+
+        if (randBool()) {
+            clause.setFeature(Feature.INTERROGATIVE_TYPE, InterrogativeType.YES_NO);
+            clause.setFeature(Feature.MODAL, chooseRandom(MODALS));
+        }
+
+        if (randBool()) {
+            clause.addComplement(chooseRandom(ADVERBS));
+        }
+
+        return Optional.ofNullable(REALISER.realiseSentence(clause));
     }
 }

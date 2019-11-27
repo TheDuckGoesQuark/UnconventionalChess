@@ -96,4 +96,8 @@ public abstract class PieceAction {
     public static String chooseRandom(List<String> strs) {
         return strs.get(random.nextInt(strs.size()));
     }
+
+    public static boolean randBool() {
+        return random.nextBoolean();
+    }
 }
