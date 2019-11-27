@@ -20,9 +20,6 @@ import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
 
-import static chessagents.agents.pieceagent.behaviours.turn.PieceTransition.AGREED_TO_MAKE_MOVE;
-import static chessagents.agents.pieceagent.behaviours.turn.PieceTransition.NOT_MOVING;
-
 public class DecideIfMoving extends PieceStateBehaviour {
 
     private final TurnContext turnContext;
@@ -39,15 +36,20 @@ public class DecideIfMoving extends PieceStateBehaviour {
         setChosenAction(getAgent().chooseAction(generatePossibleActions(message, turnContext.getCurrentMove())));
     }
 
-    private Set<PieceAction> generatePossibleActions(ACLMessage requestToMove, PieceMove currentMove) {
+    private Set<PieceAction> generatePossibleActions(ACLMessage requestToMove, PieceMove requestedMove) {
         var myPiece = getMyPiece();
+        var actions = new HashSet<PieceAction>();
 
-        var agreeToMove = new AgreeToMoveAction(myPiece, requestToMove, currentMove);
-        var falslyAgreeToMove = new FalselyAgreeToMoveAction(myPiece, requestToMove, currentMove);
+        actions.add(new AgreeToMoveAction(myPiece, requestToMove, requestedMove));
+        actions.add(new FalselyAgreeToMoveAction(myPiece, requestToMove, requestedMove));
+
+        // Only allow rejection to occur if more debate cycles are allowed, otherwise we could go on forever...
+        if (turnContext.getDebateCycles() < pieceContext.getMaxDebateCycle())
+            actions.add(new RefuseToMoveAction(myPiece, requestToMove, requestedMove));
+
         // TODO agree but perform different move?
-//        var refuseToMove = new RefuseToMoveAction(myPiece);
 
-        return new HashSet<>(Arrays.asList(agreeToMove, falslyAgreeToMove));
+        return actions;
     }
 
     private void saveMove(ACLMessage message) {

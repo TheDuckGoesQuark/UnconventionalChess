@@ -21,7 +21,7 @@ public class TellEveryoneImSpeakerAction extends PieceAction {
      * @param actor piece performing the action
      */
     public TellEveryoneImSpeakerAction(ChessPiece actor, ACLMessage acceptProposalMessage) {
-        super(PieceTransition.SPEAKER_UPDATE_SENT, "Tell everyone I'm the speaker", actor);
+        super(PieceTransition.SPEAKER_UPDATE_SENT, "Tell everyone I'm the speaker", actor, false);
         this.acceptProposalMessage = acceptProposalMessage;
     }
 

@@ -14,7 +14,7 @@ public class PerformMoveAction extends PieceAction {
      * @param actor piece performing the action
      */
     public PerformMoveAction(ChessPiece actor, PieceMove move) {
-        super(PieceTransition.MOVE_PERFORMED, "Perform move", actor);
+        super(PieceTransition.MOVE_PERFORMED, "Perform move", actor, false);
         this.move = move;
     }
 

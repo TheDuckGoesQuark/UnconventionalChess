@@ -17,7 +17,7 @@ public class ChoosePieceToSpeakAction extends PieceAction {
     private final Set<ACLMessage> speakerProposals;
 
     public ChoosePieceToSpeakAction(ChessPiece actor, ChessPiece chessPieceToSpeak, Set<ACLMessage> speakerProposals) {
-        super(PieceTransition.SPEAKER_CHOSEN, "Choose piece to speak", actor);
+        super(PieceTransition.SPEAKER_CHOSEN, "Choose piece to speak", actor, true);
         this.chessPieceToSpeak = chessPieceToSpeak;
         this.speakerProposals = speakerProposals;
     }

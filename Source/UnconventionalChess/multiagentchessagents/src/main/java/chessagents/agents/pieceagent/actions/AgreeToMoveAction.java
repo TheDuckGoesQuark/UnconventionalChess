@@ -19,7 +19,7 @@ public class AgreeToMoveAction extends PieceAction {
      * @param requestedMove move that has been requested be made
      */
     public AgreeToMoveAction(ChessPiece actor, ACLMessage requestToMove, PieceMove requestedMove) {
-        super(PieceTransition.AGREED_TO_MAKE_MOVE, "Agree to move", actor);
+        super(PieceTransition.AGREED_TO_MAKE_MOVE, "Agree to move", actor, true);
         this.requestToMove = requestToMove;
         this.requestedMove = requestedMove;
     }

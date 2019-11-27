@@ -12,12 +12,12 @@ public class NoAction extends PieceAction {
      * @param actor               piece performing the action
      */
     public NoAction(PieceTransition resultingTransition, String name, ChessPiece actor) {
-        super(resultingTransition, name, actor);
+        super(resultingTransition, name, actor, false);
     }
 
     @Override
     public GameState perform(PieceAgent actor, GameState gameState) {
-        return getOutcomeOfAction(gameState);
+        return gameState;
     }
 
     @Override

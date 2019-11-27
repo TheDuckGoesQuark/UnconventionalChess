@@ -11,15 +11,18 @@ public abstract class PieceAction {
     protected final Logger logger = Logger.getMyLogger(getClass().getName());
     private final PieceTransition resultingTransition;
     private final String name;
+    private final boolean shouldBeVerbalised;
 
     /**
      * @param resultingTransition the transition to be taken if this action is chosen
      * @param name                name of this action
      * @param actor               piece performing the action
+     * @param shouldBeVerbalised  if this action should be verbalised when performed
      */
-    protected PieceAction(PieceTransition resultingTransition, String name, ChessPiece actor) {
+    protected PieceAction(PieceTransition resultingTransition, String name, ChessPiece actor, boolean shouldBeVerbalised) {
         this.resultingTransition = resultingTransition;
         this.name = name;
+        this.shouldBeVerbalised = shouldBeVerbalised;
     }
 
     /**
@@ -58,4 +61,11 @@ public abstract class PieceAction {
      * @return game state after action has been performed
      */
     public abstract GameState getOutcomeOfAction(GameState gameState);
+
+    /**
+     * @return true if this action should be verbalised when performed
+     */
+    public boolean shouldBeVerbalised() {
+        return shouldBeVerbalised;
+    }
 }

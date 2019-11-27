@@ -14,7 +14,7 @@ public class AskForProposalsAction extends PieceAction {
     private final TurnContext turnContext;
 
     public AskForProposalsAction(ChessPiece actor, TurnContext turnContext) {
-        super(PieceTransition.PROPOSALS_REQUESTED, "Ask other piece what we should do", actor);
+        super(PieceTransition.PROPOSALS_REQUESTED, "Ask other piece what we should do", actor, true);
         this.turnContext = turnContext;
     }
 

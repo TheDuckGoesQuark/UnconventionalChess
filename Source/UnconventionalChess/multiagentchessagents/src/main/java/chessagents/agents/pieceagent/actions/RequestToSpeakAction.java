@@ -14,7 +14,7 @@ public class RequestToSpeakAction extends PieceAction {
      * @param cfp
      */
     public RequestToSpeakAction(ChessPiece actor, ACLMessage cfp) {
-        super(PieceTransition.REQUESTED_TO_SPEAK, "Request to speak", actor);
+        super(PieceTransition.REQUESTED_TO_SPEAK, "Request to speak", actor, false);
         this.cfp = cfp;
     }
 

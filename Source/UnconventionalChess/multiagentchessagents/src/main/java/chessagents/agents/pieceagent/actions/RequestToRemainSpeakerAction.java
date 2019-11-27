@@ -15,7 +15,7 @@ public class RequestToRemainSpeakerAction extends PieceAction {
      * @param cfp   call for proposal messgage
      */
     public RequestToRemainSpeakerAction(ChessPiece actor, ACLMessage cfp) {
-        super(PieceTransition.REQUESTED_TO_REMAIN_SPEAKER, "Request to remain speaker", actor);
+        super(PieceTransition.REQUESTED_TO_REMAIN_SPEAKER, "Request to remain speaker", actor, false);
         this.cfp = cfp;
     }
 

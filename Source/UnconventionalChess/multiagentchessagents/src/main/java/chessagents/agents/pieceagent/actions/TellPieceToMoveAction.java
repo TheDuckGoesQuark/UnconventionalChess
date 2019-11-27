@@ -21,7 +21,7 @@ public class TellPieceToMoveAction extends PieceAction {
     private final ChessPiece otherChessPiece;
 
     public TellPieceToMoveAction(ChessPiece actor, PieceMove move, ChessPiece otherChessPiece) {
-        super(PieceTransition.TOLD_PIECE_TO_MOVE, "Tell piece to move", actor);
+        super(PieceTransition.TOLD_PIECE_TO_MOVE, "Tell piece to move", actor, true);
         this.move = move;
         this.otherChessPiece = otherChessPiece;
     }
