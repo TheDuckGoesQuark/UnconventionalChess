@@ -8,7 +8,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 @Getter
-enum Trait {
+public enum Trait {
     AGGRESSIVE(new Value[]{new MaximiseEnemyCapturedPieces()}),
     DEFENSIVE(new Value[]{new MinimiseFriendlyThreatenedPieces()}),
     EGOTISTIC(new Value[]{new EnsureMySafety()}),

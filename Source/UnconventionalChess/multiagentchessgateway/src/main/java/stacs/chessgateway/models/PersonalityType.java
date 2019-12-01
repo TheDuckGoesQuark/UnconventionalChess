@@ -1,16 +1,16 @@
 package stacs.chessgateway.models;
 
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @NoArgsConstructor
+@AllArgsConstructor
 @Getter
 @Setter
-public class GameConfiguration {
+public class PersonalityType {
 
-    private boolean humanPlays;
-    private boolean humanPlaysAsWhite;
-    private int gameId;
+    private String name;
 
 }
