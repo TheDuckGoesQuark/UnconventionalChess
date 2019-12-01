@@ -41,7 +41,7 @@ const ConfigView = (props) => (
                 </li>
                 <li>
                     <label>
-                        Configure Agent Pieces
+                        Click pieces to configure their personalities.
                     </label>
                     <ConfigBoard/>
                 </li>

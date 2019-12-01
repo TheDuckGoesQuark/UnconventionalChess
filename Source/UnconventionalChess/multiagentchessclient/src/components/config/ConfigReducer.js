@@ -11,7 +11,8 @@ const initialState = {
     configSubmitted: false,
     gameId: undefined,
     configuringSquare: undefined,
-    piecePositions: "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1"
+    piecePositions: "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1",
+    pieceConfigs: {}
 };
 
 export default function configReducer(state = initialState, action) {
