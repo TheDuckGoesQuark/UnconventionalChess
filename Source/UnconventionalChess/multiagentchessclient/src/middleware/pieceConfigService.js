@@ -8,19 +8,22 @@ import {
 } from "../components/config/ConfigActions";
 
 const fetchPersonalityTypes = (dispatch) => {
-    fetch('/personalities')
-        .then(res => res.json())
-        .then(res => {
-            if (res.error) {
-                throw(res.error);
-            } else {
-                dispatch(fetchPersonalityTypesSuccess(res.personalityTypes));
-                return res.personalityTypes;
-            }
-        })
-        .catch(error => {
-            dispatch(fetchPersonalityTypesError(error))
-        });
+    fetch('/personalities', {
+        headers: {
+            'Accept': 'application/json',
+        },
+    }).then(res => {
+        return res.json()
+    }).then(res => {
+        if (res.error) {
+            throw(res.error);
+        } else {
+            dispatch(fetchPersonalityTypesSuccess(res.personalityTypes));
+            return res.personalityTypes;
+        }
+    }).catch(error => {
+        dispatch(fetchPersonalityTypesError(error))
+    });
 };
 
 const personalityService = store => next => action => {
