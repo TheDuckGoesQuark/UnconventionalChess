@@ -8,7 +8,6 @@ import {
     SQUARE_RIGHT_CLICK
 } from "./BoardActions";
 import Chess from "chess.js"
-import {squareStyling} from "./GameBoard";
 import {CONFIG_RESET} from "../config/ConfigActions";
 
 const initialState = {
@@ -149,6 +148,25 @@ const handleReceivedMove = (state, action) => {
         fen: game.fen(),
         history: game.history({verbose: true}),
         squareStyles: squareStyling({pieceSquare, history})
+    };
+};
+
+const squareStyling = ({pieceSquare, history}) => {
+    const sourceSquare = history.length && history[history.length - 1].from;
+    const targetSquare = history.length && history[history.length - 1].to;
+
+    return {
+        [pieceSquare]: {backgroundColor: "rgba(255, 255, 0, 0.4)"},
+        ...(history.length && {
+            [sourceSquare]: {
+                backgroundColor: "rgba(255, 255, 0, 0.4)"
+            }
+        }),
+        ...(history.length && {
+            [targetSquare]: {
+                backgroundColor: "rgba(255, 255, 0, 0.4)"
+            }
+        })
     };
 };
 

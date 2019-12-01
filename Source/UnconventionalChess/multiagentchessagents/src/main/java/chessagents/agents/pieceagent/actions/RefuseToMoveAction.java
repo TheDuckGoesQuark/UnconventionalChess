@@ -19,7 +19,6 @@ public class RefuseToMoveAction extends PieceAction {
     private static final List<String> VERB = List.of("move", "slide", "jump", "walk", "shift", "run");
     private static final List<String> ADVERBS = List.of("quickly", "soon", "hastily", "carefully");
     private static final List<String> COMPLEMENTISERS = List.of("to", "that");
-    private static final List<String> MODALS = List.of("can", "will");
 
     private final ACLMessage requestToMove;
     private final PieceMove requestedMove;

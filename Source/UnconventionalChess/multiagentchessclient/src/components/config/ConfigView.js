@@ -2,32 +2,48 @@ import React from "react";
 import {connect} from "react-redux";
 import {submitConfig, setHumanPlaysAsWhite, setHumanPlays} from "./ConfigActions";
 import BooleanButton from "../BooleanButton";
+import ConfigBoard from "./ConfigBoard";
 
 const ConfigView = (props) => (
     <div style={configStyle}>
-        <h3>Choose Game Mode:</h3>
-        <BooleanButton
-            callback={props.setHumanPlays}
-            trueText={"Play against agents"}
-            falseText={"Watch agents"}
-            isTrue={props.humanPlays}
-        />
-
-        <h3>Who do you want to play as:</h3>
-        <BooleanButton
-            disabled={!props.humanPlays}
-            callback={props.setHumanPlaysAsWhite}
-            trueText={"White"}
-            falseText={"Black"}
-            isTrue={props.humanPlaysAsWhite}
-        />
-
-        <button onClick={() => props.submitCurrentConfig({
-            humanPlaysAsWhite: props.humanPlaysAsWhite,
-            humanPlays: props.humanPlays,
-        })}>
-            Submit
-        </button>
+        <form>
+            <ul style={listStyle}>
+                <li>
+                    <label>
+                        Game Mode<span className="required">*</span>
+                    </label>
+                    <BooleanButton
+                        callback={props.setHumanPlays}
+                        trueText={"Play against agents"}
+                        falseText={"Watch agents"}
+                        isTrue={props.humanPlays}
+                    />
+                </li>
+                <li>
+                    <label>
+                        Play As:
+                    </label>
+                    <BooleanButton
+                        disabled={!props.humanPlays}
+                        callback={props.setHumanPlaysAsWhite}
+                        trueText={"White"}
+                        falseText={"Black"}
+                        isTrue={props.humanPlaysAsWhite}
+                    />
+                </li>
+                <li>
+                    <button onClick={() => props.submitCurrentConfig({
+                        humanPlaysAsWhite: props.humanPlaysAsWhite,
+                        humanPlays: props.humanPlays,
+                    })}>
+                        Submit
+                    </button>
+                </li>
+                <li>
+                    <ConfigBoard/>
+                </li>
+            </ul>
+        </form>
     </div>
 );
 
@@ -48,6 +64,10 @@ const configStyle = {
     alignItems: "center",
     justifyContent: "center",
     display: "flex",
+};
+
+const listStyle = {
+    listStyle: "none"
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(ConfigView)

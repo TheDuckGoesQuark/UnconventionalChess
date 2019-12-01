@@ -3,6 +3,7 @@ export const CONFIG_HUMAN_PLAYS_AS_WHITE_SET = "HUMAN_PLAYS_AS_WHITE_SET";
 export const CONFIG_SUBMITTED = "CONFIG_SUBMITTED";
 export const CONFIG_GAME_READY = "CONFIG_GAME_READY";
 export const CONFIG_RESET = "CONFIG_RESET";
+export const CONFIG_SQUARE_CLICKED = "CONFIG_SQUARE_CLICKED";
 
 /**
  * Set whether human should play as white
@@ -49,4 +50,14 @@ export const gameReady = (gameId) => ({
  */
 export const resetConfig = () => ({
     type: CONFIG_RESET,
+});
+
+/**
+ * Register that square on config board was clicked
+ * @param square square that was clicked
+ * @returns {{payload: {square: *}, type: string}}
+ */
+export const configSquareClicked = (square) => ({
+    type: CONFIG_SQUARE_CLICKED,
+    payload: {square}
 });
