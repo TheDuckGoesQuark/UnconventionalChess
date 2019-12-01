@@ -26,7 +26,7 @@ const PieceConfigForm = ({props}) => {
             <li>
                 <label>Personality Type</label>
                 <select>
-                    {props.personalityTypes.map(pt => <options>{pt.name}</options>)}
+                    {props.personalityTypes.map(pt => <option key={pt.name}>{pt.name}</option>)}
                 </select>
             </li>
             <li>

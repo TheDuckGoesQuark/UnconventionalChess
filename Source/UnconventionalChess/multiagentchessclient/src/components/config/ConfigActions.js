@@ -75,12 +75,12 @@ export const fetchPersonalities = () => ({
 
 /**
  * Dispatched when initial configuration is fetched successfully
- * @param initialPieceConfigs
+ * @param personalityTypes
  * @returns {{payload: {initialPieceConfigs: *}, type: string}}
  */
-export const fetchPersonalityTypesSuccess = (initialPieceConfigs) => ({
+export const fetchPersonalityTypesSuccess = (personalityTypes) => ({
     type: CONFIG_FETCH_PERSONALITIES_SUCCESS,
-    payload: {initialPieceConfigs}
+    payload: {personalityTypes}
 });
 
 export const fetchPersonalityTypesError = (error) => ({

@@ -19,7 +19,7 @@ public class PersonalityController {
         this.personalityService = personalityService;
     }
 
-    @GetMapping()
+    @GetMapping("/personalities")
     public PersonalityTypes getPersonalityTypes() {
         return personalityService.getAllPersonalities();
     }
