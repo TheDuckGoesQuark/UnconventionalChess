@@ -23,8 +23,6 @@
     "redux": "^4.0.4",
     "//": "Drawing chess pieces",
     "roughjs": "2.1.3",
-    "//": "Middleware in redux for fetching data",
-    "redux-thunk": "^2.3.0"
   },
   "devDependencies": {
     "@babel/core": "^7.1.0",
