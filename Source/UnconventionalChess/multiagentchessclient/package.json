@@ -22,7 +22,7 @@
     "//": "Global store",
     "redux": "^4.0.4",
     "//": "Drawing chess pieces",
-    "roughjs": "2.1.3",
+    "roughjs": "2.1.3"
   },
   "devDependencies": {
     "@babel/core": "^7.1.0",
