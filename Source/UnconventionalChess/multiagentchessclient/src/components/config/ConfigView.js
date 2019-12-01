@@ -10,7 +10,7 @@ const ConfigView = (props) => (
             <ul style={listStyle}>
                 <li>
                     <label>
-                        Game Mode<span className="required">*</span>
+                        Game Mode
                     </label>
                     <BooleanButton
                         callback={props.setHumanPlays}
@@ -40,6 +40,9 @@ const ConfigView = (props) => (
                     </button>
                 </li>
                 <li>
+                    <label>
+                        Configure Agent Pieces
+                    </label>
                     <ConfigBoard/>
                 </li>
             </ul>

@@ -2,14 +2,16 @@ import {
     CONFIG_HUMAN_PLAYS_AS_WHITE_SET,
     CONFIG_HUMAN_PLAYS_SET,
     CONFIG_GAME_READY,
-    CONFIG_SUBMITTED, CONFIG_RESET,
+    CONFIG_SUBMITTED, CONFIG_RESET, CONFIG_SQUARE_CLICKED,
 } from "./ConfigActions";
 
 const initialState = {
     humanPlays: true,
     humanPlaysAsWhite: true,
     configSubmitted: false,
-    gameId: undefined
+    gameId: undefined,
+    configuringSquare: undefined,
+    piecePositions: "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1"
 };
 
 export default function configReducer(state = initialState, action) {
@@ -38,6 +40,11 @@ export default function configReducer(state = initialState, action) {
             return {
                 ...state,
                 ...initialState
+            };
+        case CONFIG_SQUARE_CLICKED:
+            return {
+                ...state,
+                configuringSquare: action.payload.square
             };
         default:
             return state;
