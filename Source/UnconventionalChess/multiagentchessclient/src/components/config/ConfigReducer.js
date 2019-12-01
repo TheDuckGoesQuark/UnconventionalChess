@@ -20,12 +20,14 @@ export default function configReducer(state = initialState, action) {
         case CONFIG_HUMAN_PLAYS_AS_WHITE_SET:
             return {
                 ...state,
-                humanPlaysAsWhite: action.payload.humanPlaysAsWhite
+                humanPlaysAsWhite: action.payload.humanPlaysAsWhite,
+                configuringSquare: undefined
             };
         case CONFIG_HUMAN_PLAYS_SET:
             return {
                 ...state,
-                humanPlays: action.payload.humanPlays
+                humanPlays: action.payload.humanPlays,
+                configuringSquare: undefined
             };
         case CONFIG_GAME_READY:
             return {
