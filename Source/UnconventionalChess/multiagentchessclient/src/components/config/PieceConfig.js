@@ -15,8 +15,9 @@ const isConfigurable = (square, humanPlays, humanPlaysAsWhite) => {
 };
 
 const PieceConfigForm = ({props}) => {
-    return <form>
+    return <div>
         <h3>Configuring Piece at {props.configuringSquare}</h3>
+        <button type="button">Random</button>
         <ul style={{listStyle: "none"}}>
             <li>
                 <label>Name</label>
@@ -25,14 +26,14 @@ const PieceConfigForm = ({props}) => {
             <li>
                 <label>Personality Type</label>
                 <select>
-                    <option>None</option>
+                    {props.personalityTypes.map(pt => <options>{pt.name}</options>)}
                 </select>
             </li>
             <li>
                 <button type="button" onClick={props.saveConfig}>Save</button>
             </li>
         </ul>
-    </form>
+    </div>
 };
 
 const NotConfigurableMessage = ({props}) => {
@@ -45,7 +46,7 @@ const PieceConfig = (props) => {
         {isConfigurable(
             props.configuringSquare,
             props.humanPlays,
-            props.humanPlaysAsWhite)
+            props.humanPlaysAsWhite) && props.personalityTypes // check personality types has loaded
             ? <PieceConfigForm props={props}/>
             : <NotConfigurableMessage props={props}/>
         }
@@ -57,6 +58,7 @@ function mapStateToProps(state) {
         humanPlays: state.configReducer.humanPlays,
         humanPlaysAsWhite: state.configReducer.humanPlaysAsWhite,
         configuringSquare: state.configReducer.configuringSquare,
+        personalityTypes: state.configReducer.personalityTypes,
     };
 }
 

@@ -4,8 +4,8 @@ import {submitConfig, setHumanPlaysAsWhite, setHumanPlays} from "./ConfigActions
 import BooleanButton from "../BooleanButton";
 import ConfigBoard from "./ConfigBoard";
 
-const ConfigView = (props) => (
-    <div style={configStyle}>
+const ConfigView = (props) => {
+    return <div style={configStyle}>
         <form>
             <ul style={listStyle}>
                 <li>
@@ -32,6 +32,12 @@ const ConfigView = (props) => (
                     />
                 </li>
                 <li>
+                    <label>
+                        Click pieces to configure their personalities.
+                    </label>
+                    <ConfigBoard/>
+                </li>
+                <li>
                     <button onClick={() => props.submitCurrentConfig({
                         humanPlaysAsWhite: props.humanPlaysAsWhite,
                         humanPlays: props.humanPlays,
@@ -39,16 +45,10 @@ const ConfigView = (props) => (
                         Submit
                     </button>
                 </li>
-                <li>
-                    <label>
-                        Click pieces to configure their personalities.
-                    </label>
-                    <ConfigBoard/>
-                </li>
             </ul>
         </form>
     </div>
-);
+};
 
 function mapStateToProps(state) {
     return {

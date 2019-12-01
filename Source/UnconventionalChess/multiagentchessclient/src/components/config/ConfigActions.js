@@ -4,6 +4,9 @@ export const CONFIG_SUBMITTED = "CONFIG_SUBMITTED";
 export const CONFIG_GAME_READY = "CONFIG_GAME_READY";
 export const CONFIG_RESET = "CONFIG_RESET";
 export const CONFIG_SQUARE_CLICKED = "CONFIG_SQUARE_CLICKED";
+export const CONFIG_FETCH_PERSONALITIES = "CONFIG_FETCH_PERSONALITIES";
+export const CONFIG_FETCH_PERSONALITIES_SUCCESS = "CONFIG_FETCH_PERSONALITIES_SUCCESS";
+export const CONFIG_FETCH_PERSONALITIES_ERROR = "CONFIG_FETCH_PERSONALITIES_ERROR";
 
 /**
  * Set whether human should play as white
@@ -60,4 +63,27 @@ export const resetConfig = () => ({
 export const configSquareClicked = (square) => ({
     type: CONFIG_SQUARE_CLICKED,
     payload: {square}
+});
+
+/**
+ * Send on load for fetching initial config
+ * @returns {{type: string}}
+ */
+export const fetchPersonalities = () => ({
+    type: CONFIG_FETCH_PERSONALITIES,
+});
+
+/**
+ * Dispatched when initial configuration is fetched successfully
+ * @param initialPieceConfigs
+ * @returns {{payload: {initialPieceConfigs: *}, type: string}}
+ */
+export const fetchPersonalityTypesSuccess = (initialPieceConfigs) => ({
+    type: CONFIG_FETCH_PERSONALITIES_SUCCESS,
+    payload: {initialPieceConfigs}
+});
+
+export const fetchPersonalityTypesError = (error) => ({
+    type: CONFIG_FETCH_PERSONALITIES_ERROR,
+    payload: {error}
 });

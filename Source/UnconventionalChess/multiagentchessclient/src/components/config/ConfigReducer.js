@@ -2,7 +2,12 @@ import {
     CONFIG_HUMAN_PLAYS_AS_WHITE_SET,
     CONFIG_HUMAN_PLAYS_SET,
     CONFIG_GAME_READY,
-    CONFIG_SUBMITTED, CONFIG_RESET, CONFIG_SQUARE_CLICKED,
+    CONFIG_SUBMITTED,
+    CONFIG_RESET,
+    CONFIG_SQUARE_CLICKED,
+    CONFIG_FETCH_PERSONALITIES_ERROR,
+    CONFIG_FETCH_PERSONALITIES,
+    CONFIG_FETCH_PERSONALITIES_SUCCESS,
 } from "./ConfigActions";
 
 const initialState = {
@@ -12,7 +17,9 @@ const initialState = {
     gameId: undefined,
     configuringSquare: undefined,
     piecePositions: "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1",
-    pieceConfigs: {}
+    pieceConfigs: {},
+    personalityTypes: [],
+    error: null
 };
 
 export default function configReducer(state = initialState, action) {
@@ -49,7 +56,20 @@ export default function configReducer(state = initialState, action) {
                 ...state,
                 configuringSquare: action.payload.square
             };
+        case CONFIG_FETCH_PERSONALITIES:
+            return state;
+        case CONFIG_FETCH_PERSONALITIES_SUCCESS:
+            return {
+                ...state,
+                personalityTypes: action.payload.personalityTypes
+            };
+        case CONFIG_FETCH_PERSONALITIES_ERROR:
+            return {
+                ...state,
+                error: action.payload.error
+            };
         default:
             return state;
     }
 }
+
