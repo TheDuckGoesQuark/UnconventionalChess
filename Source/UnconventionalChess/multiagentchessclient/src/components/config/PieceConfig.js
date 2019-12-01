@@ -14,14 +14,28 @@ const isConfigurable = (square, humanPlays, humanPlaysAsWhite) => {
     return pieceIsWhite ? !humanPlaysAsWhite : humanPlaysAsWhite
 };
 
-const PieceConfigForm = (props) => {
+const PieceConfigForm = ({props}) => {
     return <form>
         <h3>Configuring Piece at {props.configuringSquare}</h3>
-        <button type="button" onClick={props.saveConfig}>Save</button>
+        <ul style={{listStyle: "none"}}>
+            <li>
+                <label>Name</label>
+                <input type="text"/>
+            </li>
+            <li>
+                <label>Personality Type</label>
+                <select>
+                    <option>None</option>
+                </select>
+            </li>
+            <li>
+                <button type="button" onClick={props.saveConfig}>Save</button>
+            </li>
+        </ul>
     </form>
 };
 
-const NotConfigurableMessage = (props) => {
+const NotConfigurableMessage = ({props}) => {
     return <h3>Piece at {props.configuringSquare} is Human Controlled,
         cannot be configured</h3>
 };
