@@ -2,7 +2,7 @@ import React from "react";
 import {connect} from "react-redux";
 
 const mapMessageToComponent = (message, index, nMessages) => {
-    let colour = ((nMessages-1) - index) % 2 === 0 ? "grey" : "silver";
+    let colour = ((nMessages - 1) - index) % 2 === 0 ? "grey" : "silver";
     let style = {
         ...messageStyle,
         backgroundColor: colour
@@ -26,7 +26,8 @@ const ChatContainer = ({timeOrderedMessages}) => (
 
 const messageStyle = {
     fontcolor: "white",
-    position: "relative"
+    position: "relative",
+    fontSize: "25px",
 };
 
 const containerStyle = {
