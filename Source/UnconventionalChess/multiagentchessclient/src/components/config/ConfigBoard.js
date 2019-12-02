@@ -8,6 +8,7 @@ const ConfigBoard = (props) => {
     useEffect(props.fetchPersonalityTypes, []);
     return <div>
         <Chessboard
+            draggable={false}
             id="configBoard"
             width={"500"}
             boardStyle={{

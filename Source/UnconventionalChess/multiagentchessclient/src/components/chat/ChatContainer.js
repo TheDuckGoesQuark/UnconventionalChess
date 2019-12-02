@@ -1,26 +1,30 @@
 import React from "react";
 import {connect} from "react-redux";
 
-const mapMessageToComponent = (message, index) => {
+const mapMessageToComponent = (message, index, nMessages) => {
+    let colour = ((nMessages-1) - index) % 2 === 0 ? "grey" : "silver";
+    let style = {
+        ...messageStyle,
+        backgroundColor: colour
+    };
     if (message.sourceSquare) {
         return <div key={index}
-                    style={messageStyle}>Move: {message.sourceSquare},{message.targetSquare}</div>
+                    style={style}>Move: {message.sourceSquare},{message.targetSquare}</div>
     } else {
         return <div key={index}
-                    style={messageStyle}>{message.fromId}: {message.messageBody}</div>
+                    style={style}>{message.fromId}: {message.messageBody}</div>
     }
 };
 
 const ChatContainer = ({timeOrderedMessages}) => (
     <div style={containerStyle}>
         {timeOrderedMessages.length > 0
-            ? timeOrderedMessages.map((message, index) => mapMessageToComponent(message, index))
+            ? timeOrderedMessages.map((message, index) => mapMessageToComponent(message, index, timeOrderedMessages.length))
             : mapMessageToComponent("no message to show")}
     </div>
 );
 
 const messageStyle = {
-    backgroundColor: "grey",
     fontcolor: "white",
     position: "relative"
 };
