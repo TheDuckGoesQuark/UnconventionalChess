@@ -8,6 +8,9 @@ import {
     CONFIG_FETCH_PERSONALITIES_ERROR,
     CONFIG_FETCH_PERSONALITIES,
     CONFIG_FETCH_PERSONALITIES_SUCCESS,
+    CONFIG_PIECE_NAME_UPDATED,
+    CONFIG_PIECE_CONFIG_SAVED,
+    CONFIG_PIECE_PERSONALITY_UPDATED,
 } from "./ConfigActions";
 
 import Chess from 'chess.js';
@@ -146,6 +149,35 @@ export default function configReducer(state = initialState, action) {
             return {
                 ...state,
                 error: action.payload.error
+            };
+        case CONFIG_PIECE_NAME_UPDATED:
+            return {
+                ...state,
+                pieceConfigs: {
+                    ...state.pieceConfigs,
+                    [state.configuringSquare]: {
+                        ...state.pieceConfigs[state.configuringSquare],
+                        name: action.payload.newName
+                    }
+                }
+            };
+        case CONFIG_PIECE_PERSONALITY_UPDATED:
+            // have to copy every nested level of the objects
+            // looks a bit nasty, but redux does recommend flat state for this reason
+            return {
+                ...state,
+                pieceConfigs: {
+                    ...state.pieceConfigs,
+                    [state.configuringSquare]: {
+                        ...state.pieceConfigs[state.configuringSquare],
+                        personality: action.payload.newPersonality
+                    }
+                }
+            };
+        case CONFIG_PIECE_CONFIG_SAVED:
+            return {
+                ...state,
+                configuringSquare: undefined,
             };
         default:
             return state;

@@ -1,5 +1,6 @@
 import React from 'react'
 import {connect} from "react-redux";
+import {pieceConfigSaved, updatePieceConfigName, updatePieceConfigPersonality} from "./ConfigActions";
 
 /**
  * Determines if the piece at the given square can be configured by a human
@@ -15,22 +16,26 @@ const isConfigurable = (square, humanPlays, humanPlaysAsWhite) => {
 };
 
 const PieceConfigForm = ({props}) => {
+    const currentConfig = props.pieceConfigs[props.configuringSquare];
+
     return <div>
         <h3>Configuring Piece at {props.configuringSquare}</h3>
-        <button type="button">Random</button>
+        <button type="button">Random TODO</button>
         <ul style={{listStyle: "none"}}>
             <li>
                 <label>Name</label>
-                <input type="text"/>
+                <input type="text" value={currentConfig ? currentConfig.name : undefined}
+                       onChange={event => props.updatePieceName(event.target.value)}/>
             </li>
             <li>
                 <label>Personality Type</label>
-                <select>
-                    {props.personalityTypes.map(pt => <option key={pt.name}>{pt.name}</option>)}
+                <select value={currentConfig ? currentConfig.personality : undefined}
+                        onChange={(e) => props.updatePiecePersonality(e.target.value)}>
+                    {props.personalityTypes.map(pt => <option key={pt.name} value={pt.name}>{pt.name}</option>)}
                 </select>
             </li>
             <li>
-                <button type="button" onClick={props.saveConfig}>Save</button>
+                <button type="button" onClick={props.savePieceConfig}>Save</button>
             </li>
         </ul>
     </div>
@@ -57,13 +62,16 @@ function mapStateToProps(state) {
     return {
         humanPlays: state.configReducer.humanPlays,
         humanPlaysAsWhite: state.configReducer.humanPlaysAsWhite,
+        pieceConfigs: state.configReducer.pieceConfigs,
         configuringSquare: state.configReducer.configuringSquare,
         personalityTypes: state.configReducer.personalityTypes,
     };
 }
 
 const mapDispatchToProps = {
-    saveConfig: () => (console.log("Saved config"))
+    savePieceConfig: pieceConfigSaved,
+    updatePieceName: updatePieceConfigName,
+    updatePiecePersonality: updatePieceConfigPersonality
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(PieceConfig)

@@ -7,6 +7,9 @@ export const CONFIG_SQUARE_CLICKED = "CONFIG_SQUARE_CLICKED";
 export const CONFIG_FETCH_PERSONALITIES = "CONFIG_FETCH_PERSONALITIES";
 export const CONFIG_FETCH_PERSONALITIES_SUCCESS = "CONFIG_FETCH_PERSONALITIES_SUCCESS";
 export const CONFIG_FETCH_PERSONALITIES_ERROR = "CONFIG_FETCH_PERSONALITIES_ERROR";
+export const CONFIG_PIECE_NAME_UPDATED = "CONFIG_PIECE_NAME_UPDATED";
+export const CONFIG_PIECE_PERSONALITY_UPDATED = "CONFIG_PIECE_PERSONALITY_UPDATED";
+export const CONFIG_PIECE_CONFIG_SAVED = "CONFIG_PIECE_CONFIG_SAVED";
 
 /**
  * Set whether human should play as white
@@ -87,3 +90,18 @@ export const fetchPersonalityTypesError = (error) => ({
     type: CONFIG_FETCH_PERSONALITIES_ERROR,
     payload: {error}
 });
+
+export const updatePieceConfigName = (newName) => ({
+    type: CONFIG_PIECE_NAME_UPDATED,
+    payload: {newName}
+});
+
+export const updatePieceConfigPersonality = (newPersonality) => ({
+    type: CONFIG_PIECE_PERSONALITY_UPDATED,
+    payload: {newPersonality}
+});
+
+export const pieceConfigSaved = () => ({
+    type: CONFIG_PIECE_CONFIG_SAVED,
+});
+
