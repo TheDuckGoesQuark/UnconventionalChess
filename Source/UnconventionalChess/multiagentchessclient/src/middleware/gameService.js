@@ -64,6 +64,8 @@ const fillInBlanksRandomly = (pieceConfigs, rowsToCheck, personalityTypes) => {
         }
         currentNames.add(pieceConfigs[coord].name)
     });
+
+    return pieceConfigs;
 };
 
 const fillInPieceConfigBlanks = (state) => {
@@ -81,6 +83,7 @@ const fillInPieceConfigBlanks = (state) => {
 
 const createGame = (config, dispatch) => {
     fillInPieceConfigBlanks(config);
+    console.log(config);
 
     const configurationMessage = new GameConfigurationMessage(
         config.humanPlays,

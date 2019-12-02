@@ -30,9 +30,9 @@ const PieceConfigForm = ({props}) => {
             <li>
                 <label>Personality Type</label>
                 <select value={currentConfig ? currentConfig.personality : ''}
-                        onChange={(e) => props.updatePiecePersonality(e.target.value)}>
+                        onChange={(e) => props.updatePiecePersonality(props.personalityTypes[e.target.value])}>
                     <option value={''}>Select...</option>
-                    {props.personalityTypes.map(pt => <option key={pt.name} value={pt.name}>{pt.name}</option>)}
+                    {props.personalityTypes.map((pt, index) => <option key={pt.name} value={index}>{pt.name}</option>)}
                 </select>
             </li>
             <li>
