@@ -38,10 +38,7 @@ const ConfigView = (props) => {
                     <ConfigBoard/>
                 </li>
                 <li>
-                    <button onClick={() => props.submitCurrentConfig({
-                        humanPlaysAsWhite: props.humanPlaysAsWhite,
-                        humanPlays: props.humanPlays,
-                    })}>
+                    <button type="button" onClick={() => props.submitCurrentConfig(props.currentConfig)}>
                         Submit
                     </button>
                 </li>
@@ -54,6 +51,7 @@ function mapStateToProps(state) {
     return {
         humanPlaysAsWhite: state.configReducer.humanPlaysAsWhite,
         humanPlays: state.configReducer.humanPlays,
+        currentConfig: state.configReducer
     };
 }
 

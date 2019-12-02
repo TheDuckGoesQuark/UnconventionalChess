@@ -2,10 +2,91 @@ import {CONFIG_SUBMITTED, gameReady} from "../components/config/ConfigActions"
 import {GameConfigurationMessage, Message, MoveMessage} from "../models/Message";
 import {MOVE_SEND} from "../components/board/BoardActions";
 
+import Chess from 'chess.js';
+
+const chess = new Chess();
+
+const namesForPieceType = {
+    'p': ['Rick Harrison', 'Richard Harrison', 'Austin Russell', 'John Smith', 'Bob', 'Jim', 'Ann', 'Margaret'],
+    'n': ['Knight that says Ni', 'Keira Knightly', 'Sean Connery', 'Michael Caine'],
+    'b': ['Francis', 'John Bishop'],
+    'r': ['Abraham Brook', 'Rook Astley', 'Rook Sanchez', 'Brooke', 'Brooklyn', 'Rooky'],
+    'q': ['Victoria', 'Elizabeth', 'Freddie', 'Cleopatra', 'Mary'],
+    'k': ['Robert', 'George', 'Robb', ' The King of the Norf', 'Bran', 'Alfred'],
+};
+
+const getRandomFromList = (list) => {
+    return list[Math.floor(Math.random() * list.length)];
+};
+
+const getRandomNameForPiece = (pieceType, currentNames) => {
+    let name;
+    let attempts = 0;
+    // attempt to get a unique name or give up if none are available
+    do {
+        name = getRandomFromList(namesForPieceType[pieceType.toLowerCase()]);
+        attempts++;
+    } while (attempts < 8 && currentNames.has(name));
+
+    return name;
+};
+
+const getRandomPersonalityFromOptions = (personalityTypes) => {
+    return getRandomFromList(personalityTypes);
+};
+
+const getRandomConfigForPiece = (currentConfig, currentNames, position, personalityTypes) => {
+    // create if not exist
+    if (!currentConfig) currentConfig = {};
+
+    // add name if not exist
+    if (!currentConfig.name) {
+        const {type} = chess.get(position);
+        currentConfig.name = getRandomNameForPiece(type, currentNames);
+    }
+
+    // add personality if not set
+    if (!currentConfig.personality) {
+        currentConfig.personality = getRandomPersonalityFromOptions(personalityTypes);
+    }
+
+    return currentConfig;
+};
+
+const fillInBlanksRandomly = (pieceConfigs, rowsToCheck, personalityTypes) => {
+    const currentNames = new Set();
+
+    rowsToCheck.forEach(row => {
+        const coord = 'a' + row;
+        // if any field is incomplete
+        if (!pieceConfigs[coord] || !pieceConfigs[coord].name || !pieceConfigs.personality) {
+            pieceConfigs[coord] = getRandomConfigForPiece(pieceConfigs[coord], currentNames, coord, personalityTypes);
+        }
+        currentNames.add(pieceConfigs[coord].name)
+    });
+};
+
+const fillInPieceConfigBlanks = (state) => {
+    // check which pieces we need to fill in random values for
+    let {humanPlays, humanPlaysAsWhite, personalityTypes} = state;
+    let checkBlack = !humanPlays || humanPlaysAsWhite;
+    let checkWhite = !humanPlays || humanPlaysAsWhite;
+
+    let rowsToCheck = [];
+    if (checkBlack) rowsToCheck = [...rowsToCheck, 7, 8];
+    if (checkWhite) rowsToCheck = [...rowsToCheck, 1, 2];
+
+    state.pieceConfigs = fillInBlanksRandomly(state.pieceConfigs, rowsToCheck, personalityTypes)
+};
+
 const createGame = (config, dispatch) => {
+    fillInPieceConfigBlanks(config);
+
     const configurationMessage = new GameConfigurationMessage(
         config.humanPlays,
         config.humanPlaysAsWhite,
+        undefined,
+        config.pieceConfigs,
     );
     const message = new Message(
         GameConfigurationMessage.TYPE,

@@ -44,12 +44,14 @@ export class MoveMessage {
 export class GameConfigurationMessage {
     humanPlays;
     humanPlaysAsWhite;
+    pieceConfigs;
     gameId;
 
-    constructor(humanPlays, humanPlaysAsWhite, gameId) {
+    constructor(humanPlays, humanPlaysAsWhite, gameId, pieceConfigs) {
         this.humanPlays = humanPlays;
         this.humanPlaysAsWhite = humanPlaysAsWhite;
         this.gameId = gameId;
+        this.pieceConfigs = pieceConfigs;
     }
 
     static get TYPE() {

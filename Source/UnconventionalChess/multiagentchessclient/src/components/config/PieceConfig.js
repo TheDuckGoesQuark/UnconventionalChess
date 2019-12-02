@@ -24,14 +24,14 @@ const PieceConfigForm = ({props}) => {
         <ul style={{listStyle: "none"}}>
             <li>
                 <label>Name</label>
-                <input type="text" value={currentConfig ? currentConfig.name : undefined}
+                <input type="text" value={currentConfig ? currentConfig.name : ''}
                        onChange={event => props.updatePieceName(event.target.value)}/>
             </li>
             <li>
                 <label>Personality Type</label>
-                <select value={currentConfig ? currentConfig.personality : undefined}
+                <select value={currentConfig ? currentConfig.personality : ''}
                         onChange={(e) => props.updatePiecePersonality(e.target.value)}>
-                    <option value={undefined}>Select...</option>
+                    <option value={''}>Select...</option>
                     {props.personalityTypes.map(pt => <option key={pt.name} value={pt.name}>{pt.name}</option>)}
                 </select>
             </li>
