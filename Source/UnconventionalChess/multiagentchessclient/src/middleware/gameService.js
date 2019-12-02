@@ -57,12 +57,15 @@ const fillInBlanksRandomly = (pieceConfigs, rowsToCheck, personalityTypes) => {
     const currentNames = new Set();
 
     rowsToCheck.forEach(row => {
-        const coord = 'a' + row;
-        // if any field is incomplete
-        if (!pieceConfigs[coord] || !pieceConfigs[coord].name || !pieceConfigs.personality) {
-            pieceConfigs[coord] = getRandomConfigForPiece(pieceConfigs[coord], currentNames, coord, personalityTypes);
+        for (let i = 0; i <= 7; i++) {
+            // iterate over files (columns)
+            let coord = (i + 10).toString(36) + row;
+            // if any field is incomplete
+            if (!pieceConfigs[coord] || !pieceConfigs[coord].name || !pieceConfigs.personality) {
+                pieceConfigs[coord] = getRandomConfigForPiece(pieceConfigs[coord], currentNames, coord, personalityTypes);
+            }
+            currentNames.add(pieceConfigs[coord].name)
         }
-        currentNames.add(pieceConfigs[coord].name)
     });
 
     return pieceConfigs;
@@ -72,7 +75,7 @@ const fillInPieceConfigBlanks = (state) => {
     // check which pieces we need to fill in random values for
     let {humanPlays, humanPlaysAsWhite, personalityTypes} = state;
     let checkBlack = !humanPlays || humanPlaysAsWhite;
-    let checkWhite = !humanPlays || humanPlaysAsWhite;
+    let checkWhite = !humanPlays || !humanPlaysAsWhite;
 
     let rowsToCheck = [];
     if (checkBlack) rowsToCheck = [...rowsToCheck, 7, 8];
