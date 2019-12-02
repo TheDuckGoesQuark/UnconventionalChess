@@ -34,6 +34,11 @@ public class ChessOntology extends Ontology {
     public static final String PIECE_COLOUR = "Colour";
     public static final String PIECE_POSITION = "Position";
 
+    public static final String PIECE_CONFIGURATION = "Piece Configuration";
+    public static final String PIECE_CONFIGURATION_STARTING_POSITION = "StartingPosition";
+    public static final String PIECE_CONFIGURATION_NAME = "Name";
+    public static final String PIECE_CONFIGURATION_PERSONALITY = "Personality";
+
     // Predicates
     public static final String CAN_CAPTURE = "Can Capture";
     public static final String CAN_CAPTURE_ATTACKER = "Attacker";
@@ -71,6 +76,7 @@ public class ChessOntology extends Ontology {
 
     public static final String CREATE_GAME = "Create Game";
     public static final String CREATE_GAME_GAME = "Game";
+    public static final String CREATE_GAME_PIECE_CONFIGURATIONS = "PieceConfigurations";
 
     public static final String BECOME_SPEAKER = "Become Speaker";
     public static final String BECOME_SPEAKER_AGENT = "Agent";
@@ -106,6 +112,12 @@ public class ChessOntology extends Ontology {
             final var gameSchema = new ConceptSchema(GAME);
             gameSchema.add(GAME_ID, (PrimitiveSchema) getSchema(BasicOntology.INTEGER));
             add(gameSchema, Game.class);
+
+            final var pieceConfigurationSchema = new ConceptSchema(PIECE_CONFIGURATION);
+            pieceConfigurationSchema.add(PIECE_CONFIGURATION_NAME, (PrimitiveSchema) getSchema(BasicOntology.STRING));
+            pieceConfigurationSchema.add(PIECE_CONFIGURATION_PERSONALITY, (PrimitiveSchema) getSchema(BasicOntology.STRING));
+            pieceConfigurationSchema.add(PIECE_CONFIGURATION_STARTING_POSITION, (PrimitiveSchema) getSchema(BasicOntology.STRING));
+            add(pieceConfigurationSchema, PieceConfiguration.class);
 
             // Predicates
             final var canCaptureSchema = new PredicateSchema(CAN_CAPTURE);
@@ -152,8 +164,10 @@ public class ChessOntology extends Ontology {
             makeMoveSchema.add(MAKE_MOVE_MOVE, (ConceptSchema) getSchema(MOVE));
             add(makeMoveSchema, MakeMove.class);
 
+            final var pieceConfigsSchema = new AggregateSchema(BasicOntology.SET);
             final var createGameSchema = new AgentActionSchema(CREATE_GAME);
             createGameSchema.add(CREATE_GAME_GAME, (ConceptSchema) getSchema(GAME));
+            createGameSchema.add(CREATE_GAME_PIECE_CONFIGURATIONS, pieceConfigsSchema);
             add(createGameSchema, CreateGame.class);
 
             final var becomeSpeakerSchema = new AgentActionSchema(BECOME_SPEAKER);

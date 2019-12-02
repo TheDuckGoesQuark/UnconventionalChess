@@ -1,6 +1,7 @@
 package stacs.chessgateway.services.impl;
 
 import chessagents.agents.gameagent.GameProperties;
+import chessagents.ontology.schemas.concepts.PieceConfiguration;
 import chessagents.agents.gatewayagent.behaviours.RequestCreateGame;
 import chessagents.agents.gatewayagent.behaviours.SubscribeToChatter;
 import chessagents.agents.gatewayagent.messages.MoveMessage;
@@ -29,6 +30,7 @@ import stacs.chessgateway.util.GameContextStore;
 
 import java.time.Instant;
 import java.util.Arrays;
+import java.util.stream.Collectors;
 
 @Service
 public class GatewayServiceImpl implements GatewayService {
@@ -95,8 +97,12 @@ public class GatewayServiceImpl implements GatewayService {
             var createGameAgent = new CreateGameAgent(gameAgentProperties, gameAgentId);
             JadeGateway.execute(createGameAgent);
 
+            var pieceConfigs = gameConfiguration.getPieceConfigs().entrySet().stream()
+                    .map(e -> new PieceConfiguration(e.getKey(), e.getValue().getName(), e.getValue().getPersonality().getName()))
+                    .collect(Collectors.toSet());
+
             // Request that GameAgent creates piece agents and informs when done
-            var requestCreateGame = new RequestCreateGame(createGameAgent.getAgent(), gameAgentId, gameId);
+            var requestCreateGame = new RequestCreateGame(createGameAgent.getAgent(), gameAgentId, gameId, pieceConfigs);
             JadeGateway.execute(requestCreateGame);
 
             // Subscribe to moves

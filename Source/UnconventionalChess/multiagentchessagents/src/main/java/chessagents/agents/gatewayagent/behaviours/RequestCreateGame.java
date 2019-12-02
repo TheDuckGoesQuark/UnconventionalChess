@@ -1,5 +1,6 @@
 package chessagents.agents.gatewayagent.behaviours;
 
+import chessagents.ontology.schemas.concepts.PieceConfiguration;
 import chessagents.ontology.ChessOntology;
 import chessagents.ontology.schemas.actions.CreateGame;
 import chessagents.ontology.schemas.concepts.Game;
@@ -13,6 +14,10 @@ import jade.domain.FIPANames;
 import jade.lang.acl.ACLMessage;
 import jade.proto.SimpleAchieveREInitiator;
 import jade.util.Logger;
+import jade.util.leap.HashSet;
+import jade.util.leap.Set;
+
+import java.util.Collection;
 
 /**
  * Requests the game agent to create a chess game, and inform when it is done
@@ -22,11 +27,13 @@ public class RequestCreateGame extends SimpleAchieveREInitiator {
     private static final Logger logger = Logger.getMyLogger(RequestCreateGame.class.getName());
     private final AID gameAgent;
     private final int gameId;
+    private final Collection<PieceConfiguration> pieceConfigs;
 
-    public RequestCreateGame(Agent myAgent, AID gameAgent, int gameId) {
+    public RequestCreateGame(Agent myAgent, AID gameAgent, int gameId, Collection<PieceConfiguration> pieceConfigs) {
         super(myAgent, new ACLMessage(ACLMessage.REQUEST));
         this.gameAgent = gameAgent;
         this.gameId = gameId;
+        this.pieceConfigs = pieceConfigs;
     }
 
     @Override
@@ -40,8 +47,12 @@ public class RequestCreateGame extends SimpleAchieveREInitiator {
     }
 
     private void populateContents(ACLMessage request) {
+        // create JADE set
+        final Set pieceConfigSet = new HashSet(pieceConfigs.size());
+        pieceConfigs.forEach(pieceConfigSet::add);
+
         try {
-            var createGame = new CreateGame(new Game(gameId));
+            var createGame = new CreateGame(new Game(gameId), pieceConfigSet);
             var action = new Action(gameAgent, createGame);
             myAgent.getContentManager().fillContent(request, action);
         } catch (Codec.CodecException | OntologyException e) {

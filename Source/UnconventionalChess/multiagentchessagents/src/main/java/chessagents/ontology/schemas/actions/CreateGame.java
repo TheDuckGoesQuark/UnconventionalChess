@@ -2,23 +2,20 @@ package chessagents.ontology.schemas.actions;
 
 import chessagents.ontology.schemas.concepts.Game;
 import jade.content.AgentAction;
+import jade.util.leap.Set;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
+
+@AllArgsConstructor
+@NoArgsConstructor
+@Getter
+@Setter
 public class CreateGame implements AgentAction {
 
     private Game game;
+    private Set pieceConfigurations;
 
-    public CreateGame() {
-    }
-
-    public CreateGame(Game game) {
-        this.game = game;
-    }
-
-    public Game getGame() {
-        return game;
-    }
-
-    public void setGame(Game game) {
-        this.game = game;
-    }
 }
