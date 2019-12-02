@@ -7,12 +7,12 @@ import Chess from 'chess.js';
 const chess = new Chess();
 
 const namesForPieceType = {
-    'p': ['Rick Harrison', 'Richard Harrison', 'Austin Russell', 'John Smith', 'Bob', 'Jim', 'Ann', 'Margaret'],
-    'n': ['Knight that says Ni', 'Keira Knightly', 'Sean Connery', 'Michael Caine'],
-    'b': ['Francis', 'John Bishop'],
-    'r': ['Abraham Brook', 'Rook Astley', 'Rook Sanchez', 'Brooke', 'Brooklyn', 'Rooky'],
-    'q': ['Victoria', 'Elizabeth', 'Freddie', 'Cleopatra', 'Mary'],
-    'k': ['Robert', 'George', 'Robb', ' The King of the Norf', 'Bran', 'Alfred'],
+    'p': ['Rick-Harrison', 'Richard-Harrison', 'Austin-Russell', 'John-Smith', 'Bob', 'Jim', 'Ann', 'Margaret'],
+    'n': ['Knight-that-says-Ni', 'Keira-Knightly', 'Sean-Connery', 'Michael-Caine'],
+    'b': ['Francis', 'John-Bishop'],
+    'r': ['Abraham-Brook', 'Rook-Astley', 'Rook-Sanchez', 'Brooke', 'Brooklyn', 'Rooky'],
+    'q': ['Victoria', 'Elizabeth', 'Freddie', 'Cleopatra', 'Mary', 'Daenerys'],
+    'k': ['Robert', 'George', 'Robb', ' The-King-of-the-Norf', 'Bran', 'Alfred', 'Viserys'],
 };
 
 const getRandomFromList = (list) => {
@@ -20,13 +20,19 @@ const getRandomFromList = (list) => {
 };
 
 const getRandomNameForPiece = (pieceType, currentNames) => {
-    let name;
-    let attempts = 0;
-    // attempt to get a unique name or give up if none are available
-    do {
-        name = getRandomFromList(namesForPieceType[pieceType.toLowerCase()]);
-        attempts++;
-    } while (attempts < 8 && currentNames.has(name));
+    let lowercasePieceType = pieceType.toLowerCase();
+    let namesForType = namesForPieceType[lowercasePieceType];
+    // get a unique name
+    let name = getRandomFromList(namesForType);
+    // remove name since its now in use
+    for (let i = 0; i < namesForType.length; i++) {
+        if (namesForType[i] === name) {
+            namesForType.splice(i, 1);
+            break;
+        }
+    }
+    // update list
+    namesForPieceType[lowercasePieceType] = namesForType;
 
     return name;
 };

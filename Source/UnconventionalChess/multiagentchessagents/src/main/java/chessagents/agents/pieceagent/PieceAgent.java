@@ -51,7 +51,6 @@ public class PieceAgent extends ChessAgent {
         var maxDebateCycle = Integer.parseInt((String) args[4]);
         var pieceConfigs = (Set<PieceConfiguration>) args[5];
         context = new PieceContext(myPosition, getAID(), gameId, new AID(gameAgentAID, AID.ISGUID), maxDebateCycle);
-
     }
 
     /**

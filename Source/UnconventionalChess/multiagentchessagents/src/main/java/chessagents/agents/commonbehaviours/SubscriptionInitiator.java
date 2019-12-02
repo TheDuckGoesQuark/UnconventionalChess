@@ -74,8 +74,8 @@ public abstract class SubscriptionInitiator extends SimpleBehaviour {
                     this.handleAgree(response);
                     state = SubscriptionState.SUBSCRIBED;
                 } else {
-                    logger.warning("Received non-agree to subscription:" + response.getPerformative());
-                    state = SubscriptionState.PREPARE_SUBSCRIPTION;
+                    logger.warning("Received non-agree to subscription:" + response.toString());
+                    throw new RuntimeException("o no");
                 }
                 break;
         }

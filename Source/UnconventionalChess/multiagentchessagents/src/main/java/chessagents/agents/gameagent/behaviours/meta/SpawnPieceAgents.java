@@ -46,7 +46,7 @@ public class SpawnPieceAgents extends SimpleBehaviour {
     }
 
     private String generatePieceAgentName(String pieceType, Colour colour, Position startingSquare) {
-        return context.getGameState().getGameId() + "-" + startingSquare.getCoordinates() + "-" + colour.getColour() + "-" + pieceType;
+        return pieceConfigs.stream().filter(p -> p.getStartingPosition().equals(startingSquare.getCoordinates())).findFirst().get().getName();
     }
 
     @Override
