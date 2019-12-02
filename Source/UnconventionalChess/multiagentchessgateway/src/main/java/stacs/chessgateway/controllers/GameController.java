@@ -50,7 +50,7 @@ public class GameController {
      */
     @PostMapping("/game")
     public Message<GameConfiguration> createGame(@RequestBody final Message<GameConfiguration> gameConfiguration) throws GatewayFailureException {
-        logger.info("Received request to create game");
+        logger.info("Received request to create game: " + gameConfiguration.toString());
         return gatewayService.createGame(gameConfiguration.getBody());
     }
 
