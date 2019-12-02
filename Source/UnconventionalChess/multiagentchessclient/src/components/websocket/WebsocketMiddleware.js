@@ -6,12 +6,28 @@ import {receiveMove} from "../board/BoardActions";
 import {wsConnected, wsDisconnected, wsInitialised} from "./WebsocketActions";
 import {ChatMessage, MoveMessage} from "../../models/Message";
 
+let lastMessageSent = new Date().getTime();
+
 const handleMessage = (message, handlerByType) => {
-    if (message.type && handlerByType[message.type]) {
-        handlerByType[message.type](message.body);
+    let currentTime = new Date().getTime();
+    let delay;
+
+    // throttle messages so they seem realistic
+    if (lastMessageSent > currentTime) {
+        delay = (lastMessageSent - currentTime) + 500;
+        lastMessageSent = currentTime + delay;
     } else {
-        throw new TypeError("Unknown message type received");
+        delay = 0;
+        lastMessageSent = currentTime + 500;
     }
+
+    setTimeout(() => {
+        if (message.type && handlerByType[message.type]) {
+            handlerByType[message.type](message.body);
+        } else {
+            throw new TypeError("Unknown message type received");
+        }
+    }, delay)
 };
 
 const reformatMoveMessage = (move) => {
