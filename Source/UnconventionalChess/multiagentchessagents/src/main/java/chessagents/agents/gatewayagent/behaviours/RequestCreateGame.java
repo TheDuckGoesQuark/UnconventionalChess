@@ -1,9 +1,9 @@
 package chessagents.agents.gatewayagent.behaviours;
 
-import chessagents.ontology.schemas.concepts.PieceConfiguration;
 import chessagents.ontology.ChessOntology;
 import chessagents.ontology.schemas.actions.CreateGame;
 import chessagents.ontology.schemas.concepts.Game;
+import chessagents.ontology.schemas.concepts.PieceConfiguration;
 import jade.content.lang.Codec;
 import jade.content.onto.OntologyException;
 import jade.content.onto.basic.Action;
@@ -14,8 +14,8 @@ import jade.domain.FIPANames;
 import jade.lang.acl.ACLMessage;
 import jade.proto.SimpleAchieveREInitiator;
 import jade.util.Logger;
-import jade.util.leap.HashSet;
-import jade.util.leap.Set;
+import jade.util.leap.ArrayList;
+import jade.util.leap.List;
 
 import java.util.Collection;
 
@@ -48,7 +48,7 @@ public class RequestCreateGame extends SimpleAchieveREInitiator {
 
     private void populateContents(ACLMessage request) {
         // create JADE set
-        final Set pieceConfigSet = new HashSet(pieceConfigs.size());
+        final List pieceConfigSet = new ArrayList(pieceConfigs.size());
         pieceConfigs.forEach(pieceConfigSet::add);
 
         try {

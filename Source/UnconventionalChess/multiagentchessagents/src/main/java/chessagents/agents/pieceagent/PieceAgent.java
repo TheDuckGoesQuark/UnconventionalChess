@@ -10,6 +10,7 @@ import chessagents.agents.pieceagent.behaviours.turn.PlayFSM;
 import chessagents.agents.pieceagent.behaviours.turn.SubscribeToMoves;
 import chessagents.ontology.schemas.actions.BecomeSpeaker;
 import chessagents.ontology.schemas.concepts.Colour;
+import chessagents.ontology.schemas.concepts.PieceConfiguration;
 import chessagents.ontology.schemas.concepts.Position;
 import jade.content.OntoAID;
 import jade.content.lang.Codec;
@@ -48,6 +49,7 @@ public class PieceAgent extends ChessAgent {
         var gameAgentAID = (String) args[2];
         var gameId = Integer.parseInt((String) args[3]);
         var maxDebateCycle = Integer.parseInt((String) args[4]);
+        var pieceConfigs = (Set<PieceConfiguration>) args[5];
         context = new PieceContext(myPosition, getAID(), gameId, new AID(gameAgentAID, AID.ISGUID), maxDebateCycle);
 
     }

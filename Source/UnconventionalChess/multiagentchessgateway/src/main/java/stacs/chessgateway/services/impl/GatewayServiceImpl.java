@@ -98,7 +98,7 @@ public class GatewayServiceImpl implements GatewayService {
             JadeGateway.execute(createGameAgent);
 
             var pieceConfigs = gameConfiguration.getPieceConfigs().entrySet().stream()
-                    .map(e -> new PieceConfiguration(e.getKey(), e.getValue().getName(), e.getValue().getPersonality().getName()))
+                    .map(e -> new PieceConfiguration(e.getKey().toUpperCase(), e.getValue().getName(), e.getValue().getPersonality().getName()))
                     .collect(Collectors.toSet());
 
             // Request that GameAgent creates piece agents and informs when done

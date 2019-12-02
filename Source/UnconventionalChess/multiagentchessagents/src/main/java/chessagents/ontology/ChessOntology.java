@@ -5,6 +5,8 @@ import chessagents.ontology.schemas.actions.CreateGame;
 import chessagents.ontology.schemas.actions.MakeMove;
 import chessagents.ontology.schemas.concepts.*;
 import chessagents.ontology.schemas.predicates.*;
+import com.github.bhlangonijr.chesslib.Piece;
+import jade.content.Concept;
 import jade.content.onto.BasicOntology;
 import jade.content.onto.Ontology;
 import jade.content.onto.OntologyException;
@@ -164,7 +166,7 @@ public class ChessOntology extends Ontology {
             makeMoveSchema.add(MAKE_MOVE_MOVE, (ConceptSchema) getSchema(MOVE));
             add(makeMoveSchema, MakeMove.class);
 
-            final var pieceConfigsSchema = new AggregateSchema(BasicOntology.SET);
+            final var pieceConfigsSchema = new AggregateSchema(BasicOntology.SEQUENCE, (ConceptSchema) getSchema(PIECE_CONFIGURATION));
             final var createGameSchema = new AgentActionSchema(CREATE_GAME);
             createGameSchema.add(CREATE_GAME_GAME, (ConceptSchema) getSchema(GAME));
             createGameSchema.add(CREATE_GAME_PIECE_CONFIGURATIONS, pieceConfigsSchema);

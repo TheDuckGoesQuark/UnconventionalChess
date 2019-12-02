@@ -6,6 +6,7 @@ import chessagents.agents.gameagent.GameCreationStatus;
 import chessagents.agents.pieceagent.PieceAgent;
 import chessagents.ontology.schemas.concepts.Colour;
 import chessagents.ontology.schemas.concepts.ChessPiece;
+import chessagents.ontology.schemas.concepts.PieceConfiguration;
 import chessagents.ontology.schemas.concepts.Position;
 import jade.content.OntoAID;
 import jade.content.lang.sl.SLCodec;
@@ -21,8 +22,7 @@ import jade.proto.AchieveREInitiator;
 import jade.util.Logger;
 import jade.wrapper.ControllerException;
 
-import java.util.HashSet;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Collectors;
 
 public class SpawnPieceAgents extends SimpleBehaviour {
@@ -36,11 +36,13 @@ public class SpawnPieceAgents extends SimpleBehaviour {
 
     private static final Logger logger = Logger.getMyLogger(SpawnPieceAgents.class.getName());
     private final GameAgentContext context;
+    private final Set<PieceConfiguration> pieceConfigs;
     private CreationState creationState = CreationState.INIT;
 
-    public SpawnPieceAgents(GameAgent gameAgent, GameAgentContext context) {
+    public SpawnPieceAgents(GameAgent gameAgent, GameAgentContext context, Set<PieceConfiguration> pieceConfigs) {
         super(gameAgent);
         this.context = context;
+        this.pieceConfigs = pieceConfigs;
     }
 
     private String generatePieceAgentName(String pieceType, Colour colour, Position startingSquare) {
@@ -65,26 +67,10 @@ public class SpawnPieceAgents extends SimpleBehaviour {
     }
 
     private void addPieceCreationBehaviours() {
-        final Set<Colour> agentColours = new HashSet<>(2);
-
-        // Determine colours to generate agents for
-        if (!context.getGameProperties().isHumanPlays()) {
-            agentColours.add(Colour.WHITE);
-            agentColours.add(Colour.BLACK);
-        } else {
-            if (context.getGameProperties().isHumanPlaysAsWhite()) {
-                agentColours.add(Colour.BLACK);
-            } else {
-                agentColours.add(Colour.WHITE);
-            }
-        }
-
-        // build up sequence of spawn agent behaviours followed by an update to the game status
         var sequence = new SequentialBehaviour();
 
-        for (Colour agentColour : agentColours) {
-            Set<Behaviour> behaviours = getBehavioursForSpawningAllPiecesOnSide(agentColour);
-            behaviours.forEach(sequence::addSubBehaviour);
+        for (PieceConfiguration pieceConfig : pieceConfigs) {
+            sequence.addSubBehaviour(createSpawnPieceBehaviour(pieceConfig));
         }
 
         sequence.addSubBehaviour(new OneShotBehaviour() {
@@ -97,17 +83,9 @@ public class SpawnPieceAgents extends SimpleBehaviour {
         myAgent.addBehaviour(sequence);
     }
 
-    @Override
-    public boolean done() {
-        return creationState == CreationState.CREATED;
-    }
-
-    private Set<Behaviour> getBehavioursForSpawningAllPiecesOnSide(Colour colour) {
-        logger.info("Spawning agents for side " + colour);
-        return context.getGameState().getAllPiecesForColour(colour)
-                .stream()
-                .map(this::createSpawnPieceBehaviour)
-                .collect(Collectors.toSet());
+    private Behaviour createSpawnPieceBehaviour(PieceConfiguration pieceConfiguration) {
+        return context.getGameState().getPieceAtPosition(new Position(pieceConfiguration.getStartingPosition()))
+                .map(this::createSpawnPieceBehaviour).get();
     }
 
     private Behaviour createSpawnPieceBehaviour(ChessPiece piece) {
@@ -133,6 +111,8 @@ public class SpawnPieceAgents extends SimpleBehaviour {
         createAgent.addArguments(myAgent.getAID().getName());
         createAgent.addArguments(Integer.toString(context.getGameState().getGameId()));
         createAgent.addArguments(Integer.toString(MAX_DEBATE_CYCLES));
+        // Ugly but it'll do, should really serialize these somehow
+        createAgent.addArguments(pieceConfigs);
 
         final Action requestAction = new Action(myAgent.getAMS(), createAgent);
         final ACLMessage request = new ACLMessage(ACLMessage.REQUEST);
@@ -171,4 +151,10 @@ public class SpawnPieceAgents extends SimpleBehaviour {
 
         return requestCreateAgentBehaviour;
     }
+
+    @Override
+    public boolean done() {
+        return creationState == CreationState.CREATED;
+    }
+
 }

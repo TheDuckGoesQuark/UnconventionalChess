@@ -4,8 +4,9 @@ import chessagents.agents.gameagent.GameAgent;
 import chessagents.agents.gameagent.GameAgentContext;
 import chessagents.ontology.ChessOntology;
 import chessagents.ontology.schemas.actions.CreateGame;
-import chessagents.ontology.schemas.concepts.Game;
+import chessagents.ontology.schemas.concepts.PieceConfiguration;
 import chessagents.ontology.schemas.predicates.BeingCreated;
+import com.github.bhlangonijr.chesslib.Piece;
 import jade.content.ContentElementList;
 import jade.content.Predicate;
 import jade.content.lang.Codec;
@@ -22,6 +23,12 @@ import jade.domain.FIPANames;
 import jade.lang.acl.ACLMessage;
 import jade.lang.acl.MessageTemplate;
 import jade.util.Logger;
+import jade.util.leap.List;
+import jade.util.leap.Set;
+
+import java.util.Arrays;
+import java.util.HashSet;
+import java.util.stream.Collectors;
 
 import static chessagents.agents.gameagent.GameCreationStatus.*;
 
@@ -39,7 +46,6 @@ public class HandleGameCreationRequests extends SimpleBehaviour {
         DONE
     }
 
-    private static final Logger LOGGER = Logger.getMyLogger(HandleGameCreationRequests.class.getName());
     private static final String REQUEST_KEY = "_REQUEST";
     private static final String RESPONSE_KEY = "_RESPONSE";
     private static final String RESULT_NOTIFICATION_KEY = "_RESULT_NOTIFICATION";
@@ -48,6 +54,7 @@ public class HandleGameCreationRequests extends SimpleBehaviour {
             MessageTemplate.MatchOntology(ChessOntology.ONTOLOGY_NAME)
     );
 
+    private final Logger LOGGER = Logger.getMyLogger(getClass().getName());
     private final GameAgentContext context;
     private State state = State.WAITING_FOR_MESSAGE;
 
@@ -68,29 +75,36 @@ public class HandleGameCreationRequests extends SimpleBehaviour {
         LOGGER.info("Received request");
         var reply = request.createReply();
         var action = extractAction(request);
-        Game game;
+        CreateGame createGame;
+        // TODO extract piece configs
 
         var gameStatus = context.getGameCreationStatus();
         switch (gameStatus) {
             case NOT_EXIST:
                 LOGGER.info("Agreeing to request to create game");
                 createAgreeResponse(action, reply);
-                game = ((CreateGame) (action.getAction())).getGame();
-                ((GameAgent) myAgent).createGame(game);
+                createGame = (CreateGame) action.getAction();
+                var pieceConfigs = extractPieceConfigs(createGame.getPieceConfigurations());
+                ((GameAgent) myAgent).createGame(createGame.getGame(), pieceConfigs);
                 context.setGameCreationStatus(BEING_CREATED);
                 break;
             case BEING_CREATED:
                 LOGGER.info("Can't create game, already being created");
-                game = ((CreateGame) (action.getAction())).getGame();
+                var game = ((CreateGame) (action.getAction())).getGame();
                 createRefuseResponse(action, reply, new BeingCreated(game));
                 break;
             case READY:
                 LOGGER.info("Can't create game, already created");
                 createRefuseResponse(action, reply, new Done(action));
                 break;
+            default:
         }
 
         return reply;
+    }
+
+    private HashSet<PieceConfiguration> extractPieceConfigs(List pieceConfigurations) {
+        return Arrays.stream(pieceConfigurations.toArray()).map(o -> (PieceConfiguration) o).collect(Collectors.toCollection(HashSet::new));
     }
 
     /**
@@ -150,6 +164,7 @@ public class HandleGameCreationRequests extends SimpleBehaviour {
         try {
             action = (Action) myAgent.getContentManager().extractContent(request);
         } catch (Codec.CodecException | OntologyException e) {
+            LOGGER.warning(e.getMessage());
             throw new NotUnderstoodException(request);
         }
         return action;
