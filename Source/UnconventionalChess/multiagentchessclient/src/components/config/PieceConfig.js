@@ -16,7 +16,7 @@ const isConfigurable = (square, humanPlays, humanPlaysAsWhite) => {
 };
 
 const PieceConfigForm = ({props}) => {
-    const currentConfig = props.pieceConfigs[props.configuringSquare];
+    let currentConfig = props.pieceConfigs[props.configuringSquare];
 
     return <div>
         <h3>Configuring Piece at {props.configuringSquare}</h3>
