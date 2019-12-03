@@ -6,13 +6,14 @@ import {connect} from "react-redux";
 
 const range = (start, end) => {
     if (start === end) return [start];
-    return [start, ...range(start + 1, end)];
+    return [start, ...range((start < end ? start + 1 : start - 1), end)];
 };
 
 const getAllPositions = () => {
-    return range(1, 9).map(
-        row => range(0, 8).map(i => (i + 10).toString(36) + row)
-    );
+    return range(0, 7).map(row => {
+        let letter = (row + 10).toString(36);
+        return range(9, 1).map(number => letter + number)
+    });
 };
 
 const NameGrid = (props) => {
@@ -42,7 +43,7 @@ const containerStyle = {
     position: "absolute",
     background: "green",
     display: "grid",
-    gridGrap: 0,
+    gridGap: 0,
     gridTemplateColumns: "repeat(8, auto)",
     gridAutoFlow: "row",
     alignItems: "stretch"
