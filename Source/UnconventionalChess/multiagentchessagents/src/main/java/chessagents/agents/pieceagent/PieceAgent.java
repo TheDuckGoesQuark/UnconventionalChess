@@ -106,6 +106,8 @@ public class PieceAgent extends ChessAgent {
      */
     public PieceTransition performAction(PieceAction action) {
         if (action.shouldBeVerbalised()) {
+            // TODO schedule the verbal behaviour before actually performing the action
+            // TODO right the verbal behaviour doesnt run till the calling behaviour completes
             action.verbalise(context)
                     .ifPresent(v -> addBehaviour(new SendChatMessage(v, getAID(), context.getGameAgentAID())));
         }

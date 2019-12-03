@@ -37,7 +37,6 @@ const renderSpeech = (chat) => {
         position: "absolute",
         backgroundColor: "white",
         zIndex: 200,
-        boxShadow: "5px 1px"
     };
     return <div style={speechStyle}>
         {chat.messageBody}
