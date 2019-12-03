@@ -58,7 +58,7 @@ const renderNameTag = (boardWidth, coord, pieceConfigs) => {
     }
 };
 
-const NameGrid = (props) => {
+const PieceOverlay = (props) => {
     const {boardWidth, pieceConfigs} = props;
     const width = boardWidth + "px";
 
@@ -92,4 +92,4 @@ const containerStyle = {
     visibility: "hidden",
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(NameGrid)
+export default connect(mapStateToProps, mapDispatchToProps)(PieceOverlay)
