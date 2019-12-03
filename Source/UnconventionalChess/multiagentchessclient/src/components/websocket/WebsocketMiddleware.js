@@ -6,6 +6,9 @@ import {receiveMove} from "../board/BoardActions";
 import {wsConnected, wsDisconnected, wsInitialised} from "./WebsocketActions";
 import {ChatMessage, MoveMessage} from "../../models/Message";
 
+
+const MESSAGE_DELAY_MS = 2000;
+
 let lastMessageSent = new Date().getTime();
 
 const handleMessage = (message, handlerByType) => {
@@ -14,11 +17,11 @@ const handleMessage = (message, handlerByType) => {
 
     // throttle messages so they seem realistic
     if (lastMessageSent > currentTime) {
-        delay = (lastMessageSent - currentTime) + 500;
+        delay = (lastMessageSent - currentTime) + MESSAGE_DELAY_MS;
         lastMessageSent = currentTime + delay;
     } else {
         delay = 0;
-        lastMessageSent = currentTime + 500;
+        lastMessageSent = currentTime + MESSAGE_DELAY_MS;
     }
 
     setTimeout(() => {
