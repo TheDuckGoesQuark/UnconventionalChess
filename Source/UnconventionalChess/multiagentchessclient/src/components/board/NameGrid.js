@@ -20,17 +20,39 @@ const getPieceNameAtPosition = (pieceConfigs, coord) => {
     return pieceConfigs[coord] ? pieceConfigs[coord].name : undefined;
 };
 
+const renderNameTag = (boardWidth, coord, pieceConfigs) => {
+    const boxWidth = (boardWidth / 8) + "px";
+
+    const emptyBoxStyle = {
+        width: boxWidth,
+        height: boxWidth,
+        visibility: "hidden", // stops name grid blocking chess detection
+    };
+
+    const pieceBoxStyle = {
+        ...emptyBoxStyle,
+        visibility: "visible", // only show if nametag exists
+    };
+
+    const pieceName = getPieceNameAtPosition(pieceConfigs, coord);
+    if (pieceName) {
+        return (<div style={pieceBoxStyle} key={coord}>
+            {getPieceNameAtPosition(pieceConfigs, coord)}
+        </div>)
+    } else {
+        return (<div style={emptyBoxStyle} key={coord}/>)
+    }
+
+};
 
 const NameGrid = (props) => {
-    const width = props.boardWidth + "px";
-    const boxWidth = (props.boardWidth / 8) + "px";
+    const {boardWidth, pieceConfigs} = props;
+    const width = boardWidth + "px";
 
     return <div style={{...containerStyle, width: width, height: width}}>
-        {getAllPositions().map(row => (
-            <div>
-                {row.map(coord => <div style={{width: boxWidth, height: boxWidth}} key={coord}>
-                    {getPieceNameAtPosition(props.pieceConfigs, coord)}
-                </div>)}
+        {getAllPositions().map((row, idx) => (
+            <div key={idx}>
+                {row.map(coord => renderNameTag(boardWidth, coord, pieceConfigs))}
             </div>
         ))}
     </div>
@@ -53,7 +75,8 @@ const containerStyle = {
     gridGap: 0,
     gridTemplateColumns: "repeat(8, auto)",
     gridAutoFlow: "row",
-    alignItems: "stretch"
+    alignItems: "stretch",
+    visibility: "hidden",
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(NameGrid)

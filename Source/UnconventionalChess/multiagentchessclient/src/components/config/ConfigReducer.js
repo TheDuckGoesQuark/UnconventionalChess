@@ -12,6 +12,7 @@ import {
     CONFIG_PIECE_CONFIG_SAVED,
     CONFIG_PIECE_PERSONALITY_UPDATED,
 } from "./ConfigActions";
+import {MOVE_RECEIVE} from "../board/BoardActions";
 
 const initialState = {
     humanPlays: true,
@@ -23,6 +24,19 @@ const initialState = {
     pieceConfigs: {},
     personalityTypes: [],
     error: null
+};
+
+const applyMoveToPieceConfigs = (pieceConfigs, move) => {
+    let {sourceSquare, targetSquare} = move;
+    let configAtSource = pieceConfigs[sourceSquare];
+
+    return {
+        ...pieceConfigs,
+        [targetSquare]: {
+            ...configAtSource
+        },
+        [sourceSquare]: undefined,
+    };
 };
 
 export default function configReducer(state = initialState, action) {
@@ -100,6 +114,11 @@ export default function configReducer(state = initialState, action) {
             return {
                 ...state,
                 configuringSquare: undefined,
+            };
+        case MOVE_RECEIVE:
+            return {
+                ...state,
+                pieceConfigs: applyMoveToPieceConfigs(state.pieceConfigs, action.payload.move)
             };
         default:
             return state;
