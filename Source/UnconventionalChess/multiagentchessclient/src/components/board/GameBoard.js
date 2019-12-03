@@ -9,6 +9,7 @@ import {
     squareClicked,
     squareRightClicked
 } from "./BoardActions";
+import NameGrid from "./NameGrid";
 
 /**
  * Validate move, then dispatch move to server if valid
@@ -35,25 +36,29 @@ const handleMove = (move, game, sendMoveCallback) => {
     }
 };
 
-const GameBoard = (props) => (
-    <Chessboard
-        id="humanVsAgents"
-        width={"500"}
-        position={props.position}
-        onDrop={(move) => handleMove(move, props.game, props.sendMove)}
-        onMouseOverSquare={props.onMouseOverSquare}
-        onMouseOutSquare={props.onMouseOutSquare}
-        boardStyle={{
-            borderRadius: "5px",
-            boxShadow: `0 5px 15px rgba(0, 0, 0, 0.5)`
-        }}
-        squareStyles={props.squareStyles}
-        dropSquareStyle={props.dropSquareStyle}
-        onDragOverSquare={props.onDragOverSquare}
-        onSquareClick={props.onSquareClick}
-        onSquareRightClick={props.onSquareRightClick}
-    />
-);
+const GameBoard = (props) => {
+    const {boardWidth} = props;
+    return <div>
+        <NameGrid/>
+        <Chessboard
+            id="humanVsAgents"
+            width={boardWidth.toString()}
+            position={props.position}
+            onDrop={(move) => handleMove(move, props.game, props.sendMove)}
+            onMouseOverSquare={props.onMouseOverSquare}
+            onMouseOutSquare={props.onMouseOutSquare}
+            boardStyle={{
+                borderRadius: "5px",
+                boxShadow: `0 5px 15px rgba(0, 0, 0, 0.5)`
+            }}
+            squareStyles={props.squareStyles}
+            dropSquareStyle={props.dropSquareStyle}
+            onDragOverSquare={props.onDragOverSquare}
+            onSquareClick={props.onSquareClick}
+            onSquareRightClick={props.onSquareRightClick}
+        />
+    </div>
+};
 
 const mapDispatchToProps = {
     sendMove: moveSend,
@@ -70,6 +75,7 @@ function mapStateToProps(state) {
         position: state.boardReducer.fen,
         squareStyles: state.boardReducer.squareStyles,
         dropSquareStyle: state.boardReducer.dropSquareStyle,
+        boardWidth: state.boardReducer.boardWidth,
     }
 }
 

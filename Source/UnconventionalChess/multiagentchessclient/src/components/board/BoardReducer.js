@@ -11,6 +11,7 @@ import Chess from "chess.js"
 import {CONFIG_RESET} from "../config/ConfigActions";
 
 const initialState = {
+    boardWidth: 500,
     fen: "start",
     // square styles for active drop square
     dropSquareStyle: {},
