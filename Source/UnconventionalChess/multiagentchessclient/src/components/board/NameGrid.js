@@ -16,6 +16,11 @@ const getAllPositions = () => {
     });
 };
 
+const getPieceNameAtPosition = (pieceConfigs, coord) => {
+    return pieceConfigs[coord] ? pieceConfigs[coord].name : undefined;
+};
+
+
 const NameGrid = (props) => {
     const width = props.boardWidth + "px";
     const boxWidth = (props.boardWidth / 8) + "px";
@@ -23,7 +28,9 @@ const NameGrid = (props) => {
     return <div style={{...containerStyle, width: width, height: width}}>
         {getAllPositions().map(row => (
             <div>
-                {row.map(coord => <div style={{width: boxWidth, height: boxWidth}} key={coord}>{coord}</div>)}
+                {row.map(coord => <div style={{width: boxWidth, height: boxWidth}} key={coord}>
+                    {getPieceNameAtPosition(props.pieceConfigs, coord)}
+                </div>)}
             </div>
         ))}
     </div>
@@ -42,7 +49,6 @@ function mapStateToProps(state) {
 
 const containerStyle = {
     position: "absolute",
-    background: "green",
     display: "grid",
     gridGap: 0,
     gridTemplateColumns: "repeat(8, auto)",
