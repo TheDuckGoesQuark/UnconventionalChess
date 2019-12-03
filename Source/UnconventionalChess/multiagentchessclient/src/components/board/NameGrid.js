@@ -12,17 +12,18 @@ const range = (start, end) => {
 const getAllPositions = () => {
     return range(0, 7).map(row => {
         let letter = (row + 10).toString(36);
-        return range(9, 1).map(number => letter + number)
+        return range(8, 1).map(number => letter + number)
     });
 };
 
 const NameGrid = (props) => {
     const width = props.boardWidth + "px";
+    const boxWidth = (props.boardWidth / 8) + "px";
 
     return <div style={{...containerStyle, width: width, height: width}}>
         {getAllPositions().map(row => (
             <div>
-                {row.map(coord => <div key={coord}>{coord}</div>)}
+                {row.map(coord => <div style={{width: boxWidth, height: boxWidth}} key={coord}>{coord}</div>)}
             </div>
         ))}
     </div>
@@ -48,7 +49,5 @@ const containerStyle = {
     gridAutoFlow: "row",
     alignItems: "stretch"
 };
-
-const boxStyle = {};
 
 export default connect(mapStateToProps, mapDispatchToProps)(NameGrid)
