@@ -32,17 +32,30 @@ const renderNameTag = (boardWidth, coord, pieceConfigs) => {
     const pieceBoxStyle = {
         ...emptyBoxStyle,
         visibility: "visible", // only show if nametag exists
+        alignSelf: "center",
+        display: "flex",
+        justifyContent: "center",
+        alignItems: "center",
+        pointerEvents: "none",
+    };
+
+    const nametagStyle = {
+        alignSelf: "center",
+        backgroundColor: "DarkGrey",
+        opacity: 0.8,
+        zIndex: 100, // shown nametag above chess pieces
+        position: "relative",
+        pointerEvents: "none",
     };
 
     const pieceName = getPieceNameAtPosition(pieceConfigs, coord);
     if (pieceName) {
         return (<div style={pieceBoxStyle} key={coord}>
-            {getPieceNameAtPosition(pieceConfigs, coord)}
+            <div style={nametagStyle}>{getPieceNameAtPosition(pieceConfigs, coord)}</div>
         </div>)
     } else {
         return (<div style={emptyBoxStyle} key={coord}/>)
     }
-
 };
 
 const NameGrid = (props) => {
