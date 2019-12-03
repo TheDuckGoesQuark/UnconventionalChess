@@ -20,7 +20,30 @@ const getPieceNameAtPosition = (pieceConfigs, coord) => {
     return pieceConfigs[coord] ? pieceConfigs[coord].name : undefined;
 };
 
-const renderNameTag = (boardWidth, coord, pieceConfigs) => {
+const getMostRecentChat = (messages) => {
+    for (let message of messages) {
+        if (message.fromId) {
+            return message;
+        }
+    }
+
+    return undefined;
+};
+
+const renderSpeech = (chat) => {
+    const speechStyle = {
+        visibility: "visible",
+        pointerEvents: "none",
+        position: "absolute",
+        backgroundColor: "white",
+        zIndex: 200
+    };
+    return <div style={speechStyle}>
+        {chat.messageBody}
+    </div>
+};
+
+const renderPieceOverlay = (mostRecentMessage, boardWidth, coord, pieceConfigs) => {
     const boxWidth = (boardWidth / 8) + "px";
 
     const emptyBoxStyle = {
@@ -50,8 +73,11 @@ const renderNameTag = (boardWidth, coord, pieceConfigs) => {
 
     const pieceName = getPieceNameAtPosition(pieceConfigs, coord);
     if (pieceName) {
-        return (<div style={pieceBoxStyle} key={coord}>
-            <div style={nametagStyle}>{getPieceNameAtPosition(pieceConfigs, coord)}</div>
+        return (<div>
+            <div style={pieceBoxStyle} key={coord}>
+                <div style={nametagStyle}>{getPieceNameAtPosition(pieceConfigs, coord)}</div>
+            </div>
+            {mostRecentMessage && (mostRecentMessage.fromId === pieceName) ? renderSpeech(mostRecentMessage) : null}
         </div>)
     } else {
         return (<div style={emptyBoxStyle} key={coord}/>)
@@ -59,13 +85,14 @@ const renderNameTag = (boardWidth, coord, pieceConfigs) => {
 };
 
 const PieceOverlay = (props) => {
-    const {boardWidth, pieceConfigs} = props;
+    const {boardWidth, pieceConfigs, messages} = props;
     const width = boardWidth + "px";
+    let mostRecentChat = getMostRecentChat(messages);
 
     return <div style={{...containerStyle, width: width, height: width}}>
         {getAllPositions().map((row, idx) => (
             <div key={idx}>
-                {row.map(coord => renderNameTag(boardWidth, coord, pieceConfigs))}
+                {row.map(coord => renderPieceOverlay(mostRecentChat, boardWidth, coord, pieceConfigs))}
             </div>
         ))}
     </div>
@@ -78,7 +105,8 @@ const mapDispatchToProps = {
 function mapStateToProps(state) {
     return {
         boardWidth: state.boardReducer.boardWidth,
-        pieceConfigs: state.configReducer.pieceConfigs
+        pieceConfigs: state.configReducer.pieceConfigs,
+        messages: state.chatReducer.timeOrderedMessages
     }
 }
 

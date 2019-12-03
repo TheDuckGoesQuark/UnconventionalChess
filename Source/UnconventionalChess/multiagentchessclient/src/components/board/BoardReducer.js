@@ -9,6 +9,7 @@ import {
 } from "./BoardActions";
 import Chess from "chess.js"
 import {CONFIG_RESET} from "../config/ConfigActions";
+import {CHAT_MESSAGE_RECEIVE} from "../chat/ChatActions";
 
 const initialState = {
     boardWidth: 500,

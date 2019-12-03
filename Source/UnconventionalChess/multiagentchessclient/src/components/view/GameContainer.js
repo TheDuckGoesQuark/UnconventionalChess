@@ -3,9 +3,8 @@ import React from "react";
 import BoardContainer from "../board/BoardContainer";
 import ChatContainer from "../chat/ChatContainer";
 import WebsocketMiddleware from "../websocket/WebsocketMiddleware";
-import DialogueBox from "../chat/DialogueBox";
 import {connect} from "react-redux";
-import {resetConfig, submitConfig} from "../config/ConfigActions";
+import {resetConfig} from "../config/ConfigActions";
 
 const GameContainer = (props) => (
     <div>
@@ -14,9 +13,6 @@ const GameContainer = (props) => (
             <button style={exitButtonStyle} onClick={props.exit}>Exit Game</button>
             <div style={boardContainerStyle}>
                 <BoardContainer/>
-            </div>
-            <div style={dialogBoxContainerStyle}>
-                <DialogueBox/>
             </div>
             <div style={chatContainerStyle}>
                 <ChatContainer/>
@@ -36,17 +32,8 @@ const gameViewStyle = {
     backgroundColor: "black",
 };
 
-const dialogBoxContainerStyle = {
-    width: "60%",
-    height: "30%",
-    float: "left",
-    backgroundColor: "black",
-    border: "14px ridge rgba(164,133,81,0.82)",
-    boxSizing: "border-box"
-};
-
 const boardContainerStyle = {
-    width: "60%",
+    width: "100%",
     height: "70%",
     float: "left",
     backgroundColor: "black",
@@ -55,9 +42,8 @@ const boardContainerStyle = {
 };
 
 const chatContainerStyle = {
-    width: "40%",
-    height: "100%",
-    marginLeft: "60%",
+    width: "100%",
+    height: "30%",
     backgroundColor: "black",
     border: "14px ridge rgba(164,133,81,0.82)",
     boxSizing: "border-box"
