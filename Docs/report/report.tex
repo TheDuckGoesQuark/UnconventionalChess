@@ -128,6 +128,8 @@ With the intention of possibly serving the game over the internet once complete,
 React \cite{reactjs} was chosen due to it being the most familiar web framework for the developer of this project, and because a component already existed for rendering chessboards \cite{chessboardjsx}. As the project grew, Redux \cite{redux} was introduced in order to help with state management of components. 
 The combination of these two frameworks allowed for the use of functional components throughout the project which were easier to test due to being stateless. 
 
+One of the challenges faced were that the abstraction of the chessboard component provided by a third-party library did not allow for atypical visual elements such as adding nametags to each piece or dialogue boxes. This then required manually implementing an overlay that would draw another chessboard grid, track positions of pieces, and draw the nametags and dialogue boxes in the correct locations.
+
 \subsection{Agent Gateway Server}
 
 
