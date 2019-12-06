@@ -1,7 +1,7 @@
 import React from "react";
 import {
     moveSend,
-} from "./BoardActions";
+} from "../board/BoardActions";
 import {connect} from "react-redux";
 
 const range = (start, end) => {

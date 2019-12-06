@@ -9,7 +9,7 @@ import {
     squareClicked,
     squareRightClicked
 } from "./BoardActions";
-import NameGrid from "./PieceOverlay";
+import NameGrid from "../pieceoverlay/PieceOverlay";
 
 /**
  * Validate move, then dispatch move to server if valid

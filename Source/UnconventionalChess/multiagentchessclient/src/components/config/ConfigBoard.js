@@ -3,10 +3,12 @@ import {connect} from "react-redux";
 import Chessboard from "chessboardjsx";
 import {configSquareClicked, fetchPersonalities} from "./ConfigActions";
 import PieceConfig from "./PieceConfig";
+import PieceOverlay from "../pieceoverlay/PieceOverlay";
 
 const ConfigBoard = (props) => {
     useEffect(props.fetchPersonalityTypes, []);
     return <div>
+        <PieceOverlay/>
         <Chessboard
             draggable={false}
             id="configBoard"

@@ -130,6 +130,43 @@ The combination of these two frameworks allowed for the use of functional compon
 
 One of the challenges faced were that the abstraction of the chessboard component provided by a third-party library did not allow for atypical visual elements such as adding nametags to each piece or dialogue boxes. This then required manually implementing an overlay that would draw another chessboard grid, track positions of pieces, and draw the nametags and dialogue boxes in the correct locations.
 
+The UI is composed of two main views: configuration and gameplay. 
+The configuration view (Figure \ref{fig:configview}) allows the user to choose if they want to play against the agents or watch two sets of agents play against each other. By clicking on the pieces they will not be controlling, the user can also name the pieces and define their personality type. 
+
+\begin{figure}[!ht]
+	\centering
+	\includegraphics[width=\linewidth]{images/configview}
+	\caption{Configuration view.}
+	\label{fig:configview}
+\end{figure}
+
+On submit, any unconfigured pieces are filled out at random from the set of available personalities and a set of names. The game configuration is then sent as a POST request to the gateway server, which verifies and creates the resources necessary for the game and returns the ID of the game to allow the client to publish and subscribe to game events at the correct websocket endpoint.
+
+Figure \ref{fig:gamecreation} shows the sequence diagram for how resources are created once the user submits the game configuration
+
+\begin{figure}[!ht]
+	\centering
+	\includegraphics[width=\linewidth]{images/gamecreation}
+	\caption{Game creation sequence diagram.}
+	\label{fig:gamecreation}
+\end{figure}
+
+The game view (Figure \ref{fig:gameview}) also shows the game board with name tags over the corresponding pieces and any dialogue next to the speaking piece. The chat and move history is also rendered in a scrolling transcript at the bottom of the page in alternating colours for clarity. When hovering over pieces the user is able to see all currently available moves to them. Moves are verified client side by the chess.js \cite{chessjs} engine before either being rejected or sent to the server. Figure \ref{fig:humanmove} shows how human moves are broadcast to all subscribers.
+
+\begin{figure}[!ht]
+	\centering
+	\includegraphics[width=\linewidth]{images/gameview}
+	\caption{Game view.}
+	\label{fig:gameview}
+\end{figure}
+
+\begin{figure}[!ht]
+	\centering
+	\includegraphics[width=\linewidth]{images/humanmove}
+	\caption{Human move sequence diagram.}
+	\label{fig:humanmove}
+\end{figure}
+
 \subsection{Agent Gateway Server}
 
 
@@ -140,3 +177,4 @@ One of the challenges faced were that the abstraction of the chessboard componen
 \vspace{12pt}
 
 \end{document}
+
