@@ -114,7 +114,23 @@ These probabilistic models currently appear more hopeful than the rule based mod
 \section{System Design}
 
 An existing multiagent development framework was chosen instead of rolling our own in order to abstract away matters such as message delivery and agent life-cycle management. As mentioned earlier, JADE was chosen specifically due to its flexibility and its extensive coverage of the FIPA standard that could allow our agents to interact with other implementations with ease. 
-With the intention of possibly serving the game over the internet once complete, the system had to be designed to allow for communication with agents from outside of the agent platform. The 'JadeGateway' API was used with a Spring Boot server and React UI to to achieve this. Figure
+With the intention of possibly serving the game over the internet once complete, the system had to be designed to allow for communication with agents from outside of the agent platform. The 'JadeGateway' API was used with a Spring Boot server and React UI to to achieve this. Figure \ref{fig:highlevelarchitecture} provides an high level overview of the technologies at each layer.
+
+\begin{figure}[h]
+	\centering
+	\includegraphics[width=\linewidth]{images/highlevelarchitecture}
+	\caption{Technologies used at each layer.}
+	\label{fig:highlevelarchitecture}
+\end{figure}
+
+\subsection{Front-End}
+
+React \cite{reactjs} was chosen due to it being the most familiar web framework for the developer of this project, and because a component already existed for rendering chessboards \cite{chessboardjsx}. As the project grew, Redux \cite{redux} was introduced in order to help with state management of components. 
+The combination of these two frameworks allowed for the use of functional components throughout the project which were easier to test due to being stateless. 
+
+\subsection{Agent Gateway Server}
+
+
 
 \bibliographystyle{unsrt}
 \bibliography{mybib}
