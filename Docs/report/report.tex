@@ -8,6 +8,7 @@
 \usepackage{textcomp}
 \usepackage{xcolor}
 \usepackage{csquotes}
+\usepackage{listings}
 \def\BibTeX{{\rm B\kern-.05em{\sc i\kern-.025em b}\kern-.08em
     T\kern-.1667em\lower.7ex\hbox{E}\kern-.125emX}}
 \begin{document}
@@ -128,23 +129,23 @@ With the intention of possibly serving the game over the internet once complete,
 React \cite{reactjs} was chosen due to it being the most familiar web framework for the developer of this project, and because a component already existed for rendering chessboards \cite{chessboardjsx}. As the project grew, Redux \cite{redux} was introduced in order to help with state management of components. 
 The combination of these two frameworks allowed for the use of functional components throughout the project which were easier to test due to being stateless. 
 
-One of the challenges faced were that the abstraction of the chessboard component provided by a third-party library did not allow for atypical visual elements such as adding nametags to each piece or dialogue boxes. This then required manually implementing an overlay that would draw another chessboard grid, track positions of pieces, and draw the nametags and dialogue boxes in the correct locations.
+One of the challenges faced were that the abstraction of the chessboard component provided by a third-party library did not allow for atypical visual elements such as adding name tags to each piece or dialogue boxes. This then required manually implementing an overlay that would draw another chessboard grid, track positions of pieces, and draw the name tags and dialogue boxes in the correct locations.
 
 The UI is composed of two main views: configuration and gameplay. 
 The configuration view (Figure \ref{fig:configview}) allows the user to choose if they want to play against the agents or watch two sets of agents play against each other. By clicking on the pieces they will not be controlling, the user can also name the pieces and define their personality type. 
 
-\begin{figure}[!ht]
+\begin{figure}[!h]
 	\centering
 	\includegraphics[width=\linewidth]{images/configview}
 	\caption{Configuration view.}
 	\label{fig:configview}
 \end{figure}
 
-On submit, any unconfigured pieces are filled out at random from the set of available personalities and a set of names. The game configuration is then sent as a POST request to the gateway server, which verifies and creates the resources necessary for the game and returns the ID of the game to allow the client to publish and subscribe to game events at the correct websocket endpoint.
+On submit, any unconfigured pieces are filled out at random from the set of available personalities and a set of names. The game configuration is then sent as a POST request to the gateway server, which verifies and creates the resources necessary for the game and returns the ID of the game to allow the client to publish and subscribe to game events at the correct web socket endpoint.
 
 Figure \ref{fig:gamecreation} shows the sequence diagram for how resources are created once the user submits the game configuration
 
-\begin{figure}[!ht]
+\begin{figure}[!h]
 	\centering
 	\includegraphics[width=\linewidth]{images/gamecreation}
 	\caption{Game creation sequence diagram.}
@@ -153,14 +154,14 @@ Figure \ref{fig:gamecreation} shows the sequence diagram for how resources are c
 
 The game view (Figure \ref{fig:gameview}) also shows the game board with name tags over the corresponding pieces and any dialogue next to the speaking piece. The chat and move history is also rendered in a scrolling transcript at the bottom of the page in alternating colours for clarity. When hovering over pieces the user is able to see all currently available moves to them. Moves are verified client side by the chess.js \cite{chessjs} engine before either being rejected or sent to the server. Figure \ref{fig:humanmove} shows how human moves are broadcast to all subscribers.
 
-\begin{figure}[!ht]
+\begin{figure}[!h]
 	\centering
 	\includegraphics[width=\linewidth]{images/gameview}
 	\caption{Game view.}
 	\label{fig:gameview}
 \end{figure}
 
-\begin{figure}[!ht]
+\begin{figure}[!h]
 	\centering
 	\includegraphics[width=\linewidth]{images/humanmove}
 	\caption{Human move sequence diagram.}
@@ -171,10 +172,45 @@ The game view (Figure \ref{fig:gameview}) also shows the game board with name ta
 
 The gateway server has several purposes: 
 \begin{itemize}
-	\item{Serve the webapp}
+	\item{Serve the web app}
 	\item{Handle game resources}
 	\item{Route messages between users and relevant agents}
 \end{itemize}
+
+JADE does have support for agents serving web resources directly, but the JadeGateway API was used instead as it was simpler. The JadeGateway API effectively creates an Agent for the server, which can then send units of functionality called 'Behaviours' to be executed by the agent (e.g. sending messages to the agents within the platform). This could potentially be a bottleneck if the number of users of the server was to grow large enough due to agents being single-threaded by default, so an implementation at scale would likely need to change this interface. For the purposes of this project however, it was more than sufficient.
+
+On start-up, the server uses the details in a configuration file to connect to the JADE platform. It also exposes a limited set of HTTP endpoints to allow the client to create games and to query available personality types. An in-memory message broker is also used for handling websocket sessions once a game is set up so that clients can subscribe to chat and move messages, and send their own moves.
+
+The JadeGateway polls for incoming messages using the \lstinline{ListenForGameAgentMessages} behaviour, which is provided a message translator and a message handler for translating \lstinline{ACLMessage}s from agents to a data model the server can work with and passing the message to the correct handler. This behaviour allowed the server to utilise JADEs scheduling system which would only run the behaviour if a new message was received, instead of busy waiting for incoming messages.
+
+\subsection{Jade Agent Platform}
+
+Finally, the agent platform is where all of the agents are hosted. Here we will give a rough overview of how JADE agents schedule their functions, while in section \ref{sec:agentimpl} we discuss the actual logic that drives our agents.
+
+JADE agents are single-threaded by default, and execute behaviours according to the flow diagram shown in Figure \ref{fig:behaviour}. The basic JADE behaviour implements the methods shown in figure \ref{fig:behaviour}, but the framework also provides some helper implementations such as the \lstinline{FSABehaviour} which was used heavily during this project. 
+
+Behaviours are scheduled such that they are executed repeatedly round-robin until either they are complete (\lstinline{done()} returns true) or \lstinline{block()} is called during the \lstinline{action()} method. The latter puts the behaviour into a waiting queue so that it is only triggered again once the agent receives a message. 
+
+Behaviours can filter the messages that are received using the \lstinline{MessageTemplate} class, which uses pattern matching to only allow for messages containing features such as a specific performative (e.g. REQUEST, PROPOSE) or a specific conversation ID. This ensures that behaviours do not consume messages that were not intended be consumed by them. 
+
+\begin{figure}[!h]
+	\centering
+	\includegraphics[width=\linewidth]{images/behaviour}
+	\caption{JADE Agent behaviour scheduling and life-cycle \cite{jade}.}
+	\label{fig:behaviour}
+\end{figure}
+
+\section{Agent Implementation} \label{sec:agentimpl}
+
+Our implementation involves two different types of agent: game agents and piece agents. Game agents are responsible for maintaining the state of the game and initialising the piece agents, and piece agents represent pieces on the board, each trying to achieve their own individual goals.
+
+\section{Experiments}
+
+\section{Evaluation}
+
+\section{Future Work}
+
+\section{Conclusion}
 
 \bibliographystyle{unsrt}
 \bibliography{mybib}
