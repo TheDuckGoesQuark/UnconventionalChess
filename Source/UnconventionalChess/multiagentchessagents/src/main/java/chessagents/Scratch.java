@@ -7,14 +7,14 @@ import jade.content.OntoAID;
 import jade.content.lang.Codec;
 import jade.content.onto.OntologyException;
 import jade.core.AID;
-import simplenlg.features.DiscourseFunction;
-import simplenlg.features.Feature;
-import simplenlg.features.InterrogativeType;
-import simplenlg.features.Tense;
+import simplenlg.features.*;
 import simplenlg.framework.NLGFactory;
 import simplenlg.lexicon.Lexicon;
 import simplenlg.phrasespec.NPPhraseSpec;
+import simplenlg.phrasespec.SPhraseSpec;
 import simplenlg.realiser.english.Realiser;
+
+import java.util.Optional;
 
 class Scratch {
     private static final Lexicon LEXICON = Lexicon.getDefaultLexicon();
@@ -22,11 +22,25 @@ class Scratch {
     private static final Realiser REALISER = new Realiser(LEXICON);
 
     public static void main(String[] args) {
-        var clause = NLG_FACTORY.createClause("I", "agree");
-        var subClause = NLG_FACTORY.createClause("I", "move", "there");
-        subClause.setFeature(Feature.TENSE, Tense.FUTURE);
-        subClause.setFeature(Feature.COMPLEMENTISER, "to");
-        clause.setComplement(subClause);
-        System.out.println(REALISER.realiseSentence(clause));
+//        var clause = NLG_FACTORY.createClause("I", "agree");
+//        var subClause = NLG_FACTORY.createClause("I", "move", "there");
+//        subClause.setFeature(Feature.TENSE, Tense.FUTURE);
+//        subClause.setFeature(Feature.COMPLEMENTISER, "to");
+//        clause.setComplement(subClause);
+//        System.out.println(REALISER.realiseSentence(clause));
+
+        var we = NLG_FACTORY.createNounPhrase("us");
+        var doVerb = NLG_FACTORY.createVerbPhrase("doing");
+        var next = NLG_FACTORY.createNounPhrase("next");
+
+        var sentence = NLG_FACTORY.createClause();
+        sentence.setSubject(we);
+        sentence.setObject(next);
+        sentence.setVerb(doVerb);
+        sentence.setFeature(Feature.TENSE, Tense.PRESENT);
+        sentence.setFeature(Feature.INTERROGATIVE_TYPE, InterrogativeType.WHAT_OBJECT);
+        sentence.setFeature(Feature.MODAL, "should");
+
+        System.out.println(Optional.of(REALISER.realiseSentence(sentence)).get());
     }
 }

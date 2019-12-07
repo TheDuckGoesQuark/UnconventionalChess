@@ -1,5 +1,6 @@
 package chessagents.agents.pieceagent.actions;
 
+import chessagents.agents.pieceagent.PieceContext;
 import chessagents.chess.GameState;
 import chessagents.agents.ChessMessageBuilder;
 import chessagents.agents.pieceagent.PieceAgent;
@@ -7,10 +8,15 @@ import chessagents.agents.pieceagent.behaviours.turn.PieceTransition;
 import chessagents.agents.pieceagent.behaviours.turn.TurnContext;
 import chessagents.ontology.schemas.concepts.ChessPiece;
 import jade.lang.acl.ACLMessage;
+import simplenlg.phrasespec.SPhraseSpec;
+
+import java.util.Optional;
 
 import static chessagents.agents.pieceagent.behaviours.turn.statebehaviours.speaker.RequestSpeakerProposals.SPEAKER_CONTRACT_NET_PROTOCOL;
 
 public class AskForProposalsAction extends PieceAction {
+
+
     private final TurnContext turnContext;
 
     public AskForProposalsAction(ChessPiece actor, TurnContext turnContext) {
@@ -44,5 +50,16 @@ public class AskForProposalsAction extends PieceAction {
     @Override
     public GameState getOutcomeOfAction(GameState gameState) {
         return gameState;
+    }
+
+    @Override
+    public Optional<String> verbalise(PieceContext context) {
+        var p = new SPhraseSpec(NLG_FACTORY);
+
+        p.setSubject("we");
+        p.setVerb("do");
+        p.addComplement("next");
+
+        return Optional.of(p.getRealisation());
     }
 }
