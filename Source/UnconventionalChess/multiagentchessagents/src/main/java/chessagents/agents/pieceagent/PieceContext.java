@@ -10,10 +10,10 @@ import jade.core.AID;
 import lombok.Getter;
 import lombok.Setter;
 
-import java.util.Comparator;
 import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 @Getter
 @Setter
@@ -72,12 +72,23 @@ public class PieceContext {
 
     PieceAction chooseAction(Set<PieceAction> possibleActions) {
         // Scores each action based on how many traits it satisfies, and returns the most fulfilling action
-        return personality.scoreActions(getMyPiece(), possibleActions, gameState)
+        return personality.getResponseToActions(getMyPiece(), possibleActions, gameState)
                 .entrySet()
                 .stream()
-                .max(Comparator.comparing(Map.Entry::getValue))
+                .collect(Collectors.toMap(Map.Entry::getKey, e -> countApprovingResponses(e.getValue())))
+                .entrySet()
+                .stream()
+                .max(Map.Entry.comparingByValue())
                 .map(Map.Entry::getKey)
                 .get();
+    }
+
+    private int countApprovingResponses(Set<ActionResponse> responses) {
+        return responses.stream()
+                .map(ActionResponse::isApproveAction)
+                .filter(approves -> approves)
+                .map(approves -> 1)
+                .reduce(0, Integer::sum);
     }
 
     public Optional<ChessPiece> getPieceForAID(AID aid) {

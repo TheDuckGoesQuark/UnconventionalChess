@@ -1,4 +1,4 @@
-package chessagents.agents.pieceagent.behaviours.turn;
+package chessagents.agents.pieceagent;
 
 import chessagents.ontology.schemas.concepts.PieceMove;
 import jade.core.AID;

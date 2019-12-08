@@ -1,5 +1,6 @@
 package chessagents.agents.pieceagent.goals;
 
+import chessagents.agents.pieceagent.ActionResponse;
 import chessagents.chess.GameState;
 import chessagents.agents.pieceagent.actions.PieceAction;
 import chessagents.ontology.schemas.concepts.ChessPiece;
@@ -15,7 +16,17 @@ public abstract class Value {
         this.name = name;
     }
 
-    public abstract boolean actionMaintainsValue(ChessPiece pieceWithValue, GameState gameState, PieceAction pieceAction);
+    /**
+     * Gets the given pieces response to the action applied to the given game state, with whether or not
+     * it approves of the action and the reasoning for its decision
+     *
+     * @param chessPiece piece considering the action
+     * @param gameState  game state
+     * @param action     action being considered
+     * @return the given pieces response to the action applied to the given game state, with whether or not
+     * it approves of the action and the reasoning for its decision
+     */
+    public abstract ActionResponse getActionResponse(ChessPiece chessPiece, GameState gameState, PieceAction action);
 
     /**
      * Get the name of this goal
@@ -25,5 +36,6 @@ public abstract class Value {
     public String getName() {
         return name;
     }
+
 
 }

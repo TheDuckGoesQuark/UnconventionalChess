@@ -14,6 +14,9 @@ import simplenlg.features.Tense;
 import java.util.List;
 import java.util.Optional;
 
+import static chessagents.agents.pieceagent.nlg.NLGUtil.NLG_FACTORY;
+import static chessagents.agents.pieceagent.nlg.NLGUtil.REALISER;
+
 public class AgreeToMoveAction extends PieceAction {
 
     private static final List<String> OBJECTS = List.of("there", "position");

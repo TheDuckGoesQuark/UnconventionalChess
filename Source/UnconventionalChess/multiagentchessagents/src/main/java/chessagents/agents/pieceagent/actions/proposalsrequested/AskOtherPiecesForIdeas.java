@@ -1,25 +1,29 @@
-package chessagents.agents.pieceagent.actions;
+package chessagents.agents.pieceagent.actions.proposalsrequested;
 
 import chessagents.agents.pieceagent.PieceContext;
+import chessagents.agents.pieceagent.actions.PieceAction;
 import chessagents.chess.GameState;
 import chessagents.agents.ChessMessageBuilder;
 import chessagents.agents.pieceagent.PieceAgent;
 import chessagents.agents.pieceagent.behaviours.turn.PieceTransition;
-import chessagents.agents.pieceagent.behaviours.turn.TurnContext;
+import chessagents.agents.pieceagent.TurnContext;
 import chessagents.ontology.schemas.concepts.ChessPiece;
 import jade.lang.acl.ACLMessage;
-import simplenlg.phrasespec.SPhraseSpec;
+import simplenlg.features.Feature;
+import simplenlg.features.InterrogativeType;
+import simplenlg.features.Tense;
 
 import java.util.Optional;
 
 import static chessagents.agents.pieceagent.behaviours.turn.statebehaviours.speaker.RequestSpeakerProposals.SPEAKER_CONTRACT_NET_PROTOCOL;
+import static chessagents.agents.pieceagent.nlg.NLGUtil.NLG_FACTORY;
+import static chessagents.agents.pieceagent.nlg.NLGUtil.REALISER;
 
-public class AskForProposalsAction extends PieceAction {
-
+public class AskOtherPiecesForIdeas extends PieceAction {
 
     private final TurnContext turnContext;
 
-    public AskForProposalsAction(ChessPiece actor, TurnContext turnContext) {
+    public AskOtherPiecesForIdeas(ChessPiece actor, TurnContext turnContext) {
         super(PieceTransition.PROPOSALS_REQUESTED, "Ask other piece what we should do", actor, true);
         this.turnContext = turnContext;
     }
@@ -54,12 +58,18 @@ public class AskForProposalsAction extends PieceAction {
 
     @Override
     public Optional<String> verbalise(PieceContext context) {
-        var p = new SPhraseSpec(NLG_FACTORY);
+        var sentence = NLG_FACTORY.createClause();
+        var we = NLG_FACTORY.createNounPhrase("us");
+        var doVerb = NLG_FACTORY.createVerbPhrase("doing");
+        var next = NLG_FACTORY.createNounPhrase("next");
 
-        p.setSubject("we");
-        p.setVerb("do");
-        p.addComplement("next");
+        sentence.setSubject(we);
+        sentence.setObject(next);
+        sentence.setVerb(doVerb);
+        sentence.setFeature(Feature.TENSE, Tense.PRESENT);
+        sentence.setFeature(Feature.INTERROGATIVE_TYPE, InterrogativeType.WHAT_OBJECT);
+        sentence.setFeature(Feature.MODAL, "should");
 
-        return Optional.of(p.getRealisation());
+        return Optional.of(REALISER.realiseSentence(sentence));
     }
 }

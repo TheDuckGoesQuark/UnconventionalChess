@@ -2,7 +2,7 @@ package chessagents.agents.pieceagent.behaviours.turn.statebehaviours.nonspeaker
 
 import chessagents.agents.pieceagent.PieceContext;
 import chessagents.agents.pieceagent.actions.NoAction;
-import chessagents.agents.pieceagent.behaviours.turn.TurnContext;
+import chessagents.agents.pieceagent.TurnContext;
 import chessagents.agents.pieceagent.behaviours.turn.PieceState;
 import chessagents.agents.pieceagent.behaviours.turn.statebehaviours.PieceStateBehaviour;
 import chessagents.agents.pieceagent.PieceAgent;
@@ -14,7 +14,6 @@ import jade.content.onto.basic.Done;
 import jade.core.AID;
 import jade.lang.acl.ACLMessage;
 import jade.lang.acl.MessageTemplate;
-import jade.util.Logger;
 
 import static chessagents.agents.pieceagent.behaviours.turn.PieceTransition.SPEAKER_UPDATED;
 import static chessagents.agents.pieceagent.behaviours.turn.statebehaviours.speaker.RequestSpeakerProposals.SPEAKER_CONTRACT_NET_PROTOCOL;

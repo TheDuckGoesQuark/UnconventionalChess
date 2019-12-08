@@ -2,19 +2,16 @@ package chessagents.agents.pieceagent.behaviours.turn.statebehaviours.speaker;
 
 import chessagents.agents.pieceagent.PieceContext;
 import chessagents.agents.pieceagent.actions.*;
-import chessagents.agents.pieceagent.behaviours.turn.TurnContext;
+import chessagents.agents.pieceagent.TurnContext;
 import chessagents.agents.pieceagent.behaviours.turn.PieceState;
 import chessagents.agents.pieceagent.behaviours.turn.statebehaviours.PieceStateBehaviour;
 import chessagents.agents.pieceagent.PieceAgent;
-import chessagents.ontology.schemas.concepts.PieceMove;
-import jade.lang.acl.ACLMessage;
 
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
 
 import static chessagents.agents.pieceagent.behaviours.turn.PieceTransition.ACTUALLY_MOVING;
-import static chessagents.agents.pieceagent.behaviours.turn.PieceTransition.FAILED_TO_MOVE;
 
 public class DecideIfActuallyMoving extends PieceStateBehaviour {
 

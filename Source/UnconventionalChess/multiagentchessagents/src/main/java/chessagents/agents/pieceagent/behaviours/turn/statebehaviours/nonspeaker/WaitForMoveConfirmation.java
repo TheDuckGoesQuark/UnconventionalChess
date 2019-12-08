@@ -3,7 +3,7 @@ package chessagents.agents.pieceagent.behaviours.turn.statebehaviours.nonspeaker
 import chessagents.agents.pieceagent.PieceContext;
 import chessagents.agents.pieceagent.actions.NoAction;
 import chessagents.agents.pieceagent.actions.PieceAction;
-import chessagents.agents.pieceagent.behaviours.turn.TurnContext;
+import chessagents.agents.pieceagent.TurnContext;
 import chessagents.agents.pieceagent.behaviours.turn.PieceState;
 import chessagents.agents.pieceagent.behaviours.turn.statebehaviours.PieceStateBehaviour;
 import chessagents.agents.pieceagent.PieceAgent;
@@ -16,7 +16,6 @@ import jade.content.onto.OntologyException;
 import jade.domain.FIPAAgentManagement.NotUnderstoodException;
 import jade.lang.acl.ACLMessage;
 import jade.lang.acl.MessageTemplate;
-import jade.util.Logger;
 
 import java.util.Optional;
 

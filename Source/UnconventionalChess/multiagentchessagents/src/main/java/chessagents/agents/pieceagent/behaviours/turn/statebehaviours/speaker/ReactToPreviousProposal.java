@@ -2,8 +2,12 @@ package chessagents.agents.pieceagent.behaviours.turn.statebehaviours.speaker;
 
 import chessagents.agents.pieceagent.PieceContext;
 import chessagents.agents.pieceagent.actions.NoAction;
-import chessagents.agents.pieceagent.behaviours.turn.TurnContext;
+import chessagents.agents.pieceagent.TurnContext;
+import chessagents.agents.pieceagent.actions.PerformMoveAction;
+import chessagents.agents.pieceagent.actions.PieceAction;
+import chessagents.agents.pieceagent.actions.reactedtopreviousproposal.ReactToProposedMove;
 import chessagents.agents.pieceagent.behaviours.turn.PieceState;
+import chessagents.agents.pieceagent.behaviours.turn.statebehaviours.PerformMove;
 import chessagents.agents.pieceagent.behaviours.turn.statebehaviours.PieceStateBehaviour;
 import chessagents.agents.pieceagent.PieceAgent;
 
@@ -19,7 +23,15 @@ public class ReactToPreviousProposal extends PieceStateBehaviour {
 
     @Override
     public void action() {
-        // TODO react?
-        setChosenAction(new NoAction(REACTED_TO_PREVIOUS_PROPOSAL, "React to previous proposal", getMyPiece()));
+        var action = chooseAction();
+        setChosenAction(action);
+    }
+
+    private PieceAction chooseAction() {
+        if (turnContext.getCurrentMove() != null) {
+            return new ReactToProposedMove(getMyPiece(), pieceContext.getGameState(), new PerformMoveAction(getMyPiece(), turnContext.getCurrentMove()));
+        } else {
+            return new NoAction(REACTED_TO_PREVIOUS_PROPOSAL, "React to previous proposal", getMyPiece());
+        }
     }
 }

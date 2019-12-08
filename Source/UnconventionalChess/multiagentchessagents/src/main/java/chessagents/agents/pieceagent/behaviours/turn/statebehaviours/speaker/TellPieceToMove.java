@@ -3,7 +3,7 @@ package chessagents.agents.pieceagent.behaviours.turn.statebehaviours.speaker;
 import chessagents.agents.pieceagent.PieceAgent;
 import chessagents.agents.pieceagent.PieceContext;
 import chessagents.agents.pieceagent.behaviours.turn.PieceState;
-import chessagents.agents.pieceagent.behaviours.turn.TurnContext;
+import chessagents.agents.pieceagent.TurnContext;
 import chessagents.agents.pieceagent.behaviours.turn.statebehaviours.PieceStateBehaviour;
 import chessagents.agents.pieceagent.actions.PieceAction;
 import chessagents.agents.pieceagent.actions.TellPieceToMoveAction;

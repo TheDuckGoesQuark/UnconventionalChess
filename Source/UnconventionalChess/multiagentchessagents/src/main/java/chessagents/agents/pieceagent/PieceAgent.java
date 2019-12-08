@@ -11,6 +11,7 @@ import chessagents.agents.pieceagent.behaviours.turn.SubscribeToMoves;
 import chessagents.ontology.schemas.actions.BecomeSpeaker;
 import chessagents.ontology.schemas.concepts.Colour;
 import chessagents.ontology.schemas.concepts.PieceConfiguration;
+import chessagents.ontology.schemas.concepts.PieceMove;
 import chessagents.ontology.schemas.concepts.Position;
 import jade.content.OntoAID;
 import jade.content.lang.Codec;
@@ -19,7 +20,9 @@ import jade.content.onto.basic.Action;
 import jade.core.AID;
 import jade.core.behaviours.SequentialBehaviour;
 import jade.lang.acl.ACLMessage;
+import simplenlg.phrasespec.SPhraseSpec;
 
+import java.util.Collections;
 import java.util.Set;
 
 public class PieceAgent extends ChessAgent {
@@ -115,6 +118,18 @@ public class PieceAgent extends ChessAgent {
         context.performAction(this, action);
 
         return action.getTransition();
+    }
+
+    /**
+     * Get the set of responses to the given action
+     *
+     * @param action action to get responses for
+     * @return the set of responses to the given action
+     */
+    public Set<ActionResponse> getOpinionsOfAction(PieceAction action) {
+        return context.getPersonality()
+                .getResponseToActions(context.getMyPiece(), Collections.singleton(action), context.getGameState())
+                .get(action);
     }
 
     public PieceContext getContext() {

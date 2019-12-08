@@ -4,7 +4,7 @@ import chessagents.agents.ChessMessageBuilder;
 import chessagents.agents.pieceagent.PieceContext;
 import chessagents.agents.pieceagent.actions.NoAction;
 import chessagents.agents.pieceagent.actions.PieceAction;
-import chessagents.agents.pieceagent.behaviours.turn.TurnContext;
+import chessagents.agents.pieceagent.TurnContext;
 import chessagents.agents.pieceagent.behaviours.turn.PieceState;
 import chessagents.agents.pieceagent.PieceAgent;
 import chessagents.ontology.ChessOntology;
@@ -19,7 +19,6 @@ import jade.content.onto.OntologyException;
 import jade.domain.FIPAAgentManagement.NotUnderstoodException;
 import jade.lang.acl.ACLMessage;
 import jade.lang.acl.MessageTemplate;
-import jade.util.Logger;
 
 import static chessagents.agents.gameagent.behaviours.gameplay.ElectLeaderAgent.ELECT_SPEAKER_PROTOCOL_NAME;
 import static chessagents.agents.pieceagent.behaviours.turn.PieceTransition.I_AM_SPEAKER;

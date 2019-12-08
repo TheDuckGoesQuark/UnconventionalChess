@@ -21,6 +21,9 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
+import static chessagents.agents.pieceagent.nlg.NLGUtil.NLG_FACTORY;
+import static chessagents.agents.pieceagent.nlg.NLGUtil.REALISER;
+
 public class TellPieceToMoveAction extends PieceAction {
 
     private static final List<String> OBJECTS = List.of("there", "position");

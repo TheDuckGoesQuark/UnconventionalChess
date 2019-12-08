@@ -1,8 +1,10 @@
 package chessagents.agents.pieceagent.personality;
 
+import chessagents.agents.pieceagent.ActionResponse;
 import chessagents.chess.GameState;
 import chessagents.agents.pieceagent.actions.PieceAction;
 import chessagents.ontology.schemas.concepts.ChessPiece;
+import simplenlg.phrasespec.NPPhraseSpec;
 
 import java.util.*;
 import java.util.stream.Collectors;
@@ -24,34 +26,22 @@ public class Personality {
     }
 
     /**
-     * Maps each given action to the number of values for this agent that it satisfies
+     * Maps each given action the response given by this agent
      *
      * @param chessPiece piece being considered
      * @param actions    set of actions
      * @param gameState  game state to test against
-     * @return each action mapped to the number of values this agent
+     * @return the set of actions considered with this personalities response to them
      */
-    public Map<PieceAction, Integer> scoreActions(ChessPiece chessPiece, Set<PieceAction> actions, GameState gameState) {
+    public Map<PieceAction, Set<ActionResponse>> getResponseToActions(ChessPiece chessPiece, Set<PieceAction> actions, GameState gameState) {
         return actions.stream()
-                .collect(Collectors.toMap(p -> p, action -> getSatisifedTraitCount(chessPiece, action, gameState)));
+                .collect(Collectors.toMap(action -> action, action -> getActionResponses(chessPiece, gameState, action)));
     }
 
-    /**
-     * Counts the number of traits that the given action satisfies
-     *
-     * @param piece     piece with these traits
-     * @param action    action being tested
-     * @param gameState current state of the game
-     * @return the number of traits that the given actions appeals to
-     */
-    private int getSatisifedTraitCount(ChessPiece piece, PieceAction action, GameState gameState) {
+    private Set<ActionResponse> getActionResponses(ChessPiece chessPiece, GameState gameState, PieceAction action) {
         return traits.stream()
                 .map(Trait::getAppealingValues)
-                .map(values -> values.stream()
-                        .map(value -> value.actionMaintainsValue(piece, gameState, action))
-                        .filter(maintainsValue -> maintainsValue)
-                        .map(t -> 1)
-                        .reduce(0, Integer::sum))
-                .reduce(0, Integer::sum);
+                .flatMap(values -> values.stream().map(value -> value.getActionResponse(chessPiece, gameState, action)))
+                .collect(Collectors.toSet());
     }
 }

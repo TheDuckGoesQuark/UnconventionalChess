@@ -2,7 +2,7 @@ package chessagents.agents.pieceagent.behaviours.turn.statebehaviours.nonspeaker
 
 import chessagents.agents.pieceagent.PieceContext;
 import chessagents.agents.pieceagent.actions.NoAction;
-import chessagents.agents.pieceagent.behaviours.turn.TurnContext;
+import chessagents.agents.pieceagent.TurnContext;
 import chessagents.agents.pieceagent.behaviours.turn.PieceState;
 import chessagents.agents.pieceagent.behaviours.turn.statebehaviours.PieceStateBehaviour;
 import chessagents.agents.pieceagent.PieceAgent;
@@ -43,8 +43,8 @@ public class WaitForProposalRequest extends PieceStateBehaviour {
             case ACLMessage.CFP:
                 logger.info("Call for proposal received!");
                 setChosenAction(new NoAction(PROPOSAL_REQUESTED, "Proposal requested", getMyPiece()));
-                turnContext.setDebateCycles(turnContext.getDebateCycles() + 1);
                 turnContext.setCurrentMessage(message);
+                turnContext.setDebateCycles(turnContext.getDebateCycles() + 1);
                 break;
             case ACLMessage.REQUEST:
                 if (asksMeToMove(message)) {
@@ -56,6 +56,7 @@ public class WaitForProposalRequest extends PieceStateBehaviour {
                 }
 
                 turnContext.setCurrentMessage(message);
+                turnContext.setDebateCycles(turnContext.getDebateCycles() + 1);
                 break;
             default:
                 logger.warning("RECEIVED OUT OF SEQUENCE MESSAGE: " + message.toString());

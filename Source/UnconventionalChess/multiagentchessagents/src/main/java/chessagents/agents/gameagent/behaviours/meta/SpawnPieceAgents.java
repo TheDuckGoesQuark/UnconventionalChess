@@ -28,7 +28,7 @@ import java.util.stream.Collectors;
 public class SpawnPieceAgents extends SimpleBehaviour {
 
     // TODO make this variable in GUI
-    private static final int MAX_DEBATE_CYCLES = 2;
+    private static final int MAX_DEBATE_CYCLES = 5;
 
     private enum CreationState {
         INIT, CREATING, CREATED

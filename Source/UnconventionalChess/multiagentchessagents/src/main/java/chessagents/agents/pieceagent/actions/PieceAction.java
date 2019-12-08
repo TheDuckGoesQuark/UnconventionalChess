@@ -11,19 +11,18 @@ import simplenlg.lexicon.Lexicon;
 import simplenlg.realiser.english.Realiser;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.Random;
 
 public abstract class PieceAction {
 
     private static final Random random = new Random();
-    protected static final Lexicon LEXICON = Lexicon.getDefaultLexicon();
-    protected static final NLGFactory NLG_FACTORY = new NLGFactory(LEXICON);
-    protected static final Realiser REALISER = new Realiser(LEXICON);
 
     protected final Logger logger = Logger.getMyLogger(getClass().getName());
     private final PieceTransition resultingTransition;
     private final String name;
+    private final ChessPiece actor;
     private final boolean shouldBeVerbalised;
 
     /**
@@ -35,7 +34,12 @@ public abstract class PieceAction {
     protected PieceAction(PieceTransition resultingTransition, String name, ChessPiece actor, boolean shouldBeVerbalised) {
         this.resultingTransition = resultingTransition;
         this.name = name;
+        this.actor = actor;
         this.shouldBeVerbalised = shouldBeVerbalised;
+    }
+
+    public ChessPiece getActor() {
+        return actor;
     }
 
     /**
@@ -99,5 +103,18 @@ public abstract class PieceAction {
 
     public static boolean randBool() {
         return random.nextBoolean();
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        PieceAction that = (PieceAction) o;
+        return name.equals(that.name);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(name);
     }
 }

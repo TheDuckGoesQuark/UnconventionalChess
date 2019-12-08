@@ -2,13 +2,12 @@ package chessagents.agents.pieceagent.behaviours.turn.statebehaviours.speaker;
 
 import chessagents.agents.pieceagent.PieceContext;
 import chessagents.agents.pieceagent.actions.RequestToRemainSpeakerAction;
-import chessagents.agents.pieceagent.behaviours.turn.TurnContext;
+import chessagents.agents.pieceagent.TurnContext;
 import chessagents.agents.pieceagent.behaviours.turn.PieceState;
 import chessagents.agents.pieceagent.behaviours.turn.statebehaviours.PieceStateBehaviour;
 import chessagents.agents.pieceagent.PieceAgent;
 import jade.lang.acl.MessageTemplate;
 
-import static chessagents.agents.pieceagent.behaviours.turn.PieceTransition.REQUESTED_TO_REMAIN_SPEAKER;
 import static chessagents.agents.pieceagent.behaviours.turn.statebehaviours.speaker.RequestSpeakerProposals.SPEAKER_CONTRACT_NET_PROTOCOL;
 
 public class RequestToRemainSpeaker extends PieceStateBehaviour {

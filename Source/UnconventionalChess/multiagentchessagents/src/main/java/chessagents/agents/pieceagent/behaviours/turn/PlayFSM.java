@@ -1,5 +1,6 @@
 package chessagents.agents.pieceagent.behaviours.turn;
 
+import chessagents.agents.pieceagent.TurnContext;
 import chessagents.agents.pieceagent.behaviours.turn.statebehaviours.*;
 import chessagents.agents.pieceagent.behaviours.turn.statebehaviours.nonspeaker.*;
 import chessagents.agents.pieceagent.behaviours.turn.statebehaviours.speaker.*;
@@ -74,7 +75,7 @@ public class PlayFSM extends PieceFSM {
 
         registerState(new DecideIfMoving(pieceAgent, pieceContext, turnContext), DECIDE_IF_MOVING);
         registerTransition(DECIDE_IF_MOVING, DECIDE_IF_ACTUALLY_MOVING, AGREED_TO_MAKE_MOVE);
-        registerTransition(DECIDE_IF_MOVING, DECIDE_IF_REQUESTING_PROPOSALS, NOT_MOVING, PieceState.values());
+        registerTransition(DECIDE_IF_MOVING, REACT_TO_PREVIOUS_PROPOSAL, NOT_MOVING);
 
         registerState(new DecideIfActuallyMoving(pieceAgent, pieceContext, turnContext), DECIDE_IF_ACTUALLY_MOVING);
         registerTransition(DECIDE_IF_ACTUALLY_MOVING, REQUEST_MOVE_MADE, ACTUALLY_MOVING);

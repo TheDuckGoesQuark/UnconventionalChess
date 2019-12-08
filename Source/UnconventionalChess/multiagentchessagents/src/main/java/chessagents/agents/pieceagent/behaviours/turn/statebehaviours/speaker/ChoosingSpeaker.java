@@ -3,19 +3,15 @@ package chessagents.agents.pieceagent.behaviours.turn.statebehaviours.speaker;
 import chessagents.agents.pieceagent.PieceContext;
 import chessagents.agents.pieceagent.actions.PieceAction;
 import chessagents.agents.pieceagent.behaviours.turn.PieceState;
-import chessagents.agents.pieceagent.behaviours.turn.PieceTransition;
-import chessagents.agents.pieceagent.behaviours.turn.TurnContext;
+import chessagents.agents.pieceagent.TurnContext;
 import chessagents.agents.pieceagent.behaviours.turn.statebehaviours.PieceStateBehaviour;
 import chessagents.agents.pieceagent.PieceAgent;
 import chessagents.agents.pieceagent.actions.ChoosePieceToSpeakAction;
-import chessagents.ontology.schemas.concepts.ChessPiece;
-import jade.core.AID;
 import jade.lang.acl.ACLMessage;
 import jade.lang.acl.MessageTemplate;
 
 import java.util.HashSet;
 import java.util.Set;
-import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
 import static chessagents.agents.pieceagent.behaviours.turn.statebehaviours.speaker.RequestSpeakerProposals.SPEAKER_CONTRACT_NET_PROTOCOL;

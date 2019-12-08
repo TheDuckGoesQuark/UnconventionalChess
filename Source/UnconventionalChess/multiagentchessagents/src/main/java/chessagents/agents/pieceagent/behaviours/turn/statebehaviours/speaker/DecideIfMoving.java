@@ -7,7 +7,7 @@ import chessagents.agents.pieceagent.actions.FalselyAgreeToMoveAction;
 import chessagents.agents.pieceagent.actions.PieceAction;
 import chessagents.agents.pieceagent.actions.RefuseToMoveAction;
 import chessagents.agents.pieceagent.behaviours.turn.PieceState;
-import chessagents.agents.pieceagent.behaviours.turn.TurnContext;
+import chessagents.agents.pieceagent.TurnContext;
 import chessagents.agents.pieceagent.behaviours.turn.statebehaviours.PieceStateBehaviour;
 import chessagents.ontology.schemas.actions.MakeMove;
 import chessagents.ontology.schemas.concepts.PieceMove;
@@ -16,9 +16,9 @@ import jade.content.onto.OntologyException;
 import jade.content.onto.basic.Action;
 import jade.lang.acl.ACLMessage;
 
-import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
+import java.util.logging.Logger;
 
 public class DecideIfMoving extends PieceStateBehaviour {
 
@@ -40,12 +40,15 @@ public class DecideIfMoving extends PieceStateBehaviour {
         var myPiece = getMyPiece();
         var actions = new HashSet<PieceAction>();
 
-        actions.add(new AgreeToMoveAction(myPiece, requestToMove, requestedMove));
-        actions.add(new FalselyAgreeToMoveAction(myPiece, requestToMove, requestedMove));
-
         // Only allow rejection to occur if more debate cycles are allowed, otherwise we could go on forever...
-        if (turnContext.getDebateCycles() < pieceContext.getMaxDebateCycle())
+        logger.info("" + turnContext.getDebateCycles() + "<" + pieceContext.getMaxDebateCycle());
+        if (turnContext.getDebateCycles() < pieceContext.getMaxDebateCycle()) {
+            logger.info("true");
             actions.add(new RefuseToMoveAction(myPiece, requestToMove, requestedMove));
+        } else {
+            actions.add(new AgreeToMoveAction(myPiece, requestToMove, requestedMove));
+            actions.add(new FalselyAgreeToMoveAction(myPiece, requestToMove, requestedMove));
+        }
 
         // TODO agree but perform different move?
 
