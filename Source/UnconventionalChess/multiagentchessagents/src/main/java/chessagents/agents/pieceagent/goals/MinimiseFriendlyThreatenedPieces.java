@@ -38,7 +38,7 @@ public class MinimiseFriendlyThreatenedPieces extends Value {
         }
         sentence.setVerb(verb);
 
-        var numberOfThreatenedPieces = NLG_FACTORY.createNounPhrase("number of our threatened pieces");
+        var numberOfThreatenedPieces = NLG_FACTORY.createNounPhrase("the number of our threatened pieces");
         sentence.setObject(numberOfThreatenedPieces);
 
         return new ActionResponse(action, approves, sentence);

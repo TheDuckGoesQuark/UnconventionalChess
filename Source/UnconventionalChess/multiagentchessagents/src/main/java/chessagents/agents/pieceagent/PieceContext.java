@@ -5,6 +5,7 @@ import chessagents.agents.pieceagent.actions.PieceAction;
 import chessagents.agents.pieceagent.personality.Personality;
 import chessagents.ontology.schemas.concepts.ChessPiece;
 import chessagents.ontology.schemas.concepts.Position;
+import chessagents.util.RandomUtil;
 import jade.content.OntoAID;
 import jade.core.AID;
 import lombok.Getter;
@@ -67,20 +68,17 @@ public class PieceContext {
     void performAction(PieceAgent actor, PieceAction action) {
         // have agent perform action and update this game state
         gameState = action.perform(actor, gameState);
-
     }
 
     PieceAction chooseAction(Set<PieceAction> possibleActions) {
-        // Scores each action based on how many traits it satisfies, and returns the most fulfilling action
-        return personality.getResponseToActions(getMyPiece(), possibleActions, gameState)
+        var scoredActions = personality.getResponseToActions(getMyPiece(), possibleActions, gameState)
                 .entrySet()
                 .stream()
-                .collect(Collectors.toMap(Map.Entry::getKey, e -> countApprovingResponses(e.getValue())))
-                .entrySet()
-                .stream()
-                .max(Map.Entry.comparingByValue())
-                .map(Map.Entry::getKey)
-                .get();
+                .collect(Collectors.toMap(Map.Entry::getKey, e -> countApprovingResponses(e.getValue())));
+
+        var maxScore = scoredActions.values().stream().max(Integer::compareTo).get();
+        var maxScoringActions = scoredActions.entrySet().stream().filter(e -> e.getValue().equals(maxScore)).map(Map.Entry::getKey).collect(Collectors.toList());
+        return new RandomUtil<PieceAction>().chooseRandom(maxScoringActions);
     }
 
     private int countApprovingResponses(Set<ActionResponse> responses) {

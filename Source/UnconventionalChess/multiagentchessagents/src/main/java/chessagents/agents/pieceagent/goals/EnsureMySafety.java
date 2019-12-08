@@ -42,10 +42,10 @@ public class EnsureMySafety extends Value {
 
         var theMove = NLG_FACTORY.createNounPhrase("move");
         theMove.setDeterminer("that");
-        sentence.setObject(theMove);
+        sentence.setSubject(theMove);
 
         var me = NLG_FACTORY.createNounPhrase("me");
-        sentence.setSubject(me);
+        sentence.setObject(me);
 
         var verb = new RandomUtil<String>().chooseRandom(Arrays.asList("rescue", "protect", "keep safe"));
         sentence.setVerb(verb);

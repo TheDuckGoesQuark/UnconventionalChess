@@ -58,7 +58,7 @@ public class ReactToProposedMove extends PieceAction {
         // choose one response from the majority
         var rand = new RandomUtil<ActionResponse>();
         final ActionResponse chosenResponse;
-        if (positiveResponses.size() > negativeResponses.size()) {
+        if (positiveResponses.size() >= negativeResponses.size()) {
             chosenResponse = rand.chooseRandom(positiveResponses);
         } else {
             chosenResponse = rand.chooseRandom(negativeResponses);
@@ -74,8 +74,8 @@ public class ReactToProposedMove extends PieceAction {
         subject.setDeterminer("that");
         sentence.setObject(subject);
 
-        sentence.setFeature(Feature.COMPLEMENTISER, "because");
         var reasoning = chosenResponse.getReasoning();
+        reasoning.setFeature(Feature.COMPLEMENTISER, "because");
         reasoning.setFeature(Feature.TENSE, Tense.FUTURE);
         sentence.addComplement(reasoning);
 
