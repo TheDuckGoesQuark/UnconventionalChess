@@ -33,7 +33,7 @@ public class MaximiseEnemyCapturedPieces extends Value {
         sentence.setVerb(captures);
 
         var enemyPiece = NLG_FACTORY.createNounPhrase("piece");
-        enemyPiece.setDeterminer("enemy");
+        enemyPiece.setDeterminer("an enemy");
         sentence.setObject(enemyPiece);
 
         return new ActionResponse(action, approved, sentence);

@@ -45,12 +45,8 @@ public class DecideIfMoving extends PieceStateBehaviour {
         if (turnContext.getDebateCycles() < pieceContext.getMaxDebateCycle()) {
             logger.info("true");
             actions.add(new RefuseToMoveAction(myPiece, requestToMove, requestedMove));
-        } else {
-            actions.add(new AgreeToMoveAction(myPiece, requestToMove, requestedMove));
-            actions.add(new FalselyAgreeToMoveAction(myPiece, requestToMove, requestedMove));
         }
-
-        // TODO agree but perform different move?
+        actions.add(new AgreeToMoveAction(myPiece, requestToMove, requestedMove));
 
         return actions;
     }
