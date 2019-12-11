@@ -30,7 +30,7 @@ public class MinimiseFriendlyThreatenedPieces extends Value {
         final VPPhraseSpec verb;
         if (threatenedPiecesAfter == threatenedPiecesBefore) {
             verb = NLG_FACTORY.createVerbPhrase("affect");
-  z          sentence.setFeature(Feature.NEGATED, true);
+            sentence.setFeature(Feature.NEGATED, true);
         } else if (threatenedPiecesAfter < threatenedPiecesBefore) {
             verb = NLG_FACTORY.createVerbPhrase("decrease");
         } else {
