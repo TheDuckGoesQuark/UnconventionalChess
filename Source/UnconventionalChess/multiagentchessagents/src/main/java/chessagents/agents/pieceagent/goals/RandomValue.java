@@ -20,8 +20,6 @@ public class RandomValue extends Value {
 
     @Override
     public ActionResponse getActionResponse(ChessPiece chessPiece, GameState gameState, PieceAction action) {
-        var sentence = NLG_FACTORY.createClause();
-        var approves = RandomUtil.randBool();
-        return new ActionResponse(action, approves, sentence);
+        return new ActionResponse(action, RandomUtil.randBool(), null);
     }
 }

@@ -21,7 +21,7 @@ public class MinimiseFriendlyThreatenedPieces extends Value {
         var myColour = chessPiece.getColour();
         var threatenedPiecesBefore = gameState.getThreatenedPieces().stream().filter(p -> p.isColour(myColour)).count();
         var threatenedPiecesAfter = gameState.getOutcomeOfAction(action).getThreatenedPieces().stream().filter(p -> p.isColour(myColour)).count();
-        var approves = threatenedPiecesBefore > threatenedPiecesAfter;
+        var approves = threatenedPiecesBefore > threatenedPiecesAfter || (threatenedPiecesBefore == 0 && threatenedPiecesAfter == 0);
 
         var move = NLG_FACTORY.createNounPhrase("move");
         move.setDeterminer("that");
@@ -30,7 +30,7 @@ public class MinimiseFriendlyThreatenedPieces extends Value {
         final VPPhraseSpec verb;
         if (threatenedPiecesAfter == threatenedPiecesBefore) {
             verb = NLG_FACTORY.createVerbPhrase("affect");
-            sentence.setFeature(Feature.NEGATED, true);
+  z          sentence.setFeature(Feature.NEGATED, true);
         } else if (threatenedPiecesAfter < threatenedPiecesBefore) {
             verb = NLG_FACTORY.createVerbPhrase("decrease");
         } else {

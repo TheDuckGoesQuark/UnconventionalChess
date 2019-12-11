@@ -26,9 +26,8 @@ import static chessagents.agents.pieceagent.nlg.NLGUtil.REALISER;
 
 public class TellPieceToMoveAction extends PieceAction {
 
-    private static final List<String> OBJECTS = List.of("there", "position");
-    private static final List<String> VERB = List.of("move", "slide", "jump", "walk", "shift", "run");
-    private static final List<String> ADVERBS = List.of("quickly", "soon", "hastily", "carefully");
+    private static final List<String> OBJECTS = List.of("position");
+    private static final List<String> VERB = List.of("move");
     private static final List<String> COMPLEMENTISERS = List.of("to", "that");
     private static final List<String> MODALS = List.of("can", "will");
 
@@ -100,17 +99,15 @@ public class TellPieceToMoveAction extends PieceAction {
 
         clause.setSubject(otherChessPiece.getAgentAID().getLocalName());
         clause.setVerb(chooseRandom(VERB));
-        clause.setObject(chooseRandom(OBJECTS));
+        var target = NLG_FACTORY.createNounPhrase(move.getTarget().getCoordinates());
+        target.setDeterminer("to");
+        clause.setObject(target);
         clause.setFeature(Feature.COMPLEMENTISER, chooseRandom(COMPLEMENTISERS));
         clause.setFeature(Feature.TENSE, Tense.FUTURE);
 
         if (randBool()) {
             clause.setFeature(Feature.INTERROGATIVE_TYPE, InterrogativeType.YES_NO);
             clause.setFeature(Feature.MODAL, chooseRandom(MODALS));
-        }
-
-        if (randBool()) {
-            clause.addComplement(chooseRandom(ADVERBS));
         }
 
         return Optional.ofNullable(REALISER.realiseSentence(clause));

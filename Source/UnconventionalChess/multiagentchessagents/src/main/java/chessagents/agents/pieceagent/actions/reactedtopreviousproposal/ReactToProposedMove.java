@@ -71,16 +71,19 @@ public class ReactToProposedMove extends PieceAction {
         sentence.setSubject(i);
         var opinion = NLG_FACTORY.createVerbPhrase("like");
         sentence.setVerb(opinion);
+        if (!chosenResponse.isApproveAction()) sentence.setFeature(Feature.NEGATED, true);
         var subject = NLG_FACTORY.createNounPhrase("move");
         subject.setDeterminer("that");
         sentence.setObject(subject);
+        sentence.setFeature(Feature.TENSE, Tense.PRESENT);
 
         var reasoning = chosenResponse.getReasoning();
-        reasoning.setFeature(Feature.COMPLEMENTISER, "because");
-        reasoning.setFeature(Feature.TENSE, Tense.FUTURE);
-        sentence.addComplement(reasoning);
+        if (reasoning != null) {
+            reasoning.setFeature(Feature.COMPLEMENTISER, "because");
+            reasoning.setFeature(Feature.TENSE, Tense.FUTURE);
+            sentence.addComplement(reasoning);
+        }
 
-        if (!chosenResponse.isApproveAction()) sentence.setFeature(Feature.NEGATED, true);
 
         return Optional.ofNullable(REALISER.realiseSentence(sentence));
     }

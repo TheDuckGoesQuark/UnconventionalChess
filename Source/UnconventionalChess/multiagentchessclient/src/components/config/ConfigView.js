@@ -6,36 +6,41 @@ import ConfigBoard from "./ConfigBoard";
 
 const ConfigView = (props) => {
     return <div style={configStyle}>
-        <form>
+        <h1>Unconventional Chess</h1>
+        <form style={{textAlign: "center"}}>
             <ul style={listStyle}>
+                <li>
+                    <h2>Game Configuration</h2>
+                </li>
                 <li>
                     <label>
                         Game Mode
+                        <BooleanButton
+                            callback={props.setHumanPlays}
+                            trueText={"Play against agents"}
+                            falseText={"Watch agents"}
+                            isTrue={props.humanPlays}
+                        />
                     </label>
-                    <BooleanButton
-                        callback={props.setHumanPlays}
-                        trueText={"Play against agents"}
-                        falseText={"Watch agents"}
-                        isTrue={props.humanPlays}
-                    />
                 </li>
                 <li>
                     <label>
                         Play As:
+                        <BooleanButton
+                            disabled={!props.humanPlays}
+                            callback={props.setHumanPlaysAsWhite}
+                            trueText={"White"}
+                            falseText={"Black"}
+                            isTrue={props.humanPlaysAsWhite}
+                        />
                     </label>
-                    <BooleanButton
-                        disabled={!props.humanPlays}
-                        callback={props.setHumanPlaysAsWhite}
-                        trueText={"White"}
-                        falseText={"Black"}
-                        isTrue={props.humanPlaysAsWhite}
-                    />
                 </li>
                 <li>
+                    <h2>Piece Configuration</h2>
                     <label>
                         Click pieces to configure their personalities.
+                        <ConfigBoard/>
                     </label>
-                    <ConfigBoard/>
                 </li>
                 <li>
                     <button type="button" onClick={() => props.submitCurrentConfig(props.currentConfig)}>
@@ -68,6 +73,7 @@ const configStyle = {
 };
 
 const listStyle = {
+    display: "inline-block",
     listStyle: "none"
 };
 

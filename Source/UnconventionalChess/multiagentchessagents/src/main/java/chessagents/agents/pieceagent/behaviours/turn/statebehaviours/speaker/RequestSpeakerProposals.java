@@ -18,19 +18,22 @@ public class RequestSpeakerProposals extends PieceStateBehaviour {
 
     public static final String SPEAKER_CONTRACT_NET_PROTOCOL = "SPEAKER_CONTRACT_NET_PROTOCOL";
     private final TurnContext turnContext;
-    private final Set<PieceAction> actionSet;
 
     public RequestSpeakerProposals(PieceAgent pieceAgent, PieceContext pieceContext, TurnContext turnContext) {
         super(pieceContext, pieceAgent, PieceState.REQUEST_SPEAKER_PROPOSALS);
         this.turnContext = turnContext;
-        this.actionSet = new HashSet<>(List.of(
-                new AskOtherPiecesForIdeas(getMyPiece(), turnContext),
-                new LetOtherPieceSuggest(getMyPiece(), turnContext))
-        );
     }
 
     @Override
     public void action() {
+        var actionSet = new HashSet<PieceAction>();
+        var askOtherPiecesForIdeas = new AskOtherPiecesForIdeas(getMyPiece(), turnContext);
+        var letOtherPiecesSuggest = new LetOtherPieceSuggest(getMyPiece(), turnContext);
+
+        if (turnContext.getDebateCycles() < 1) actionSet.add(askOtherPiecesForIdeas);
+
+        actionSet.add(letOtherPiecesSuggest);
+
         setChosenAction(new RandomUtil<PieceAction>().chooseRandom(actionSet));
     }
 }

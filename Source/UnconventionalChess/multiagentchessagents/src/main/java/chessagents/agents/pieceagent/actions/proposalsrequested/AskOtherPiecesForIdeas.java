@@ -61,14 +61,13 @@ public class AskOtherPiecesForIdeas extends PieceAction {
         var sentence = NLG_FACTORY.createClause();
         var we = NLG_FACTORY.createNounPhrase("us");
         var doVerb = NLG_FACTORY.createVerbPhrase("doing");
-        var next = NLG_FACTORY.createNounPhrase("next");
 
         sentence.setSubject(we);
-        sentence.setObject(next);
         sentence.setVerb(doVerb);
         sentence.setFeature(Feature.TENSE, Tense.PRESENT);
         sentence.setFeature(Feature.INTERROGATIVE_TYPE, InterrogativeType.WHAT_OBJECT);
         sentence.setFeature(Feature.MODAL, "should");
+        sentence.setFeature(Feature.CUE_PHRASE, "next");
 
         return Optional.of(REALISER.realiseSentence(sentence));
     }

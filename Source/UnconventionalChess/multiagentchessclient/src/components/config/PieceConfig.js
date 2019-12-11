@@ -19,21 +19,23 @@ const PieceConfigForm = ({props}) => {
     let currentConfig = props.pieceConfigs[props.configuringSquare];
 
     return <div>
-        <h3>Configuring Piece at {props.configuringSquare}</h3>
-        <button type="button">Random TODO</button>
+        <h3>Configuring piece at {props.configuringSquare.toUpperCase()}</h3>
         <ul style={{listStyle: "none"}}>
             <li>
-                <label>Name</label>
-                <input type="text" value={currentConfig ? currentConfig.name : ''}
-                       onChange={event => props.updatePieceName(event.target.value)}/>
+                <label>Name
+                    <input type="text" value={currentConfig ? currentConfig.name : ''}
+                           onChange={event => props.updatePieceName(event.target.value)}/>
+                </label>
             </li>
             <li>
-                <label>Personality Type</label>
-                <select value={currentConfig ? currentConfig.personality : ''}
-                        onChange={(e) => props.updatePiecePersonality(props.personalityTypes[e.target.value])}>
-                    <option value={''}>Select...</option>
-                    {props.personalityTypes.map((pt, index) => <option key={pt.name} value={index}>{pt.name}</option>)}
-                </select>
+                <label>Personality Type
+                    <select value={currentConfig ? currentConfig.personality : ''}
+                            onChange={(e) => props.updatePiecePersonality(props.personalityTypes[e.target.value])}>
+                        <option value={''}>Select...</option>
+                        {props.personalityTypes.map((pt, index) => <option key={pt.name}
+                                                                           value={index}>{pt.name}</option>)}
+                    </select>
+                </label>
             </li>
             <li>
                 <button type="button" onClick={props.savePieceConfig}>Save</button>
