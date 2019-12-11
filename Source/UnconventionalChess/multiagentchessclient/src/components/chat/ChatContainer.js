@@ -9,7 +9,8 @@ const mapMessageToComponent = (message, index, nMessages) => {
     };
     if (message.sourceSquare) {
         return <div key={index}
-                    style={style}>Move: {message.sourceSquare},{message.targetSquare}</div>
+                    style={style}>
+            <strong>Move: {message.sourceSquare.toUpperCase()},{message.targetSquare.toUpperCase()}</strong></div>
     } else {
         return <div key={index}
                     style={style}>{message.fromId}: {message.messageBody}</div>

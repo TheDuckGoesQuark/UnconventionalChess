@@ -7,21 +7,21 @@ import chessagents.agents.pieceagent.PieceAgent;
 import chessagents.agents.pieceagent.behaviours.turn.PieceTransition;
 import chessagents.ontology.schemas.concepts.ChessPiece;
 import chessagents.ontology.schemas.concepts.PieceMove;
+import chessagents.util.RandomUtil;
 import jade.lang.acl.ACLMessage;
 import simplenlg.features.Feature;
 import simplenlg.features.Tense;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.Random;
 
 import static chessagents.agents.pieceagent.nlg.NLGUtil.NLG_FACTORY;
 import static chessagents.agents.pieceagent.nlg.NLGUtil.REALISER;
 
 public class AgreeToMoveAction extends PieceAction {
 
-    private static final List<String> OBJECTS = List.of("there", "position");
-    private static final List<String> VERB = List.of("move", "slide", "jump", "walk", "shift", "run");
-    private static final List<String> COMPLEMENTISERS = List.of("to", "that");
+    private static final List<String> AGREE = List.of("sure!", "ok", "okay", "If I have to...", "If you say so.", "Here we go...");
 
     private final ACLMessage requestToMove;
     private final PieceMove requestedMove;
@@ -57,14 +57,6 @@ public class AgreeToMoveAction extends PieceAction {
 
     @Override
     public Optional<String> verbalise(PieceContext context) {
-        var clause = NLG_FACTORY.createClause();
-
-        clause.setSubject("I");
-        clause.setVerb(chooseRandom(VERB));
-        clause.setObject(chooseRandom(OBJECTS));
-        clause.setFeature(Feature.COMPLEMENTISER, chooseRandom(COMPLEMENTISERS));
-        clause.setFeature(Feature.TENSE, Tense.FUTURE);
-
-        return Optional.ofNullable(REALISER.realiseSentence(clause));
+        return Optional.ofNullable(new RandomUtil<String>().chooseRandom(AGREE));
     }
 }
