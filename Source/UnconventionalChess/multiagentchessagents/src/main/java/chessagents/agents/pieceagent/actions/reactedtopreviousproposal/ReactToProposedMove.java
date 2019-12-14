@@ -59,7 +59,8 @@ public class ReactToProposedMove extends PieceAction {
         var rand = new RandomUtil<ActionResponse>();
         final ActionResponse chosenResponse;
 
-        if (positiveResponses.size() >= negativeResponses.size()) {
+        if (positiveResponses.size() == 0 && negativeResponses.size() == 0) logger.warning("BOTH AT ZERO");
+        if (positiveResponses.size() != 0 && positiveResponses.size() >= negativeResponses.size()) {
             chosenResponse = rand.chooseRandom(positiveResponses);
         } else {
             chosenResponse = rand.chooseRandom(negativeResponses);

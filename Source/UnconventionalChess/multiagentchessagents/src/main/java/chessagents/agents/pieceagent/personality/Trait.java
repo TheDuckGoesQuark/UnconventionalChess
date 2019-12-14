@@ -11,9 +11,8 @@ import java.util.Set;
 public enum Trait {
     AGGRESSIVE(new Value[]{new MaximiseEnemyCapturedPieces()}),
     DEFENSIVE(new Value[]{new MinimiseFriendlyThreatenedPieces()}),
-    EGOTISTIC(new Value[]{new EnsureMySafety()}),
+    EGOTISTIC(new Value[]{new EnsureMySafety()});
     //    BENEVOLENT(new Value[]{}),
-    CHAOTIC(new Value[]{new RandomValue()});
 
     private final Set<Value> appealingValues;
 

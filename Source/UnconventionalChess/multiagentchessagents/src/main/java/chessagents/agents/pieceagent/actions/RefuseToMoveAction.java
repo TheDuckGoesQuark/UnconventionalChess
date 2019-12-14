@@ -6,6 +6,7 @@ import chessagents.agents.pieceagent.PieceAgent;
 import chessagents.agents.pieceagent.behaviours.turn.PieceTransition;
 import chessagents.ontology.schemas.concepts.ChessPiece;
 import chessagents.ontology.schemas.concepts.PieceMove;
+import chessagents.util.RandomUtil;
 import jade.lang.acl.ACLMessage;
 import simplenlg.features.Feature;
 import simplenlg.features.InterrogativeType;
@@ -18,10 +19,7 @@ import static chessagents.agents.pieceagent.nlg.NLGUtil.NLG_FACTORY;
 import static chessagents.agents.pieceagent.nlg.NLGUtil.REALISER;
 
 public class RefuseToMoveAction extends PieceAction {
-    private static final List<String> OBJECTS = List.of("there", "position");
-    private static final List<String> VERB = List.of("move", "slide", "jump", "walk", "shift", "run");
-    private static final List<String> ADVERBS = List.of("quickly", "soon", "hastily", "carefully");
-    private static final List<String> COMPLEMENTISERS = List.of("to", "that");
+    private static final List<String> REJECTS = List.of("nah", "no thank you", "nope", "no way!", "no thanks");
 
     private final ACLMessage requestToMove;
     private final PieceMove requestedMove;
@@ -57,20 +55,6 @@ public class RefuseToMoveAction extends PieceAction {
 
     @Override
     public Optional<String> verbalise(PieceContext context) {
-        var clause = NLG_FACTORY.createClause();
-
-        clause.setSubject("I");
-        clause.setVerb(chooseRandom(VERB));
-        clause.setObject(chooseRandom(OBJECTS));
-        clause.setFeature(Feature.COMPLEMENTISER, chooseRandom(COMPLEMENTISERS));
-        clause.setFeature(Feature.TENSE, Tense.FUTURE);
-
-        if (randBool()) {
-            clause.addComplement(chooseRandom(ADVERBS));
-        }
-
-        clause.setFeature(Feature.NEGATED, true);
-
-        return Optional.ofNullable(REALISER.realiseSentence(clause));
+        return Optional.ofNullable(new RandomUtil<String>().chooseRandom(REJECTS));
     }
 }

@@ -172,6 +172,22 @@ const squareStyling = ({pieceSquare, history}) => {
     };
 };
 
+/**
+ * extract any mention of a square or target in message
+ * @param message message that was sent
+ * @returns {string}
+ */
+const determineSquare = (message) => {
+    const messageBody = {message};
+
+    let matches = messageBody.match(/[A-Z][1-9]/gm);
+    // extract LETTERNUMBER
+    // take last one mentioned
+    // return as lowercase
+
+    return matches[matches.length - 1].toLowerCase();
+};
+
 export default function boardReducer(state = initialState, action) {
     switch (action.type) {
         case MOVE_RECEIVE:
@@ -185,11 +201,16 @@ export default function boardReducer(state = initialState, action) {
             };
         case SQUARE_CLICK :
             return handleSquareClick(state, action);
-        case SQUARE_RIGHT_CLICK :
-            return {
-                ...state,
-                squareStyles: {[action.payload.square]: {backgroundColor: "deepPink"}}
-            };
+        // case CHAT_MESSAGE_RECEIVE:
+        //     let square = determineSquare(action.payload.message);
+        //     if (square) {
+        //         return {
+        //             ...state,
+        //             squareStyles: {[square]: {backgroundColor: "deepPink"}}
+        //         };
+        //     } else {
+        //         return state;
+        //     }
         case DRAG_OVER_SQUARE :
             return handleDragOverSquare(state, action);
         case MOUSE_OUT_SQUARE :
