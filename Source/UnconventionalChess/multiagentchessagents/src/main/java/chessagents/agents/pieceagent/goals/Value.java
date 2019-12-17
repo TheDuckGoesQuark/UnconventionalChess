@@ -2,8 +2,8 @@ package chessagents.agents.pieceagent.goals;
 
 import chessagents.agents.pieceagent.ActionResponse;
 import chessagents.chess.GameState;
-import chessagents.agents.pieceagent.actions.PieceAction;
 import chessagents.ontology.schemas.concepts.ChessPiece;
+import chessagents.ontology.schemas.concepts.PieceMove;
 
 /**
  * A goal is a game state that can be achieved
@@ -26,7 +26,7 @@ public abstract class Value {
      * @return the given pieces response to the action applied to the given game state, with whether or not
      * it approves of the action and the reasoning for its decision
      */
-    public abstract ActionResponse getActionResponse(ChessPiece chessPiece, GameState gameState, PieceAction action);
+    public abstract ActionResponse getMoveResponse(ChessPiece chessPiece, GameState gameState, PieceMove action);
 
     /**
      * Get the name of this goal

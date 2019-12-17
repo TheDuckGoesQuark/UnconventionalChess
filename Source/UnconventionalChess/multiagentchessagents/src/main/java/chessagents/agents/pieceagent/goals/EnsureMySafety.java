@@ -1,17 +1,13 @@
 package chessagents.agents.pieceagent.goals;
 
 import chessagents.agents.pieceagent.ActionResponse;
-import chessagents.agents.pieceagent.actions.PieceAction;
 import chessagents.chess.GameState;
 import chessagents.ontology.schemas.concepts.ChessPiece;
+import chessagents.ontology.schemas.concepts.PieceMove;
 import chessagents.util.RandomUtil;
-import simplenlg.features.Feature;
-import simplenlg.phrasespec.NPPhraseSpec;
-import simplenlg.phrasespec.SPhraseSpec;
 
 import java.util.Arrays;
 
-import static chessagents.agents.pieceagent.nlg.NLGUtil.NLG_FACTORY;
 
 public class EnsureMySafety extends Value {
 
@@ -19,9 +15,9 @@ public class EnsureMySafety extends Value {
         super("Ensure my safety");
     }
 
-    public boolean actionMaintainsValue(ChessPiece pieceWithValue, GameState gameState, PieceAction pieceAction) {
+    public boolean actionMaintainsValue(ChessPiece pieceWithValue, GameState gameState, PieceMove pieceAction) {
         // choose action that produces state where I am not captured and not in the set of captured pieces
-        var afterActionState = gameState.getOutcomeOfAction(pieceAction);
+        var afterActionState = gameState.applyMove(pieceAction);
 
         // TODO contains check will fail if I moved/was captured as a clone is made with a different position
         // and current piece hashcode includes the position in the equals check
@@ -31,27 +27,8 @@ public class EnsureMySafety extends Value {
     }
 
     @Override
-    public ActionResponse getActionResponse(ChessPiece chessPiece, GameState gameState, PieceAction action) {
+    public ActionResponse getMoveResponse(ChessPiece chessPiece, GameState gameState, PieceMove action) {
         var approves = actionMaintainsValue(chessPiece, gameState, action);
-        var reasoning = generateReasoning(approves);
-        return new ActionResponse(action, approves, reasoning);
-    }
-
-    private SPhraseSpec generateReasoning(boolean approves) {
-        var sentence = NLG_FACTORY.createClause();
-
-        var theMove = NLG_FACTORY.createNounPhrase("move");
-        theMove.setDeterminer("that");
-        sentence.setSubject(theMove);
-
-        var me = NLG_FACTORY.createNounPhrase("me");
-        sentence.setObject(me);
-
-        var verb = new RandomUtil<String>().chooseRandom(Arrays.asList("rescue", "protect", "keep safe"));
-        sentence.setVerb(verb);
-
-        if (!approves) sentence.setFeature(Feature.NEGATED, true);
-
-        return sentence;
+        return new ActionResponse(action, approves);
     }
 }

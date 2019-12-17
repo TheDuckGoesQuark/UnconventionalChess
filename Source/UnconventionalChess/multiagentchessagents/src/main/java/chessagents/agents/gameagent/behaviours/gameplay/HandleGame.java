@@ -25,7 +25,6 @@ public class HandleGame extends GamePlayFSMBehaviour {
         myAgent.addBehaviour(new HandleMoveSubscriptions((GameAgent) myAgent, context, informSubscribersOfMove));
         var dataStore = getDataStore();
         registerFirstState(new InitTurn((GameAgent) myAgent, context));
-        registerState(new ChooseFirstSpeaker((GameAgent) myAgent, context), ELECT_LEADER_AGENT);
         registerState(new WaitForMove((GameAgent) myAgent, dataStore), WAIT_FOR_MOVE);
         registerState(new VerifyMove((GameAgent) myAgent, context, dataStore), VERIFY_MOVE);
         registerState(new RefuseMove((GameAgent) myAgent, dataStore), REFUSE_MOVE);
@@ -35,12 +34,8 @@ public class HandleGame extends GamePlayFSMBehaviour {
         registerLastState(new EndGame());
 
         // init transitions
-        registerTransition(INIT, ELECT_LEADER_AGENT, IS_FIRST_AGENT_TURN);
         registerTransition(INIT, END_GAME, GAME_COMPLETE);
         registerTransition(INIT, WAIT_FOR_MOVE, START_TURN);
-
-        // elect transitions
-        registerTransition(ELECT_LEADER_AGENT, WAIT_FOR_MOVE, LEADER_AGENT_CHOSEN);
 
         // wait for move transitions
         registerTransition(WAIT_FOR_MOVE, WAIT_FOR_MOVE, NO_MOVE_RECEIVED);

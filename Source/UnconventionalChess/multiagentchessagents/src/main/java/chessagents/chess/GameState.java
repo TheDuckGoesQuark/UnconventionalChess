@@ -1,6 +1,5 @@
 package chessagents.chess;
 
-import chessagents.agents.pieceagent.actions.PieceAction;
 import chessagents.ontology.schemas.concepts.ChessPiece;
 import chessagents.ontology.schemas.concepts.Colour;
 import chessagents.ontology.schemas.concepts.PieceMove;
@@ -98,6 +97,13 @@ public class GameState {
         return iter.hasNext() ? Optional.ofNullable(iter.next()) : Optional.empty();
     }
 
+    public Set<ChessPiece> getAllPiecesForTypeAndColour(String pieceTypeName, Colour colour) {
+        return board.getPiecesFiltered(List.of(
+                PieceFilter.isType(pieceTypeName),
+                PieceFilter.isColour(colour)
+        ));
+    }
+
     public Set<ChessPiece> getAllAgentPiecesForColourOnBoard(Colour colour) {
         return board.getPiecesFiltered(List.of(
                 PieceFilter.isAgent(),
@@ -115,13 +121,8 @@ public class GameState {
         pieces.forEach(p -> board.registerAgentPiece(p, p.getAgentAID()));
     }
 
-    /**
-     * Registers the given piece as an agent
-     *
-     * @param piece piece with AID populated
-     */
-    public void registerPieceAsAgent(ChessPiece piece) {
-        board.registerAgentPiece(piece, piece.getAgentAID());
+    public void registerPieceAtPositionAsAgent(OntoAID aid, Position position) {
+        getPieceAtPosition(position).get().setAgentAID(aid);
     }
 
     /**
@@ -130,22 +131,12 @@ public class GameState {
      * @param move move to make
      * @return game state after move is made
      */
-    public GameState makeMove(PieceMove move) {
+    public GameState applyMove(PieceMove move) {
         return new GameState(gameId, board.copyOnMove(move));
     }
 
     public boolean isSideToGo(Colour colour) {
         return board.isSideToGo(colour);
-    }
-
-    /**
-     * Apply the given action to a copy of the current game state, and return the copy
-     *
-     * @param pieceAction action to apply
-     * @return copy of this game state with the given action applied
-     */
-    public GameState getOutcomeOfAction(PieceAction pieceAction) {
-        return pieceAction.getOutcomeOfAction(this);
     }
 
     public Set<ChessPiece> getCapturedForColour(Colour colour) {
@@ -177,5 +168,4 @@ public class GameState {
     public boolean isValidMove(PieceMove move) {
         return board.isValidMove(move);
     }
-
 }

@@ -23,7 +23,6 @@ import jade.util.Logger;
 import jade.wrapper.ControllerException;
 
 import java.util.*;
-import java.util.stream.Collectors;
 
 public class SpawnPieceAgents extends SimpleBehaviour {
 
@@ -137,7 +136,6 @@ public class SpawnPieceAgents extends SimpleBehaviour {
                     var aid = new AID(agentName, AID.ISLOCALNAME);
                     var ontoAid = new OntoAID(aid.getLocalName(), AID.ISLOCALNAME);
                     piece.setAgentAID(ontoAid);
-                    context.getGameState().registerPieceAsAgent(piece);
                 }
 
                 protected void handleFailure(ACLMessage failure) {

@@ -7,37 +7,11 @@ import {wsConnected, wsDisconnected, wsInitialised} from "./WebsocketActions";
 import {ChatMessage, MoveMessage} from "../../models/Message";
 
 
-const MESSAGE_DELAY_MS = 2000;
-
-let lastMessageSent = new Date().getTime();
-
 const handleMessage = (message, handlerByType) => {
     if (message.type && handlerByType[message.type]) {
         handlerByType[message.type](message.body);
     } else {
         throw new TypeError("Unknown message type received");
-    }
-};
-
-const delayMessage = (message, handlerByType) => {
-    let currentTime = new Date().getTime();
-    let delay;
-
-    // throttle messages so they seem realistic
-    if (lastMessageSent > currentTime) {
-        delay = (lastMessageSent - currentTime) + MESSAGE_DELAY_MS;
-        lastMessageSent = currentTime + delay;
-    } else {
-        delay = 0;
-        lastMessageSent = currentTime + MESSAGE_DELAY_MS;
-    }
-
-    if (delay !== 0) {
-        setTimeout(() => {
-            handleMessage(message, handlerByType);
-        }, delay)
-    } else {
-        handleMessage(message, handlerByType);
     }
 };
 
@@ -54,7 +28,7 @@ const WebsocketMiddleware = (props) => (
         // Topics to subscribe to
         topics={[`/topic/game.${props.gameId}`]}
         // Message handlers
-        onMessage={(message) => delayMessage(message, {
+        onMessage={(message) => handleMessage(message, {
             [ChatMessage.TYPE]: props.receiveChatMessage,
             [MoveMessage.TYPE]: (message) => props.receiveMoveMessage(reformatMoveMessage(message)),
         })}

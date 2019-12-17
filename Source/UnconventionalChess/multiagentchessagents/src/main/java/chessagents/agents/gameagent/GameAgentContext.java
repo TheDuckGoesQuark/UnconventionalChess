@@ -6,9 +6,6 @@ import jade.core.AID;
 import lombok.Getter;
 import lombok.Setter;
 
-import static chessagents.ontology.schemas.concepts.Colour.BLACK;
-import static chessagents.ontology.schemas.concepts.Colour.WHITE;
-
 @Getter
 @Setter
 public class GameAgentContext {
@@ -25,7 +22,7 @@ public class GameAgentContext {
     }
 
     public void makeMove(PieceMove move) {
-        gameState = gameState.makeMove(move);
+        gameState = gameState.applyMove(move);
         moveCounter++;
     }
 

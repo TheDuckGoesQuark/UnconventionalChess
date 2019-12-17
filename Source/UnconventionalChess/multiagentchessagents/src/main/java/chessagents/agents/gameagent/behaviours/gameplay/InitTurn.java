@@ -18,8 +18,6 @@ public class InitTurn extends SimpleBehaviour {
     public void action() {
         if (context.getGameState().gameIsOver()) {
             nextState = GamePlayTransition.GAME_COMPLETE;
-        } else if (context.isFirstTurnForAgentSide()) {
-            nextState = GamePlayTransition.IS_FIRST_AGENT_TURN;
         } else {
             nextState = GamePlayTransition.START_TURN;
         }

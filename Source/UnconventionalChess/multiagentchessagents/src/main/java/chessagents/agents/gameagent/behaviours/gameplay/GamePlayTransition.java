@@ -1,7 +1,6 @@
 package chessagents.agents.gameagent.behaviours.gameplay;
 
 public enum GamePlayTransition {
-    IS_FIRST_AGENT_TURN,
     START_TURN,
     GAME_COMPLETE,
     LEADER_AGENT_CHOSEN,

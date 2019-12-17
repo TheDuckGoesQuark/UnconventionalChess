@@ -7,7 +7,7 @@ import chessagents.agents.gatewayagent.behaviours.SubscribeToChatter;
 import chessagents.agents.gatewayagent.messages.MoveMessage;
 import chessagents.agents.gatewayagent.messages.OntologyTranslator;
 import chessagents.agents.pieceagent.PieceContext;
-import chessagents.agents.pieceagent.behaviours.turn.SubscribeToMoves;
+import chessagents.agents.pieceagent.functionality.initial.SubscribeToMoves;
 import chessagents.ontology.schemas.actions.MakeMove;
 import jade.core.AID;
 import jade.core.behaviours.Behaviour;

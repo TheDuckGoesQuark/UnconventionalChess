@@ -25,6 +25,10 @@ final class PieceFilter {
         return isNotCaptured().and(p -> p.getPosition().equals(position));
     }
 
+    static Predicate<ChessPiece> isType(String type) {
+        return p -> p.getType().equals(type);
+    }
+
     static Predicate<ChessPiece> hasAID(OntoAID aid) {
         return isAgent().and(p -> p.getAgentAID().equals(aid));
     }

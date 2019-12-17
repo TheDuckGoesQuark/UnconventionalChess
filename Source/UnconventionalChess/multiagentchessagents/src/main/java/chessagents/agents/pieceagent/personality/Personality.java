@@ -2,9 +2,8 @@ package chessagents.agents.pieceagent.personality;
 
 import chessagents.agents.pieceagent.ActionResponse;
 import chessagents.chess.GameState;
-import chessagents.agents.pieceagent.actions.PieceAction;
 import chessagents.ontology.schemas.concepts.ChessPiece;
-import simplenlg.phrasespec.NPPhraseSpec;
+import chessagents.ontology.schemas.concepts.PieceMove;
 
 import java.util.*;
 import java.util.stream.Collectors;
@@ -33,15 +32,15 @@ public class Personality {
      * @param gameState  game state to test against
      * @return the set of actions considered with this personalities response to them
      */
-    public Map<PieceAction, Set<ActionResponse>> getResponseToActions(ChessPiece chessPiece, Set<PieceAction> actions, GameState gameState) {
+    public Map<PieceMove, Set<ActionResponse>> getResponseToMoves(ChessPiece chessPiece, Set<PieceMove> actions, GameState gameState) {
         return actions.stream()
                 .collect(Collectors.toMap(action -> action, action -> getActionResponses(chessPiece, gameState, action)));
     }
 
-    private Set<ActionResponse> getActionResponses(ChessPiece chessPiece, GameState gameState, PieceAction action) {
+    private Set<ActionResponse> getActionResponses(ChessPiece chessPiece, GameState gameState, PieceMove action) {
         return traits.stream()
                 .map(Trait::getAppealingValues)
-                .flatMap(values -> values.stream().map(value -> value.getActionResponse(chessPiece, gameState, action)))
+                .flatMap(values -> values.stream().map(value -> value.getMoveResponse(chessPiece, gameState, action)))
                 .collect(Collectors.toSet());
     }
 }

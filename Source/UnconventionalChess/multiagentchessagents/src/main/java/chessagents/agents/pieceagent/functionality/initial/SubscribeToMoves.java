@@ -1,4 +1,4 @@
-package chessagents.agents.pieceagent.behaviours.initial;
+package chessagents.agents.pieceagent.functionality.initial;
 
 import chessagents.agents.commonbehaviours.SubscriptionInitiator;
 import chessagents.agents.pieceagent.PieceContext;
