@@ -27,8 +27,9 @@ public class StartSpeakerElection extends ConversationStateBehaviour {
 
         // send to everyone on my side (including myself!)
         var myAgent = getAgent();
-        var gameState = myAgent.getPieceContext().getGameState();
-        gameState.getAllAgentPiecesForColour(gameState.getSideToGo())
+        var context = myAgent.getPieceContext();
+        var gameState = context.getGameState();
+        gameState.getAllAgentPiecesForColour(context.getMyPiece().getColour())
                 .stream()
                 .map(ChessPiece::getAgentAID)
                 .forEach(cfp::addReceiver);

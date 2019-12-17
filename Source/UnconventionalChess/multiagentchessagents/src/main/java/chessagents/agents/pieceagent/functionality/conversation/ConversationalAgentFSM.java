@@ -32,25 +32,26 @@ public class ConversationalAgentFSM extends FSMBehaviour {
         registerTransition(speak, startSpeakerElection, ConversationTransition.SPOKE);
 
         registerState(listen);
-        registerTransition(listen, waitForSpeakerResults, ConversationTransition.LISTENED);
+        registerTransition(listen, waitForSpeakerCFP, ConversationTransition.LISTENED);
 
         registerState(startSpeakerElection);
         registerTransition(startSpeakerElection, chooseSpeaker, ConversationTransition.STARTED_SPEAKER_ELECTION);
 
         registerState(waitForSpeakerCFP);
-        registerTransition(waitForSpeakerResults, waitForSpeakerResults, ConversationTransition.ASKED_TO_SPEAK);
+        registerTransition(waitForSpeakerCFP, waitForSpeakerResults, ConversationTransition.ASKED_TO_SPEAK);
 
         registerState(chooseSpeaker);
         registerTransition(chooseSpeaker, waitForSpeakerResults, ConversationTransition.SPEAKER_CHOSEN);
 
         registerState(waitForSpeakerResults);
-        registerTransition(waitForSpeakerResults, init, ConversationTransition.SPEAKER_CONFIRMED);
+        registerTransition(waitForSpeakerResults, init, ConversationTransition.SPEAKER_CONFIRMED, ConversationState.values());
+        // everything resets on return to initial
     }
 
     @Override
     public void reset() {
         // reset conversation context
-        conversationContext.reset();
+        conversationContext.startNewTurn();
         super.reset();
     }
 
@@ -67,7 +68,12 @@ public class ConversationalAgentFSM extends FSMBehaviour {
     }
 
     public void registerTransition(ConversationStateBehaviour s1, ConversationStateBehaviour s2, ConversationTransition transition, ConversationState[] toBeReset) {
-        var namesOfStatesToBeReset = Arrays.stream(toBeReset).map(ConversationState::name).toArray();
-        super.registerTransition(s1.getState().name(), s2.getState().name(), transition.ordinal(), (String[]) namesOfStatesToBeReset);
+        var namesOfStatesToBeReset = new String[toBeReset.length];
+
+        for (int i = 0; i < toBeReset.length; i++) {
+            namesOfStatesToBeReset[i] = toBeReset[i].name();
+        }
+
+        super.registerTransition(s1.getState().name(), s2.getState().name(), transition.ordinal(), namesOfStatesToBeReset);
     }
 }

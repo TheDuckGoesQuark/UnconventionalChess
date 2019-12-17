@@ -3,29 +3,18 @@ package chessagents.agents.pieceagent.functionality.conversation;
 import jade.content.OntoAID;
 import jade.lang.acl.MessageTemplate;
 
-import java.util.UUID;
-
 public class ConversationContext {
 
-    private String conversationID;
-    private MessageTemplate conversationIdMatcher;
+    private int roundCounter = 0;
+    private int turnCounter = 0;
     private OntoAID speaker;
 
-    public ConversationContext() {
-        generateNewConversationID();
-    }
-
-    private void generateNewConversationID() {
-        conversationID = UUID.randomUUID().toString();
-        conversationIdMatcher = MessageTemplate.MatchConversationId(conversationID);
-    }
-
     public String getConversationID() {
-        return conversationID;
+        return String.format("conversation-%d-%d", turnCounter, roundCounter);
     }
 
     public MessageTemplate getConversationIdMatcher() {
-        return conversationIdMatcher;
+        return MessageTemplate.MatchConversationId(getConversationID());
     }
 
     public OntoAID getSpeaker() {
@@ -34,10 +23,11 @@ public class ConversationContext {
 
     public void setSpeaker(OntoAID speaker) {
         this.speaker = speaker;
+        turnCounter++;
     }
 
-    public void reset() {
-        generateNewConversationID();
+    public void startNewTurn() {
+        roundCounter++;
         speaker = null;
     }
 }

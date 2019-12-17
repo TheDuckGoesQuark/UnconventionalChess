@@ -22,11 +22,6 @@ public class ChooseSpeaker extends ConversationStateBehaviour {
     }
 
     @Override
-    public void reset() {
-        super.reset();
-    }
-
-    @Override
     public void onStart() {
         super.onStart();
         speakerProposals.clear();

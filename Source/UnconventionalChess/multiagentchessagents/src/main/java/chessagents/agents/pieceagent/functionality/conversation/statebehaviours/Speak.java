@@ -16,8 +16,8 @@ public class Speak extends ConversationStateBehaviour {
         // speaker flow chart
         try {
             logger.info("sleeping...");
-            Thread.sleep(5000);
-            myAgent.addBehaviour(new SendChatMessage("wassup", myAgent.getAID(), getAgent().getPieceContext().getGameAgentAID()));
+            Thread.sleep(1000);
+            myAgent.addBehaviour(new SendChatMessage("wassup, "+getConversationContext().getConversationID(), myAgent.getAID(), getAgent().getPieceContext().getGameAgentAID()));
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
