@@ -1,7 +1,6 @@
 package chessagents.agents.pieceagent.actions.proposalsrequested;
 
 import chessagents.agents.pieceagent.PieceContext;
-import chessagents.agents.pieceagent.TurnContext;
 import chessagents.ontology.schemas.concepts.ChessPiece;
 
 import java.util.Optional;

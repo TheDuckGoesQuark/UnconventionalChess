@@ -3,12 +3,8 @@ package chessagents.agents.pieceagent.actions;
 import chessagents.agents.pieceagent.PieceContext;
 import chessagents.chess.GameState;
 import chessagents.agents.pieceagent.PieceAgent;
-import chessagents.agents.pieceagent.behaviours.turn.PieceTransition;
 import chessagents.ontology.schemas.concepts.ChessPiece;
 import jade.util.Logger;
-import simplenlg.framework.NLGFactory;
-import simplenlg.lexicon.Lexicon;
-import simplenlg.realiser.english.Realiser;
 
 import java.util.List;
 import java.util.Objects;
@@ -20,7 +16,6 @@ public abstract class PieceAction {
     private static final Random random = new Random();
 
     protected final Logger logger = Logger.getMyLogger(getClass().getName());
-    private final PieceTransition resultingTransition;
     private final String name;
     private final ChessPiece actor;
     private final boolean shouldBeVerbalised;

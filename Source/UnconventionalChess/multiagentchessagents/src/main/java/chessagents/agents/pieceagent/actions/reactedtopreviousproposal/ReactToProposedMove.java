@@ -4,14 +4,12 @@ import chessagents.agents.pieceagent.ActionResponse;
 import chessagents.agents.pieceagent.PieceAgent;
 import chessagents.agents.pieceagent.PieceContext;
 import chessagents.agents.pieceagent.actions.PieceAction;
-import chessagents.agents.pieceagent.behaviours.turn.PieceTransition;
-import chessagents.agents.pieceagent.nlg.NLGUtil;
+import chessagents.agents.pieceagent.behaviours.play.PieceTransition;
 import chessagents.chess.GameState;
 import chessagents.ontology.schemas.concepts.ChessPiece;
 import chessagents.util.RandomUtil;
 import simplenlg.features.Feature;
 import simplenlg.features.Tense;
-import simplenlg.framework.NLGFactory;
 
 import java.util.Collections;
 import java.util.Optional;

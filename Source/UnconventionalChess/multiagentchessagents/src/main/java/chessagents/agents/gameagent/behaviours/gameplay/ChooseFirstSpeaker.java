@@ -20,7 +20,7 @@ import java.util.Random;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-public class ElectLeaderAgent extends SimpleBehaviour {
+public class ChooseFirstSpeaker extends SimpleBehaviour {
 
     public static final String ELECT_SPEAKER_PROTOCOL_NAME = "ELECT_LEADER_PROTOCOL_NAME";
     private static final Random random = new Random();
@@ -29,7 +29,7 @@ public class ElectLeaderAgent extends SimpleBehaviour {
     private final Set<ACLMessage> requests = new HashSet<>();
     private boolean leaderChosen = false;
 
-    ElectLeaderAgent(GameAgent myAgent, GameAgentContext context) {
+    ChooseFirstSpeaker(GameAgent myAgent, GameAgentContext context) {
         super(myAgent);
         this.context = context;
     }

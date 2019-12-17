@@ -2,16 +2,15 @@ package chessagents.agents.pieceagent;
 
 import chessagents.agents.ChessAgent;
 import chessagents.agents.pieceagent.actions.PieceAction;
-import chessagents.agents.pieceagent.behaviours.chat.SendChatMessage;
+import chessagents.agents.pieceagent.behaviours.play.SendChatMessage;
 import chessagents.agents.pieceagent.behaviours.initial.RequestPieceIds;
 import chessagents.agents.pieceagent.behaviours.initial.SubscribeToGameStatus;
-import chessagents.agents.pieceagent.behaviours.turn.PieceTransition;
-import chessagents.agents.pieceagent.behaviours.turn.PlayFSM;
-import chessagents.agents.pieceagent.behaviours.turn.SubscribeToMoves;
+import chessagents.agents.pieceagent.behaviours.play.PieceTransition;
+import chessagents.agents.pieceagent.behaviours.play.PlayFSM;
+import chessagents.agents.pieceagent.behaviours.initial.SubscribeToMoves;
 import chessagents.ontology.schemas.actions.BecomeSpeaker;
 import chessagents.ontology.schemas.concepts.Colour;
 import chessagents.ontology.schemas.concepts.PieceConfiguration;
-import chessagents.ontology.schemas.concepts.PieceMove;
 import chessagents.ontology.schemas.concepts.Position;
 import jade.content.OntoAID;
 import jade.content.lang.Codec;
@@ -20,7 +19,6 @@ import jade.content.onto.basic.Action;
 import jade.core.AID;
 import jade.core.behaviours.SequentialBehaviour;
 import jade.lang.acl.ACLMessage;
-import simplenlg.phrasespec.SPhraseSpec;
 
 import java.util.Collections;
 import java.util.Set;

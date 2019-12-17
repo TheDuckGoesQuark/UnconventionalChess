@@ -2,7 +2,7 @@ package chessagents.agents.pieceagent.actions;
 
 import chessagents.chess.GameState;
 import chessagents.agents.pieceagent.PieceAgent;
-import chessagents.agents.pieceagent.behaviours.turn.PieceTransition;
+import chessagents.agents.pieceagent.behaviours.play.PieceTransition;
 import chessagents.ontology.schemas.concepts.ChessPiece;
 
 public class NoAction extends PieceAction {

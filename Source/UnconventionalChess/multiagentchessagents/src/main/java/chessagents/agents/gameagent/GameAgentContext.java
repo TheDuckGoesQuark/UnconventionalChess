@@ -17,17 +17,25 @@ public class GameAgentContext {
     private final GameProperties gameProperties;
     private GameCreationStatus gameCreationStatus = GameCreationStatus.NOT_EXIST;
     private GameState gameState;
+    private int moveCounter = 0;
 
     public GameAgentContext(AID gatewayAgentAID, GameProperties gameProperties) {
         this.gatewayAgentAID = gatewayAgentAID;
         this.gameProperties = gameProperties;
     }
 
-    public boolean isHumanTurn() {
-        return gameProperties.isHumanPlays() && (gameProperties.isHumanPlaysAsWhite() ? gameState.isSideToGo(WHITE) : gameState.isSideToGo(BLACK));
-    }
-
     public void makeMove(PieceMove move) {
         gameState = gameState.makeMove(move);
+        moveCounter++;
+    }
+
+    public boolean isFirstTurnForAgentSide() {
+        if (gameProperties.isHumanPlays()) {
+            int firstAgentTurnIndex = gameProperties.isHumanPlaysAsWhite() ? 1 : 0;
+            return firstAgentTurnIndex == moveCounter;
+        } else {
+            // if both sides are agent controlled then both sides will need initialised speakers
+            return moveCounter <= 1;
+        }
     }
 }

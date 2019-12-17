@@ -3,20 +3,14 @@ package chessagents.agents.pieceagent.actions;
 import chessagents.agents.pieceagent.PieceContext;
 import chessagents.chess.GameState;
 import chessagents.agents.pieceagent.PieceAgent;
-import chessagents.agents.pieceagent.behaviours.turn.PieceTransition;
+import chessagents.agents.pieceagent.behaviours.play.PieceTransition;
 import chessagents.ontology.schemas.concepts.ChessPiece;
 import chessagents.ontology.schemas.concepts.PieceMove;
 import chessagents.util.RandomUtil;
 import jade.lang.acl.ACLMessage;
-import simplenlg.features.Feature;
-import simplenlg.features.InterrogativeType;
-import simplenlg.features.Tense;
 
 import java.util.List;
 import java.util.Optional;
-
-import static chessagents.agents.pieceagent.nlg.NLGUtil.NLG_FACTORY;
-import static chessagents.agents.pieceagent.nlg.NLGUtil.REALISER;
 
 public class RefuseToMoveAction extends PieceAction {
     private static final List<String> REJECTS = List.of("nah", "no thank you", "nope", "no way!", "no thanks");

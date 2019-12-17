@@ -4,7 +4,7 @@ import chessagents.agents.pieceagent.PieceContext;
 import chessagents.chess.GameState;
 import chessagents.agents.ChessMessageBuilder;
 import chessagents.agents.pieceagent.PieceAgent;
-import chessagents.agents.pieceagent.behaviours.turn.PieceTransition;
+import chessagents.agents.pieceagent.behaviours.play.PieceTransition;
 import chessagents.ontology.schemas.actions.MakeMove;
 import chessagents.ontology.schemas.concepts.ChessPiece;
 import chessagents.ontology.schemas.concepts.PieceMove;

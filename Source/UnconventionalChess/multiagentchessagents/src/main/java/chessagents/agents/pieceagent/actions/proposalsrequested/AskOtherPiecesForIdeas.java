@@ -5,8 +5,7 @@ import chessagents.agents.pieceagent.actions.PieceAction;
 import chessagents.chess.GameState;
 import chessagents.agents.ChessMessageBuilder;
 import chessagents.agents.pieceagent.PieceAgent;
-import chessagents.agents.pieceagent.behaviours.turn.PieceTransition;
-import chessagents.agents.pieceagent.TurnContext;
+import chessagents.agents.pieceagent.behaviours.play.PieceTransition;
 import chessagents.ontology.schemas.concepts.ChessPiece;
 import jade.lang.acl.ACLMessage;
 import simplenlg.features.Feature;
@@ -15,7 +14,7 @@ import simplenlg.features.Tense;
 
 import java.util.Optional;
 
-import static chessagents.agents.pieceagent.behaviours.turn.statebehaviours.speaker.RequestSpeakerProposals.SPEAKER_CONTRACT_NET_PROTOCOL;
+import static chessagents.agents.pieceagent.behaviours.play.statebehaviours.speaker.RequestSpeakerProposals.SPEAKER_CONTRACT_NET_PROTOCOL;
 import static chessagents.agents.pieceagent.nlg.NLGUtil.NLG_FACTORY;
 import static chessagents.agents.pieceagent.nlg.NLGUtil.REALISER;
 

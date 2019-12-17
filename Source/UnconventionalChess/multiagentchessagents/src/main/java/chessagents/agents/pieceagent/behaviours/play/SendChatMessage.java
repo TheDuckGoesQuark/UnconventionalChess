@@ -1,4 +1,4 @@
-package chessagents.agents.pieceagent.behaviours.chat;
+package chessagents.agents.pieceagent.behaviours.play;
 
 import chessagents.agents.ChessMessageBuilder;
 import chessagents.ontology.schemas.predicates.SaidTo;

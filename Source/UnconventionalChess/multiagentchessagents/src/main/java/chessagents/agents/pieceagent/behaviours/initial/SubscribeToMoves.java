@@ -1,25 +1,21 @@
-package chessagents.agents.pieceagent.behaviours.turn;
+package chessagents.agents.pieceagent.behaviours.initial;
 
-import chessagents.agents.ChessMessageBuilder;
 import chessagents.agents.commonbehaviours.SubscriptionInitiator;
 import chessagents.agents.pieceagent.PieceContext;
-import chessagents.ontology.ChessOntology;
 import jade.content.abs.AbsIRE;
 import jade.content.abs.AbsPredicate;
 import jade.content.abs.AbsVariable;
 import jade.content.lang.Codec;
 import jade.content.lang.sl.SLVocabulary;
 import jade.content.onto.OntologyException;
-import jade.core.Agent;
-import jade.core.behaviours.SimpleBehaviour;
 import jade.lang.acl.ACLMessage;
-import jade.lang.acl.MessageTemplate;
 import jade.util.Logger;
 
 import java.util.UUID;
 
 import static chessagents.agents.gameagent.behaviours.gameplay.HandleMoveSubscriptions.MOVE_SUBSCRIPTION_PROTOCOL;
-import static chessagents.ontology.ChessOntology.*;
+import static chessagents.ontology.ChessOntology.MOVE_MADE;
+import static chessagents.ontology.ChessOntology.MOVE_MADE_MOVE;
 
 /**
  * Subscribes the given agent to moves being made in the game
