@@ -12,8 +12,8 @@ public class MoveResponse {
     private final PieceMove move;
     private final Opinion opinion;
     private final Reasoning reasoning;
-    private MoveResponse alternativeResponse;
-    private boolean performed;
+    private MoveResponse alternativeResponse = null;
+    private boolean performed = false;
 
     public MoveResponse(PieceMove move, Opinion opinion, Reasoning reasoning) {
         this.move = move;
