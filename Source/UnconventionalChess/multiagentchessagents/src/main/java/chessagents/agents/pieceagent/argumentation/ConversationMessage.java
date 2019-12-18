@@ -1,9 +1,6 @@
 package chessagents.agents.pieceagent.argumentation;
 
-import chessagents.ontology.schemas.concepts.PieceMove;
 import jade.core.AID;
-
-import java.util.Optional;
 
 public class ConversationMessage {
 
@@ -15,16 +12,15 @@ public class ConversationMessage {
         this.sender = sender;
     }
 
-    String getAsHumanFriendlyString() {
-        return null;
-    }
-
     boolean movePerformed() {
         return moveResponse.performed();
     }
 
-    Optional<PieceMove> getMoveDiscussed() {
-        return Optional.ofNullable(moveResponse.getMove());
+    public MoveResponse getMoveResponse() {
+        return moveResponse;
     }
 
+    public AID getSender() {
+        return sender;
+    }
 }

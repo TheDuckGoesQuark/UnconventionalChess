@@ -21,6 +21,10 @@ public class MoveDiscussion {
         return discussion.size();
     }
 
+    public void addMessage(ConversationMessage conversationMessage) {
+        discussion.add(conversationMessage);
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;

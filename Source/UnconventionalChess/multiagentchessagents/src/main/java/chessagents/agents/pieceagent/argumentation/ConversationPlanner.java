@@ -13,8 +13,7 @@ public interface ConversationPlanner {
      * Produces a message given the argument so far.
      * <p>
      * If {@link ConversationMessage#movePerformed()} is true,
-     * then the move in the {@link ConversationMessage#getMoveDiscussed()} will
-     * have been sent to the game agent and performed.
+     * the move will have been sent to the game agent and performed.
      *
      * @return this agents next input into the discussion
      */

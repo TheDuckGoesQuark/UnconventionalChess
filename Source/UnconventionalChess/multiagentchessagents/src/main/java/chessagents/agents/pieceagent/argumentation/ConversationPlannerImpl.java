@@ -17,7 +17,7 @@ public class ConversationPlannerImpl implements ConversationPlanner {
 
     public ConversationPlannerImpl(PieceAgent pieceAgent) {
         this.agent = pieceAgent;
-        turnDiscussions.add(new TurnDiscussion());
+        startNewTurn();
     }
 
     private TurnDiscussion getCurrentDiscussion() {
@@ -26,7 +26,7 @@ public class ConversationPlannerImpl implements ConversationPlanner {
 
     @Override
     public void handleConversationMessage(ConversationMessage conversationMessage) {
-        getCurrentDiscussion().handleMessage(conversationMessage);
+        getCurrentDiscussion().recordMessage(conversationMessage);
     }
 
     @Override
