@@ -7,7 +7,6 @@ import chessagents.ontology.schemas.actions.MakeMove;
 import chessagents.util.RandomUtil;
 
 import java.util.*;
-import java.util.stream.Collectors;
 
 public class ConversationPlannerImpl implements ConversationPlanner {
 
@@ -134,10 +133,6 @@ public class ConversationPlannerImpl implements ConversationPlanner {
         var gameState = pieceContext.getGameState();
         var allPossibleMoves = gameState.getAllLegalMoves();
         return pieceContext.getPersonality().getResponseToMoves(pieceContext.getMyPiece(), allPossibleMoves, gameState);
-    }
-
-    private String createStatementFromMoveResponse(MoveResponse move) {
-        return "waddup " + move.getMove().get().toString();
     }
 
     private TurnDiscussion getCurrentDiscussion() {
