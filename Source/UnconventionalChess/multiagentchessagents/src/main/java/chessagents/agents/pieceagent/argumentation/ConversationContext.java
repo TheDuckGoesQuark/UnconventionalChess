@@ -19,10 +19,6 @@ public class ConversationContext {
         return String.format("conversation-%d-%d", turnCounter, roundCounter);
     }
 
-    public ConversationPlanner getConversationPlanner() {
-        return conversationPlanner;
-    }
-
     public MessageTemplate getConversationIdMatcher() {
         return MessageTemplate.MatchConversationId(getConversationID());
     }
@@ -36,8 +32,17 @@ public class ConversationContext {
         turnCounter++;
     }
 
+    public void handleConversationMessage(ConversationMessage conversationMessage) {
+        conversationPlanner.handleConversationMessage(conversationMessage);
+    }
+
+    public ConversationMessage produceMessage() {
+        return conversationPlanner.produceMessage();
+    }
+
     public void startNewTurn() {
         roundCounter++;
         speaker = null;
+        conversationPlanner.startNewTurn();
     }
 }

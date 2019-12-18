@@ -37,8 +37,7 @@ public class Listen extends ConversationStateBehaviour {
             var contents = extractContents(message);
 
             if (contents.isPresent()) {
-                var planner = getConversationContext().getConversationPlanner();
-                planner.handleConversationMessage(contents.get());
+                getConversationContext().handleConversationMessage(contents.get());
                 setTransition(ConversationTransition.LISTENED);
             }
         } else {
