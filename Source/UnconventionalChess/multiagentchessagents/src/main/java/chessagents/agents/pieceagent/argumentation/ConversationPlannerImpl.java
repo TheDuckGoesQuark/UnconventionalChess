@@ -76,29 +76,41 @@ public class ConversationPlannerImpl implements ConversationPlanner {
         return new ConversationMessage("lil quippy", agent.getAID());
     }
 
-    private ConversationMessage startDiscussion() {
+    private Set<MoveResponse> getResponsesToAllMoves() {
         var pieceContext = agent.getPieceContext();
         var gameState = pieceContext.getGameState();
         var allPossibleMoves = gameState.getAllLegalMoves();
-        var responseToAllMoves = pieceContext.getPersonality().getResponseToMoves(pieceContext.getMyPiece(), allPossibleMoves, gameState);
+        return pieceContext.getPersonality().getResponseToMoves(pieceContext.getMyPiece(), allPossibleMoves, gameState);
+    }
 
+    private ConversationMessage startDiscussion() {
+        var responseToAllMoves = getResponsesToAllMoves();
         var options = new HashSet<ConversationMessage>();
-        options.addAll(createProposalMessageForMoves(responseToAllMoves));
-        options.addAll(createPerformMessageForMoves(responseToAllMoves));
+//        options.addAll(createProposalMessageForMoves(responseToAllMoves));
+//        options.addAll(createPerformMessageForMoves(responseToAllMoves));
         options.add(createAskForProposalMessage());
 
         return RANDOM_MESSAGE_CHOOSER.chooseRandom(options);
     }
 
     private ConversationMessage createAskForProposalMessage() {
-        var moveResponse = MoveResponse.askForProposals();
-        return new ConversationMessage("Any ideas what we should do next?", moveResponse, agent.getAID());
+        return new ConversationMessage("Any ideas what we should do next?", null, agent.getAID());
     }
 
     private ConversationMessage continueDiscussion() {
-        // no proposals so far -> propose or perform move
-        // else -> get last proposal and determine reaction
-        return new ConversationMessage("another thing?", agent.getAID());
+        var currentDiscussion = getCurrentDiscussion();
+
+        // true if last message didnt actually involve a move
+        if (currentDiscussion.proposalsCalledFor()) {
+            var responseToAllMoves = getResponsesToAllMoves();
+            var options = new HashSet<ConversationMessage>();
+            options.addAll(createProposalMessageForMoves(responseToAllMoves));
+            options.addAll(createPerformMessageForMoves(responseToAllMoves));
+
+            return RANDOM_MESSAGE_CHOOSER.chooseRandom(options);
+        } else {
+            return new ConversationMessage("another thing?", agent.getAID());
+        }
     }
 
     private Collection<ConversationMessage> createPerformMessageForMoves(Set<MoveResponse> moves) {
@@ -117,7 +129,7 @@ public class ConversationPlannerImpl implements ConversationPlanner {
     }
 
     private String createStatementFromMoveResponse(MoveResponse move) {
-        return "waddup "+move.getMove().get().toString();
+        return "waddup " + move.getMove().get().toString();
     }
 
     private TurnDiscussion getCurrentDiscussion() {

@@ -19,8 +19,6 @@ public class Speak extends ConversationStateBehaviour {
         super(a, ConversationState.SPEAK, conversationContext);
     }
 
-
-
     @Override
     public void action() {
         syntheticDelay();

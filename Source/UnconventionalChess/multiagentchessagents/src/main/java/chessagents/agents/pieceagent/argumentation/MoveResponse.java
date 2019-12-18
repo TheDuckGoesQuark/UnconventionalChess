@@ -17,18 +17,8 @@ public class MoveResponse implements Serializable {
     private MoveResponse alternativeResponse = null;
     private boolean performed = false;
 
-    public static MoveResponse askForProposals() {
-        return new MoveResponse();
-    }
-
     public static MoveResponse buildResponse(PieceMove move, Opinion opinion, Value reasoning) {
         return new MoveResponse(move, opinion, reasoning);
-    }
-
-    private MoveResponse() {
-        move = null;
-        opinion = null;
-        opinionGeneratingValue = null;
     }
 
     private MoveResponse(PieceMove move, Opinion opinion, Value opinionGeneratingValue) {

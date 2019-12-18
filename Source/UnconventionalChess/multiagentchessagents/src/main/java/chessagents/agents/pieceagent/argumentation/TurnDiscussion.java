@@ -11,7 +11,12 @@ public class TurnDiscussion {
     public void recordMessage(ConversationMessage conversationMessage) {
         var moveResponse = conversationMessage.getMoveResponse();
 
-        if (moveResponse.isEmpty()) return;
+        // record messages not pointing to any move under null
+        if (moveResponse.isEmpty()) {
+            var discussion = moveDiscussions.computeIfAbsent(null, MoveDiscussion::new);
+            discussion.addMessage(conversationMessage);
+            return;
+        }
 
         var optMove = moveResponse.get().getMove();
 
@@ -39,5 +44,15 @@ public class TurnDiscussion {
                 .stream()
                 .map(MoveDiscussion::getNumberOfMessages)
                 .reduce(0, Integer::sum);
+    }
+
+    public boolean proposalsCalledFor() {
+        if (moveDiscussions.size() == 0) return false;
+
+        // We can't just get the last element added so need to iterate :(
+        var iter = moveDiscussions.entrySet().iterator();
+        PieceMove lastElement = null;
+        while (iter.hasNext()) lastElement = iter.next().getKey();
+        return lastElement == null;
     }
 }
