@@ -2,9 +2,8 @@ package chessagents.agents.pieceagent.argumentation;
 
 import chessagents.agents.commonbehaviours.RequestGameAgentMove;
 import chessagents.agents.pieceagent.PieceAgent;
-import chessagents.agents.pieceagent.behaviours.conversation.SendChatMessage;
+import chessagents.agents.pieceagent.argumentation.actions.*;
 import chessagents.ontology.schemas.actions.MakeMove;
-import chessagents.ontology.schemas.concepts.PieceMove;
 import chessagents.util.RandomUtil;
 
 import java.util.*;
@@ -20,7 +19,7 @@ public class ConversationPlannerImpl implements ConversationPlanner {
      * Discussions during each turn, with first move at first index
      */
     private final LinkedList<TurnDiscussion> turnDiscussions = new LinkedList<>();
-    private final RandomUtil<ConversationMessage> RANDOM_MESSAGE_CHOOSER = new RandomUtil<>();
+    private final RandomUtil<ConversationAction> RANDOM_ACTION_CHOOSER = new RandomUtil<>();
 
     public ConversationPlannerImpl(PieceAgent pieceAgent) {
         this.agent = pieceAgent;
@@ -50,12 +49,8 @@ public class ConversationPlannerImpl implements ConversationPlanner {
         if (!agent.getPieceContext().isMyTurnToGo()) {
             conversationMessage = generateQuip();
         } else {
-            int numberOfMessages = getLengthOfCurrentDiscussion();
-            if (numberOfMessages == 0) {
-                conversationMessage = startDiscussion();
-            } else {
-                conversationMessage = continueDiscussion();
-            }
+            var action = chooseNextAction();
+            conversationMessage = action.perform();
         }
 
         // if choice of next message involves agreeing and performing the move,
@@ -72,7 +67,65 @@ public class ConversationPlannerImpl implements ConversationPlanner {
         return conversationMessage;
     }
 
+    private ConversationAction chooseNextAction() {
+        var numberOfMessages = getLengthOfCurrentDiscussion();
+        var setOfNextActions = new HashSet<ConversationAction>();
+
+        // add the action to perform a move if theres one I can do
+        var availableMoveResponses = getResponsesToAllMoves();
+        var moveExistsThatICanPerform = containsMoveICanPerform(availableMoveResponses);
+        if (moveExistsThatICanPerform) {
+            setOfNextActions.add(new PerformMove());
+        }
+
+        if (numberOfMessages == 0) {
+            // first message of turn so we can discuss previous suggestions
+            setOfNextActions.add(new ProposeMove());
+            setOfNextActions.add(new AskForProposals(agent));
+        } else {
+            var currentDiscussion = getCurrentDiscussion();
+            if (currentDiscussion.proposalsCalledFor()) {
+                setOfNextActions.add(new ProposeMove());
+            } else {
+                // react to previously proposed moves
+                var response = getResponseToLastMoveDiscussed();
+                switch (response.getOpinion()) {
+                    case LIKE:
+                    case DISLIKE:
+                        setOfNextActions.add(new VoiceOpinion(response.getOpinion()));
+                        setOfNextActions.add(new VoiceOpinionProposeAlternative(response.getOpinion()));
+                        setOfNextActions.add(new VoiceOpinionWithJustification(response.getOpinion()));
+                        break;
+                    case NEUTRAL:
+                        setOfNextActions.add(new Acknowledge());
+                        setOfNextActions.add(new AskForProposals(agent));
+                        setOfNextActions.add(new AcknowledgeAndAskForProposals());
+                        break;
+                }
+            }
+        }
+
+        return RANDOM_ACTION_CHOOSER.chooseRandom(setOfNextActions);
+    }
+
+    private MoveResponse getResponseToLastMoveDiscussed() {
+        var currentDiscussion = getCurrentDiscussion();
+        var lastMoveDiscussed = currentDiscussion.getLastMoveDiscussed();
+        var pieceContext = agent.getPieceContext();
+        return pieceContext.getPersonality().getResponseToMoves(pieceContext.getMyPiece(), Collections.singleton(lastMoveDiscussed), pieceContext.getGameState()).iterator().next();
+    }
+
+    private boolean containsMoveICanPerform(Set<MoveResponse> moveResponses) {
+        var myPos = agent.getPieceContext().getMyPiece().getPosition();
+        return moveResponses.stream()
+                .map(MoveResponse::getMove)
+                .filter(Optional::isPresent)
+                .map(Optional::get)
+                .anyMatch(m -> m.getSource().equals(myPos));
+    }
+
     private ConversationMessage generateQuip() {
+        // TODO
         return new ConversationMessage("lil quippy", agent.getAID());
     }
 
@@ -81,51 +134,6 @@ public class ConversationPlannerImpl implements ConversationPlanner {
         var gameState = pieceContext.getGameState();
         var allPossibleMoves = gameState.getAllLegalMoves();
         return pieceContext.getPersonality().getResponseToMoves(pieceContext.getMyPiece(), allPossibleMoves, gameState);
-    }
-
-    private ConversationMessage startDiscussion() {
-        var responseToAllMoves = getResponsesToAllMoves();
-        var options = new HashSet<ConversationMessage>();
-//        options.addAll(createProposalMessageForMoves(responseToAllMoves));
-//        options.addAll(createPerformMessageForMoves(responseToAllMoves));
-        options.add(createAskForProposalMessage());
-
-        return RANDOM_MESSAGE_CHOOSER.chooseRandom(options);
-    }
-
-    private ConversationMessage createAskForProposalMessage() {
-        return new ConversationMessage("Any ideas what we should do next?", null, agent.getAID());
-    }
-
-    private ConversationMessage continueDiscussion() {
-        var currentDiscussion = getCurrentDiscussion();
-
-        // true if last message didnt actually involve a move
-        if (currentDiscussion.proposalsCalledFor()) {
-            var responseToAllMoves = getResponsesToAllMoves();
-            var options = new HashSet<ConversationMessage>();
-            options.addAll(createProposalMessageForMoves(responseToAllMoves));
-            options.addAll(createPerformMessageForMoves(responseToAllMoves));
-
-            return RANDOM_MESSAGE_CHOOSER.chooseRandom(options);
-        } else {
-            return new ConversationMessage("another thing?", agent.getAID());
-        }
-    }
-
-    private Collection<ConversationMessage> createPerformMessageForMoves(Set<MoveResponse> moves) {
-        return moves.stream()
-                .map(MoveResponse::clone)
-                .peek(move -> move.setPerformed(true))
-                .map(moveResponse -> new ConversationMessage(createStatementFromMoveResponse(moveResponse), moveResponse, agent.getAID()))
-                .collect(Collectors.toSet());
-    }
-
-    private Collection<ConversationMessage> createProposalMessageForMoves(Set<MoveResponse> moves) {
-        return moves.stream()
-                .map(MoveResponse::clone)
-                .map(moveResponse -> new ConversationMessage(createStatementFromMoveResponse(moveResponse), moveResponse, agent.getAID()))
-                .collect(Collectors.toSet());
     }
 
     private String createStatementFromMoveResponse(MoveResponse move) {

@@ -48,11 +48,14 @@ public class TurnDiscussion {
 
     public boolean proposalsCalledFor() {
         if (moveDiscussions.size() == 0) return false;
+        return getLastMoveDiscussed() == null;
+    }
 
+    public PieceMove getLastMoveDiscussed() {
         // We can't just get the last element added so need to iterate :(
         var iter = moveDiscussions.entrySet().iterator();
         PieceMove lastElement = null;
         while (iter.hasNext()) lastElement = iter.next().getKey();
-        return lastElement == null;
+        return lastElement;
     }
 }
