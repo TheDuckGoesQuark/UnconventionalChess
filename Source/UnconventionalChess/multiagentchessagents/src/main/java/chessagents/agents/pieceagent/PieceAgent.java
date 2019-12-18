@@ -1,10 +1,10 @@
 package chessagents.agents.pieceagent;
 
 import chessagents.agents.ChessAgent;
-import chessagents.agents.pieceagent.functionality.initial.RequestPieceIds;
-import chessagents.agents.pieceagent.functionality.initial.SubscribeToGameStatus;
-import chessagents.agents.pieceagent.functionality.initial.SubscribeToMoves;
-import chessagents.agents.pieceagent.functionality.Play;
+import chessagents.agents.pieceagent.behaviours.initial.RequestPieceIds;
+import chessagents.agents.pieceagent.behaviours.initial.SubscribeToGameStatus;
+import chessagents.agents.pieceagent.behaviours.initial.SubscribeToMoves;
+import chessagents.agents.pieceagent.behaviours.Play;
 import chessagents.ontology.schemas.concepts.Colour;
 import chessagents.ontology.schemas.concepts.Position;
 import jade.core.AID;

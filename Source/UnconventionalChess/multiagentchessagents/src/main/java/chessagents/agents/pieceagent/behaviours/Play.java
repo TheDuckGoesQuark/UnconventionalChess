@@ -1,7 +1,7 @@
-package chessagents.agents.pieceagent.functionality;
+package chessagents.agents.pieceagent.behaviours;
 
 import chessagents.agents.pieceagent.PieceAgent;
-import chessagents.agents.pieceagent.functionality.conversation.ConversationalAgentFSM;
+import chessagents.agents.pieceagent.behaviours.conversation.ConversationalAgentFSM;
 import chessagents.ontology.ChessOntology;
 import chessagents.ontology.schemas.concepts.PieceMove;
 import jade.content.OntoAID;
@@ -52,7 +52,6 @@ public class Play extends Behaviour {
                 myAgent.removeBehaviour(this.conversationFSM);
             } else {
                 // reset conversation FSM so everyone is back in initial state.
-                // their speaker should also be reset if that piece was captured during the previous move
                 conversationFSM.reset();
             }
         } else {

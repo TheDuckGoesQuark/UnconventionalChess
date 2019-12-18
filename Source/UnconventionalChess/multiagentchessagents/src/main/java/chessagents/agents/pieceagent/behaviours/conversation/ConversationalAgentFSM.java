@@ -1,10 +1,9 @@
-package chessagents.agents.pieceagent.functionality.conversation;
+package chessagents.agents.pieceagent.behaviours.conversation;
 
 import chessagents.agents.pieceagent.PieceAgent;
-import chessagents.agents.pieceagent.functionality.conversation.statebehaviours.*;
+import chessagents.agents.pieceagent.argumentation.ConversationContext;
+import chessagents.agents.pieceagent.behaviours.conversation.statebehaviours.*;
 import jade.core.behaviours.FSMBehaviour;
-
-import java.util.Arrays;
 
 /**
  * FSM behaviour for maintaining the conversation state

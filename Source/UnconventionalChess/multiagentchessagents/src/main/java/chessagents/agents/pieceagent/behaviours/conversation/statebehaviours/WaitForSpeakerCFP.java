@@ -1,9 +1,9 @@
-package chessagents.agents.pieceagent.functionality.conversation.statebehaviours;
+package chessagents.agents.pieceagent.behaviours.conversation.statebehaviours;
 
 import chessagents.agents.pieceagent.PieceAgent;
-import chessagents.agents.pieceagent.functionality.conversation.ConversationContext;
-import chessagents.agents.pieceagent.functionality.conversation.ConversationState;
-import chessagents.agents.pieceagent.functionality.conversation.ConversationTransition;
+import chessagents.agents.pieceagent.argumentation.ConversationContext;
+import chessagents.agents.pieceagent.behaviours.conversation.ConversationState;
+import chessagents.agents.pieceagent.behaviours.conversation.ConversationTransition;
 import chessagents.ontology.schemas.actions.BecomeSpeaker;
 import jade.content.OntoAID;
 import jade.content.lang.Codec;

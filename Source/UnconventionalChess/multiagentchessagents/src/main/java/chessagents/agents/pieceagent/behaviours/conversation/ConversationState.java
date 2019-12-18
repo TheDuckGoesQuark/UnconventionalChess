@@ -1,4 +1,4 @@
-package chessagents.agents.pieceagent.functionality.conversation;
+package chessagents.agents.pieceagent.behaviours.conversation;
 
 public enum ConversationState {
     INITIAL,

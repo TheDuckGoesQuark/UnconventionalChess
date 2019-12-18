@@ -1,4 +1,4 @@
-package chessagents.agents.pieceagent.functionality.conversation;
+package chessagents.agents.pieceagent.argumentation;
 
 import jade.content.OntoAID;
 import jade.lang.acl.MessageTemplate;
