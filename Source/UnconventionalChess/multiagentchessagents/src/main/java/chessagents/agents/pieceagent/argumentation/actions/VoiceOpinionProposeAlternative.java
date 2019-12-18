@@ -1,11 +1,17 @@
 package chessagents.agents.pieceagent.argumentation.actions;
 
+import chessagents.agents.pieceagent.PieceAgent;
 import chessagents.agents.pieceagent.argumentation.ConversationMessage;
 import chessagents.agents.pieceagent.argumentation.Opinion;
+import chessagents.agents.pieceagent.argumentation.TurnDiscussion;
+import lombok.AllArgsConstructor;
 
+@AllArgsConstructor
 public class VoiceOpinionProposeAlternative implements ConversationAction {
-    public VoiceOpinionProposeAlternative(Opinion opinion) {
-    }
+    private final PieceAgent pieceAgent;
+    private final TurnDiscussion turnDiscussion;
+    private final Opinion opinion;
+
 
     @Override
     public ConversationMessage perform() {

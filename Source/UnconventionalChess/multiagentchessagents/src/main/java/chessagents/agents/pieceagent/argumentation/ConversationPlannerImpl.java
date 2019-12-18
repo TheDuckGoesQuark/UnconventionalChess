@@ -71,34 +71,35 @@ public class ConversationPlannerImpl implements ConversationPlanner {
         var setOfNextActions = new HashSet<ConversationAction>();
 
         // add the action to perform a move if theres one I can do
+        var currentDiscussion = getCurrentDiscussion();
         var availableMoveResponses = getResponsesToAllMoves();
         var moveExistsThatICanPerform = containsMoveICanPerform(availableMoveResponses);
         if (moveExistsThatICanPerform) {
-            setOfNextActions.add(new PerformMove());
+            setOfNextActions.add(new PerformMove(agent, currentDiscussion));
         }
+
 
         if (numberOfMessages == 0) {
             // first message of turn so we can discuss previous suggestions
-            setOfNextActions.add(new ProposeMove());
-            setOfNextActions.add(new AskForProposals(agent));
+            setOfNextActions.add(new ProposeMove(agent, currentDiscussion));
+            setOfNextActions.add(new AskForProposals(agent, currentDiscussion));
         } else {
-            var currentDiscussion = getCurrentDiscussion();
             if (currentDiscussion.proposalsCalledFor()) {
-                setOfNextActions.add(new ProposeMove());
+                setOfNextActions.add(new ProposeMove(agent, currentDiscussion));
             } else {
                 // react to previously proposed moves
                 var response = getResponseToLastMoveDiscussed();
                 switch (response.getOpinion()) {
                     case LIKE:
                     case DISLIKE:
-                        setOfNextActions.add(new VoiceOpinion(response.getOpinion()));
-                        setOfNextActions.add(new VoiceOpinionProposeAlternative(response.getOpinion()));
-                        setOfNextActions.add(new VoiceOpinionWithJustification(response.getOpinion()));
+                        setOfNextActions.add(new VoiceOpinion(agent, currentDiscussion, response.getOpinion()));
+                        setOfNextActions.add(new VoiceOpinionProposeAlternative(agent, currentDiscussion, response.getOpinion()));
+                        setOfNextActions.add(new VoiceOpinionWithJustification(agent, currentDiscussion, response.getOpinion()));
                         break;
                     case NEUTRAL:
-                        setOfNextActions.add(new Acknowledge());
-                        setOfNextActions.add(new AskForProposals(agent));
-                        setOfNextActions.add(new AcknowledgeAndAskForProposals());
+                        setOfNextActions.add(new Acknowledge(agent, currentDiscussion));
+                        setOfNextActions.add(new AskForProposals(agent, currentDiscussion));
+                        setOfNextActions.add(new AcknowledgeAndAskForProposals(agent, currentDiscussion));
                         break;
                 }
             }
