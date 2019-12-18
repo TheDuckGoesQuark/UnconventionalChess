@@ -25,30 +25,41 @@ public class ConversationPlannerImpl implements ConversationPlanner {
         startNewTurn();
     }
 
-    private TurnDiscussion getCurrentDiscussion() {
-        return turnDiscussions.peekLast();
-    }
-
     @Override
     public void handleConversationMessage(ConversationMessage conversationMessage) {
         getCurrentDiscussion().recordMessage(conversationMessage);
     }
 
     @Override
-    public ConversationMessage produceMessage() {
-        int numberOfMessages = getLengthOfCurrentDiscussion();
+    public void startNewTurn() {
+        turnDiscussions.add(new TurnDiscussion());
+    }
 
+    @Override
+    public int getLengthOfCurrentDiscussion() {
+        return getCurrentDiscussion().getNumberOfMessages();
+    }
+
+    @Override
+    public ConversationMessage produceMessage() {
         final ConversationMessage conversationMessage;
-        if (numberOfMessages == 0) {
-            conversationMessage = startDiscussion();
+
+        // if not our turn, then we can react to last move
+        if (agent.getPieceContext().isMyTurnToGo()) {
+            conversationMessage = generateQuip();
         } else {
-            conversationMessage = continueDiscussion();
+            int numberOfMessages = getLengthOfCurrentDiscussion();
+            if (numberOfMessages == 0) {
+                conversationMessage = startDiscussion();
+            } else {
+                conversationMessage = continueDiscussion();
+            }
         }
 
         // if choice of next message involves agreeing and performing the move,
         // then send the move to the game agent to be processed
         if (conversationMessage.movePerformed()) {
-            var makeMove = new MakeMove(conversationMessage.getMoveResponse().getMove().get());
+            var makeMove = new MakeMove(conversationMessage.getMoveResponse().get().getMove().get());
             var gameAgentAID = agent.getPieceContext().getGameAgentAID();
             agent.addBehaviour(new RequestGameAgentMove(makeMove, gameAgentAID));
         }
@@ -59,8 +70,14 @@ public class ConversationPlannerImpl implements ConversationPlanner {
         return conversationMessage;
     }
 
+    private ConversationMessage generateQuip() {
+        return new ConversationMessage("lil quippy", agent.getAID());
+    }
+
     private ConversationMessage startDiscussion() {
         var options = new HashSet<ConversationMessage>();
+        var gameState = agent.getPieceContext().getGameState();
+        var allPossibleMoves = gameState.getAllLegalMoves();
         // propose move
         // perform move
         // ask for proposals
@@ -73,13 +90,7 @@ public class ConversationPlannerImpl implements ConversationPlanner {
         return null;
     }
 
-    @Override
-    public void startNewTurn() {
-        turnDiscussions.add(new TurnDiscussion());
-    }
-
-    @Override
-    public int getLengthOfCurrentDiscussion() {
-        return getCurrentDiscussion().getNumberOfMessages();
+    private TurnDiscussion getCurrentDiscussion() {
+        return turnDiscussions.peekLast();
     }
 }
