@@ -1,6 +1,6 @@
 package chessagents.agents.pieceagent.personality;
 
-import chessagents.agents.pieceagent.ActionResponse;
+import chessagents.agents.pieceagent.argumentation.MoveResponse;
 import chessagents.chess.GameState;
 import chessagents.ontology.schemas.concepts.ChessPiece;
 import chessagents.ontology.schemas.concepts.PieceMove;
@@ -32,12 +32,12 @@ public class Personality {
      * @param gameState  game state to test against
      * @return the set of actions considered with this personalities response to them
      */
-    public Map<PieceMove, Set<ActionResponse>> getResponseToMoves(ChessPiece chessPiece, Set<PieceMove> actions, GameState gameState) {
+    public Map<PieceMove, Set<MoveResponse>> getResponseToMoves(ChessPiece chessPiece, Set<PieceMove> actions, GameState gameState) {
         return actions.stream()
                 .collect(Collectors.toMap(action -> action, action -> getActionResponses(chessPiece, gameState, action)));
     }
 
-    private Set<ActionResponse> getActionResponses(ChessPiece chessPiece, GameState gameState, PieceMove action) {
+    private Set<MoveResponse> getActionResponses(ChessPiece chessPiece, GameState gameState, PieceMove action) {
         return traits.stream()
                 .map(Trait::getAppealingValues)
                 .flatMap(values -> values.stream().map(value -> value.getMoveResponse(chessPiece, gameState, action)))

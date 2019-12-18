@@ -1,6 +1,6 @@
 package chessagents.agents.pieceagent.personality.values;
 
-import chessagents.agents.pieceagent.ActionResponse;
+import chessagents.agents.pieceagent.argumentation.MoveResponse;
 import chessagents.chess.GameState;
 import chessagents.ontology.schemas.concepts.ChessPiece;
 import chessagents.ontology.schemas.concepts.PieceMove;
@@ -24,8 +24,8 @@ public class EnsureMySafety extends Value {
     }
 
     @Override
-    public ActionResponse getMoveResponse(ChessPiece chessPiece, GameState gameState, PieceMove action) {
+    public MoveResponse getMoveResponse(ChessPiece chessPiece, GameState gameState, PieceMove action) {
         var approves = actionMaintainsValue(chessPiece, gameState, action);
-        return new ActionResponse(action, approves);
+        return new MoveResponse(action, approves);
     }
 }

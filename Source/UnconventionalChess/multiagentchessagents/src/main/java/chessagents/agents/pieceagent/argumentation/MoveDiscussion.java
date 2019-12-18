@@ -17,6 +17,10 @@ public class MoveDiscussion {
         this.pieceMove = pieceMove;
     }
 
+    public int getNumberOfMessages() {
+        return discussion.size();
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;

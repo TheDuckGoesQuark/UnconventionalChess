@@ -25,4 +25,10 @@ public interface ConversationPlanner {
      */
     void startNewTurn();
 
+    /**
+     * Get the number of messages exchanged during the current discussion
+     *
+     * @return the number of messages exchanged during th current discussion
+     */
+    int getLengthOfCurrentDiscussion();
 }

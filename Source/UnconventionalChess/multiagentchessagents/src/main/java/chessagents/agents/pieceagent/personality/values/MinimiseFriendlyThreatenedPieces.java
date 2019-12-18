@@ -1,6 +1,6 @@
 package chessagents.agents.pieceagent.personality.values;
 
-import chessagents.agents.pieceagent.ActionResponse;
+import chessagents.agents.pieceagent.argumentation.MoveResponse;
 import chessagents.chess.GameState;
 import chessagents.ontology.schemas.concepts.ChessPiece;
 import chessagents.ontology.schemas.concepts.PieceMove;
@@ -11,12 +11,12 @@ public class MinimiseFriendlyThreatenedPieces extends Value {
     }
 
     @Override
-    public ActionResponse getMoveResponse(ChessPiece chessPiece, GameState gameState, PieceMove action) {
+    public MoveResponse getMoveResponse(ChessPiece chessPiece, GameState gameState, PieceMove action) {
         var myColour = chessPiece.getColour();
         var threatenedPiecesBefore = gameState.getThreatenedPieces().stream().filter(p -> p.isColour(myColour)).count();
         var threatenedPiecesAfter = gameState.applyMove(action).getThreatenedPieces().stream().filter(p -> p.isColour(myColour)).count();
         var approves = threatenedPiecesBefore > threatenedPiecesAfter || (threatenedPiecesBefore == 0 && threatenedPiecesAfter == 0);
 
-        return new ActionResponse(action, approves);
+        return new MoveResponse(action, approves);
     }
 }

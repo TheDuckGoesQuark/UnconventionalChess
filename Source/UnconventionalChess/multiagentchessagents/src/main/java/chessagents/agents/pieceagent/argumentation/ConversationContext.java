@@ -7,7 +7,6 @@ import jade.lang.acl.MessageTemplate;
 public class ConversationContext {
 
     private final ConversationPlanner conversationPlanner;
-    private int roundCounter = 0;
     private int turnCounter = 0;
     private OntoAID speaker;
 
@@ -16,7 +15,7 @@ public class ConversationContext {
     }
 
     public String getConversationID() {
-        return String.format("conversation-%d-%d", turnCounter, roundCounter);
+        return String.format("conversation-%d-%d", turnCounter, conversationPlanner.getLengthOfCurrentDiscussion());
     }
 
     public MessageTemplate getConversationIdMatcher() {
@@ -41,7 +40,7 @@ public class ConversationContext {
     }
 
     public void startNewTurn() {
-        roundCounter++;
+        turnCounter++;
         speaker = null;
         conversationPlanner.startNewTurn();
     }
