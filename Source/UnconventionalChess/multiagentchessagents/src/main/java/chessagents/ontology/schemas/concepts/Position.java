@@ -1,10 +1,7 @@
 package chessagents.ontology.schemas.concepts;
 
 import jade.content.Concept;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import java.util.Objects;
 
@@ -12,6 +9,7 @@ import java.util.Objects;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
+@ToString
 public class Position implements Concept {
 
     private String coordinates;

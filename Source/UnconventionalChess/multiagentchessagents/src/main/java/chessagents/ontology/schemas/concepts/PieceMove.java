@@ -1,9 +1,11 @@
 package chessagents.ontology.schemas.concepts;
 
 import jade.content.Concept;
+import lombok.ToString;
 
 import java.util.Objects;
 
+@ToString
 public class PieceMove implements Concept {
 
     private Position source;

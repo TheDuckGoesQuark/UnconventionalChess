@@ -1,6 +1,7 @@
 package chessagents.agents.pieceagent.personality.values;
 
 import chessagents.agents.pieceagent.argumentation.MoveResponse;
+import chessagents.agents.pieceagent.argumentation.Opinion;
 import chessagents.chess.GameState;
 import chessagents.ontology.schemas.concepts.ChessPiece;
 import chessagents.ontology.schemas.concepts.PieceMove;
@@ -12,20 +13,24 @@ public class EnsureMySafety extends Value {
         super("Ensure my safety");
     }
 
-    public boolean actionMaintainsValue(ChessPiece pieceWithValue, GameState gameState, PieceMove pieceAction) {
-        // choose action that produces state where I am not captured and not in the set of captured pieces
-        var afterActionState = gameState.applyMove(pieceAction);
-
+    @Override
+    public MoveResponse getMoveResponse(ChessPiece chessPiece, GameState gameState, PieceMove action) {
         // TODO contains check will fail if I moved/was captured as a clone is made with a different position
         // and current piece hashcode includes the position in the equals check
         // might need to apply some sort of ID to all the pieces, agent or not
-        return !afterActionState.getThreatenedPieces().contains(pieceWithValue)
-                && afterActionState.getCapturedForColour(pieceWithValue.getColour()).contains(pieceWithValue);
-    }
 
-    @Override
-    public MoveResponse getMoveResponse(ChessPiece chessPiece, GameState gameState, PieceMove action) {
-        var approves = actionMaintainsValue(chessPiece, gameState, action);
-        return new MoveResponse(action, approves);
+        // choose action that produces state where I am not captured and not in the set of captured pieces
+        var afterActionState = gameState.applyMove(action);
+        var isAlreadyThreatened = gameState.getThreatenedPieces().contains(chessPiece);
+        var becomesThreatened = afterActionState.getThreatenedPieces().contains(chessPiece);
+        var isCaptured = afterActionState.getCapturedForColour(chessPiece.getColour()).contains(chessPiece);
+
+        if (isAlreadyThreatened && !becomesThreatened && !isCaptured) {
+            return MoveResponse.buildResponse(action, Opinion.LIKE, this);
+        } else if (becomesThreatened || isCaptured) {
+            return MoveResponse.buildResponse(action, Opinion.DISLIKE, this);
+        } else {
+            return MoveResponse.buildResponse(action, Opinion.NEUTRAL, this);
+        }
     }
 }

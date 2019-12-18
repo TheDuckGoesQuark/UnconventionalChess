@@ -24,6 +24,7 @@ public class Speak extends ConversationStateBehaviour {
     public void action() {
         syntheticDelay();
         var message = getConversationContext().produceMessage();
+        sendChat(message.getStatement());
         sendToAllMyAgents(message);
         setTransition(ConversationTransition.SPOKE);
     }
@@ -48,6 +49,14 @@ public class Speak extends ConversationStateBehaviour {
         }
 
         myAgent.send(aclMessage);
+    }
+
+    private void sendChat(String message) {
+        var myAgent = getAgent();
+        var myAID = myAgent.getAID();
+        var gameAgentAID = myAgent.getPieceContext().getGameAgentAID();
+        var chatBehaviour = new SendChatMessage(message, myAID, gameAgentAID);
+        myAgent.addBehaviour(chatBehaviour);
     }
 
     private void syntheticDelay() {

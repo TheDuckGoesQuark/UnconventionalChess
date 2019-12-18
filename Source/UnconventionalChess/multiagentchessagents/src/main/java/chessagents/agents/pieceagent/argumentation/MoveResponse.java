@@ -37,6 +37,14 @@ public class MoveResponse implements Serializable {
         this.opinionGeneratingValue = opinionGeneratingValue;
     }
 
+    private MoveResponse(PieceMove move, Opinion opinion, Value opinionGeneratingValue, MoveResponse alternativeResponse, boolean performed) {
+        this.move = move;
+        this.opinion = opinion;
+        this.opinionGeneratingValue = opinionGeneratingValue;
+        this.alternativeResponse = alternativeResponse;
+        this.performed = performed;
+    }
+
     public boolean performed() {
         return performed;
     }
@@ -47,5 +55,9 @@ public class MoveResponse implements Serializable {
 
     public Optional<PieceMove> getMove() {
         return Optional.ofNullable(move);
+    }
+
+    protected MoveResponse clone() {
+        return new MoveResponse(move, opinion, opinionGeneratingValue, alternativeResponse, performed);
     }
 }

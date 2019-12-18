@@ -7,10 +7,8 @@ import chessagents.ontology.schemas.actions.MakeMove;
 import chessagents.ontology.schemas.concepts.PieceMove;
 import chessagents.util.RandomUtil;
 
-import java.util.Collection;
-import java.util.HashSet;
-import java.util.LinkedList;
-import java.util.Set;
+import java.util.*;
+import java.util.stream.Collectors;
 
 public class ConversationPlannerImpl implements ConversationPlanner {
 
@@ -79,43 +77,50 @@ public class ConversationPlannerImpl implements ConversationPlanner {
     }
 
     private ConversationMessage startDiscussion() {
-        var gameState = agent.getPieceContext().getGameState();
+        var pieceContext = agent.getPieceContext();
+        var gameState = pieceContext.getGameState();
         var allPossibleMoves = gameState.getAllLegalMoves();
+        var responseToAllMoves = pieceContext.getPersonality().getResponseToMoves(pieceContext.getMyPiece(), allPossibleMoves, gameState);
 
         var options = new HashSet<ConversationMessage>();
-        options.addAll(createProposalMessageForMoves(allPossibleMoves));
-        options.addAll(createPerformMessageForMoves(allPossibleMoves));
+        options.addAll(createProposalMessageForMoves(responseToAllMoves));
+        options.addAll(createPerformMessageForMoves(responseToAllMoves));
         options.add(createAskForProposalMessage());
+
         return RANDOM_MESSAGE_CHOOSER.chooseRandom(options);
     }
 
     private ConversationMessage createAskForProposalMessage() {
-        return new ConversationMessage(MoveResponse.askForProposals(), agent.getAID());
+        var moveResponse = MoveResponse.askForProposals();
+        return new ConversationMessage("Any ideas what we should do next?", moveResponse, agent.getAID());
     }
 
     private ConversationMessage continueDiscussion() {
         // no proposals so far -> propose or perform move
         // else -> get last proposal and determine reaction
-        return null;
+        return new ConversationMessage("another thing?", agent.getAID());
     }
 
-    private Collection<ConversationMessage> createPerformMessageForMoves(Set<PieceMove> allPossibleMoves) {
-
+    private Collection<ConversationMessage> createPerformMessageForMoves(Set<MoveResponse> moves) {
+        return moves.stream()
+                .map(MoveResponse::clone)
+                .peek(move -> move.setPerformed(true))
+                .map(moveResponse -> new ConversationMessage(createStatementFromMoveResponse(moveResponse), moveResponse, agent.getAID()))
+                .collect(Collectors.toSet());
     }
 
-    private Collection<ConversationMessage> createProposalMessageForMoves(Set<PieceMove> allPossibleMoves) {
+    private Collection<ConversationMessage> createProposalMessageForMoves(Set<MoveResponse> moves) {
+        return moves.stream()
+                .map(MoveResponse::clone)
+                .map(moveResponse -> new ConversationMessage(createStatementFromMoveResponse(moveResponse), moveResponse, agent.getAID()))
+                .collect(Collectors.toSet());
+    }
 
+    private String createStatementFromMoveResponse(MoveResponse move) {
+        return "waddup "+move.getMove().get().toString();
     }
 
     private TurnDiscussion getCurrentDiscussion() {
         return turnDiscussions.peekLast();
-    }
-
-    private void sendChat(String message) {
-        var myAgent = getAgent();
-        var myAID = myAgent.getAID();
-        var gameAgentAID = myAgent.getPieceContext().getGameAgentAID();
-        var chatBehaviour = new SendChatMessage(message, myAID, gameAgentAID);
-        myAgent.addBehaviour(chatBehaviour);
     }
 }

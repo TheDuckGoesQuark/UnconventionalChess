@@ -32,9 +32,11 @@ public class Personality {
      * @param gameState  game state to test against
      * @return the set of actions considered with this personalities response to them
      */
-    public Map<PieceMove, Set<MoveResponse>> getResponseToMoves(ChessPiece chessPiece, Set<PieceMove> actions, GameState gameState) {
+    public Set<MoveResponse> getResponseToMoves(ChessPiece chessPiece, Set<PieceMove> actions, GameState gameState) {
         return actions.stream()
-                .collect(Collectors.toMap(action -> action, action -> getActionResponses(chessPiece, gameState, action)));
+                .map(action -> getActionResponses(chessPiece, gameState, action))
+                .flatMap(Collection::stream)
+                .collect(Collectors.toSet());
     }
 
     private Set<MoveResponse> getActionResponses(ChessPiece chessPiece, GameState gameState, PieceMove action) {

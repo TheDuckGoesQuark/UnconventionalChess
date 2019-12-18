@@ -28,7 +28,7 @@ public class TurnDiscussion {
         // check if an alternative was proposed that would alter the current move being discussed
         var alternative = moveResponse.get().getAlternativeResponse();
         if (alternative.isPresent()) {
-            var alternativeMessage = new ConversationMessage(alternative.get(), conversationMessage.getSender());
+            var alternativeMessage = new ConversationMessage(conversationMessage.getStatement(), alternative.get(), conversationMessage.getSender());
             recordMessage(alternativeMessage);
         }
     }

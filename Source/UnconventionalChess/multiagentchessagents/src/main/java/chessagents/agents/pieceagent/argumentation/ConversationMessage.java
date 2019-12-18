@@ -9,18 +9,18 @@ public class ConversationMessage implements Serializable {
 
     private final MoveResponse moveResponse;
     private final AID sender;
-    private final String quip;
+    private final String statement;
 
-    public ConversationMessage(String quip, AID sender) {
-        this.moveResponse = null;
-        this.quip = quip;
+    public ConversationMessage(String statement, AID sender) {
+        this.statement = statement;
         this.sender = sender;
+        this.moveResponse = null;
     }
 
-    public ConversationMessage(MoveResponse moveResponse, AID sender) {
-        this.moveResponse = moveResponse;
-        this.quip = null;
+    public ConversationMessage(String statement, MoveResponse moveResponse, AID sender) {
+        this.statement = statement;
         this.sender = sender;
+        this.moveResponse = moveResponse;
     }
 
     boolean movePerformed() {
@@ -29,8 +29,8 @@ public class ConversationMessage implements Serializable {
                 .orElse(false);
     }
 
-    public Optional<String> getQuip() {
-        return Optional.ofNullable(quip);
+    public String getStatement() {
+        return statement;
     }
 
     public Optional<MoveResponse> getMoveResponse() {
@@ -39,12 +39,5 @@ public class ConversationMessage implements Serializable {
 
     public AID getSender() {
         return sender;
-    }
-
-    public String getAsHumanFriendlyString() {
-        return getQuip()
-                .orElse(getMoveResponse()
-                        .map(moveResponse -> moveResponse.getOpinionGeneratingValue())
-                        .orElse(""));
     }
 }
