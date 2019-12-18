@@ -1,6 +1,6 @@
 package chessagents.agents.pieceagent.personality;
 
-import chessagents.agents.pieceagent.goals.*;
+import chessagents.agents.pieceagent.personality.values.*;
 import lombok.Getter;
 
 import java.util.Arrays;

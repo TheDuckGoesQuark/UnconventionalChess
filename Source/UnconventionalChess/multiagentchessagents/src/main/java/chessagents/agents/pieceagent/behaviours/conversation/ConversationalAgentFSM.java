@@ -14,7 +14,8 @@ public class ConversationalAgentFSM extends FSMBehaviour {
 
     public ConversationalAgentFSM(PieceAgent pieceAgent) {
         super(pieceAgent);
-        this.conversationContext = new ConversationContext();
+        this.conversationContext = new ConversationContext(pieceAgent);
+
         var init = new Initial(pieceAgent, conversationContext);
         var speak = new Speak(pieceAgent, conversationContext);
         var startSpeakerElection = new StartSpeakerElection(pieceAgent, conversationContext);
@@ -44,7 +45,7 @@ public class ConversationalAgentFSM extends FSMBehaviour {
 
         registerState(waitForSpeakerResults);
         registerTransition(waitForSpeakerResults, init, ConversationTransition.SPEAKER_CONFIRMED, ConversationState.values());
-        // everything resets on return to initial
+        // reset every state on return to initial state, otherwise they dont execute
     }
 
     @Override

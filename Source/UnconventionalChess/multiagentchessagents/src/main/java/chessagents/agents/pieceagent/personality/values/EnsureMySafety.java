@@ -1,12 +1,9 @@
-package chessagents.agents.pieceagent.goals;
+package chessagents.agents.pieceagent.personality.values;
 
 import chessagents.agents.pieceagent.ActionResponse;
 import chessagents.chess.GameState;
 import chessagents.ontology.schemas.concepts.ChessPiece;
 import chessagents.ontology.schemas.concepts.PieceMove;
-import chessagents.util.RandomUtil;
-
-import java.util.Arrays;
 
 
 public class EnsureMySafety extends Value {
