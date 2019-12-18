@@ -2,11 +2,15 @@ package chessagents.agents.pieceagent.argumentation;
 
 import chessagents.agents.commonbehaviours.RequestGameAgentMove;
 import chessagents.agents.pieceagent.PieceAgent;
+import chessagents.agents.pieceagent.behaviours.conversation.SendChatMessage;
 import chessagents.ontology.schemas.actions.MakeMove;
+import chessagents.ontology.schemas.concepts.PieceMove;
 import chessagents.util.RandomUtil;
 
+import java.util.Collection;
 import java.util.HashSet;
 import java.util.LinkedList;
+import java.util.Set;
 
 public class ConversationPlannerImpl implements ConversationPlanner {
 
@@ -75,13 +79,18 @@ public class ConversationPlannerImpl implements ConversationPlanner {
     }
 
     private ConversationMessage startDiscussion() {
-        var options = new HashSet<ConversationMessage>();
         var gameState = agent.getPieceContext().getGameState();
         var allPossibleMoves = gameState.getAllLegalMoves();
-        // propose move
-        // perform move
-        // ask for proposals
+
+        var options = new HashSet<ConversationMessage>();
+        options.addAll(createProposalMessageForMoves(allPossibleMoves));
+        options.addAll(createPerformMessageForMoves(allPossibleMoves));
+        options.add(createAskForProposalMessage());
         return RANDOM_MESSAGE_CHOOSER.chooseRandom(options);
+    }
+
+    private ConversationMessage createAskForProposalMessage() {
+        return new ConversationMessage(MoveResponse.askForProposals(), agent.getAID());
     }
 
     private ConversationMessage continueDiscussion() {
@@ -90,7 +99,23 @@ public class ConversationPlannerImpl implements ConversationPlanner {
         return null;
     }
 
+    private Collection<ConversationMessage> createPerformMessageForMoves(Set<PieceMove> allPossibleMoves) {
+
+    }
+
+    private Collection<ConversationMessage> createProposalMessageForMoves(Set<PieceMove> allPossibleMoves) {
+
+    }
+
     private TurnDiscussion getCurrentDiscussion() {
         return turnDiscussions.peekLast();
+    }
+
+    private void sendChat(String message) {
+        var myAgent = getAgent();
+        var myAID = myAgent.getAID();
+        var gameAgentAID = myAgent.getPieceContext().getGameAgentAID();
+        var chatBehaviour = new SendChatMessage(message, myAID, gameAgentAID);
+        myAgent.addBehaviour(chatBehaviour);
     }
 }

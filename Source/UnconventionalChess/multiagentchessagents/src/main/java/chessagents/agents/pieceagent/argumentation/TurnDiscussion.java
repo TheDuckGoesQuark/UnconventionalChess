@@ -10,7 +10,10 @@ public class TurnDiscussion {
 
     public void recordMessage(ConversationMessage conversationMessage) {
         var moveResponse = conversationMessage.getMoveResponse();
-        var optMove = moveResponse.getMove();
+
+        if (moveResponse.isEmpty()) return;
+
+        var optMove = moveResponse.get().getMove();
 
         if (optMove.isPresent()) {
             var move = optMove.get();
@@ -23,7 +26,7 @@ public class TurnDiscussion {
         }
 
         // check if an alternative was proposed that would alter the current move being discussed
-        var alternative = moveResponse.getAlternativeResponse();
+        var alternative = moveResponse.get().getAlternativeResponse();
         if (alternative.isPresent()) {
             var alternativeMessage = new ConversationMessage(alternative.get(), conversationMessage.getSender());
             recordMessage(alternativeMessage);

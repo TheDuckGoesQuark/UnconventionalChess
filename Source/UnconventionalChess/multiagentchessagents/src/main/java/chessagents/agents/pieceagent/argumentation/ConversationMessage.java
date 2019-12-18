@@ -2,9 +2,10 @@ package chessagents.agents.pieceagent.argumentation;
 
 import jade.core.AID;
 
+import java.io.Serializable;
 import java.util.Optional;
 
-public class ConversationMessage {
+public class ConversationMessage implements Serializable {
 
     private final MoveResponse moveResponse;
     private final AID sender;
@@ -38,5 +39,12 @@ public class ConversationMessage {
 
     public AID getSender() {
         return sender;
+    }
+
+    public String getAsHumanFriendlyString() {
+        return getQuip()
+                .orElse(getMoveResponse()
+                        .map(moveResponse -> moveResponse.getOpinionGeneratingValue())
+                        .orElse(""));
     }
 }

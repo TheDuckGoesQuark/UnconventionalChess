@@ -1,6 +1,8 @@
 package chessagents.agents.pieceagent.argumentation;
 
-public enum Opinion {
+import java.io.Serializable;
+
+public enum Opinion implements Serializable {
     LIKE,
     NEUTRAL,
     DISLIKE,

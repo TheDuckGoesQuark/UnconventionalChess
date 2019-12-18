@@ -5,10 +5,12 @@ import chessagents.chess.GameState;
 import chessagents.ontology.schemas.concepts.ChessPiece;
 import chessagents.ontology.schemas.concepts.PieceMove;
 
+import java.io.Serializable;
+
 /**
  * A goal is a game state that can be achieved
  */
-public abstract class Value {
+public abstract class Value implements Serializable {
 
     private final String name;
 
