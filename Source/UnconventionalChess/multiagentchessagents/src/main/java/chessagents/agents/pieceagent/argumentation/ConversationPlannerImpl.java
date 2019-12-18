@@ -47,7 +47,7 @@ public class ConversationPlannerImpl implements ConversationPlanner {
         final ConversationMessage conversationMessage;
 
         // if not our turn, then we can react to last move
-        if (agent.getPieceContext().isMyTurnToGo()) {
+        if (!agent.getPieceContext().isMyTurnToGo()) {
             conversationMessage = generateQuip();
         } else {
             int numberOfMessages = getLengthOfCurrentDiscussion();

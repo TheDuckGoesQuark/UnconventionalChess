@@ -29,7 +29,7 @@ public abstract class ConversationStateBehaviour extends Behaviour {
 
     @Override
     public void onStart() {
-        logger.info(String.format("STATE: %s", state.name()));
+        logger.info(String.format("STATE: %s - CONVERSATIONID: %s", state.name(), getConversationContext().getConversationID()));
     }
 
     protected void setTransition(ConversationTransition transition) {

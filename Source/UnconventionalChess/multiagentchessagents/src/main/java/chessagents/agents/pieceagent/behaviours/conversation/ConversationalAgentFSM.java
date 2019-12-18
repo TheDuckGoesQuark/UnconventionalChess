@@ -4,12 +4,14 @@ import chessagents.agents.pieceagent.PieceAgent;
 import chessagents.agents.pieceagent.argumentation.ConversationContext;
 import chessagents.agents.pieceagent.behaviours.conversation.statebehaviours.*;
 import jade.core.behaviours.FSMBehaviour;
+import jade.util.Logger;
 
 /**
  * FSM behaviour for maintaining the conversation state
  */
 public class ConversationalAgentFSM extends FSMBehaviour {
 
+    private final Logger logger = Logger.getMyLogger(getClass().getName());
     private ConversationContext conversationContext;
 
     public ConversationalAgentFSM(PieceAgent pieceAgent) {

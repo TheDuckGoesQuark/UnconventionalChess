@@ -10,7 +10,6 @@ import chessagents.ontology.schemas.concepts.ChessPiece;
 import jade.lang.acl.ACLMessage;
 
 import java.io.IOException;
-import java.util.stream.Collectors;
 
 public class Speak extends ConversationStateBehaviour {
 
@@ -19,6 +18,8 @@ public class Speak extends ConversationStateBehaviour {
     public Speak(PieceAgent a, ConversationContext conversationContext) {
         super(a, ConversationState.SPEAK, conversationContext);
     }
+
+
 
     @Override
     public void action() {
@@ -63,7 +64,6 @@ public class Speak extends ConversationStateBehaviour {
         try {
             logger.info("sleeping...");
             Thread.sleep(SPEAK_DELAY);
-            myAgent.addBehaviour(new SendChatMessage("wassup, " + getConversationContext().getConversationID(), myAgent.getAID(), getAgent().getPieceContext().getGameAgentAID()));
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
