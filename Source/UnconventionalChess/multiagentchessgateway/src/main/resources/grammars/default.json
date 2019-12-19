@@ -12,7 +12,8 @@
   "<VoiceLIKEWithJustification>": "<VoiceLIKE>, <Justification>",
   "<ProposeAlternative>": "<ProposeAlternativeMove> <AlternativeJustification>",
   "<ProposeMove>": "I think `getMovingPiece()` should move to `getMoveTarget()`",
-  "<ProposeMoveAlternativeMove>": "I think `getAlternativeMovingPiece()` should move to `getAlternativeMoveTarget()` instead",
+  "<ProposeMoveWithJustification>": "<ProposeMove> <Justification>",
+  "<ProposeAlternativeMove>": "I think `getAlternativeMovingPiece()` should move to `getAlternativeMoveTarget()` instead",
   "<Justification>": "because that move `getJustification()`",
   "<AlternativeJustification>": "because that move `getAlternativeJustification()`",
   "<Quip>": "Do you think the other team look scared? | *yawn* | *cough* | I don't understand why we have to wait for them to move..."

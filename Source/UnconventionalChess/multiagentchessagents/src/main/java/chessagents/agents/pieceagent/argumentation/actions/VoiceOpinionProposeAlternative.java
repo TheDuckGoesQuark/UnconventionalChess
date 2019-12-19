@@ -28,7 +28,13 @@ public class VoiceOpinionProposeAlternative extends ConversationAction {
         var reasoning = response.getReasoning();
         var traitResponsible = randomTraitChooser.chooseRandom(personality.getTraitsThatHaveValue(reasoning.getValue()));
 
-        var alternativeMoveResponse = new ProposeMove(pieceAgent, turnDiscussion).perform().getMoveResponse().get();
+        MoveResponse alternativeMoveResponse;
+        if (RandomUtil.randBool()) {
+            alternativeMoveResponse = new ProposeMove(pieceAgent, turnDiscussion).perform().getMoveResponse().get();
+        } else {
+            alternativeMoveResponse = new ProposeMoveWithJustification(pieceAgent, turnDiscussion).perform().getMoveResponse().get();
+        }
+
         response.setAlternativeResponse(alternativeMoveResponse);
 
         var grammarVariableProvider = new GrammarVariableProviderImpl(response, getMovingPiece(response, pieceAgent), getMovingPiece(response.getAlternativeResponse().get(), pieceAgent));

@@ -1,9 +1,6 @@
 package chessagents.agents.pieceagent.personality;
 
-import chessagents.agents.pieceagent.personality.values.EnsureMySafety;
-import chessagents.agents.pieceagent.personality.values.MaximiseEnemyCapturedPieces;
-import chessagents.agents.pieceagent.personality.values.MinimiseFriendlyThreatenedPieces;
-import chessagents.agents.pieceagent.personality.values.Value;
+import chessagents.agents.pieceagent.personality.values.*;
 import lombok.Getter;
 import rita.RiGrammar;
 
@@ -16,7 +13,8 @@ public enum Trait {
     AGGRESSIVE(new Value[]{new MaximiseEnemyCapturedPieces()}),
     DEFENSIVE(new Value[]{new MinimiseFriendlyThreatenedPieces()}),
     EGOTISTIC(new Value[]{new EnsureMySafety()}),
-    BENEVOLENT(new Value[]{new MinimiseFriendlyThreatenedPieces()});
+    BENEVOLENT(new Value[]{new MinimiseFriendlyThreatenedPieces()}),
+    INTROVERT(new Value[]{new Shy()});
 
     private final Set<Value> appealingValues;
     private RiGrammar riGrammar;
