@@ -24,6 +24,6 @@ public class Acknowledge implements ConversationAction {
         var randomTraitChooser = new RandomUtil<Trait>();
         var traitResponsible = randomTraitChooser.chooseRandom(personality.getTraitsThatHaveValue(response.getOpinionGeneratingValue()));
 
-        return new ConversationMessage(traitResponsible.getRiGrammar().expandFrom("<" + getClass().getSimpleName() + ">"), null, pieceAgent.getAID());
+        return new ConversationMessage(traitResponsible.getRiGrammar().expandFrom(grammarTag()), null, pieceAgent.getAID());
     }
 }

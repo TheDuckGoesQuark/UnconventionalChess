@@ -139,8 +139,7 @@ public class ConversationPlannerImpl implements ConversationPlanner {
     }
 
     private ConversationMessage generateQuip() {
-        // TODO
-        return new ConversationMessage("lil quippy", agent.getAID());
+        return new Quip(agent).perform();
     }
 
     private Set<MoveResponse> getResponsesToAllMoves() {

@@ -8,7 +8,8 @@ public enum ConversationActionType {
     PROPOSE_MOVE(ProposeMove.class.getSimpleName()),
     VOICE_OPINION(VoiceOpinion.class.getSimpleName()),
     VOICE_OPINION_PROPOSE_ALTERNATIVE(VoiceOpinionProposeAlternative.class.getSimpleName()),
-    VOICE_OPINION_WITH_JUSTIFICATION(VoiceOpinionWithJustification.class.getSimpleName());
+    VOICE_OPINION_WITH_JUSTIFICATION(VoiceOpinionWithJustification.class.getSimpleName()),
+    QUIP(Quip.class.getSimpleName());
 
     private final String className;
 

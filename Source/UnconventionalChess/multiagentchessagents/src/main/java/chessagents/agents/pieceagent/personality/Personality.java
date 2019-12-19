@@ -50,4 +50,8 @@ public class Personality {
                 .flatMap(values -> values.stream().map(value -> value.getMoveResponse(chessPiece, gameState, action)))
                 .collect(Collectors.toSet());
     }
+
+    public Collection<Trait> getTraits() {
+        return traits;
+    }
 }
