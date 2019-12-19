@@ -13,7 +13,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 @AllArgsConstructor
-public class ProposeMove implements ConversationAction {
+public class ProposeMove extends ConversationAction {
     private final PieceAgent pieceAgent;
     private final TurnDiscussion turnDiscussion;
 
@@ -58,9 +58,8 @@ public class ProposeMove implements ConversationAction {
         var randomTraitChooser = new RandomUtil<Trait>();
         var reasoning = chosenResponse.getReasoning();
         var traitResponsible = randomTraitChooser.chooseRandom(personality.getTraitsThatHaveValue(reasoning.getValue()));
-
-        var movingPiece = pieceAgent.getPieceContext().getGameState().getPieceAtPosition(move.getSource()).get().getAgentAID().getLocalName();
-        var grammarVariableProvider = new GrammarVariableProviderImpl(move.getTarget().getCoordinates(), reasoning.getJustification(), movingPiece);
+        var movingPiece = getMovingPiece(chosenResponse, pieceAgent);
+        var grammarVariableProvider = new GrammarVariableProviderImpl(chosenResponse, movingPiece, null);
 
         return new ConversationMessage(traitResponsible.getRiGrammar().expandFrom(grammarTag(), grammarVariableProvider), chosenResponse, pieceAgent.getAID());
     }

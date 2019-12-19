@@ -36,7 +36,9 @@ public class ChessPiece implements Concept, Cloneable {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         ChessPiece that = (ChessPiece) o;
-        return colour.equals(that.colour) &&
+
+        if (agentAID != null) return agentAID.equals(that.agentAID);
+        else return colour.equals(that.colour) &&
                 type.equals(that.type) &&
                 Objects.equals(position, that.position);
     }

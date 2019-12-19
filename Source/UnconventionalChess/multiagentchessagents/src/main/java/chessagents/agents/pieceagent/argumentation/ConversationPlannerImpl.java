@@ -94,7 +94,7 @@ public class ConversationPlannerImpl implements ConversationPlanner {
         if (numberOfMessages == 0) {
             // first message of turn so we can discuss previous suggestions
             setOfNextActions.add(new ProposeMove(agent, currentDiscussion));
-            setOfNextActions.add(new AskForProposals(agent, currentDiscussion));
+            setOfNextActions.add(new InitialAskForProposals(agent, currentDiscussion));
         } else {
             if (currentDiscussion.proposalsCalledFor()) {
                 setOfNextActions.add(new ProposeMove(agent, currentDiscussion));

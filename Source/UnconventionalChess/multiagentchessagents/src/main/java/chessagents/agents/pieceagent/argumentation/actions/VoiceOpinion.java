@@ -7,7 +7,7 @@ import chessagents.util.RandomUtil;
 import lombok.AllArgsConstructor;
 
 @AllArgsConstructor
-public class VoiceOpinion implements ConversationAction {
+public class VoiceOpinion extends ConversationAction {
     private final PieceAgent pieceAgent;
     private final TurnDiscussion turnDiscussion;
     private final MoveResponse response;
@@ -24,9 +24,8 @@ public class VoiceOpinion implements ConversationAction {
         var randomTraitChooser = new RandomUtil<Trait>();
         var reasoning = response.getReasoning();
         var traitResponsible = randomTraitChooser.chooseRandom(personality.getTraitsThatHaveValue(reasoning.getValue()));
-        var move = response.getMove().get();
-        var movingPiece = pieceAgent.getPieceContext().getGameState().getPieceAtPosition(move.getSource()).get().getAgentAID().getLocalName();
-        var grammarVariableProvider = new GrammarVariableProviderImpl(move.getTarget().getCoordinates(), reasoning.getJustification(), movingPiece);
+        var movingPiece = getMovingPiece(response, pieceAgent);
+        var grammarVariableProvider = new GrammarVariableProviderImpl(response, movingPiece, null);
         return new ConversationMessage(traitResponsible.getRiGrammar().expandFrom(grammarTag(), grammarVariableProvider), response, pieceAgent.getAID());
     }
 }

@@ -214,7 +214,13 @@ public class ChessBoard {
      * @param pieceAgentAID AID of agent representing that piece
      */
     public void registerAgentPiece(ChessPiece piece, OntoAID pieceAgentAID) {
-        chessPieces.stream().filter(p -> p.equals(piece)).findFirst().ifPresent(p -> p.setAgentAID(pieceAgentAID));
+        var agentPiece = chessPieces.stream().filter(p -> p.equals(piece)).findFirst().get();
+        // remove
+        chessPieces.remove(agentPiece);
+        // set AID
+        agentPiece.setAgentAID(pieceAgentAID);
+        // recalculate hash using AID instead of position, type, and colour
+        chessPieces.add(agentPiece);
     }
 
     public Set<ChessPiece> getAllPieces() {

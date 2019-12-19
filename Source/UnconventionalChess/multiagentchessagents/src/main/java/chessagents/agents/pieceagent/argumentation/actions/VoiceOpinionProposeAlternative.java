@@ -10,7 +10,7 @@ import chessagents.util.RandomUtil;
 import lombok.AllArgsConstructor;
 
 @AllArgsConstructor
-public class VoiceOpinionProposeAlternative implements ConversationAction {
+public class VoiceOpinionProposeAlternative extends ConversationAction {
     private final PieceAgent pieceAgent;
     private final TurnDiscussion turnDiscussion;
     private final MoveResponse response;
@@ -28,11 +28,10 @@ public class VoiceOpinionProposeAlternative implements ConversationAction {
         var reasoning = response.getReasoning();
         var traitResponsible = randomTraitChooser.chooseRandom(personality.getTraitsThatHaveValue(reasoning.getValue()));
 
-        var move = response.getMove().get();
-        var movingPiece = pieceAgent.getPieceContext().getGameState().getPieceAtPosition(move.getSource()).get().getAgentAID().getLocalName();
-        var grammarVariableProvider = new GrammarVariableProviderImpl(move.getTarget().getCoordinates(), reasoning.getJustification(), movingPiece);
         var alternativeMoveResponse = new ProposeMove(pieceAgent, turnDiscussion).perform().getMoveResponse().get();
         response.setAlternativeResponse(alternativeMoveResponse);
+
+        var grammarVariableProvider = new GrammarVariableProviderImpl(response, getMovingPiece(response, pieceAgent), getMovingPiece(response.getAlternativeResponse().get(), pieceAgent));
 
         return new ConversationMessage(traitResponsible.getRiGrammar().expandFrom(grammarTag(), grammarVariableProvider), response, pieceAgent.getAID());
     }

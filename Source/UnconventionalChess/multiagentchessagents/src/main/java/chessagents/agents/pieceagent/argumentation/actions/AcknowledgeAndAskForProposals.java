@@ -9,7 +9,7 @@ import chessagents.util.RandomUtil;
 import lombok.AllArgsConstructor;
 
 @AllArgsConstructor
-public class AcknowledgeAndAskForProposals implements ConversationAction {
+public class AcknowledgeAndAskForProposals extends ConversationAction {
 
     private final PieceAgent pieceAgent;
     private final TurnDiscussion turnDiscussion;

@@ -2,11 +2,14 @@ package chessagents.agents.pieceagent.argumentation.actions;
 
 import chessagents.agents.pieceagent.PieceAgent;
 import chessagents.agents.pieceagent.argumentation.ConversationMessage;
+import chessagents.agents.pieceagent.argumentation.GrammarVariableProviderImpl;
 import chessagents.agents.pieceagent.argumentation.TurnDiscussion;
+import chessagents.agents.pieceagent.personality.Trait;
+import chessagents.util.RandomUtil;
 import lombok.AllArgsConstructor;
 
 @AllArgsConstructor
-public class AskForProposals implements ConversationAction {
+public class AskForProposals extends ConversationAction {
 
     private final PieceAgent pieceAgent;
     private final TurnDiscussion turnDiscussion;
@@ -17,6 +20,10 @@ public class AskForProposals implements ConversationAction {
     }
 
     private ConversationMessage createAskForProposalMessage() {
-        return new ConversationMessage("Any ideas what we should do next?", null, pieceAgent.getAID());
+        var personality = pieceAgent.getPieceContext().getPersonality();
+        var randomTraitChooser = new RandomUtil<Trait>();
+        var traitResponsible = randomTraitChooser.chooseRandom(personality.getTraits());
+        var grammarVariableProvider = new GrammarVariableProviderImpl(null, null, null);
+        return new ConversationMessage(traitResponsible.getRiGrammar().expandFrom(grammarTag(), grammarVariableProvider), null, pieceAgent.getAID());
     }
 }

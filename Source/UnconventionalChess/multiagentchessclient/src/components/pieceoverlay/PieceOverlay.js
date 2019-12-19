@@ -16,8 +16,8 @@ const getAllPositions = () => {
     });
 };
 
-const getPieceNameAtPosition = (pieceConfigs, coord) => {
-    return pieceConfigs[coord] ? pieceConfigs[coord].name : undefined;
+const getPieceAtPosition = (pieceConfigs, coord) => {
+    return pieceConfigs[coord];
 };
 
 const getMostRecentChat = (messages) => {
@@ -68,16 +68,15 @@ const renderPieceOverlay = (mostRecentMessage, boardWidth, coord, pieceConfigs) 
         opacity: 0.8,
         zIndex: 100, // shown nametag above chess pieces
         position: "relative",
-        pointerEvents: "none",
     };
 
-    const pieceName = getPieceNameAtPosition(pieceConfigs, coord);
-    if (pieceName) {
+    let piece = getPieceAtPosition(pieceConfigs, coord);
+    if (piece) {
         return (<div>
             <div style={pieceBoxStyle} key={coord}>
-                <div style={nametagStyle}>{getPieceNameAtPosition(pieceConfigs, coord)}</div>
+                <div style={nametagStyle}>{piece.name}</div>
             </div>
-            {mostRecentMessage && (mostRecentMessage.fromId === pieceName) ? renderSpeech(mostRecentMessage) : null}
+            {mostRecentMessage && (mostRecentMessage.fromId === piece.name) ? renderSpeech(mostRecentMessage) : null}
         </div>)
     } else {
         return (<div style={emptyBoxStyle} key={coord}/>)
@@ -98,9 +97,7 @@ const PieceOverlay = (props) => {
     </div>
 };
 
-const mapDispatchToProps = {
-    sendMove: moveSend,
-};
+const mapDispatchToProps = {};
 
 function mapStateToProps(state) {
     return {

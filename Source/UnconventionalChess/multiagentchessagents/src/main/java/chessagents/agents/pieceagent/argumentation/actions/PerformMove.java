@@ -14,7 +14,7 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 @AllArgsConstructor
-public class PerformMove implements ConversationAction {
+public class PerformMove extends ConversationAction {
 
     private final PieceAgent pieceAgent;
     private final TurnDiscussion turnDiscussion;
@@ -63,8 +63,8 @@ public class PerformMove implements ConversationAction {
 
         chosenResponse.setPerformed(true);
 
-        var movingPiece = pieceAgent.getPieceContext().getGameState().getPieceAtPosition(move.getSource()).get().getAgentAID().getLocalName();
-        var grammarVariableProvider = new GrammarVariableProviderImpl(move.getTarget().getCoordinates(), reasoning.getJustification(), movingPiece);
+        var movingPiece = getMovingPiece(chosenResponse, pieceAgent);
+        var grammarVariableProvider = new GrammarVariableProviderImpl(chosenResponse, movingPiece, null);
         return new ConversationMessage(traitResponsible.getRiGrammar().expandFrom(grammarTag(), grammarVariableProvider), chosenResponse, pieceAgent.getAID());
     }
 }

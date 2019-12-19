@@ -122,7 +122,7 @@ public class GameState {
     }
 
     public void registerPieceAtPositionAsAgent(OntoAID aid, Position position) {
-        getPieceAtPosition(position).get().setAgentAID(aid);
+        board.registerAgentPiece(getPieceAtPosition(position).get(), aid);
     }
 
     /**

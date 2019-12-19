@@ -1,6 +1,5 @@
 package chessagents.agents.pieceagent.personality;
 
-import chessagents.agents.pieceagent.argumentation.actions.ConversationActionType;
 import chessagents.agents.pieceagent.personality.values.EnsureMySafety;
 import chessagents.agents.pieceagent.personality.values.MaximiseEnemyCapturedPieces;
 import chessagents.agents.pieceagent.personality.values.MinimiseFriendlyThreatenedPieces;

@@ -1,13 +1,24 @@
 package chessagents.agents.pieceagent.argumentation.actions;
 
+import chessagents.agents.pieceagent.PieceAgent;
 import chessagents.agents.pieceagent.argumentation.ConversationMessage;
+import chessagents.agents.pieceagent.argumentation.MoveResponse;
+import chessagents.ontology.schemas.concepts.PieceMove;
 
-public interface ConversationAction {
+public abstract class ConversationAction {
 
-    ConversationMessage perform();
+    public abstract ConversationMessage perform();
 
-    default String grammarTag() {
+    String grammarTag() {
         return "<" + getClass().getSimpleName() + ">";
     }
 
+    protected static String getMovingPiece(MoveResponse moveResponse, PieceAgent agent) {
+        var move = moveResponse.getMove().get();
+        var movingPiece = agent.getPieceContext().getGameState().getPieceAtPosition(move.getSource()).get().getAgentAID().getLocalName();
+
+        if (movingPiece.equals(agent.getAID().getLocalName())) movingPiece = "I";
+
+        return movingPiece;
+    }
 }

@@ -5,7 +5,7 @@ import chessagents.agents.pieceagent.argumentation.ConversationMessage;
 import chessagents.agents.pieceagent.personality.Trait;
 import chessagents.util.RandomUtil;
 
-public class Quip implements ConversationAction {
+public class Quip extends ConversationAction {
 
     private final PieceAgent agent;
     private static final RandomUtil<Trait> RANDOM_TRAIT_CHOOSER = new RandomUtil<>();
