@@ -6,6 +6,7 @@ import chessagents.ontology.schemas.concepts.ChessPiece;
 import chessagents.ontology.schemas.concepts.PieceMove;
 
 import java.io.Serializable;
+import java.util.Objects;
 
 /**
  * A goal is a game state that can be achieved
@@ -39,5 +40,16 @@ public abstract class Value implements Serializable {
         return name;
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Value value = (Value) o;
+        return Objects.equals(name, value.name);
+    }
 
+    @Override
+    public int hashCode() {
+        return Objects.hash(name);
+    }
 }

@@ -13,6 +13,10 @@ public class Acknowledge implements ConversationAction {
 
     @Override
     public ConversationMessage perform() {
+        var personality = pieceAgent.getPieceContext().getPersonality();
+
+
+
         return new ConversationMessage()
     }
 }

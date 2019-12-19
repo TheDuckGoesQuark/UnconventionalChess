@@ -19,6 +19,7 @@ public class ConversationPlannerImpl implements ConversationPlanner {
      */
     private final LinkedList<TurnDiscussion> turnDiscussions = new LinkedList<>();
     private final RandomUtil<ConversationAction> RANDOM_ACTION_CHOOSER = new RandomUtil<>();
+    private final RandomUtil<MoveResponse> RANDOM_RESPONSE_CHOOSER = new RandomUtil<>();
 
     public ConversationPlannerImpl(PieceAgent pieceAgent) {
         this.agent = pieceAgent;
@@ -75,9 +76,14 @@ public class ConversationPlannerImpl implements ConversationPlanner {
         var availableMoveResponses = getResponsesToAllMoves();
         var moveExistsThatICanPerform = containsMoveICanPerform(availableMoveResponses);
         if (moveExistsThatICanPerform) {
-            setOfNextActions.add(new PerformMove(agent, currentDiscussion));
+            var performMove = new PerformMove(agent, currentDiscussion);
+            // just perform move if we've been talking for too long
+            if (agent.getPieceContext().getMaxDebateCycle() < currentDiscussion.getNumberOfMessages()) {
+                return performMove;
+            } else {
+                setOfNextActions.add(performMove);
+            }
         }
-
 
         if (numberOfMessages == 0) {
             // first message of turn so we can discuss previous suggestions
@@ -92,9 +98,9 @@ public class ConversationPlannerImpl implements ConversationPlanner {
                 switch (response.getOpinion()) {
                     case LIKE:
                     case DISLIKE:
-                        setOfNextActions.add(new VoiceOpinion(agent, currentDiscussion, response.getOpinion()));
-                        setOfNextActions.add(new VoiceOpinionProposeAlternative(agent, currentDiscussion, response.getOpinion()));
-                        setOfNextActions.add(new VoiceOpinionWithJustification(agent, currentDiscussion, response.getOpinion()));
+                        setOfNextActions.add(new VoiceOpinion(agent, currentDiscussion, response));
+                        setOfNextActions.add(new VoiceOpinionProposeAlternative(agent, currentDiscussion, response));
+                        setOfNextActions.add(new VoiceOpinionWithJustification(agent, currentDiscussion, response));
                         break;
                     case NEUTRAL:
                         setOfNextActions.add(new Acknowledge(agent, currentDiscussion));
@@ -112,7 +118,10 @@ public class ConversationPlannerImpl implements ConversationPlanner {
         var currentDiscussion = getCurrentDiscussion();
         var lastMoveDiscussed = currentDiscussion.getLastMoveDiscussed();
         var pieceContext = agent.getPieceContext();
-        return pieceContext.getPersonality().getResponseToMoves(pieceContext.getMyPiece(), Collections.singleton(lastMoveDiscussed), pieceContext.getGameState()).iterator().next();
+
+        // choose random from our responses to this move
+        var responses = pieceContext.getPersonality().getResponseToMoves(pieceContext.getMyPiece(), Collections.singleton(lastMoveDiscussed), pieceContext.getGameState());
+        return RANDOM_RESPONSE_CHOOSER.chooseRandom(responses);
     }
 
     private boolean containsMoveICanPerform(Set<MoveResponse> moveResponses) {

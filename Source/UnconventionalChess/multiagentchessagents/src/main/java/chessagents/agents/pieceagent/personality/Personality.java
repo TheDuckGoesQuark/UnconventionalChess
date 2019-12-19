@@ -1,6 +1,7 @@
 package chessagents.agents.pieceagent.personality;
 
 import chessagents.agents.pieceagent.argumentation.MoveResponse;
+import chessagents.agents.pieceagent.personality.values.Value;
 import chessagents.chess.GameState;
 import chessagents.ontology.schemas.concepts.ChessPiece;
 import chessagents.ontology.schemas.concepts.PieceMove;
@@ -22,6 +23,10 @@ public class Personality {
         int numOfTraits = random.nextInt(options.size());
         Collections.shuffle(options);
         return new Personality(new HashSet<>(options.subList(0, numOfTraits)));
+    }
+
+    public Set<Trait> getTraitsThatHaveValue(Value value) {
+        return traits.stream().filter(trait -> trait.getAppealingValues().contains(value)).collect(Collectors.toSet());
     }
 
     /**

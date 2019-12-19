@@ -15,6 +15,10 @@ public class RandomUtil<T> {
         return random.nextBoolean();
     }
 
+    public static float nextFloat() {
+        return random.nextFloat();
+    }
+
     public T chooseRandom(Collection<T> collection) {
         var targetIndex = random.nextInt(collection.size());
         var iter = collection.iterator();
