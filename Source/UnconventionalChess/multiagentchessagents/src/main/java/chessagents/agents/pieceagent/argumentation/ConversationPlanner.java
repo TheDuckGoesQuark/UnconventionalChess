@@ -1,5 +1,7 @@
 package chessagents.agents.pieceagent.argumentation;
 
+import chessagents.ontology.schemas.concepts.PieceMove;
+
 public interface ConversationPlanner {
 
     /**
@@ -30,4 +32,6 @@ public interface ConversationPlanner {
      * @return the number of messages exchanged during th current discussion
      */
     int getLengthOfCurrentDiscussion();
+
+    PieceMove getLastMoveDiscussed();
 }

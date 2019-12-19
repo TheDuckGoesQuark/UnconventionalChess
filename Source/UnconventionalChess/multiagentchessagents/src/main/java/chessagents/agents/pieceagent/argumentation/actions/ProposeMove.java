@@ -1,10 +1,7 @@
 package chessagents.agents.pieceagent.argumentation.actions;
 
 import chessagents.agents.pieceagent.PieceAgent;
-import chessagents.agents.pieceagent.argumentation.ConversationMessage;
-import chessagents.agents.pieceagent.argumentation.MoveResponse;
-import chessagents.agents.pieceagent.argumentation.Opinion;
-import chessagents.agents.pieceagent.argumentation.TurnDiscussion;
+import chessagents.agents.pieceagent.argumentation.*;
 import chessagents.agents.pieceagent.personality.Trait;
 import chessagents.ontology.schemas.concepts.PieceMove;
 import chessagents.util.RandomUtil;
@@ -14,7 +11,6 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Set;
-import java.util.stream.Collectors;
 
 @AllArgsConstructor
 public class ProposeMove implements ConversationAction {
@@ -63,6 +59,9 @@ public class ProposeMove implements ConversationAction {
         var reasoning = chosenResponse.getReasoning();
         var traitResponsible = randomTraitChooser.chooseRandom(personality.getTraitsThatHaveValue(reasoning.getValue()));
 
-        return new ConversationMessage(traitResponsible.getRiGrammar().expandFrom(grammarTag()), chosenResponse, pieceAgent.getAID());
+        var movingPiece = pieceAgent.getPieceContext().getGameState().getPieceAtPosition(move.getSource()).get().getAgentAID().getLocalName();
+        var grammarVariableProvider = new GrammarVariableProviderImpl(move.getTarget().getCoordinates(), reasoning.getJustification(), movingPiece);
+
+        return new ConversationMessage(traitResponsible.getRiGrammar().expandFrom(grammarTag(), grammarVariableProvider), chosenResponse, pieceAgent.getAID());
     }
 }

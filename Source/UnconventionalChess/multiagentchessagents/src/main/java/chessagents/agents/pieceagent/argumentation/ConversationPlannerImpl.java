@@ -4,6 +4,7 @@ import chessagents.agents.commonbehaviours.RequestGameAgentMove;
 import chessagents.agents.pieceagent.PieceAgent;
 import chessagents.agents.pieceagent.argumentation.actions.*;
 import chessagents.ontology.schemas.actions.MakeMove;
+import chessagents.ontology.schemas.concepts.PieceMove;
 import chessagents.util.RandomUtil;
 
 import java.util.*;
@@ -39,6 +40,11 @@ public class ConversationPlannerImpl implements ConversationPlanner {
     @Override
     public int getLengthOfCurrentDiscussion() {
         return getCurrentDiscussion().getNumberOfMessages();
+    }
+
+    @Override
+    public PieceMove getLastMoveDiscussed() {
+        return getCurrentDiscussion().getLastMoveDiscussed();
     }
 
     @Override

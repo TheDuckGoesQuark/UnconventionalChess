@@ -24,7 +24,9 @@ public class VoiceOpinionWithJustification implements ConversationAction {
         var randomTraitChooser = new RandomUtil<Trait>();
         var reasoning = response.getReasoning();
         var traitResponsible = randomTraitChooser.chooseRandom(personality.getTraitsThatHaveValue(reasoning.getValue()));
-        var grammarVariableProvider = new GrammarVariableProviderImpl(response.getMove().get().getTarget().getCoordinates(), reasoning.getJustification());
+        var move = response.getMove().get();
+        var movingPiece = pieceAgent.getPieceContext().getGameState().getPieceAtPosition(move.getSource()).get().getAgentAID().getLocalName();
+        var grammarVariableProvider = new GrammarVariableProviderImpl(move.getTarget().getCoordinates(), reasoning.getJustification(), movingPiece);
         return new ConversationMessage(traitResponsible.getRiGrammar().expandFrom(grammarTag(), grammarVariableProvider), response, pieceAgent.getAID());
     }
 }

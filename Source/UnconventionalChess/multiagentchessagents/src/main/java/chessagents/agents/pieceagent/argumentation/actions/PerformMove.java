@@ -63,7 +63,8 @@ public class PerformMove implements ConversationAction {
 
         chosenResponse.setPerformed(true);
 
-        var grammarVariableProvider = new GrammarVariableProviderImpl(chosenResponse.getMove().get().getTarget().getCoordinates(), reasoning.getJustification());
+        var movingPiece = pieceAgent.getPieceContext().getGameState().getPieceAtPosition(move.getSource()).get().getAgentAID().getLocalName();
+        var grammarVariableProvider = new GrammarVariableProviderImpl(move.getTarget().getCoordinates(), reasoning.getJustification(), movingPiece);
         return new ConversationMessage(traitResponsible.getRiGrammar().expandFrom(grammarTag(), grammarVariableProvider), chosenResponse, pieceAgent.getAID());
     }
 }

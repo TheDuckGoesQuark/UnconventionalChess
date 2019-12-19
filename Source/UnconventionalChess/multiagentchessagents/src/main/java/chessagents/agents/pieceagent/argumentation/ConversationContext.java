@@ -1,6 +1,7 @@
 package chessagents.agents.pieceagent.argumentation;
 
 import chessagents.agents.pieceagent.PieceAgent;
+import chessagents.ontology.schemas.concepts.PieceMove;
 import jade.content.OntoAID;
 import jade.lang.acl.MessageTemplate;
 import jade.util.Logger;
@@ -47,5 +48,9 @@ public class ConversationContext {
         speakerRotationCounter = 0;
         speaker = null;
         conversationPlanner.startNewTurn();
+    }
+
+    public PieceMove getLastMoveDiscussed() {
+        return conversationPlanner.getLastMoveDiscussed();
     }
 }

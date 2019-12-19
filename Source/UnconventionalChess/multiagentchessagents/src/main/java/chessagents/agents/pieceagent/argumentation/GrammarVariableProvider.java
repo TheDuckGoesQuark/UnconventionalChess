@@ -4,5 +4,6 @@ public interface GrammarVariableProvider {
 
     String getMoveTarget();
     String getJustification();
+    String getMovingPiece();
 
 }

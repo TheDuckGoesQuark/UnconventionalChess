@@ -28,7 +28,9 @@ public class VoiceOpinionProposeAlternative implements ConversationAction {
         var reasoning = response.getReasoning();
         var traitResponsible = randomTraitChooser.chooseRandom(personality.getTraitsThatHaveValue(reasoning.getValue()));
 
-        var grammarVariableProvider = new GrammarVariableProviderImpl(response.getMove().get().getTarget().getCoordinates(), reasoning.getJustification());
+        var move = response.getMove().get();
+        var movingPiece = pieceAgent.getPieceContext().getGameState().getPieceAtPosition(move.getSource()).get().getAgentAID().getLocalName();
+        var grammarVariableProvider = new GrammarVariableProviderImpl(move.getTarget().getCoordinates(), reasoning.getJustification(), movingPiece);
         var alternativeMoveResponse = new ProposeMove(pieceAgent, turnDiscussion).perform().getMoveResponse().get();
         response.setAlternativeResponse(alternativeMoveResponse);
 

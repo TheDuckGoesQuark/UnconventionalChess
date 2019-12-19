@@ -34,8 +34,7 @@ public class ChooseSpeaker extends ConversationStateBehaviour {
     @Override
     public void action() {
         if (receivedRequestFromEveryone()) {
-            // TODO can we do better than random here?
-            var nextSpeaker = new RandomUtil<ACLMessage>().chooseRandom(speakerProposals).getSender();
+            var nextSpeaker = chooseSpeaker(speakerProposals);
             sendResults(nextSpeaker);
             setTransition(ConversationTransition.SPEAKER_CHOSEN);
         } else {
@@ -47,6 +46,19 @@ public class ChooseSpeaker extends ConversationStateBehaviour {
             } else {
                 block();
             }
+        }
+    }
+
+    private AID chooseSpeaker(Set<ACLMessage> speakerProposals) {
+        var move = getConversationContext().getLastMoveDiscussed();
+
+        if (move != null) {
+            // allow piece being asked to move to talk
+            var pieceMoving = getAgent().getPieceContext().getGameState().getPieceAtPosition(move.getSource());
+            return pieceMoving.get().getAgentAID();
+        } else {
+            // choose random other piece
+            return new RandomUtil<ACLMessage>().chooseRandom(speakerProposals).getSender();
         }
     }
 
