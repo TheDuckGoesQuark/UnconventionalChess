@@ -15,6 +15,11 @@ public class TurnDiscussion {
         if (moveResponse.isEmpty()) {
             var discussion = moveDiscussions.computeIfAbsent(null, MoveDiscussion::new);
             discussion.addMessage(conversationMessage);
+
+            // moves this discussion to the top of the list by removing and reentering
+            moveDiscussions.remove(null);
+            moveDiscussions.put(null, discussion);
+
             return;
         }
 

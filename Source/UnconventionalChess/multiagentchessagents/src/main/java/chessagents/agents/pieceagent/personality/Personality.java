@@ -20,7 +20,7 @@ public class Personality {
 
     public static Personality random() {
         var options = Arrays.asList(Trait.values());
-        int numOfTraits = random.nextInt(options.size());
+        int numOfTraits = random.nextInt(options.size() - 1) + 1;
         Collections.shuffle(options);
         return new Personality(new HashSet<>(options.subList(0, numOfTraits)));
     }

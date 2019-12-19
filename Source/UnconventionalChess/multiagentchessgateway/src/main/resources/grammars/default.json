@@ -5,8 +5,8 @@
   "<PerformMove>": "Okay moving there...",
   "<ProposeMove>": "I think we should do x",
   "<VoiceOpinion>": "I Like | I dislike that",
-  "<VoiceOpinionProposeAlternative": "<VoiceOpinion>, <ProposeAlternative>",
+  "<VoiceOpinionProposeAlternative>": "<VoiceOpinion>, <ProposeAlternative>",
   "<ProposeAlternative>": "<ProposeMove> <Justification>",
   "<Justification>": "because it will achieve this",
-  "<VoiceOpinionWithJustification": "<VoiceOpinion>, <Justification>"
+  "<VoiceOpinionWithJustification>": "<VoiceOpinion>, <Justification>"
 }

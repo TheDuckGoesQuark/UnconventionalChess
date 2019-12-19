@@ -10,7 +10,10 @@ import chessagents.ontology.schemas.concepts.PieceMove;
 import chessagents.util.RandomUtil;
 import lombok.AllArgsConstructor;
 
-import java.util.*;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 @AllArgsConstructor
@@ -21,18 +24,15 @@ public class PerformMove implements ConversationAction {
 
     @Override
     public ConversationMessage perform() {
-        return lastDiscussedMove();
-    }
-
-    private ConversationMessage lastDiscussedMove() {
         var move = turnDiscussion.getLastMoveDiscussed();
 
-        if (move == null) {
-            var myPos = pieceAgent.getPieceContext().getMyPiece().getPosition();
-            var possibleMoves = pieceAgent.getPieceContext().getGameState().getAllLegalMoves()
-                    .stream()
-                    .filter(m -> m.getSource().equals(myPos))
-                    .collect(Collectors.toSet());
+        var myPos = pieceAgent.getPieceContext().getMyPiece().getPosition();
+        var possibleMoves = pieceAgent.getPieceContext().getGameState().getAllLegalMoves()
+                .stream()
+                .filter(m -> m.getSource().equals(myPos))
+                .collect(Collectors.toSet());
+
+        if (move == null || !possibleMoves.contains(move)) {
             move = new RandomUtil<PieceMove>().chooseRandom(possibleMoves);
         }
 
@@ -63,9 +63,8 @@ public class PerformMove implements ConversationAction {
         var randomTraitChooser = new RandomUtil<Trait>();
         var traitResponsible = randomTraitChooser.chooseRandom(personality.getTraitsThatHaveValue(chosenResponse.getOpinionGeneratingValue()));
 
-        // set true so other pieces know move was performed
         chosenResponse.setPerformed(true);
 
-        return new ConversationMessage(traitResponsible.getRiGrammar().expandFrom("<"+getClass().getSimpleName()+">"), chosenResponse, pieceAgent.getAID());
+        return new ConversationMessage(traitResponsible.getRiGrammar().expandFrom(grammarTag()), chosenResponse, pieceAgent.getAID());
     }
 }

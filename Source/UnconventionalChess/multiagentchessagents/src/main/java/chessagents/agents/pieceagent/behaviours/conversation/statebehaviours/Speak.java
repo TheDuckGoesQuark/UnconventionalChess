@@ -21,8 +21,8 @@ public class Speak extends ConversationStateBehaviour {
 
     @Override
     public void action() {
-        syntheticDelay();
         var message = getConversationContext().produceMessage();
+        syntheticDelay();
         sendChat(message.getStatement());
         sendToAllMyAgents(message);
         setTransition(ConversationTransition.SPOKE);

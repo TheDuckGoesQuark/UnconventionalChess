@@ -103,9 +103,9 @@ public class ConversationPlannerImpl implements ConversationPlanner {
                         setOfNextActions.add(new VoiceOpinionWithJustification(agent, currentDiscussion, response));
                         break;
                     case NEUTRAL:
-                        setOfNextActions.add(new Acknowledge(agent, currentDiscussion));
+                        setOfNextActions.add(new Acknowledge(agent, currentDiscussion, response));
                         setOfNextActions.add(new AskForProposals(agent, currentDiscussion));
-                        setOfNextActions.add(new AcknowledgeAndAskForProposals(agent, currentDiscussion));
+                        setOfNextActions.add(new AcknowledgeAndAskForProposals(agent, currentDiscussion, response));
                         break;
                 }
             }
@@ -120,8 +120,13 @@ public class ConversationPlannerImpl implements ConversationPlanner {
         var pieceContext = agent.getPieceContext();
 
         // choose random from our responses to this move
-        var responses = pieceContext.getPersonality().getResponseToMoves(pieceContext.getMyPiece(), Collections.singleton(lastMoveDiscussed), pieceContext.getGameState());
-        return RANDOM_RESPONSE_CHOOSER.chooseRandom(responses);
+        try {
+            var responses = pieceContext.getPersonality().getResponseToMoves(pieceContext.getMyPiece(), Collections.singleton(lastMoveDiscussed), pieceContext.getGameState());
+            return RANDOM_RESPONSE_CHOOSER.chooseRandom(responses);
+        } catch (IllegalArgumentException e) {
+            System.out.println("bad times");
+            return null;
+        }
     }
 
     private boolean containsMoveICanPerform(Set<MoveResponse> moveResponses) {

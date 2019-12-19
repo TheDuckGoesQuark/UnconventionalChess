@@ -6,4 +6,8 @@ public interface ConversationAction {
 
     ConversationMessage perform();
 
+    default String grammarTag() {
+        return "<" + getClass().getSimpleName() + ">";
+    }
+
 }

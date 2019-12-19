@@ -5,6 +5,8 @@ import chessagents.agents.pieceagent.argumentation.ConversationMessage;
 import chessagents.agents.pieceagent.argumentation.MoveResponse;
 import chessagents.agents.pieceagent.argumentation.Opinion;
 import chessagents.agents.pieceagent.argumentation.TurnDiscussion;
+import chessagents.agents.pieceagent.personality.Trait;
+import chessagents.util.RandomUtil;
 import lombok.AllArgsConstructor;
 
 @AllArgsConstructor
@@ -15,6 +17,10 @@ public class VoiceOpinionWithJustification implements ConversationAction {
 
     @Override
     public ConversationMessage perform() {
-        return null;
+        // find trait that has value used, use its grammar to build statement
+        var personality = pieceAgent.getPieceContext().getPersonality();
+        var randomTraitChooser = new RandomUtil<Trait>();
+        var traitResponsible = randomTraitChooser.chooseRandom(personality.getTraitsThatHaveValue(response.getOpinionGeneratingValue()));
+        return new ConversationMessage(traitResponsible.getRiGrammar().expandFrom(grammarTag()), response, pieceAgent.getAID());
     }
 }
