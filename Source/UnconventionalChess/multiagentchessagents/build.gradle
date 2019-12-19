@@ -14,6 +14,12 @@ repositories {
     }
 }
 
+jar {
+    from('src/main/java') {
+        include '**/*.json'
+    }
+}
+
 dependencies {
     implementation group: 'com.tilab.jade', name: 'jade', version: '4.5.0'
     //http://rednoise.org/rita/download/rita.jar

@@ -26,11 +26,11 @@ public enum Trait {
         appealingValues = new HashSet<>(Arrays.asList(values));
 
         try {
-            riGrammar = new RiGrammar().loadFrom(getClass().getResource("grammars/" + name().toLowerCase() + ".json"));
+            riGrammar = new RiGrammar().loadFrom(Trait.class.getResource("/grammars/" + name().toLowerCase() + ".json"));
             verifyGrammar(riGrammar);
         } catch (Exception e) {
             System.err.println(e.getMessage());
-            riGrammar = new RiGrammar().loadFrom(getClass().getResource("grammars/default.json"));
+            riGrammar = new RiGrammar().loadFrom(Trait.class.getResource("/grammars/default.json"));
         }
     }
 

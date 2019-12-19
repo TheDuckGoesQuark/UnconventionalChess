@@ -6,13 +6,12 @@ import chessagents.agents.pieceagent.argumentation.MoveResponse;
 import chessagents.agents.pieceagent.argumentation.Opinion;
 import chessagents.agents.pieceagent.argumentation.TurnDiscussion;
 import chessagents.agents.pieceagent.personality.Trait;
+import chessagents.ontology.schemas.concepts.PieceMove;
 import chessagents.util.RandomUtil;
 import lombok.AllArgsConstructor;
 
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.*;
+import java.util.stream.Collectors;
 
 @AllArgsConstructor
 public class PerformMove implements ConversationAction {
@@ -27,6 +26,16 @@ public class PerformMove implements ConversationAction {
 
     private ConversationMessage lastDiscussedMove() {
         var move = turnDiscussion.getLastMoveDiscussed();
+
+        if (move == null) {
+            var myPos = pieceAgent.getPieceContext().getMyPiece().getPosition();
+            var possibleMoves = pieceAgent.getPieceContext().getGameState().getAllLegalMoves()
+                    .stream()
+                    .filter(m -> m.getSource().equals(myPos))
+                    .collect(Collectors.toSet());
+            move = new RandomUtil<PieceMove>().chooseRandom(possibleMoves);
+        }
+
         var pieceContext = pieceAgent.getPieceContext();
         var personality = pieceContext.getPersonality();
         var responses = personality.getResponseToMoves(pieceContext.getMyPiece(), Collections.singleton(move), pieceContext.getGameState());
@@ -54,6 +63,9 @@ public class PerformMove implements ConversationAction {
         var randomTraitChooser = new RandomUtil<Trait>();
         var traitResponsible = randomTraitChooser.chooseRandom(personality.getTraitsThatHaveValue(chosenResponse.getOpinionGeneratingValue()));
 
-        return new ConversationMessage(traitResponsible.getRiGrammar().expand(), chosenResponse, pieceAgent.getAID());
+        // set true so other pieces know move was performed
+        chosenResponse.setPerformed(true);
+
+        return new ConversationMessage(traitResponsible.getRiGrammar().expandFrom("<"+getClass().getSimpleName()+">"), chosenResponse, pieceAgent.getAID());
     }
 }

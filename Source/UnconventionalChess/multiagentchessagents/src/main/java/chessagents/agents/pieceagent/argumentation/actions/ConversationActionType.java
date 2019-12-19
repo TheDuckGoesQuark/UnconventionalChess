@@ -2,13 +2,13 @@ package chessagents.agents.pieceagent.argumentation.actions;
 
 public enum ConversationActionType {
 
-    ACKNOWLEDGE(Acknowledge.class.getName()),
-    ACKNOWLEDGE_AND_ASK_FOR_PROPOSALS(AcknowledgeAndAskForProposals.class.getName()),
-    PERFORM_MOVE(PerformMove.class.getName()),
-    PROPOSE_MOVE(ProposeMove.class.getName()),
-    VOICE_OPINION(VoiceOpinion.class.getName()),
-    VOICE_OPINION_PROPOSE_ALTERNATIVE(VoiceOpinionProposeAlternative.class.getName()),
-    VOICE_OPINION_WITH_JUSTIFICATION(VoiceOpinionWithJustification.class.getName());
+    ACKNOWLEDGE(Acknowledge.class.getSimpleName()),
+    ACKNOWLEDGE_AND_ASK_FOR_PROPOSALS(AcknowledgeAndAskForProposals.class.getSimpleName()),
+    PERFORM_MOVE(PerformMove.class.getSimpleName()),
+    PROPOSE_MOVE(ProposeMove.class.getSimpleName()),
+    VOICE_OPINION(VoiceOpinion.class.getSimpleName()),
+    VOICE_OPINION_PROPOSE_ALTERNATIVE(VoiceOpinionProposeAlternative.class.getSimpleName()),
+    VOICE_OPINION_WITH_JUSTIFICATION(VoiceOpinionWithJustification.class.getSimpleName());
 
     private final String className;
 
