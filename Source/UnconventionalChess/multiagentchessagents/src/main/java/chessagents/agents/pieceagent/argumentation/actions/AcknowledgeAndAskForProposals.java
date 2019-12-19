@@ -22,8 +22,9 @@ public class AcknowledgeAndAskForProposals implements ConversationAction {
 
         // find trait that has value used, use its grammar to build statement
         var randomTraitChooser = new RandomUtil<Trait>();
-        var traitResponsible = randomTraitChooser.chooseRandom(personality.getTraitsThatHaveValue(response.getOpinionGeneratingValue()));
+        var reasoning = response.getReasoning();
+        var traitResponsible = randomTraitChooser.chooseRandom(personality.getTraitsThatHaveValue(reasoning.getValue()));
 
-        return new ConversationMessage(traitResponsible.getRiGrammar().expandFrom("<" + getClass().getSimpleName() + ">"), null, pieceAgent.getAID());
+        return new ConversationMessage(traitResponsible.getRiGrammar().expandFrom(grammarTag()), null, pieceAgent.getAID());
     }
 }

@@ -16,12 +16,17 @@ public class VoiceOpinion implements ConversationAction {
     private final MoveResponse response;
 
     @Override
+    public String grammarTag() {
+        return "<Voice" + response.getOpinion().name() + ">";
+    }
+
+    @Override
     public ConversationMessage perform() {
         // find trait that has value used, use its grammar to build statement
         var personality = pieceAgent.getPieceContext().getPersonality();
         var randomTraitChooser = new RandomUtil<Trait>();
-        var traitResponsible = randomTraitChooser.chooseRandom(personality.getTraitsThatHaveValue(response.getOpinionGeneratingValue()));
-
+        var reasoning = response.getReasoning();
+        var traitResponsible = randomTraitChooser.chooseRandom(personality.getTraitsThatHaveValue(reasoning.getValue()));
         return new ConversationMessage(traitResponsible.getRiGrammar().expandFrom(grammarTag()), response, pieceAgent.getAID());
     }
 }

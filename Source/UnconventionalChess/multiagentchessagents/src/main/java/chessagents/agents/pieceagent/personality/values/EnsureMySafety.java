@@ -2,6 +2,7 @@ package chessagents.agents.pieceagent.personality.values;
 
 import chessagents.agents.pieceagent.argumentation.MoveResponse;
 import chessagents.agents.pieceagent.argumentation.Opinion;
+import chessagents.agents.pieceagent.argumentation.Reasoning;
 import chessagents.chess.GameState;
 import chessagents.ontology.schemas.concepts.ChessPiece;
 import chessagents.ontology.schemas.concepts.PieceMove;
@@ -26,11 +27,11 @@ public class EnsureMySafety extends Value {
         var isCaptured = afterActionState.getCapturedForColour(chessPiece.getColour()).contains(chessPiece);
 
         if (isAlreadyThreatened && !becomesThreatened && !isCaptured) {
-            return MoveResponse.buildResponse(action, Opinion.LIKE, this);
+            return MoveResponse.buildResponse(action, Opinion.LIKE, new Reasoning(this, "saves me from being threatened"));
         } else if (becomesThreatened || isCaptured) {
-            return MoveResponse.buildResponse(action, Opinion.DISLIKE, this);
+            return MoveResponse.buildResponse(action, Opinion.DISLIKE, new Reasoning(this, "puts me at risk"));
         } else {
-            return MoveResponse.buildResponse(action, Opinion.NEUTRAL, this);
+            return MoveResponse.buildResponse(action, Opinion.NEUTRAL, new Reasoning(this, "doesn't affect me"));
         }
     }
 }

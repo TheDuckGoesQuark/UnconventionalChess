@@ -2,12 +2,15 @@
   "<Acknowledge>": "cool.",
   "<AcknowledgeAndAskForProposals>": "<Acknowledge>. <AskForProposals>",
   "<AskForProposals>": "Does anyone have any other ideas?",
-  "<PerformMove>": "Okay moving there...",
+  "<PerformMove>": "Moving there... | Moving to `getMoveTarget()`",
   "<ProposeMove>": "I think we should do x",
-  "<VoiceOpinion>": "I Like | I dislike that",
-  "<VoiceOpinionProposeAlternative>": "<VoiceOpinion>, <ProposeAlternative>",
+  "<VoiceLIKE>": "I like that",
+  "<VoiceDISLIKE>": "I dislike that",
+  "<VoiceLIKEProposeAlternative>": "<VoiceLIKE>, <ProposeAlternative>",
+  "<VoiceDISLIKEProposeAlternative>": "<VoiceDISLIKE>, <ProposeAlternative>",
   "<ProposeAlternative>": "<ProposeMove> <Justification>",
-  "<Justification>": "because it will achieve this",
-  "<VoiceOpinionWithJustification>": "<VoiceOpinion>, <Justification>",
-  "<Quip>": "Do you think the other team look scared? | *yawn*"
+  "<Justification>": "because `getJustification()`",
+  "<VoiceDISLIKEWithJustification>": "<VoiceDISLIKE>, <Justification>",
+  "<VoiceLIKEWithJustification>": "<VoiceLIKE>, <Justification>",
+  "<Quip>": "Do you think the other team look scared? | *yawn* | *cough* | I don't understand why we have to wait for them to move..."
 }

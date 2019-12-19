@@ -27,22 +27,9 @@ public enum Trait {
 
         try {
             riGrammar = new RiGrammar().loadFrom(Trait.class.getResource("/grammars/" + name().toLowerCase() + ".json"));
-            verifyGrammar(riGrammar);
         } catch (Exception e) {
             System.err.println(e.getMessage());
             riGrammar = new RiGrammar().loadFrom(Trait.class.getResource("/grammars/default.json"));
-        }
-    }
-
-    private void verifyGrammar(RiGrammar riGrammar) throws Exception {
-        var conversationActions = ConversationActionType.values();
-
-        for (int i = 0; i < conversationActions.length; i++) {
-            var className = conversationActions[i].getClassName();
-
-            if (!riGrammar.hasRule(className)) {
-                throw new Exception("Grammar for trait " + name() + " missing: No rule for action " + className);
-            }
         }
     }
 }

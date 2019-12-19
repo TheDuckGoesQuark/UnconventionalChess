@@ -60,7 +60,8 @@ public class ProposeMove implements ConversationAction {
 
         // find trait that has value used, use its grammar to build statement
         var randomTraitChooser = new RandomUtil<Trait>();
-        var traitResponsible = randomTraitChooser.chooseRandom(personality.getTraitsThatHaveValue(chosenResponse.getOpinionGeneratingValue()));
+        var reasoning = chosenResponse.getReasoning();
+        var traitResponsible = randomTraitChooser.chooseRandom(personality.getTraitsThatHaveValue(reasoning.getValue()));
 
         return new ConversationMessage(traitResponsible.getRiGrammar().expandFrom(grammarTag()), chosenResponse, pieceAgent.getAID());
     }
