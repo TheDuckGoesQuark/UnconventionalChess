@@ -78,19 +78,21 @@ Knowledge is distributed in a multiagent system therefore specialist agents need
 	In the current circumstance R, we should perform action A, which will result in new circumstances S, which will realise goal G, which will promote some value V.
 \end{displayquote}
 
-Specifically, they were able to create a framework for multiple parties to discuss and collaborate which could greatly affect the design of multiagent systems that utilise it. By producing an ontology which any agents involved in the discussion understand, goals and circumstances can be conveyed through the use of predicates and concepts. Conveniently, JADE already provides an API for creating ontologies.
+Specifically, they were able to create a framework for multiple parties to discuss and collaborate which could greatly affect the design of multiagent systems that utilise it. By producing an ontology which any agents involved in the discussion understand, goals and circumstances can be conveyed through the use of predicates and concepts. Conveniently, JADE already provides an API for creating ontologies. 
 
 The overhead of argumentation required in multiagent systems can be a quick filter to determine which problems it is a suitable solution for. For example, \cite{argumentationcontext} investigated how quickly agents that used collaborative argumentation to achieve global consistency in a time-constrained task (i.e. escaping a burning building) performed. Their results suggest that optimisations or different approaches to the protocol design would likely be necessary for a real-time strategy game, but it could depend on many factors such as the number of agents, the distribution of knowledge, and more.
 
 \subsection{Natural Language Generation}
 
-In order to make the discussions between agents more entertaining and user-friendly to observe, our project involves using natural language generation (NLG) methods to translate the messages to plain English. \cite{owlnlg} built an NLG system for a particular ontology language (W3C Ontology Language a.k.a. OWL), which is able to construct texts corresponding to objects and their properties in the ontology in English and Greek. \cite{rdfnlg} achieved similar results for one of the other Semantic Web Formalisms (specifically RDF) and were able to produce instructions for cooking recipes from a corpus of data in a far less human-friendly format. They were even able to adjust the level of technical jargon in the resulting text to accommodate for the readers familiarity with cooking. The ontology allowed for optimised searching of the parse trees but they also required a domain corpus (i.e. existing textual recipes) in order to properly train their natural language generator. Their solutions are specific to the Semantic Web project, and would not produce "conversations" like we are planning to do, but provide a good foundation for implementing this functionality.
+In order to make the discussions between agents more entertaining and user-friendly to observe, our project involves using natural language generation (NLG) methods to translate the messages or agent intent to plain English. \cite{owlnlg} built an NLG system for a particular ontology language (W3C Ontology Language a.k.a. OWL), which is able to construct texts corresponding to objects and their properties in the ontology in English and Greek. \cite{rdfnlg} achieved similar results for one of the other Semantic Web Formalisms (specifically RDF) and were able to produce instructions for cooking recipes from a corpus of data in a far less human-friendly format. They were even able to adjust the level of technical jargon in the resulting text to accommodate for the readers familiarity with cooking. The ontology allowed for optimised searching of the parse trees but they also required a domain corpus (i.e. existing textual recipes) in order to properly train their natural language generator. Their solutions are specific to the Semantic Web project, and would not produce "conversations" like we are planning to do, but provide a good foundation for implementing this functionality.
 
-Generic frameworks have also been created that are not based strictly on ontologies which may also be useful. For example, SimpleNLG \cite{simplenlg} is an NLG engine that allows for valid English phrases to be constructed through a very simple Java API. 
+Generic frameworks have also been created that are not based strictly on ontologies which were also considered. For example, SimpleNLG \cite{simplenlg} is an NLG engine that allows for valid English phrases to be constructed through a very simple Java API. However, after some time expermenting with this libary, it was realised that it was very difficult to reliably produce a variety of phrases, though it was useful for controlling features such as grammatical person and tense.
 
 \cite{robotgame} created a robot capable of providing dialogue while playing against a human at tic-tac-toe, but used a slot-filling technique based on templates that suffered from little flexibility and left no room for personality in dialogue creation. Contrarily, systems such as Siri and Alexa are examples of successful dialogue systems that have been able to provide assistance to humans in the form of natural language conversations by avoiding the template based approaches.
 
 These systems instead take advantage of machine learning techniques such as deep recurrent neural networks (DRNN). \cite{dialoguesystems} surveyed projects that applied these modern techniques for NLG, and concluded that in order to account for aspects such as current state of the program during the execution of conversation as our project requires, a hybrid of the machine learning and rule based approaches may be necessary. 
+
+The dynamic finite-state machine implementation of a chatbot called Tartan \cite{tartan} was also especially useful for the project, as it focused on natural conversation flows rather than the extraction of information from a human user like most other chatbot research.
 
 \subsection{Computational Humour}
 
@@ -115,7 +117,7 @@ These probabilistic models currently appear more hopeful than the rule based mod
 \section{System Design}
 
 An existing multiagent development framework was chosen instead of rolling our own in order to abstract away matters such as message delivery and agent life-cycle management. As mentioned earlier, JADE was chosen specifically due to its flexibility and its extensive coverage of the FIPA standard that could allow our agents to interact with other implementations with ease. 
-With the intention of possibly serving the game over the internet once complete, the system had to be designed to allow for communication with agents from outside of the agent platform. The 'JadeGateway' API was used with a Spring Boot server and React UI to to achieve this. Figure \ref{fig:highlevelarchitecture} provides an high level overview of the technologies at each layer.
+With the intention of possibly serving the game over the internet once complete, the system had to be designed to allow for communication with agents from outside of the agent platform. The 'JadeGateway' API was used with a Spring Boot server and React UI to to achieve this. Figure \ref{fig:highlevelarchitecture} provides a high level overview of the technologies at each layer.
 
 \begin{figure}[h]
 	\centering
@@ -129,7 +131,7 @@ With the intention of possibly serving the game over the internet once complete,
 React \cite{reactjs} was chosen due to it being the most familiar web framework for the developer of this project, and because a component already existed for rendering chessboards \cite{chessboardjsx}. As the project grew, Redux \cite{redux} was introduced in order to help with state management of components. 
 The combination of these two frameworks allowed for the use of functional components throughout the project which were easier to test due to being stateless. 
 
-One of the challenges faced were that the abstraction of the chessboard component provided by a third-party library did not allow for atypical visual elements such as adding name tags to each piece or dialogue boxes. This then required manually implementing an overlay that would draw another chessboard grid, track positions of pieces, and draw the name tags and dialogue boxes in the correct locations.
+One of the challenges faced were that the abstraction of the chessboard component provided by a third-party library did not allow for atypical visual elements such as adding name tags to each piece or dialogue boxes. This then required manually implementing an overlay that would draw another chessboard grid, track positions of pieces, and draw the name tags and dialogue boxes in the correct locations. 
 
 The UI is composed of two main views: configuration and gameplay. 
 The configuration view (Figure \ref{fig:configview}) allows the user to choose if they want to play against the agents or watch two sets of agents play against each other. By clicking on the pieces they will not be controlling, the user can also name the pieces and define their personality type. 
@@ -177,9 +179,9 @@ The gateway server has several purposes:
 	\item{Route messages between users and relevant agents}
 \end{itemize}
 
-JADE does have support for agents serving web resources directly, but the JadeGateway API was used instead as it was simpler. The JadeGateway API effectively creates an Agent for the server, which can then send units of functionality called 'Behaviours' to be executed by the agent (e.g. sending messages to the agents within the platform). This could potentially be a bottleneck if the number of users of the server was to grow large enough due to agents being single-threaded by default, so an implementation at scale would likely need to change this interface. For the purposes of this project however, it was more than sufficient.
+JADE does have support for agents serving web resources directly, but the JadeGateway API was used instead as it was simpler to set up. The JadeGateway API effectively creates an Agent for the server, which can then send units of functionality called 'Behaviours' to be executed by the agent (e.g. sending messages to the agents within the platform). This could potentially be a bottleneck if the number of users of the server was to grow large enough due to agents being single-threaded by default, so an implementation at scale would likely need to change this interface. For the purposes of this project however, it was more than sufficient.
 
-On start-up, the server uses the details in a configuration file to connect to the JADE platform. It also exposes a limited set of HTTP endpoints to allow the client to create games and to query available personality types. An in-memory message broker is also used for handling websocket sessions once a game is set up so that clients can subscribe to chat and move messages, and send their own moves.
+On start-up, the server uses the details in a configuration file to connect to the JADE platform. It also exposes a limited set of HTTP endpoints to allow the client to create games and to query available personality types. An in-memory message broker is used for handling websocket sessions once a game is set up so that clients can subscribe to chat and move messages, and send their own moves.
 
 The JadeGateway polls for incoming messages using the \lstinline{ListenForGameAgentMessages} behaviour, which is provided a message translator and a message handler for translating \lstinline{ACLMessage}s from agents to a data model the server can work with and passing the message to the correct handler. This behaviour allowed the server to utilise JADEs scheduling system which would only run the behaviour if a new message was received, instead of busy waiting for incoming messages.
 
@@ -204,7 +206,18 @@ Behaviours can filter the messages that are received using the \lstinline{Messag
 
 Our implementation involves two different types of agent: game agents and piece agents. Game agents are responsible for maintaining the state of the game and initialising the piece agents, and piece agents represent pieces on the board, each trying to achieve their own individual goals.
 
-\section{Experiments}
+\subsection{Game Agent}
+
+The game agent upon creation waits for a request to begin a chess game. It also answers any queries regarding the current status of the game and information about the pieces being represented by agents. The FIPA standards for agent communication protocols such as query 
+% TODO from here..
+
+\begin{figure}[!h]
+	\centering
+	\includegraphics[width=\linewidth]{images/gameagentfsa}
+	\caption{JADE Agent behaviour scheduling and life-cycle \cite{jade}.}
+	\label{fig:gameagentfsa}
+\end{figure}
+
 
 \section{Evaluation}
 
