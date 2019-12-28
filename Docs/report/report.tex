@@ -305,8 +305,43 @@ Each agent maintains a conversation planner which tracks what moves have been di
 
 Whenever an agent enters the speaker state shown in figure \ref{fig:conversationfsa}, they call the \lstinline{produceMessage()} function to choose their next action. If this action involves making a move, they'll queue a behaviour to send the move to the game agent. Regardless, they send their chosen conversation message to all the other agents (including themselves).
 
-Listener agents receive the conversation message and record it by calling the \lstinline{handleConversationMessage(ConversationMessage)} method.
+Listener agents receive the conversation message and record it by calling the \lstinline{handleConversationMessage(ConversationMessage)} method. The conversation planner delegates storing the message to the current turn discussion (the head in the list of discussions). The turn discussion will fetch the move discussion for the move in the given conversation message or create a new one if one doesn't already exist and add the message to the relevant move discussion. If the discussion did already exist in the set of discussions. Once the message is added to the move discussion, the discussion is removed and re-added to the set of move discussions in order to move it back to the top of the converstation 'stack' (since insertion order is maintained by Java's LinkedHashSet implementation). 
 
+By maintaining the order that moves have been discussed, agents are able to create arguments that better resemble human conversations by referring to previous discussions. \cite{tartan} uses a similiar technique to allow their chatbot to regress to previous topics of discussion once the user gives some kind of terminating statement to the current topic conversation. 
+
+A move discussion with a null move is used to represent a request for move proposals, which is sent either to start up the argumentation process or when an agent is not satisfied with the move currently being discussed but is does not feel strongly about any moves themselves.
+
+The output of \lstinline{chooseNextAction()} in the \lstinline{ConversationPlannerImpl} is the next conversation action to be taken. These actions are essentially transitions which control the flow of the conversation and are based off the interruption FSMs in Tartan \cite{tartan}. Table \ref{tbl:conversationaction} lists examples of the conversation actions possible. The actions prefixed with wildcards can be used in conjuction with other actions. For example, an agent can voice opinion with justification, or propose alternative with justification for the alternative.
+
+\begin{table} 
+\centering
+\caption{Conversation actions with verbalised examples.} 
+\label{tbl:conversationaction}
+\begin{tabular}{ r|l } 
+	Conversation Action & Example \\
+ \hline
+	Acknowledge & "Ok." \\ 
+	Ask for Proposals & "What should we do next?" \\ 
+	Perform Move & "Going to move to A5." \\ 
+	Propose Move & "What about B4 to B3?" \\ 
+	Voice Opinion & "I like that idea!" \\ 
+	* Propose Alternative & "but moving to G3 would do that too." \\ 
+	* with Justification & "because it would capture an enemy."  \\ 
+	Quip & "I'm a bit scared."  \\ 
+ \hline
+\end{tabular}
+\end{table}
+
+Each of these actions are implemented as classes that extend the ConversationAction class shown in Figure \ref{fig:conversationmessage}, and once performed they return a ConversationMessage instance with all the information needed for other agents to update their own understanding of the conversation context.
+
+\begin{figure}[!h]
+	\centering
+	\includegraphics[width=\linewidth]{images/conversationmessage}
+	\caption{Conversation Message Class Diagram}
+	\label{fig:conversationmessage}
+\end{figure}
+
+%TODO explain the fields of the conversation message, how the recursive move response works, and more about each of the conversation actions implementations.
 
 \subsubsection{Natural Language Generation}
 
