@@ -1,6 +1,7 @@
 package chessagents.agents.pieceagent.argumentation;
 
 import chessagents.ontology.schemas.concepts.PieceMove;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -9,6 +10,7 @@ import java.util.Optional;
 
 @Getter
 @Setter
+@AllArgsConstructor
 public class MoveResponse implements Serializable {
     private final PieceMove move;
     private final Opinion opinion;
@@ -24,14 +26,6 @@ public class MoveResponse implements Serializable {
         this.move = move;
         this.opinion = opinion;
         this.reasoning = opinionGeneratingValue;
-    }
-
-    private MoveResponse(PieceMove move, Opinion opinion, Reasoning reasoning, MoveResponse alternativeResponse, boolean performed) {
-        this.move = move;
-        this.opinion = opinion;
-        this.reasoning = reasoning;
-        this.alternativeResponse = alternativeResponse;
-        this.performed = performed;
     }
 
     public boolean performed() {

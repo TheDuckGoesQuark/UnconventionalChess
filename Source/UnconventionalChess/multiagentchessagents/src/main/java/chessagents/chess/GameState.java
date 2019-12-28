@@ -57,18 +57,6 @@ public class GameState {
         ));
     }
 
-    public Set<ChessPiece> getAllPiecesForColour(Colour colour) {
-        return board.getPiecesFiltered(List.of(
-                PieceFilter.isColour(colour)
-        ));
-    }
-
-    public Set<ChessPiece> getAllAgentPieces() {
-        return board.getPiecesFiltered(List.of(
-                PieceFilter.isAgent()
-        ));
-    }
-
     /**
      * Retrieves the piece that is represented by an agent with the given AID
      *
@@ -143,14 +131,6 @@ public class GameState {
         return board.getCapturedPieces().stream()
                 .filter(p -> p.getColour().equals(colour))
                 .collect(Collectors.toSet());
-    }
-
-    public Optional<PieceMove> getRandomMove() {
-        return board.getRandomMove();
-    }
-
-    public Colour getSideToGo() {
-        return board.getSideToGo();
     }
 
     public Set<ChessPiece> getThreatenedPieces() {

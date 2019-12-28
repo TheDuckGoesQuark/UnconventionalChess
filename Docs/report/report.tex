@@ -246,11 +246,55 @@ Once the game has started, the game agent adheres to the FSA shown in figure \re
 	\label{fig:gameagentfsa}
 \end{figure}
 
+The actual chess logic is managed by a third party library \cite{chesslib}. While this saved a lot of time by providing a way of quickly validating moves, generating valid moves, and tracking the board state, it suffered from the same problem as the chessboard component used by the front-end: it did not provide a way to differentiate between each piece of the same type. This resulted in a wrapper class being implemented which would maintain the mapping between the set of our custom piece representation and the third party board pieces. In hindsight it was clear that it would have been simpler to have implemented the chess logic ourselves, but the wrapper solution was sufficient.
+
 \subsection{Piece Agent}
 
-The piece agent implementation is the focus of this project. They individually choose preferred moves and verbalise their actions and reactions during the game.
+The piece agent implementation is the focus of this project. They are initialised with their piece type, colour, personality type, and starting position on the board. They are notified by the game agent once the game is ready and whenever a move is made successfully either by the human or another agent. 
 
-% TODO from here..
+\subsubsection{Game State}
+
+The GameState class wraps our chessboard wrapper to provide another layer of abstraction in order for the state of the board to be an immutable object. This was done to avoid complicated undo logic when agents wanted to 'test' moves and evaluate the board after a move is made. Instead, when the \lstinline{applyMove(PieceMove move)} function is called, a copy of the board is made. This involved copying the set of alive and captured pieces, as well as updating the piece objects themselves if any changed position. 
+
+In order to reduce the amount of objects being created and destroyed by this process, piece instances would only be copied if they had changed state in some way (captured/changed position). 
+
+\subsubsection{Personalities and Reasoning}
+
+Agent personalities were designed based on the goal-based trait/value model defined by \cite{hetrogenousagents}. Figure \ref{fig:personalityuml} shows the UML class diagram for our implementation. The personality is initialised with a set of traits (e.g. shy, aggressive) which each have a set of values. Values define what the agent will interpret as good and bad moves based on some criteria (avoid other pieces, maxmise captures). The value class is abstract and is extended by implementations that when given a witnessing piece, the current game state, and a move, are able to produce a response to that move.
+
+\begin{figure}[!h]
+	\centering
+	\includegraphics[width=\linewidth]{images/personality}
+	\caption{UML Diagram of Agent Personalities.}
+	\label{fig:personalityuml}
+\end{figure}
+
+This implementation allows different traits to share goals. The move most preferred by an agent is the one that appeals to the most of it values, and so consensus can be reached by finding the move that appeals to the most pieces, even if they have different values.
+
+\subsubsection{Single Thread of Conversation Protocol}
+
+In order to make the conversation between agents seem natural and remain easy to follow, a protocol had to be established to ensure that one agent would speak at a time. The project was initially constructed with conversation flow dictated strictly by a finite state machine. This solution was incredibly restrictive as it required providing a transition path for any conversation path that we wanted to support. After reviewing the work by \cite{tartan} and finding that this strict FSA approach was inherently detrimental to producing natural conversation flows, the original design was thrown out and replaced with the simpler and far more flexible model shown in Figure \ref{fig:conversationfsa}.
+
+\begin{figure}[!h]
+	\centering
+	\includegraphics[width=\linewidth]{images/conversationfsa}
+	\caption{Conversation protocol FSA}
+	\label{fig:conversationfsa}
+\end{figure}
+
+The conversation FSA designed by \cite{tartan} was for a human-agent chatbot, and so was adapted to include a token-passing protocol to determine which agent would speak next. One of the benefits of this design is that it allowed for the agents to chat throughout the game, not just during their turn. This meant that the agents could provide ambient conversations and respond to events like the previously made move while the human player chose their next move.
+
+At the start of each turn (i.e. when a new move is received or the very first turn of the game), each agent returns to the initial state to ensure that they are all synchronised. The king is assumed first to speak. The other pieces listen for any messages from the speaker and the speaker chooses what to say. Once sent, the speaker begins the new speaker election by sending a call for proposal (CFP) message to all alive pieces (and themselves), and waits until every pieces has submitted a proposal to be the next speaker. Finally the speaker chooses from the set of proposals, sends a rejection to all but the chosen speaker, and then the cycle begins anew.
+
+The requirement that all agents reset to the initial state at the start of each turn was necessary to avoid race conditions during the speaker election. For example, if a move was received that resulted in one of the agents being captured, that agent would immediately remove themselves from the game. However, if that agent was the speaker during an election, then all other agents would be stuck waiting for the next speaker to be chosen. Whilst other solutions would allow for the conversation flow to continue, it was deemed much simpler to reset the conversation FSA during each turn.
+
+As a side effect of this decision, messages such as the speaker election CFP could be waiting an agents message queue if they reset before receiving it. To avoid this resulting in a loss of synchronisation between agents, a new conversation ID is assigned during each cycle of the FSM which is composed of the turn ID (i.e. how many moves have been made so far) and the round ID (how many cycles of the conversation FSA have occurred this turn). The conversation ID is used to filter incoming messages to ensure that irrelevant messages are ignored. Unfortunately this could result in a build-up of expired messages over time, but given most chess games were around 80 moves \cite{chessdata} and roughly 5 messages per move would be lost in the queue, the leak would not be substantial. Especially when we considered that the messages would be garbage collected once the agent representing the piece was removed from play.
+
+\subsubsection{Argumentation}
+
+
+
+\subsubsection{Natural Language Generation}
 
 \section{Evaluation}
 

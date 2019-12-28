@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Diagram>
+  <ID>JAVA</ID>
+  <OriginalElement>chessagents.agents.pieceagent.personality</OriginalElement>
+  <nodes>
+    <node x="24.479166666666686" y="0.0">chessagents.agents.pieceagent.personality.values.Value</node>
+    <node x="113.5" y="265.0">chessagents.agents.pieceagent.personality.Trait</node>
+    <node x="0.0" y="626.0">chessagents.agents.pieceagent.personality.Personality</node>
+  </nodes>
+  <notes />
+  <edges>
+    <edge source="chessagents.agents.pieceagent.personality.Personality" target="chessagents.agents.pieceagent.personality.values.Value">
+      <point x="210.66666666666663" y="-131.5" />
+      <point x="526.6666666666666" y="601.0" />
+      <point x="394.0" y="601.0" />
+      <point x="394.0" y="240.0" />
+      <point x="489.9791666666667" y="240.0" />
+      <point x="199.5" y="107.5" />
+    </edge>
+    <edge source="chessagents.agents.pieceagent.personality.Trait" target="chessagents.agents.pieceagent.personality.values.Value">
+      <point x="0.0" y="-155.5" />
+      <point x="248.5" y="240.0" />
+      <point x="223.97916666666669" y="240.0" />
+      <point x="-66.5" y="107.5" />
+    </edge>
+    <edge source="chessagents.agents.pieceagent.personality.Personality" target="chessagents.agents.pieceagent.personality.Trait">
+      <point x="-210.66666666666663" y="-131.5" />
+      <point x="105.33333333333337" y="601.0" />
+      <point x="181.0" y="601.0" />
+      <point x="-67.5" y="155.5" />
+    </edge>
+  </edges>
+  <settings layout="Hierarchic Group" zoom="0.847084708470847" x="316.0" y="444.5" />
+  <SelectedNodes />
+  <Categories>
+    <Category>Fields</Category>
+    <Category>Constructors</Category>
+    <Category>Methods</Category>
+  </Categories>
+  <SCOPE>All</SCOPE>
+  <VISIBILITY>private</VISIBILITY>
+</Diagram>
+

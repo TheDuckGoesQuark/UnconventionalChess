@@ -39,12 +39,12 @@ public class Personality {
      */
     public Set<MoveResponse> getResponseToMoves(ChessPiece chessPiece, Set<PieceMove> actions, GameState gameState) {
         return actions.stream()
-                .map(action -> getActionResponses(chessPiece, gameState, action))
+                .map(action -> getMoveResponses(chessPiece, gameState, action))
                 .flatMap(Collection::stream)
                 .collect(Collectors.toSet());
     }
 
-    private Set<MoveResponse> getActionResponses(ChessPiece chessPiece, GameState gameState, PieceMove action) {
+    private Set<MoveResponse> getMoveResponses(ChessPiece chessPiece, GameState gameState, PieceMove action) {
         return traits.stream()
                 .map(Trait::getAppealingValues)
                 .flatMap(values -> values.stream().map(value -> value.getMoveResponse(chessPiece, gameState, action)))

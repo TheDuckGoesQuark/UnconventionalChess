@@ -16,10 +16,6 @@ public class EnsureMySafety extends Value {
 
     @Override
     public MoveResponse getMoveResponse(ChessPiece chessPiece, GameState gameState, PieceMove action) {
-        // TODO contains check will fail if I moved/was captured as a clone is made with a different position
-        // and current piece hashcode includes the position in the equals check
-        // might need to apply some sort of ID to all the pieces, agent or not
-
         // choose action that produces state where I am not captured and not in the set of captured pieces
         var afterActionState = gameState.applyMove(action);
         var isAlreadyThreatened = gameState.getThreatenedPieces().contains(chessPiece);
