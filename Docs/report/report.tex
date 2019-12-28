@@ -290,8 +290,22 @@ The requirement that all agents reset to the initial state at the start of each 
 
 As a side effect of this decision, messages such as the speaker election CFP could be waiting an agents message queue if they reset before receiving it. To avoid this resulting in a loss of synchronisation between agents, a new conversation ID is assigned during each cycle of the FSM which is composed of the turn ID (i.e. how many moves have been made so far) and the round ID (how many cycles of the conversation FSA have occurred this turn). The conversation ID is used to filter incoming messages to ensure that irrelevant messages are ignored. Unfortunately this could result in a build-up of expired messages over time, but given most chess games were around 80 moves \cite{chessdata} and roughly 5 messages per move would be lost in the queue, the leak would not be substantial. Especially when we considered that the messages would be garbage collected once the agent representing the piece was removed from play.
 
-\subsubsection{Argumentation}
+The turn and speaker rotation counters is provided by the ConversationContext class, along with the current speaker agents AID (Agent Identifier) and the conversation planner. 
 
+\subsubsection{Conversation Planner and Argumentation}
+
+Each agent maintains a conversation planner which tracks what moves have been discussed so far, and produces a response for this agent once it has its turn to speak. Figure \ref{fig:movediscussion} shows the classes used to maintain this information.
+
+\begin{figure}[!h]
+	\centering
+	\includegraphics[width=\linewidth]{images/movediscussion}
+	\caption{Move Discussion Class Diagram}
+	\label{fig:movediscussion}
+\end{figure}
+
+Whenever an agent enters the speaker state shown in figure \ref{fig:conversationfsa}, they call the \lstinline{produceMessage()} function to choose their next action. If this action involves making a move, they'll queue a behaviour to send the move to the game agent. Regardless, they send their chosen conversation message to all the other agents (including themselves).
+
+Listener agents receive the conversation message and record it by calling the \lstinline{handleConversationMessage(ConversationMessage)} method.
 
 
 \subsubsection{Natural Language Generation}
