@@ -62,6 +62,7 @@ public abstract class SubscriptionInform<E> extends CyclicBehaviour {
 
         try {
             myAgent.getContentManager().fillContent(reply, content);
+            logger.info(reply.getContent());
         } catch (Codec.CodecException | OntologyException e) {
             logger.warning("Failed to serialise inform message: " + e.getMessage());
         }
