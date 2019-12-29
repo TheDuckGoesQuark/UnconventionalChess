@@ -55,11 +55,16 @@ public class ChooseSpeaker extends ConversationStateBehaviour {
         if (move != null) {
             // allow piece being asked to move to talk
             var pieceMoving = getAgent().getPieceContext().getGameState().getPieceAtPosition(move.getSource());
-            return pieceMoving.get().getAgentAID();
-        } else {
-            // choose random other piece
-            return new RandomUtil<ACLMessage>().chooseRandom(speakerProposals).getSender();
+            var pieceMovingAID = pieceMoving.get().getAgentAID();
+
+            // if that piece was me, I've already spoke so chose someone else
+            if (!pieceMovingAID.equals(getAgent().getAID())) {
+                return pieceMovingAID;
+            }
         }
+
+        // choose random other piece
+        return new RandomUtil<ACLMessage>().chooseRandom(speakerProposals).getSender();
     }
 
     private boolean receivedRequestFromEveryone() {

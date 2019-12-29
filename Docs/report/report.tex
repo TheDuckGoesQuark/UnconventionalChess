@@ -311,7 +311,7 @@ By maintaining the order that moves have been discussed, agents are able to crea
 
 A move discussion with a null move is used to represent a request for move proposals, which is sent either to start up the argumentation process or when an agent is not satisfied with the move currently being discussed but is does not feel strongly about any moves themselves.
 
-The output of \lstinline{chooseNextAction()} in the \lstinline{ConversationPlannerImpl} is the next conversation action to be taken. These actions are essentially transitions which control the flow of the conversation and are based off the interruption FSMs in Tartan \cite{tartan}. Table \ref{tbl:conversationaction} lists examples of the conversation actions possible. The actions prefixed with wildcards can be used in conjuction with other actions. For example, an agent can voice opinion with justification, or propose alternative with justification for the alternative.
+The output of \lstinline{chooseNextAction()} in the \lstinline{ConversationPlannerImpl} is the next conversation action to be taken. These actions are essentially transitions which control the flow of the conversation and are based off the interruption FSMs in Tartan \cite{tartan}. Table \ref{tbl:conversationaction} lists examples of the conversation actions possible. The actions prefixed with wildcards can be used in conjuction with other actions. For example, an agent can voice opinion with justification, or voice their dislike and propose an alternative. 
 
 \begin{table} 
 \centering
@@ -341,8 +341,27 @@ Each of these actions are implemented as classes that extend the ConversationAct
 	\label{fig:conversationmessage}
 \end{figure}
 
-%TODO explain the fields of the conversation message, how the recursive move response works, and more about each of the conversation actions implementations.
-% TODO also fix the conversation message UML, they don't have methods filled in yet
+Conversation messages contain the name of the piece that sent it, the natural language representation of what the agent wanted to communicate, and a move response. The mapping between each field and conversation actions are described in table \ref{tbl:conversationmessagemeaning}. The alternative proposition field starts a new move discussion if present and the same logic is applied as though it was the the move response in the original conversation message.
+
+This information is enough to allow agents to determine how other agents feel about the move being discussed and make decisions about what conversation actions would logically follow, but the contents of the statement in the ConversationMessage are completely flexible.
+
+\begin{table} 
+\centering
+\caption{Conversation message field meanings.} 
+\label{tbl:conversationmessagemeaning}
+\begin{tabular}{ l|l|l } 
+	Field & Predicate & Meaning \\
+ \hline
+	response & == null & Request Proposals \\ 
+	response.opinion & != null & Voice Opinion \\ 
+	response.reasoning & != null & * with Justification \\ 
+	response.alternativeProposition & != null & Propose Alternative \\ 
+	response.performed & == true & Perform Move \\ 
+ \hline
+\end{tabular}
+\end{table}
+
+
 
 \subsubsection{Natural Language Generation}
 
