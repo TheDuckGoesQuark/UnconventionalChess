@@ -411,6 +411,8 @@ RiTa provides a wealth of features for natural language processing and generatio
 
 Each value also uses a BNF grammar to produce the justification in natural language, but these are implemented within the values themselves rather than as seperate schemes.
 
+The strings between backticks within the grammars are slots that are express the name of a field or a function call that will provide the value for the slot in the GrammarVariableProvider. This is an object populated with things like the name of the agent being asked to move and the coordinates being moved to.
+
 \section{Evaluation}
 
 \section{Future Work}
