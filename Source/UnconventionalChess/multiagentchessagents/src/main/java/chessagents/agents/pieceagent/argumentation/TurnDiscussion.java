@@ -3,6 +3,8 @@ package chessagents.agents.pieceagent.argumentation;
 import chessagents.ontology.schemas.concepts.PieceMove;
 
 import java.util.LinkedHashMap;
+import java.util.Objects;
+import java.util.stream.Collectors;
 
 public class TurnDiscussion {
 
@@ -62,5 +64,13 @@ public class TurnDiscussion {
         PieceMove lastElement = null;
         while (iter.hasNext()) lastElement = iter.next().getKey();
         return lastElement;
+    }
+
+    public int getNumberOfMovesDiscussed() {
+        return (int) moveDiscussions.keySet().stream().filter(Objects::nonNull).count();
+    }
+
+    public Iterable<PieceMove> getPreviouslyDiscussedMoves() {
+        return moveDiscussions.keySet().stream().filter(Objects::nonNull).collect(Collectors.toSet());
     }
 }

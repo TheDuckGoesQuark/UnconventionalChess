@@ -23,16 +23,14 @@ public class ProposeMove extends ConversationAction {
     }
 
     private ConversationMessage lastDiscussedMove() {
-        var move = turnDiscussion.getLastMoveDiscussed();
+        var possibleMoves = pieceAgent.getPieceContext().getGameState().getAllLegalMoves();
 
-        if (move == null) {
-            var possibleMoves = pieceAgent.getPieceContext().getGameState().getAllLegalMoves();
-            move = new RandomUtil<PieceMove>().chooseRandom(possibleMoves);
-        }
+        // remove previously discussed moves
+        turnDiscussion.getPreviouslyDiscussedMoves().forEach(possibleMoves::remove);
 
         var pieceContext = pieceAgent.getPieceContext();
         var personality = pieceContext.getPersonality();
-        var responses = personality.getResponseToMoves(pieceContext.getMyPiece(), Collections.singleton(move), pieceContext.getGameState());
+        var responses = personality.getResponseToMoves(pieceContext.getMyPiece(), possibleMoves, pieceContext.getGameState());
 
         var responsesByOpinion = new HashMap<Opinion, Set<MoveResponse>>();
         responsesByOpinion.put(Opinion.LIKE, new HashSet<>());
@@ -43,7 +41,6 @@ public class ProposeMove extends ConversationAction {
             responsesByOpinion.get(response.getOpinion()).add(response);
         }
 
-
         final MoveResponse chosenResponse;
         var randomResponseChooser = new RandomUtil<MoveResponse>();
         if (responsesByOpinion.get(Opinion.LIKE).size() > 0) {
@@ -51,6 +48,7 @@ public class ProposeMove extends ConversationAction {
         } else if (responsesByOpinion.get(Opinion.NEUTRAL).size() > 0) {
             chosenResponse = randomResponseChooser.chooseRandom(responsesByOpinion.get(Opinion.NEUTRAL));
         } else {
+            // worst case we have to propose a move we dont like
             chosenResponse = randomResponseChooser.chooseRandom(responsesByOpinion.get(Opinion.DISLIKE));
         }
 
