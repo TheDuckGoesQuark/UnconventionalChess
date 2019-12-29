@@ -48,6 +48,9 @@
   "<ProposeMove>": [
     "I think `getMovingPiece()` should move to `getMoveTarget()`"
   ],
+  "<ProposeCompromise>": [
+    "<ProposeMove> <Justification> too"
+  ],
   "<ProposeMoveWithJustification>": [
     "<ProposeMove> <Justification>"
   ],
