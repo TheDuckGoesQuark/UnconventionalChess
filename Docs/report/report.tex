@@ -392,22 +392,24 @@ The natural language generation was a crucial part of this project, as it had to
 
 As mentioned in the context survey, the development of the natural language generation aspect of this project was greatly slowed down by starting off with likely the wrong technology for the problem. SimpleNLG appeared to be useful given a better understanding of linguistics, and so a lot of time was spent understanding the technical terms of this field. However, the tool seemed better suited to tasks like report generation than conversation, and so with assistance from the project supervisors, the RiTa libary was adopted instead.
 
-RiTa provides a wealth of features for natural language processing and generation, but the determinstic grammar was especially useful for this project. Phrases are constructed from non-deterministic BNF grammars and a datasoure for filling in variables such as agent names or move coordinates. A default grammar is provided, but by implenenting variations of the default grammar for each trait, agents will express themselves based on the traits of their personality. A root tag is provided for each class that extends ConversationAction. For example, the ProposeMoveWithJustification conversation action used a grammar similar to example shown in figure \ref{fig:bnf}. Multiple values can be provided for each tag by using a pipe symbol ("$|$") between values in the string, and the probability of each value being chosen can also be defined using square brackets to set a probability.
+RiTa provides a wealth of features for natural language processing and generation, but the determinstic grammar was especially useful for this project. Phrases are constructed from non-deterministic BNF grammars and a datasoure for filling in variables such as agent names or move coordinates. A default grammar is provided, but by implenenting variations of the default grammar for each trait, agents will express themselves based on the traits of their personality. A root tag is provided for each class that extends ConversationAction. For example, the ProposeMoveWithJustification conversation action used a grammar similar to example shown in figure \ref{fig:bnf}. Multiple values can be provided for each tag by adding them to the array of values for that key, and the probability of each value being chosen can also be defined using square brackets within the string to multiply the probability of it occurring (i.e. [2] will make the value be chosen twice as often as any of the other values in the array).
 
 \begin{figure}
 \begin{lstlisting}[breaklines=true, stringstyle=\color{mauve}]
 "<ProposeMoveWithJustification>" : 
-	"<ProposeMove> <Justification>"
+	["<ProposeMove> <Justification>"]
 
 "<ProposeMove>" : 
-	"`getMovingPiece()` should move to `getMoveTarget()`"
+	["`getMovingPiece()` should move to `getMoveTarget()`"]
 
 "<Justification>" : 
-	"because that move `getJustification()`",
+	["because that move `getJustification()`"]
 \end{lstlisting}
 \caption{Example of BNF grammar being used for NLG.}
 \label{fig:bnf}
 \end{figure}
+
+Each value also uses a BNF grammar to produce the justification in natural language, but these are implemented within the values themselves rather than as seperate schemes.
 
 \section{Evaluation}
 
