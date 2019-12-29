@@ -1,21 +1,72 @@
 {
-  "<Acknowledge>": "cool.",
-  "<AcknowledgeAndAskForProposals>": "<Acknowledge>. <AskForProposals>",
-  "<AskForProposals>": "Does anyone have any other suggestions? | What else could we do next?",
-  "<InitialAskForProposals>": "Does anyone have any suggestions? | What should we do now? | Ideas? | Ok, what now?",
-  "<PerformMove>": "Moving | Moving to `getMoveTarget()`",
-  "<VoiceLIKE>": "I like that | that sounds good | moving to `getMoveTarget()` would be a good idea",
-  "<VoiceDISLIKE>": "I don't like that | that doesn't sounds good | moving to `getMoveTarget()` would be an awful idea | I don't think we should do that",
-  "<VoiceLIKEProposeAlternative>": "<VoiceLIKE>, <ProposeAlternative>",
-  "<VoiceDISLIKEProposeAlternative>": "<VoiceDISLIKE>, <ProposeAlternative>",
-  "<VoiceDISLIKEWithJustification>": "<VoiceDISLIKE>, <Justification>",
-  "<VoiceLIKEWithJustification>": "<VoiceLIKE>, <Justification>",
-  "<ProposeAlternative>": "<ProposeAlternativeMove> <AlternativeJustification>",
-  "<ProposeMove>": "I think `getMovingPiece()` should move to `getMoveTarget()`",
-  "<ProposeMoveWithJustification>": "<ProposeMove> <Justification>",
-  "<ProposeAlternativeMove>": "I think `getAlternativeMovingPiece()` should move to `getAlternativeMoveTarget()` instead",
-  "<RevisitMove>": "Can we go back to talking about `getMovingPiece()` moving to `getMoveTarget()`?",
-  "<Justification>": "because that move `getJustification()`",
-  "<AlternativeJustification>": "because that move `getAlternativeJustification()`",
-  "<Quip>": "Do you think the other team look scared? | *yawn* | *cough* | I don't understand why we have to wait for them to move..."
+  "<Acknowledge>": [
+    "cool."
+  ],
+  "<AcknowledgeAndAskForProposals>": [
+    "<Acknowledge>. <AskForProposals>"
+  ],
+  "<AskForProposals>": [
+    "Does anyone have any other suggestions?",
+    " What else could we do next?"
+  ],
+  "<InitialAskForProposals>": [
+    "Does anyone have any suggestions? ",
+    " What should we do now? ",
+    " Ideas? ",
+    " Ok, what now?"
+  ],
+  "<PerformMove>": [
+    "Moving ",
+    " Moving to `getMoveTarget()`"
+  ],
+  "<VoiceLIKE>": [
+    "I like that ",
+    " that sounds good ",
+    " moving to `getMoveTarget()` would be a good idea"
+  ],
+  "<VoiceDISLIKE>": [
+    "I don't like that ",
+    " that doesn't sounds good ",
+    " moving to `getMoveTarget()` would be an awful idea ",
+    " I don't think we should do that"
+  ],
+  "<VoiceLIKEProposeAlternative>": [
+    "<VoiceLIKE>, <ProposeAlternative>"
+  ],
+  "<VoiceDISLIKEProposeAlternative>": [
+    "<VoiceDISLIKE>, <ProposeAlternative>"
+  ],
+  "<VoiceDISLIKEWithJustification>": [
+    "<VoiceDISLIKE>, <Justification>"
+  ],
+  "<VoiceLIKEWithJustification>": [
+    "<VoiceLIKE>, <Justification>"
+  ],
+  "<ProposeAlternative>": [
+    "<ProposeAlternativeMove> <AlternativeJustification>"
+  ],
+  "<ProposeMove>": [
+    "I think `getMovingPiece()` should move to `getMoveTarget()`"
+  ],
+  "<ProposeMoveWithJustification>": [
+    "<ProposeMove> <Justification>"
+  ],
+  "<ProposeAlternativeMove>": [
+    "I think `getAlternativeMovingPiece()` should move to `getAlternativeMoveTarget()` instead"
+  ],
+  "<RevisitMove>": [
+    "Can we go back to talking about `getMovingPiece()` moving to `getMoveTarget()`?"
+  ],
+  "<Justification>": [
+    "because that move `getJustification()`"
+  ],
+  "<AlternativeJustification>": [
+    "because that move `getAlternativeJustification()`"
+  ],
+  "<Quip>": [
+    "Do you think the other team look scared? ",
+    " *yawn* ",
+    " *cough* ",
+    " I don't understand why we have to wait for them to move..."
+  ]
 }
