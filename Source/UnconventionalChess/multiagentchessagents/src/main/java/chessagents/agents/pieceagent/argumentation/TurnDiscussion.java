@@ -2,7 +2,9 @@ package chessagents.agents.pieceagent.argumentation;
 
 import chessagents.ontology.schemas.concepts.PieceMove;
 
+import java.util.ArrayList;
 import java.util.LinkedHashMap;
+import java.util.LinkedList;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
@@ -70,7 +72,7 @@ public class TurnDiscussion {
         return (int) moveDiscussions.keySet().stream().filter(Objects::nonNull).count();
     }
 
-    public Iterable<PieceMove> getPreviouslyDiscussedMoves() {
-        return moveDiscussions.keySet().stream().filter(Objects::nonNull).collect(Collectors.toSet());
+    public ArrayList<PieceMove> getPreviouslyDiscussedMoves() {
+        return moveDiscussions.keySet().stream().filter(Objects::nonNull).collect(Collectors.toCollection(ArrayList::new));
     }
 }

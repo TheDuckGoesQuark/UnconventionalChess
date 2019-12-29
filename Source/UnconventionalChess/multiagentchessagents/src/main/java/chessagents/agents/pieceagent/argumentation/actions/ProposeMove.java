@@ -6,6 +6,7 @@ import chessagents.agents.pieceagent.personality.Trait;
 import chessagents.ontology.schemas.concepts.PieceMove;
 import chessagents.util.RandomUtil;
 import lombok.AllArgsConstructor;
+import lombok.Getter;
 
 import java.util.Collections;
 import java.util.HashMap;
@@ -13,6 +14,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 @AllArgsConstructor
+@Getter
 public class ProposeMove extends ConversationAction {
     private final PieceAgent pieceAgent;
     private final TurnDiscussion turnDiscussion;
@@ -22,12 +24,17 @@ public class ProposeMove extends ConversationAction {
         return lastDiscussedMove();
     }
 
-    private ConversationMessage lastDiscussedMove() {
+    protected Set<PieceMove> getProposableMoves() {
         var possibleMoves = pieceAgent.getPieceContext().getGameState().getAllLegalMoves();
 
         // remove previously discussed moves
         turnDiscussion.getPreviouslyDiscussedMoves().forEach(possibleMoves::remove);
 
+        return possibleMoves;
+    }
+
+    private ConversationMessage lastDiscussedMove() {
+        var possibleMoves = getProposableMoves();
         var pieceContext = pieceAgent.getPieceContext();
         var personality = pieceContext.getPersonality();
         var responses = personality.getResponseToMoves(pieceContext.getMyPiece(), possibleMoves, pieceContext.getGameState());

@@ -81,12 +81,14 @@ public class ConversationPlannerImpl implements ConversationPlanner {
         var currentDiscussion = getCurrentDiscussion();
         var availableMoveResponses = getResponsesToAllMoves();
         var moveExistsThatICanPerform = containsMoveICanPerform(availableMoveResponses);
+
         if (moveExistsThatICanPerform) {
             var performMove = new PerformMove(agent, currentDiscussion);
             // just perform move if we've been talking for too long
             if (agent.getPieceContext().getMaxDebateCycle() < currentDiscussion.getNumberOfMessages()) {
                 return performMove;
-            } else {
+                // otherwise, low probability (1/5) we perform move to extend discussion
+            } else if (RandomUtil.nextInt(5) == 4) {
                 setOfNextActions.add(performMove);
             }
         }
@@ -98,7 +100,11 @@ public class ConversationPlannerImpl implements ConversationPlanner {
             setOfNextActions.add(new InitialAskForProposals(agent, currentDiscussion));
         } else {
             if (currentDiscussion.proposalsCalledFor()) {
+                // allow agent to propose new or revisit previous move
                 setOfNextActions.add(new ProposeMove(agent, currentDiscussion));
+                if (currentDiscussion.getNumberOfMovesDiscussed() > 1) {
+                    setOfNextActions.add(new RevisitMove(agent, currentDiscussion));
+                }
             } else {
                 // react to previously proposed moves
                 var response = getResponseToLastMoveDiscussed();
