@@ -231,7 +231,7 @@ Requests for information are semantic logic expressions with variables which the
 
 This will then be replied to every time a new move occurs with the variables given values, for example when a piece moves from B8 to C6:
 
-\begin{multline} \label{eq:movesubscribe}
+\begin{multline} \label{eq:movesubscriberesponse}
 	((=\; (iota\; ?Move\; ("Move Made"\; ?Move))\;  \\
 	(Move\; :Source\; (Position\; :Coordinates\; B8)\; \\
 	:Target\; (Position\; :Coordinates\; C6))))
@@ -324,6 +324,7 @@ The output of \lstinline{chooseNextAction()} in the \lstinline{ConversationPlann
 	Ask for Proposals & "What should we do next?" \\ 
 	Perform Move & "Going to move to A5." \\ 
 	Propose Move & "What about B4 to B3?" \\ 
+	Revisit Move & "Let's go back to talking about the move to G7." \\ 
 	Voice Opinion & "I like that idea!" \\ 
 	* Propose Alternative & "but moving to G3 would do that too." \\ 
 	* with Justification & "because it would capture an enemy."  \\ 
@@ -347,21 +348,36 @@ This information is enough to allow agents to determine how other agents feel ab
 
 \begin{table} 
 \centering
-\caption{Conversation message field meanings.} 
+\caption{Conversation message fields and the agent intention.} 
 \label{tbl:conversationmessagemeaning}
 \begin{tabular}{ l|l|l } 
-	Field & Predicate & Meaning \\
+	Field & Predicate & Agent Intention \\
  \hline
-	response & == null & Request Proposals \\ 
-	response.opinion & != null & Voice Opinion \\ 
-	response.reasoning & != null & * with Justification \\ 
-	response.alternativeProposition & != null & Propose Alternative \\ 
-	response.performed & == true & Perform Move \\ 
+	response & == null & Requested proposals \\ 
+	response.opinion & != null & Voiced opinion \\ 
+	response.reasoning & != null & Gave justification \\ 
+	response.alternativeProposition & != null & Proposed alternative \\ 
+	response.performed & == true & Performed move \\ 
  \hline
 \end{tabular}
 \end{table}
 
+The next conversation action is chosen by building up the set of responses that would make sense given the discussion so far and then selecting one from the set randomly. Most responses are equally likely, but some are given lower likelihoods of occuring (such as performing a move) in order to extend conversation and encourage discussion rather than agents just repeatedly proposing their own preferred moves.
 
+Choosing responses that 'made sense' involved checking the current discussion context and determining the following:
+\begin{itemize}
+	\item Is this the first message this turn?
+	\item Did the previous message ask for proposals?
+	\item Have moves been discussed already?
+	\item What is this agents opinion of the move currently being discussed?
+	\item Does a move exist that I can perform?
+\end{itemize}
+
+In order to create the illusion that pieces are moving themselves, only the speaker can peform a move and that move has to involve the same piece. This choice will likely result in less strategic moves being made (for example, a piece will not want to put itself at risk, even if it means saving a more important piece), but makes for a more entertaining narrative.
+
+The reasoning field in move responses are populated by the Value of an agent assessing a given move. This gives a natural language explanation for the value of the opinion field in the move response, and the value that was used to compute it. This allows other agents to apply the same value to all other moves (even if they do not have that value themselves) and provide a compromise that also appeals to their own values. 
+
+This argumentation feature could be improved by expressing the value as a predicate that other agents could unpack instead of being tied to the Value classes in our chess agent library. 
 
 \subsubsection{Natural Language Generation}
 
