@@ -6,8 +6,10 @@ import chessagents.agents.pieceagent.personality.Trait;
 import chessagents.agents.pieceagent.personality.values.Value;
 import chessagents.ontology.schemas.concepts.PieceMove;
 import chessagents.util.RandomUtil;
+import jade.util.Logger;
 import lombok.AllArgsConstructor;
 
+import java.util.Random;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -27,29 +29,27 @@ public class VoiceOpinionProposeCompromise extends ConversationAction {
     public ConversationMessage perform() {
         var otherAgentReasoning = lastMessage.getMoveResponse().get().getReasoning();
 
-        // find trait that has value used, use its grammar to build statement
-        var personality = pieceAgent.getPieceContext().getPersonality();
-        var randomTraitChooser = new RandomUtil<Trait>();
-        var reasoning = response.getReasoning();
-        var traitResponsible = randomTraitChooser.chooseRandom(personality.getTraitsThatHaveValue(reasoning.getValue()));
 
         // choose alternative using only moves that satisfy the other agents constraint
         // TODO consider all previous constraints??
         var optAltResponse = new ProposeCompromise(pieceAgent, turnDiscussion, otherAgentReasoning.getValue()).perform();
 
-        // if we both had the same reasoning, its not really a compromise, so just voice opinion instead
-        if (reasoning.getValue().equals(otherAgentReasoning.getValue())) {
-            return new VoiceOpinion(pieceAgent, turnDiscussion, response).perform();
-        }
-
         return optAltResponse.getMoveResponse().map(alternativeResponse -> {
             // construct new move response with other agent reasoning for grammar variable provider
             var grammarResponse = MoveResponse.buildResponse(response.getMove().get(), response.getOpinion(), otherAgentReasoning);
-            grammarResponse.setAlternativeResponse(alternativeResponse);
-            response.setAlternativeResponse(alternativeResponse);
-            var grammarVariableProvider = new GrammarVariableProviderImpl(grammarResponse, getMovingPiece(response, pieceAgent), getMovingPiece(response.getAlternativeResponse().get(), pieceAgent));
+            // if we both had the same reasoning, its not really a compromise, so just voice opinion instead
+            if (alternativeResponse.getReasoning().getValue().equals(otherAgentReasoning.getValue())) {
+                logger.warning("Reasoning was shared, voicing opinion instead");
+                return new VoiceOpinion(pieceAgent, turnDiscussion, response).perform();
+            } else {
+                grammarResponse.setAlternativeResponse(alternativeResponse);
+                response.setAlternativeResponse(alternativeResponse);
+                var grammarVariableProvider = new GrammarVariableProviderImpl(grammarResponse, getMovingPiece(grammarResponse, pieceAgent), getMovingPiece(grammarResponse.getAlternativeResponse().get(), pieceAgent));
 
-            return new ConversationMessage(traitResponsible.getRiGrammar().expandFrom(grammarTag(), grammarVariableProvider), response, pieceAgent.getAID());
+                var personality = pieceAgent.getPieceContext().getPersonality();
+                var traitResponsible = new RandomUtil<Trait>().chooseRandom(personality.getTraits());
+                return new ConversationMessage(traitResponsible.getRiGrammar().expandFrom(grammarTag(), grammarVariableProvider), response, pieceAgent.getAID());
+            }
         }).orElse(optAltResponse);
     }
 }

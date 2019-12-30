@@ -4,9 +4,11 @@ import chessagents.agents.pieceagent.PieceAgent;
 import chessagents.agents.pieceagent.argumentation.ConversationMessage;
 import chessagents.agents.pieceagent.argumentation.MoveResponse;
 import chessagents.ontology.schemas.concepts.PieceMove;
+import jade.util.Logger;
 
 public abstract class ConversationAction {
 
+    protected final Logger logger = Logger.getMyLogger(getClass().getName());
     public abstract ConversationMessage perform();
 
     String grammarTag() {

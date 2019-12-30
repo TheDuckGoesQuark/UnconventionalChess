@@ -117,7 +117,9 @@ public class ConversationPlannerImpl implements ConversationPlanner {
 
                         // we can try to offer a compromise that appeals to more of our values
                         var lastMessageSent = currentDiscussion.getLastMessageSent();
-                        setOfNextActions.add(new VoiceOpinionProposeCompromise(agent, currentDiscussion, response, lastMessageSent));
+                        if (lastMessageSent.getMoveResponse().get().getOpinion() == Opinion.LIKE) {
+                            setOfNextActions.add(new VoiceOpinionProposeCompromise(agent, currentDiscussion, response, lastMessageSent));
+                        }
                         break;
                     case NEUTRAL:
                         setOfNextActions.add(new Acknowledge(agent, currentDiscussion, response));
