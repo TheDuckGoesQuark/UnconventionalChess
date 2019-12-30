@@ -1,8 +1,6 @@
 package stacs.chessgateway.controllers;
 
-import chessagents.agents.gatewayagent.messages.ChatMessage;
 import chessagents.agents.gatewayagent.messages.MessageType;
-import jade.lang.acl.MessageTemplate;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mockito;
@@ -22,7 +20,6 @@ import java.time.Instant;
 import java.util.HashMap;
 
 import static org.mockito.BDDMockito.given;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -85,5 +82,8 @@ public class GameControllerTest {
                 .andExpect(jsonPath("$.body.humanPlays").value(true))
                 .andExpect(jsonPath("$.body.humanPlaysAsWhite").value(true))
                 .andExpect(jsonPath("$.body.pieceConfigs.a5.name").value("james"));
+
     }
+
+
 }
