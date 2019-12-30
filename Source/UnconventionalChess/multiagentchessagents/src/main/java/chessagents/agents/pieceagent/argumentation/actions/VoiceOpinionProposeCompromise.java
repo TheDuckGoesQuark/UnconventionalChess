@@ -27,21 +27,21 @@ public class VoiceOpinionProposeCompromise extends ConversationAction {
 
     @Override
     public ConversationMessage perform() {
-        var otherAgentReasoning = lastMessage.getMoveResponse().get().getReasoning();
-
-
         // choose alternative using only moves that satisfy the other agents constraint
         // TODO consider all previous constraints??
+        var otherAgentReasoning = lastMessage.getMoveResponse().get().getReasoning();
         var optAltResponse = new ProposeCompromise(pieceAgent, turnDiscussion, otherAgentReasoning.getValue()).perform();
 
         return optAltResponse.getMoveResponse().map(alternativeResponse -> {
             // construct new move response with other agent reasoning for grammar variable provider
             var grammarResponse = MoveResponse.buildResponse(response.getMove().get(), response.getOpinion(), otherAgentReasoning);
-            // if we both had the same reasoning, its not really a compromise, so just voice opinion instead
+
+            // if we both had the same reasoning, its not really a compromise, so just fallback to voice opinion instead
             if (alternativeResponse.getReasoning().getValue().equals(otherAgentReasoning.getValue())) {
                 logger.warning("Reasoning was shared, voicing opinion instead");
                 return new VoiceOpinion(pieceAgent, turnDiscussion, response).perform();
             } else {
+                // adjust the grammar response so it gives the same wording as the previous message in the justification
                 grammarResponse.setAlternativeResponse(alternativeResponse);
                 response.setAlternativeResponse(alternativeResponse);
                 var grammarVariableProvider = new GrammarVariableProviderImpl(grammarResponse, getMovingPiece(grammarResponse, pieceAgent), getMovingPiece(grammarResponse.getAlternativeResponse().get(), pieceAgent));
