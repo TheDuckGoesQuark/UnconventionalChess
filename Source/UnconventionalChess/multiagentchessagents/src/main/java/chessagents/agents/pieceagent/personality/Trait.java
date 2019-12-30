@@ -10,11 +10,12 @@ import java.util.Set;
 
 @Getter
 public enum Trait {
-    AGGRESSIVE(new Value[]{new MaximiseEnemyCapturedPieces()}),
-    DEFENSIVE(new Value[]{new MinimiseFriendlyThreatenedPieces()}),
-    EGOTISTIC(new Value[]{new EnsureMySafety()}),
-    BENEVOLENT(new Value[]{new MinimiseFriendlyThreatenedPieces()}),
-    INTROVERT(new Value[]{new Shy()});
+    AGGRESSIVE(new Value[]{new MaximiseEnemyCapturedPieces(), new MaximiseEnemyThreatenedPieces()}),
+    PROTECTIVE(new Value[]{new MinimiseFriendlyThreatenedPieces(), new KeepNearOtherPieces()}),
+    EGOTISTIC(new Value[]{new EnsureMySafety(), new MaximiseMyMoves()}),
+    INTROVERT(new Value[]{new KeepAwayFromOtherPieces(), new MinimiseFriendlyThreatenedPieces()}),
+    EXTROVERT(new Value[]{new KeepNearOtherPieces()}),
+    BULLY(new Value[]{new EnsureMySafety(), new MaximiseEnemyThreatenedPieces()});
 
     private final Set<Value> appealingValues;
     private RiGrammar riGrammar;

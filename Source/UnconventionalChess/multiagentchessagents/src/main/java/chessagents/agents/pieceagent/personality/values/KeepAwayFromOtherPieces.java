@@ -8,9 +8,9 @@ import chessagents.ontology.schemas.concepts.ChessPiece;
 import chessagents.ontology.schemas.concepts.PieceMove;
 import chessagents.ontology.schemas.concepts.Position;
 
-public class Shy extends Value {
-    public Shy() {
-        super("Shy");
+public class KeepAwayFromOtherPieces extends Value {
+    public KeepAwayFromOtherPieces() {
+        super("Keep away from other pieces");
     }
 
     @Override

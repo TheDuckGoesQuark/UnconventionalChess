@@ -2,6 +2,7 @@ package chessagents.ontology.schemas.concepts;
 
 import com.github.bhlangonijr.chesslib.Side;
 import jade.content.Concept;
+import jade.core.behaviours.Behaviour;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -31,5 +32,9 @@ public class Colour implements Concept {
     @Override
     public int hashCode() {
         return Objects.hash(colour);
+    }
+
+    public Colour flip() {
+        return this.equals(WHITE) ? BLACK : WHITE;
     }
 }
