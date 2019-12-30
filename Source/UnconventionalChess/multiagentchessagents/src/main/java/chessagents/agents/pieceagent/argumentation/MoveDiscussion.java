@@ -25,6 +25,10 @@ public class MoveDiscussion {
         discussion.add(conversationMessage);
     }
 
+    public PieceMove getPieceMove() {
+        return pieceMove;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -36,5 +40,9 @@ public class MoveDiscussion {
     @Override
     public int hashCode() {
         return Objects.hash(pieceMove);
+    }
+
+    public ConversationMessage getLastMessageSent() {
+        return discussion.getLast();
     }
 }

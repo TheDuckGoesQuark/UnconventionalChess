@@ -8,7 +8,6 @@ import chessagents.util.RandomUtil;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Set;
@@ -21,7 +20,7 @@ public class ProposeMove extends ConversationAction {
 
     @Override
     public ConversationMessage perform() {
-        return lastDiscussedMove();
+        return getMessage();
     }
 
     protected Set<PieceMove> getProposableMoves() {
@@ -33,7 +32,7 @@ public class ProposeMove extends ConversationAction {
         return possibleMoves;
     }
 
-    private ConversationMessage lastDiscussedMove() {
+    private ConversationMessage getMessage() {
         var possibleMoves = getProposableMoves();
         var pieceContext = pieceAgent.getPieceContext();
         var personality = pieceContext.getPersonality();
@@ -54,9 +53,11 @@ public class ProposeMove extends ConversationAction {
             chosenResponse = randomResponseChooser.chooseRandom(responsesByOpinion.get(Opinion.LIKE));
         } else if (responsesByOpinion.get(Opinion.NEUTRAL).size() > 0) {
             chosenResponse = randomResponseChooser.chooseRandom(responsesByOpinion.get(Opinion.NEUTRAL));
-        } else {
-            // worst case we have to propose a move we dont like
+        } else if (responsesByOpinion.get(Opinion.DISLIKE).size() > 0) {
             chosenResponse = randomResponseChooser.chooseRandom(responsesByOpinion.get(Opinion.DISLIKE));
+        } else {
+            // worst case there are no moves we can propose, fallback to quip
+            return new Quip(pieceAgent).perform();
         }
 
         // find trait that has value used, use its grammar to build statement

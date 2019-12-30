@@ -48,8 +48,23 @@
   "<ProposeMove>": [
     "I think `getMovingPiece()` should move to `getMoveTarget()`"
   ],
+  "<VoiceLIKEProposeCompromise>": [
+    "<VoiceLIKE> <ProposeCompromise>"
+  ],
+  "<VoiceDISLIKEProposeCompromise>": [
+    "<VoiceDISLIKE> <ProposeCompromise>"
+  ],
   "<ProposeCompromise>": [
-    "<ProposeMove> <Justification> too"
+    "<ProposeAlternative> <Justification> too, <CompromiseJustification>",
+    "<ProposeAlternative> <Justification> also,<CompromiseJustification>",
+    "<ProposeAlternative> <Justification> as well, <CompromiseJustification>",
+    "<ProposeAlternative> <Justification> too",
+    "<ProposeAlternative> <Justification> also",
+    "<ProposeAlternative> <Justification> as well"
+  ],
+  "<CompromiseJustification>": [
+    "but also <AlternativeJustification>",
+    "and <AlternativeJustification>"
   ],
   "<ProposeMoveWithJustification>": [
     "<ProposeMove> <Justification>"
@@ -58,16 +73,19 @@
     "I think `getAlternativeMovingPiece()` should move to `getAlternativeMoveTarget()` instead"
   ],
   "<RevisitMove>": [
-    "Can we go back to talking about `getMovingPiece()` moving to `getMoveTarget()`?"
+    "Can we go back to talking about `getMovingPiece()` moving to `getMoveTarget()`?",
+    "I think `getMovingPiece()` moving to `getMoveTarget()` was a better idea, can we go back to that?"
   ],
   "<Justification>": [
-    "because that move `getJustification()`"
+    "because that move would `getJustification()`",
+    "because doing that could `getJustification()`"
   ],
   "<AlternativeJustification>": [
-    "because that move `getAlternativeJustification()`"
+    "because that move would `getAlternativeJustification()`",
+    "because doing that could `getAlternativeJustification()`"
   ],
   "<Quip>": [
-    "Do you think the other team look scared? ",
+    "Do you think the other team look scared?",
     " *yawn* ",
     " *cough* ",
     " I don't understand why we have to wait for them to move..."

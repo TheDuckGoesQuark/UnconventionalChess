@@ -29,10 +29,15 @@ public class VoiceOpinionProposeAlternative extends ConversationAction {
         var traitResponsible = randomTraitChooser.chooseRandom(personality.getTraitsThatHaveValue(reasoning.getValue()));
 
         MoveResponse alternativeMoveResponse;
-        if (RandomUtil.randBool()) {
-            alternativeMoveResponse = new ProposeMove(pieceAgent, turnDiscussion).perform().getMoveResponse().get();
-        } else {
-            alternativeMoveResponse = new ProposeMoveWithJustification(pieceAgent, turnDiscussion).perform().getMoveResponse().get();
+        int randomInt = RandomUtil.nextInt(2);
+        switch (randomInt) {
+            default:
+            case 0:
+                alternativeMoveResponse = new ProposeMove(pieceAgent, turnDiscussion).perform().getMoveResponse().get();
+                break;
+            case 1:
+                alternativeMoveResponse = new ProposeMoveWithJustification(pieceAgent, turnDiscussion).perform().getMoveResponse().get();
+                break;
         }
 
         response.setAlternativeResponse(alternativeMoveResponse);

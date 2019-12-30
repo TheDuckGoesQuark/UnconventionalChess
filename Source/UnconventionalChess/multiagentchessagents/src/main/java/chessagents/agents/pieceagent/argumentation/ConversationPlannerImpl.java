@@ -114,6 +114,10 @@ public class ConversationPlannerImpl implements ConversationPlanner {
                         setOfNextActions.add(new VoiceOpinion(agent, currentDiscussion, response));
                         setOfNextActions.add(new VoiceOpinionProposeAlternative(agent, currentDiscussion, response));
                         setOfNextActions.add(new VoiceOpinionWithJustification(agent, currentDiscussion, response));
+
+                        // we can try to offer a compromise that appeals to more of our values
+                        var lastMessageSent = currentDiscussion.getLastMessageSent();
+                        setOfNextActions.add(new VoiceOpinionProposeCompromise(agent, currentDiscussion, response, lastMessageSent));
                         break;
                     case NEUTRAL:
                         setOfNextActions.add(new Acknowledge(agent, currentDiscussion, response));
@@ -122,6 +126,7 @@ public class ConversationPlannerImpl implements ConversationPlanner {
                         break;
                 }
             }
+
         }
 
         return RANDOM_ACTION_CHOOSER.chooseRandom(setOfNextActions);

@@ -75,4 +75,9 @@ public class TurnDiscussion {
     public ArrayList<PieceMove> getPreviouslyDiscussedMoves() {
         return moveDiscussions.keySet().stream().filter(Objects::nonNull).collect(Collectors.toCollection(ArrayList::new));
     }
+
+    public ConversationMessage getLastMessageSent() {
+        var currentMoveDiscussion = moveDiscussions.get(getLastMoveDiscussed());
+        return currentMoveDiscussion.getLastMessageSent();
+    }
 }
