@@ -19,11 +19,11 @@ public class Shy extends Value {
         var piecesNearAfter = piecesNearMe(gameState.applyMove(action), chessPiece);
 
         if (piecesNearBefore && !piecesNearAfter) {
-            return MoveResponse.buildResponse(action, Opinion.LIKE, new Reasoning(this, "keeps me away from other pieces"));
+            return MoveResponse.buildResponse(action, Opinion.LIKE, new Reasoning(this, "keep me away from other pieces"));
         } else if ((!piecesNearBefore && !piecesNearAfter)) {
-            return MoveResponse.buildResponse(action, Opinion.NEUTRAL, new Reasoning(this, "keeps me away from other pieces"));
+            return MoveResponse.buildResponse(action, Opinion.NEUTRAL, new Reasoning(this, "keep me away from other pieces"));
         } else {
-            return MoveResponse.buildResponse(action, Opinion.DISLIKE, new Reasoning(this, "I don't want to be near other pieces"));
+            return MoveResponse.buildResponse(action, Opinion.DISLIKE, new Reasoning(this, "not keep me away from other pieces"));
         }
     }
 
@@ -34,7 +34,8 @@ public class Shy extends Value {
                 .map(ChessPiece::getPosition)
                 .map(Position::getCoordinates)
                 .filter(p -> !p.equals(myPos))
-                .anyMatch(otherPosition -> isAdjacent(myPos, otherPosition));
+                .filter(otherPosition -> isAdjacent(myPos, otherPosition))
+                .count() > 0;
     }
 
     static class Coordinate {

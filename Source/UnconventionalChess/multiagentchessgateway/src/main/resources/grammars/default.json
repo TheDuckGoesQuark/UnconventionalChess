@@ -55,12 +55,9 @@
     "<VoiceDISLIKE> <ProposeCompromise>"
   ],
   "<ProposeCompromise>": [
-    "<ProposeAlternative> <Justification> too, <CompromiseJustification>",
-    "<ProposeAlternative> <Justification> also,<CompromiseJustification>",
-    "<ProposeAlternative> <Justification> as well, <CompromiseJustification>",
-    "<ProposeAlternative> <Justification> too",
-    "<ProposeAlternative> <Justification> also",
-    "<ProposeAlternative> <Justification> as well"
+    "<ProposeAlternativeMove> <Justification> too, <CompromiseJustification>",
+    "<ProposeAlternativeMove> <Justification> also, <CompromiseJustification>",
+    "<ProposeAlternativeMove> <Justification> as well, <CompromiseJustification>"
   ],
   "<CompromiseJustification>": [
     "but also <AlternativeJustification>",

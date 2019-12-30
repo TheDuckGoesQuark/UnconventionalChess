@@ -11,6 +11,7 @@ import jade.lang.acl.MessageTemplate;
 
 import java.util.HashSet;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 public class ChooseSpeaker extends ConversationStateBehaviour {
 
@@ -51,6 +52,7 @@ public class ChooseSpeaker extends ConversationStateBehaviour {
 
     private AID chooseSpeaker(Set<ACLMessage> speakerProposals) {
         var move = getConversationContext().getLastMoveDiscussed();
+        var myAID = getAgent().getAID();
 
         if (move != null) {
             // allow piece being asked to move to talk
@@ -58,13 +60,18 @@ public class ChooseSpeaker extends ConversationStateBehaviour {
             var pieceMovingAID = pieceMoving.get().getAgentAID();
 
             // if that piece was me, I've already spoke so chose someone else
-            if (!pieceMovingAID.equals(getAgent().getAID())) {
+            if (!pieceMovingAID.equals(myAID)) {
                 return pieceMovingAID;
             }
         }
 
-        // choose random other piece
-        return new RandomUtil<ACLMessage>().chooseRandom(speakerProposals).getSender();
+        // choose random other piece. if im the only piece that can speak then choose from anyone
+        var possibleSpeakers = speakerProposals.stream().filter(s -> !s.getSender().equals(myAID)).collect(Collectors.toSet());
+        if (possibleSpeakers.size() == 0) {
+            return new RandomUtil<ACLMessage>().chooseRandom(speakerProposals).getSender();
+        } else {
+            return new RandomUtil<ACLMessage>().chooseRandom(possibleSpeakers).getSender();
+        }
     }
 
     private boolean receivedRequestFromEveryone() {

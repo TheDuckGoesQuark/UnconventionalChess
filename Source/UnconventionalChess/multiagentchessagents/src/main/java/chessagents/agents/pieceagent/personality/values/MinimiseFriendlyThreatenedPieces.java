@@ -22,11 +22,11 @@ public class MinimiseFriendlyThreatenedPieces extends Value {
         var retainsNoThreatenedPieces = threatenedPiecesBefore == 0 && threatenedPiecesAfter == 0;
 
         if (decreasesThreatenedFriendlies || retainsNoThreatenedPieces) {
-            return MoveResponse.buildResponse(action, Opinion.LIKE, new Reasoning(this, "keeps our pieces safe"));
+            return MoveResponse.buildResponse(action, Opinion.LIKE, new Reasoning(this, "keep our pieces safe"));
         } else if (threatenedPiecesBefore == threatenedPiecesAfter) {
-            return MoveResponse.buildResponse(action, Opinion.NEUTRAL, new Reasoning(this, "doesn't affect the safety of our pieces"));
+            return MoveResponse.buildResponse(action, Opinion.NEUTRAL, new Reasoning(this, "not affect the safety of our pieces"));
         } else {
-            return MoveResponse.buildResponse(action, Opinion.DISLIKE, new Reasoning(this, "puts one of us at risk!"));
+            return MoveResponse.buildResponse(action, Opinion.DISLIKE, new Reasoning(this, "put one of us at risk!"));
         }
     }
 }

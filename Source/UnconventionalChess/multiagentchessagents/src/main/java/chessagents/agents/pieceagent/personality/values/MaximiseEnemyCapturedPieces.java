@@ -19,11 +19,11 @@ public class MaximiseEnemyCapturedPieces extends Value {
         var enemiesCapturedAfter = gameState.applyMove(action).getCapturedForColour(chessPiece.getColour()).size();
 
         if (enemiesCapturedBefore < enemiesCapturedAfter) {
-            return MoveResponse.buildResponse(action, Opinion.LIKE, new Reasoning(this, "this move will capture more pieces"));
+            return MoveResponse.buildResponse(action, Opinion.LIKE, new Reasoning(this, "capture more pieces"));
         } else if (enemiesCapturedBefore == enemiesCapturedAfter) {
-            return MoveResponse.buildResponse(action, Opinion.NEUTRAL, new Reasoning(this, "this move doesn't capture any pieces"));
+            return MoveResponse.buildResponse(action, Opinion.NEUTRAL, new Reasoning(this, "not capture any pieces"));
         } else {
-            return MoveResponse.buildResponse(action, Opinion.DISLIKE, new Reasoning(this, "this move doesn't capture any pieces"));
+            return MoveResponse.buildResponse(action, Opinion.DISLIKE, new Reasoning(this, "not capture any pieces"));
         }
     }
 }

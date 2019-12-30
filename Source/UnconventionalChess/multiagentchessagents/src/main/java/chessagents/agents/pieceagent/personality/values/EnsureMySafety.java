@@ -23,11 +23,11 @@ public class EnsureMySafety extends Value {
         var isCaptured = afterActionState.getCapturedForColour(chessPiece.getColour()).contains(chessPiece);
 
         if (isAlreadyThreatened && !becomesThreatened && !isCaptured) {
-            return MoveResponse.buildResponse(action, Opinion.LIKE, new Reasoning(this, "saves me from being threatened"));
+            return MoveResponse.buildResponse(action, Opinion.LIKE, new Reasoning(this, "save me from being threatened"));
         } else if (becomesThreatened || isCaptured) {
-            return MoveResponse.buildResponse(action, Opinion.DISLIKE, new Reasoning(this, "puts me at risk"));
+            return MoveResponse.buildResponse(action, Opinion.DISLIKE, new Reasoning(this, "put me at risk"));
         } else {
-            return MoveResponse.buildResponse(action, Opinion.NEUTRAL, new Reasoning(this, "doesn't affect me"));
+            return MoveResponse.buildResponse(action, Opinion.NEUTRAL, new Reasoning(this, "not affect me"));
         }
     }
 }

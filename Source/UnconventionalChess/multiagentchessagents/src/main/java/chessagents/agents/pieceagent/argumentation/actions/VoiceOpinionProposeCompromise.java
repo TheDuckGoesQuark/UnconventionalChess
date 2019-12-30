@@ -35,12 +35,21 @@ public class VoiceOpinionProposeCompromise extends ConversationAction {
 
         // choose alternative using only moves that satisfy the other agents constraint
         // TODO consider all previous constraints??
-        var alternativeResponse = new ProposeCompromise(pieceAgent, turnDiscussion, otherAgentReasoning.getValue()).perform();
+        var optAltResponse = new ProposeCompromise(pieceAgent, turnDiscussion, otherAgentReasoning.getValue()).perform();
 
-        return alternativeResponse.getMoveResponse().map(m -> {
-            response.setAlternativeResponse(m);
-            var grammarVariableProvider = new GrammarVariableProviderImpl(response, getMovingPiece(response, pieceAgent), getMovingPiece(response.getAlternativeResponse().get(), pieceAgent));
+        // if we both had the same reasoning, its not really a compromise, so just voice opinion instead
+        if (reasoning.getValue().equals(otherAgentReasoning.getValue())) {
+            return new VoiceOpinion(pieceAgent, turnDiscussion, response).perform();
+        }
+
+        return optAltResponse.getMoveResponse().map(alternativeResponse -> {
+            // construct new move response with other agent reasoning for grammar variable provider
+            var grammarResponse = MoveResponse.buildResponse(response.getMove().get(), response.getOpinion(), otherAgentReasoning);
+            grammarResponse.setAlternativeResponse(alternativeResponse);
+            response.setAlternativeResponse(alternativeResponse);
+            var grammarVariableProvider = new GrammarVariableProviderImpl(grammarResponse, getMovingPiece(response, pieceAgent), getMovingPiece(response.getAlternativeResponse().get(), pieceAgent));
+
             return new ConversationMessage(traitResponsible.getRiGrammar().expandFrom(grammarTag(), grammarVariableProvider), response, pieceAgent.getAID());
-        }).orElse(alternativeResponse);
+        }).orElse(optAltResponse);
     }
 }
