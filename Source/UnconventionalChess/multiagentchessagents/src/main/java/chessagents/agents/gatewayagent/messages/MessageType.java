@@ -1,5 +1,7 @@
 package chessagents.agents.gatewayagent.messages;
 
+import lombok.Getter;
+
 /**
  * Types of message that can be exchanged between game agent and gateway agent.
  * <p>
@@ -16,5 +18,11 @@ public enum MessageType {
 
     MessageType(String name) {
         this.name = name;
+    }
+
+
+    @Override
+    public String toString() {
+        return name;
     }
 }

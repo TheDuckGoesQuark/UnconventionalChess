@@ -326,7 +326,8 @@ The output of \lstinline{chooseNextAction()} in the \lstinline{ConversationPlann
 	Propose Move & "What about B4 to B3?" \\ 
 	Revisit Move & "Let's go back to talking about the move to G7." \\ 
 	Voice Opinion & "I like that idea!" \\ 
-	* Propose Alternative & "but moving to G3 would do that too." \\ 
+	* Propose Alternative & "but we could also move to G3." \\ 
+	* Propose Compromise & "moving to G3 would do that too"  \\ 
 	* with Justification & "because it would capture an enemy."  \\ 
 	Quip & "I'm a bit scared."  \\ 
  \hline
@@ -362,7 +363,7 @@ This information is enough to allow agents to determine how other agents feel ab
 \end{tabular}
 \end{table}
 
-The next conversation action is chosen by building up the set of responses that would make sense given the discussion so far and then selecting one from the set randomly. Most responses are equally likely, but some are given lower likelihoods of occuring (such as performing a move) in order to extend conversation and encourage discussion rather than agents just repeatedly proposing their own preferred moves.
+The next conversation action is chosen by building up the set of responses that would make sense given the discussion so far and then selecting one from the set randomly. Most responses are equally likely, but some are given lower likelihoods of occurring (such as performing a move) in order to extend conversation and encourage discussion rather than agents just repeatedly proposing their own preferred moves.
 
 Choosing responses that 'made sense' involved checking the current discussion context and determining the following:
 \begin{itemize}
@@ -373,7 +374,7 @@ Choosing responses that 'made sense' involved checking the current discussion co
 	\item Does a move exist that I can perform?
 \end{itemize}
 
-In order to create the illusion that pieces are moving themselves, only the speaker can peform a move and that move has to involve the same piece. This choice will likely result in less strategic moves being made (for example, a piece will not want to put itself at risk, even if it means saving a more important piece), but makes for a more entertaining narrative.
+In order to create the illusion that pieces are moving themselves, only the speaker can perform a move and that move has to involve the same piece. This choice will likely result in less strategic moves being made (for example, a piece will not want to put itself at risk, even if it means saving a more important piece), but makes for a more entertaining narrative.
 
 The reasoning field in move responses are populated by the Value of an agent assessing a given move. This gives a natural language explanation for the value of the opinion field in the move response, and the value that was used to compute it. This allows other agents to apply the same value to all other moves (even if they do not have that value themselves) and provide a compromise that also appeals to their own values. 
 
@@ -409,7 +410,7 @@ RiTa provides a wealth of features for natural language processing and generatio
 \label{fig:bnf}
 \end{figure}
 
-Each value also uses a BNF grammar to produce the justification in natural language, but these are implemented within the values themselves rather than as seperate schemes.
+Each value also uses a BNF grammar to produce the justification in natural language, but these are implemented within the values themselves rather than as separate schemes.
 
 The strings between backticks within the grammars are slots that are express the name of a field or a function call that will provide the value for the slot in the GrammarVariableProvider. This is an object populated with things like the name of the agent being asked to move and the coordinates being moved to.
 
