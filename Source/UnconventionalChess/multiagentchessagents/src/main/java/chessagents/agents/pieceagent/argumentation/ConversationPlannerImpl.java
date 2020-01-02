@@ -171,25 +171,51 @@ public class ConversationPlannerImpl implements ConversationPlanner {
         }
     }
 
+    /**
+     * @return Produce a set of Conversation actions that are reactions to the move
+     * we just made
+     */
     private Set<ConversationAction> reactToOurMoveActions() {
         var actions = new HashSet<ConversationAction>();
-        // our side moved:
-        // - did the move that occurred get discussed
-        // - was it the move we wanted to happen
-        // - did the move capture someone
-        // - did the move threaten someone
+        if (performedMoveWasCurrentlyBeingDiscussed()) {
+            // - if it the move we wanted to happen
+            // - - react positively
+            // - else
+            // - - react negatively
+        }
+        if (performedMoveWasDiscussedAtSomePoint()) {
+            // - if it the move we wanted to happen
+            // - - react positively
+            // - else
+            // - - react negatively
+        }
+        if (captureWasMade()) {
+            //
+        }
+        if (enemyPieceBecameThreatened()) {
+
+        }
+        if (pieceEscapedThreat()) {
+
+        }
         return actions;
     }
 
+    /**
+     * @return Produce a set of Conversation actions that are reactions
+     * to the move the enemy just made
+     */
     private Set<ConversationAction> reactToEnemyMoveActions() {
         var actions = new HashSet<ConversationAction>();
-        // other side moved:
-        // - did they capture our piece
-        // - are we threatened
+        if (ourPieceWasCaptured()) {
+
+        }
+        if (ourPieceBecameThreatened()) {
+
+        }
         // - insult move
         // - compliment move
         // - question move
-        //
         return actions;
     }
 

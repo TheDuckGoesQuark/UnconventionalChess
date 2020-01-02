@@ -20,12 +20,14 @@ public class PieceContext {
     private final int maxDebateCycle;
     private final Personality personality;
     private final OntoAID myAID;
+    private final GameHistory gameHistory;
     private String moveSubscriptionId = null;
     private GameState gameState;
     private int moveCounter = 0;
 
     public PieceContext(AID gameAgentAID) {
         this.gameAgentAID = gameAgentAID;
+        gameHistory = null;
         personality = null;
         maxDebateCycle = 0;
         myAID = null;
@@ -40,10 +42,13 @@ public class PieceContext {
 
         // register this piece as an agent
         gameState.registerPieceAtPositionAsAgent(this.myAID, myPosition);
+        gameHistory = new GameHistory();
+        gameHistory.put(null, gameState);
     }
 
     public void makeMove(PieceMove move) {
         gameState = gameState.applyMove(move);
+        gameHistory.put(move, gameState);
         moveCounter++;
     }
 
