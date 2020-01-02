@@ -1,4 +1,4 @@
-package chessagents.agents.pieceagent.argumentation.actions;
+package chessagents.agents.pieceagent.argumentation.discussionactions;
 
 import chessagents.agents.pieceagent.PieceAgent;
 import chessagents.agents.pieceagent.argumentation.*;
@@ -6,37 +6,36 @@ import chessagents.agents.pieceagent.personality.Trait;
 import chessagents.ontology.schemas.concepts.PieceMove;
 import chessagents.util.RandomUtil;
 import lombok.AllArgsConstructor;
-import lombok.Getter;
 
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 @AllArgsConstructor
-@Getter
-public class ProposeMove extends ConversationAction {
+public class PerformMove extends ConversationAction {
+
     private final PieceAgent pieceAgent;
     private final TurnDiscussion turnDiscussion;
 
     @Override
     public ConversationMessage perform() {
-        return getMessage();
-    }
+        var move = turnDiscussion.getLastMoveDiscussed();
 
-    protected Set<PieceMove> getProposableMoves() {
-        var possibleMoves = pieceAgent.getPieceContext().getGameState().getAllLegalMoves();
+        var myPos = pieceAgent.getPieceContext().getMyPiece().getPosition();
+        var possibleMoves = pieceAgent.getPieceContext().getGameState().getAllLegalMoves()
+                .stream()
+                .filter(m -> m.getSource().equals(myPos))
+                .collect(Collectors.toSet());
 
-        // remove previously discussed moves
-        turnDiscussion.getPreviouslyDiscussedMoves().forEach(possibleMoves::remove);
+        if (move == null || !possibleMoves.contains(move)) {
+            move = new RandomUtil<PieceMove>().chooseRandom(possibleMoves);
+        }
 
-        return possibleMoves;
-    }
-
-    private ConversationMessage getMessage() {
-        var possibleMoves = getProposableMoves();
         var pieceContext = pieceAgent.getPieceContext();
         var personality = pieceContext.getPersonality();
-        var responses = personality.getResponseToMoves(pieceContext.getMyPiece(), possibleMoves, pieceContext.getGameState());
+        var responses = personality.getResponseToMoves(pieceContext.getMyPiece(), Collections.singleton(move), pieceContext.getGameState());
 
         var responsesByOpinion = new HashMap<Opinion, Set<MoveResponse>>();
         responsesByOpinion.put(Opinion.LIKE, new HashSet<>());
@@ -53,20 +52,19 @@ public class ProposeMove extends ConversationAction {
             chosenResponse = randomResponseChooser.chooseRandom(responsesByOpinion.get(Opinion.LIKE));
         } else if (responsesByOpinion.get(Opinion.NEUTRAL).size() > 0) {
             chosenResponse = randomResponseChooser.chooseRandom(responsesByOpinion.get(Opinion.NEUTRAL));
-        } else if (responsesByOpinion.get(Opinion.DISLIKE).size() > 0) {
-            chosenResponse = randomResponseChooser.chooseRandom(responsesByOpinion.get(Opinion.DISLIKE));
         } else {
-            // worst case there are no moves we can propose, fallback to quip
-            return new Quip(pieceAgent, turnDiscussion).perform();
+            chosenResponse = randomResponseChooser.chooseRandom(responsesByOpinion.get(Opinion.DISLIKE));
         }
 
         // find trait that has value used, use its grammar to build statement
         var randomTraitChooser = new RandomUtil<Trait>();
         var reasoning = chosenResponse.getReasoning();
         var traitResponsible = randomTraitChooser.chooseRandom(personality.getTraitsThatHaveValue(reasoning.getValue()));
+
+        chosenResponse.setPerformed(true);
+
         var movingPiece = getMovingPiece(chosenResponse, pieceAgent);
         var grammarVariableProvider = new GrammarVariableProviderImpl(chosenResponse, movingPiece, null);
-
         return new ConversationMessage(traitResponsible.getRiGrammar().expandFrom(grammarTag(), grammarVariableProvider), chosenResponse, pieceAgent.getAID());
     }
 }

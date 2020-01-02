@@ -1,9 +1,8 @@
-package chessagents.agents.pieceagent.argumentation.actions;
+package chessagents.agents.pieceagent.argumentation.discussionactions;
 
 import chessagents.agents.pieceagent.PieceAgent;
 import chessagents.agents.pieceagent.argumentation.ConversationMessage;
 import chessagents.agents.pieceagent.argumentation.MoveResponse;
-import chessagents.ontology.schemas.concepts.PieceMove;
 import jade.util.Logger;
 
 public abstract class ConversationAction {

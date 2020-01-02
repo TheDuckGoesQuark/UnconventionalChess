@@ -1,4 +1,4 @@
-package chessagents.agents.pieceagent.argumentation.actions;
+package chessagents.agents.pieceagent.argumentation.discussionactions;
 
 import chessagents.agents.pieceagent.PieceAgent;
 import chessagents.agents.pieceagent.argumentation.*;
@@ -7,14 +7,14 @@ import chessagents.util.RandomUtil;
 import lombok.AllArgsConstructor;
 
 @AllArgsConstructor
-public class VoiceOpinionWithJustification extends ConversationAction {
+public class VoiceOpinion extends ConversationAction {
     private final PieceAgent pieceAgent;
     private final TurnDiscussion turnDiscussion;
     private final MoveResponse response;
 
     @Override
     public String grammarTag() {
-        return "<Voice" + response.getOpinion().name() + "WithJustification>";
+        return "<Voice" + response.getOpinion().name() + ">";
     }
 
     @Override

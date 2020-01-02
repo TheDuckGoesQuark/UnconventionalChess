@@ -1,17 +1,10 @@
-package chessagents.agents.pieceagent.argumentation.actions;
+package chessagents.agents.pieceagent.argumentation.discussionactions;
 
 import chessagents.agents.pieceagent.PieceAgent;
 import chessagents.agents.pieceagent.argumentation.*;
 import chessagents.agents.pieceagent.personality.Trait;
-import chessagents.agents.pieceagent.personality.values.Value;
-import chessagents.ontology.schemas.concepts.PieceMove;
 import chessagents.util.RandomUtil;
-import jade.util.Logger;
 import lombok.AllArgsConstructor;
-
-import java.util.Random;
-import java.util.Set;
-import java.util.stream.Collectors;
 
 @AllArgsConstructor
 public class VoiceOpinionProposeCompromise extends ConversationAction {

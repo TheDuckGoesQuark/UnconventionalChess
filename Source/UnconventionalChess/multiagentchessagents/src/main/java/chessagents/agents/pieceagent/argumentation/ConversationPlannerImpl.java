@@ -2,7 +2,7 @@ package chessagents.agents.pieceagent.argumentation;
 
 import chessagents.agents.commonbehaviours.RequestGameAgentMove;
 import chessagents.agents.pieceagent.PieceAgent;
-import chessagents.agents.pieceagent.argumentation.actions.*;
+import chessagents.agents.pieceagent.argumentation.discussionactions.*;
 import chessagents.ontology.schemas.actions.MakeMove;
 import chessagents.ontology.schemas.concepts.PieceMove;
 import chessagents.util.RandomUtil;
@@ -53,7 +53,7 @@ public class ConversationPlannerImpl implements ConversationPlanner {
 
         // if not our turn, then we can react to last move or just say things
         if (!isMyTurnToGo()) {
-            conversationMessage = generateQuip();
+            conversationMessage = notMyTurnAction();
         } else {
             var action = chooseNextAction();
             conversationMessage = action.perform();
@@ -128,7 +128,11 @@ public class ConversationPlannerImpl implements ConversationPlanner {
                         break;
                 }
             }
+        }
 
+        // if there are moves to respond to then we can do that too
+        if (turnDiscussions.size() > 1) {
+            setOfNextActions.addAll(reactToEnemyMoveActions());
         }
 
         return RANDOM_ACTION_CHOOSER.chooseRandom(setOfNextActions);
@@ -158,24 +162,35 @@ public class ConversationPlannerImpl implements ConversationPlanner {
                 .anyMatch(m -> m.getSource().equals(myPos));
     }
 
-    private ConversationMessage generateQuip() {
-        if (!isMyTurnToGo()) {
-            if (turnDiscussions.size() == 1) {
-                // if first turn, just introduce yourself, nothing to react to yet
-
-            } else {
-                // otherwise, react to last move made by us
-
-            }
+    private ConversationMessage notMyTurnAction() {
+        if (turnDiscussions.size() == 1) {
+            // nothing to react to yet
+            return new Quip(agent, getCurrentDiscussion()).perform();
         } else {
-            if (turnDiscussions.size() == 1) {
-                // if first turn, not much we can do
-                return new Quip(agent, getCurrentDiscussion()).perform();
-            } else {
-                // we can respond to something the other side did
-
-            }
+            return RANDOM_ACTION_CHOOSER.chooseRandom(reactToOurMoveActions()).perform();
         }
+    }
+
+    private Set<ConversationAction> reactToOurMoveActions() {
+        var actions = new HashSet<ConversationAction>();
+        // our side moved:
+        // - did the move that occurred get discussed
+        // - was it the move we wanted to happen
+        // - did the move capture someone
+        // - did the move threaten someone
+        return actions;
+    }
+
+    private Set<ConversationAction> reactToEnemyMoveActions() {
+        var actions = new HashSet<ConversationAction>();
+        // other side moved:
+        // - did they capture our piece
+        // - are we threatened
+        // - insult move
+        // - compliment move
+        // - question move
+        //
+        return actions;
     }
 
     private Set<MoveResponse> getResponsesToAllMoves() {

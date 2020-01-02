@@ -1,4 +1,4 @@
-package chessagents.agents.pieceagent.argumentation.actions;
+package chessagents.agents.pieceagent.argumentation.discussionactions;
 
 import chessagents.agents.pieceagent.PieceAgent;
 import chessagents.agents.pieceagent.argumentation.ConversationMessage;
