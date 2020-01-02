@@ -137,6 +137,12 @@ public class GameState {
         return board.getThreatenedPieces();
     }
 
+    public Set<ChessPiece> getThreatenedForColour(Colour colour) {
+        return board.getThreatenedPieces().stream()
+                .filter(p -> p.getColour().equals(colour))
+                .collect(Collectors.toSet());
+    }
+
     public Set<PieceMove> getAllLegalMoves() {
         return board.getAllLegalMoves();
     }

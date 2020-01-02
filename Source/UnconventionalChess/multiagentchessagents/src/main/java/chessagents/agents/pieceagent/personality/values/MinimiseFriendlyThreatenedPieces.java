@@ -15,8 +15,8 @@ public class MinimiseFriendlyThreatenedPieces extends Value {
     @Override
     public MoveResponse getMoveResponse(ChessPiece chessPiece, GameState gameState, PieceMove action) {
         var myColour = chessPiece.getColour();
-        var threatenedPiecesBefore = gameState.getThreatenedPieces().stream().filter(p -> p.isColour(myColour)).count();
-        var threatenedPiecesAfter = gameState.applyMove(action).getThreatenedPieces().stream().filter(p -> p.isColour(myColour)).count();
+        var threatenedPiecesBefore = gameState.getThreatenedForColour(myColour).size();
+        var threatenedPiecesAfter = gameState.applyMove(action).getThreatenedForColour(myColour).size();
 
         var decreasesThreatenedFriendlies = threatenedPiecesBefore > threatenedPiecesAfter;
         var retainsNoThreatenedPieces = threatenedPiecesBefore == 0 && threatenedPiecesAfter == 0;

@@ -189,16 +189,87 @@ public class ConversationPlannerImpl implements ConversationPlanner {
             // - else
             // - - react negatively
         }
-        if (captureWasMade()) {
+        if (enemyPieceWasCaptured()) {
             //
         }
         if (enemyPieceBecameThreatened()) {
 
         }
-        if (pieceEscapedThreat()) {
+        if (friendlyPieceEscapedThreat()) {
+
+        }
+        if (friendlyPieceBecameThreatened()) {
 
         }
         return actions;
+    }
+
+    private boolean friendlyPieceBecameThreatened() {
+        var pieceContext = agent.getPieceContext();
+        var history = pieceContext.getGameHistory();
+        var previousState = history.getPreviousState();
+        var currentState = pieceContext.getGameState();
+
+        var myColour = pieceContext.getMyPiece().getColour();
+        var previouslyThreatened = previousState.getThreatenedForColour(myColour);
+        var nowThreatened = currentState.getThreatenedForColour(myColour);
+
+        return nowThreatened.stream().anyMatch(p -> !previouslyThreatened.contains(p));
+    }
+
+    private boolean friendlyPieceEscapedThreat() {
+        var pieceContext = agent.getPieceContext();
+        var history = pieceContext.getGameHistory();
+        var previousState = history.getPreviousState();
+        var currentState = pieceContext.getGameState();
+
+        var myColour = pieceContext.getMyPiece().getColour();
+        var previouslyThreatened = previousState.getThreatenedForColour(myColour);
+        var nowThreatened = currentState.getThreatenedForColour(myColour);
+
+        return previouslyThreatened.stream().anyMatch(p -> !nowThreatened.contains(p));
+    }
+
+    private boolean enemyPieceBecameThreatened() {
+        var pieceContext = agent.getPieceContext();
+        var history = pieceContext.getGameHistory();
+        var previousState = history.getPreviousState();
+        var currentState = pieceContext.getGameState();
+
+        var otherColour = pieceContext.getMyPiece().getColour().flip();
+        return previousState.getThreatenedForColour(otherColour).size()
+                < currentState.getThreatenedForColour(otherColour).size();
+    }
+
+    private boolean enemyPieceWasCaptured() {
+        var pieceContext = agent.getPieceContext();
+        var history = pieceContext.getGameHistory();
+        var previousState = history.getPreviousState();
+        var currentState = pieceContext.getGameState();
+
+        var otherColour = pieceContext.getMyPiece().getColour().flip();
+        return previousState.getCapturedForColour(otherColour).size()
+                < currentState.getCapturedForColour(otherColour).size();
+    }
+
+    private boolean performedMoveWasDiscussedAtSomePoint() {
+        var performedMove = agent.getPieceContext().getGameHistory().getLastMove();
+        var lastDiscussion = turnDiscussions.get(turnDiscussions.size() - 2);
+        var discussedMoves = lastDiscussion.getPreviouslyDiscussedMoves();
+
+        // start from two discussions prior
+        for (int i = discussedMoves.size() - 2; i >= 0; i--) {
+            if (performedMove.equals(discussedMoves.get(i))) return true;
+        }
+
+        return false;
+    }
+
+    private boolean performedMoveWasCurrentlyBeingDiscussed() {
+        var performedMove = agent.getPieceContext().getGameHistory().getLastMove();
+        var lastDiscussion = turnDiscussions.get(turnDiscussions.size() - 2);
+
+        return performedMove.equals(lastDiscussion.getLastMoveDiscussed());
     }
 
     /**
@@ -207,6 +278,7 @@ public class ConversationPlannerImpl implements ConversationPlanner {
      */
     private Set<ConversationAction> reactToEnemyMoveActions() {
         var actions = new HashSet<ConversationAction>();
+
         if (ourPieceWasCaptured()) {
 
         }
@@ -217,6 +289,28 @@ public class ConversationPlannerImpl implements ConversationPlanner {
         // - compliment move
         // - question move
         return actions;
+    }
+
+    private boolean ourPieceBecameThreatened() {
+        var pieceContext = agent.getPieceContext();
+        var history = pieceContext.getGameHistory();
+        var previousState = history.getPreviousState();
+        var currentState = pieceContext.getGameState();
+
+        var myColour = pieceContext.getMyPiece().getColour().flip();
+        return previousState.getThreatenedForColour(myColour).size()
+                < currentState.getThreatenedForColour(myColour).size();
+    }
+
+    private boolean ourPieceWasCaptured() {
+        var pieceContext = agent.getPieceContext();
+        var history = pieceContext.getGameHistory();
+        var previousState = history.getPreviousState();
+        var currentState = pieceContext.getGameState();
+
+        var myPiece = pieceContext.getMyPiece().getColour();
+        return previousState.getCapturedForColour(myPiece).size()
+                < currentState.getCapturedForColour(myPiece).size();
     }
 
     private Set<MoveResponse> getResponsesToAllMoves() {

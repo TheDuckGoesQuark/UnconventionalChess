@@ -17,15 +17,8 @@ public class MaximiseEnemyThreatenedPieces extends Value {
     @Override
     public MoveResponse getMoveResponse(ChessPiece chessPiece, GameState gameState, PieceMove action) {
         var enemyColour = chessPiece.getColour().flip();
-        Predicate<ChessPiece> isEnemyColour = p -> p.getColour().equals(enemyColour);
-
-        var enemiesThreatenedBefore = gameState.getThreatenedPieces().stream()
-                .filter(isEnemyColour)
-                .count();
-
-        var enemiesThreatenedAfter = gameState.applyMove(action).getThreatenedPieces().stream()
-                .filter(isEnemyColour)
-                .count();
+        var enemiesThreatenedBefore = gameState.getThreatenedForColour(enemyColour).size();
+        var enemiesThreatenedAfter = gameState.applyMove(action).getThreatenedForColour(enemyColour).size();
 
         if (enemiesThreatenedBefore < enemiesThreatenedAfter) {
             return MoveResponse.buildResponse(action, Opinion.LIKE, new Reasoning(this, "scare more enemies"));
