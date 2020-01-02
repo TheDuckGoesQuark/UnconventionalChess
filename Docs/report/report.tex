@@ -288,7 +288,7 @@ At the start of each turn (i.e. when a new move is received or the very first tu
 
 The requirement that all agents reset to the initial state at the start of each turn was necessary to avoid race conditions during the speaker election. For example, if a move was received that resulted in one of the agents being captured, that agent would immediately remove themselves from the game. However, if that agent was the speaker during an election, then all other agents would be stuck waiting for the next speaker to be chosen. Whilst other solutions would allow for the conversation flow to continue, it was deemed much simpler to reset the conversation FSA during each turn.
 
-As a side effect of this decision, messages such as the speaker election CFP could be waiting in an agents message queue if they reset before receiving it. To avoid this resulting in a loss of synchronisation between agents, a new conversation ID is assigned during each cycle of the FSM which is composed of the turn ID (i.e. how many moves have been made so far) and the round ID (how many cycles of the conversation FSA have occurred this turn). The conversation ID is used to filter incoming messages to ensure that irrelevant messages are ignored. Unfortunately this could result in a build-up of expired messages over time, but given most chess games were around 80 moves \cite{chessdata} and roughly 5 messages per move would be lost in the queue, the leak would not be substantial. Especially when we considered that the messages would be garbage collected once the agent representing the piece was removed from play.
+As a side effect of this decision, messages such as the speaker election CFP could be waiting in an agents message queue if they reset before receiving it. To avoid this resulting in a loss of synchronisation between agents, a new conversation ID is assigned during each cycle of the FSM which is composed of the turn ID (i.e. how many moves have been made so far) and the round ID (how many cycles of the conversation FSA have occurred this turn). The conversation ID is used to filter incoming messages to ensure that irrelevant messages are ignored. Unfortunately this could result in a build-up of expired messages over time, but given most chess games are around 80 moves \cite{chessdata} and roughly 5 messages per move would be lost in the queue, the leak would not be substantial. Especially when it was considered that the messages would be garbage collected once the agent representing the piece was removed from play.
 
 The turn and speaker rotation counters is provided by the ConversationContext class, along with the current speaker agents AID (Agent Identifier) and the conversation planner. 
 
@@ -307,7 +307,7 @@ Whenever an agent enters the speaker state shown in figure \ref{fig:conversation
 
 Listener agents receive the conversation message and record it by calling the \lstinline{handleConversationMessage(ConversationMessage)} method. The conversation planner delegates storing the message to the current turn discussion (the head in the list of discussions). The turn discussion will fetch the move discussion for the move in the given conversation message or create a new one if one doesn't already exist and add the message to the relevant move discussion. Once the message is added to the move discussion, the discussion is removed and re-added to the set of move discussions in order to move it back to the top of the converstation 'stack' (since insertion order is maintained by Java's LinkedHashSet implementation). 
 
-By maintaining the order that moves have been discussed, agents are able to create arguments that better resemble human conversations by referring to previous discussions. \cite{tartan} uses a similiar technique to allow their chatbot to regress to previous topics of discussion once the user gives some kind of terminating statement to the current topic conversation. 
+By maintaining the order that moves have been discussed, agents are able to create arguments that better resemble human conversations by referring to previous discussions. \cite{tartan} uses a similiar technique to allow their chatbot to regress to previous topics of discussion once the user gives some kind of terminating statement to the current topic of conversation. 
 
 A move discussion with a null move is used to represent a request for move proposals, which is sent either to start up the argumentation process or when an agent is not satisfied with the move currently being discussed but is does not feel strongly about any moves themselves.
 
@@ -438,6 +438,13 @@ Analysis of frequent comments or interesting issues noticed
 \subsection{Improvements}
 
 What was changed to address the issues raised by the above
+\begin{itemize}
+	\item delay between messages too consistent, didn't feel natural
+	\item some messages were too long, would be better being split up into two consecutive messages
+	\item not very challenging to play against
+	\item reasons given were always in the same form 
+\end{itemize}
+
 
 \section{Future Work}
 

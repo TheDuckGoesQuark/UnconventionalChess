@@ -1,7 +1,6 @@
 package stacs.chessgateway.gateway;
 
 import chessagents.agents.gatewayagent.behaviours.ListenForGameAgentMessages;
-import chessagents.agents.gatewayagent.messages.MoveMessage;
 import chessagents.agents.gatewayagent.messages.OntologyTranslator;
 import jade.wrapper.ControllerException;
 import jade.wrapper.gateway.GatewayListener;
@@ -12,11 +11,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import stacs.chessgateway.models.Message;
 import stacs.chessgateway.services.GatewayService;
-import stacs.chessgateway.util.GameContextStore;
 
-import java.util.concurrent.*;
-
-import static chessagents.agents.gatewayagent.messages.MessageType.MOVE_MESSAGE;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
 
 @Component
 public class GatewayPollingDaemon implements GatewayListener, Runnable {

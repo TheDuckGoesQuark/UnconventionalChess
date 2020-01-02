@@ -2,16 +2,19 @@ package chessagents.agents.pieceagent.argumentation.actions;
 
 import chessagents.agents.pieceagent.PieceAgent;
 import chessagents.agents.pieceagent.argumentation.ConversationMessage;
+import chessagents.agents.pieceagent.argumentation.TurnDiscussion;
 import chessagents.agents.pieceagent.personality.Trait;
 import chessagents.util.RandomUtil;
 
 public class Quip extends ConversationAction {
 
     private final PieceAgent agent;
+    private final TurnDiscussion turnDiscussion;
     private static final RandomUtil<Trait> RANDOM_TRAIT_CHOOSER = new RandomUtil<>();
 
-    public Quip(PieceAgent agent) {
+    public Quip(PieceAgent agent, TurnDiscussion turnDiscussion) {
         this.agent = agent;
+        this.turnDiscussion = turnDiscussion;
     }
 
     @Override

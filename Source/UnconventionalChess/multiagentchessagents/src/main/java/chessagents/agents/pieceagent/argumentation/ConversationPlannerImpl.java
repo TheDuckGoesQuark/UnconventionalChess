@@ -51,8 +51,8 @@ public class ConversationPlannerImpl implements ConversationPlanner {
     public ConversationMessage produceMessage() {
         final ConversationMessage conversationMessage;
 
-        // if not our turn, then we can react to last move
-        if (!agent.getPieceContext().isMyTurnToGo()) {
+        // if not our turn, then we can react to last move or just say things
+        if (!isMyTurnToGo()) {
             conversationMessage = generateQuip();
         } else {
             var action = chooseNextAction();
@@ -159,7 +159,23 @@ public class ConversationPlannerImpl implements ConversationPlanner {
     }
 
     private ConversationMessage generateQuip() {
-        return new Quip(agent).perform();
+        if (!isMyTurnToGo()) {
+            if (turnDiscussions.size() == 1) {
+                // if first turn, just introduce yourself, nothing to react to yet
+
+            } else {
+                // otherwise, react to last move made by us
+
+            }
+        } else {
+            if (turnDiscussions.size() == 1) {
+                // if first turn, not much we can do
+                return new Quip(agent, getCurrentDiscussion()).perform();
+            } else {
+                // we can respond to something the other side did
+
+            }
+        }
     }
 
     private Set<MoveResponse> getResponsesToAllMoves() {
@@ -167,6 +183,10 @@ public class ConversationPlannerImpl implements ConversationPlanner {
         var gameState = pieceContext.getGameState();
         var allPossibleMoves = gameState.getAllLegalMoves();
         return pieceContext.getPersonality().getResponseToMoves(pieceContext.getMyPiece(), allPossibleMoves, gameState);
+    }
+
+    private boolean isMyTurnToGo() {
+        return agent.getPieceContext().isMyTurnToGo();
     }
 
     private TurnDiscussion getCurrentDiscussion() {

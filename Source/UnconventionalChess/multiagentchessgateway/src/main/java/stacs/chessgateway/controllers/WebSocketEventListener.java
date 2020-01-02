@@ -15,13 +15,6 @@ public class WebSocketEventListener {
 
     private static final Logger logger = LoggerFactory.getLogger(WebSocketEventListener.class);
 
-    private final SimpMessageSendingOperations messageTemplate;
-
-    @Autowired
-    public WebSocketEventListener(SimpMessageSendingOperations messageTemplate) {
-        this.messageTemplate = messageTemplate;
-    }
-
     @EventListener
     public void handleWebSocketConnectListener(SessionConnectedEvent event) {
         logger.info("Received a new web socket connection");
@@ -32,7 +25,7 @@ public class WebSocketEventListener {
         StompHeaderAccessor headerAccessor = StompHeaderAccessor.wrap(event.getMessage());
 
         String username = (String) headerAccessor.getSessionAttributes().get("username");
-        if(username != null) {
+        if (username != null) {
             logger.info("User Disconnected : " + username);
         }
     }

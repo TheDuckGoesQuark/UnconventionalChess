@@ -57,7 +57,7 @@ public class ProposeMove extends ConversationAction {
             chosenResponse = randomResponseChooser.chooseRandom(responsesByOpinion.get(Opinion.DISLIKE));
         } else {
             // worst case there are no moves we can propose, fallback to quip
-            return new Quip(pieceAgent).perform();
+            return new Quip(pieceAgent, turnDiscussion).perform();
         }
 
         // find trait that has value used, use its grammar to build statement

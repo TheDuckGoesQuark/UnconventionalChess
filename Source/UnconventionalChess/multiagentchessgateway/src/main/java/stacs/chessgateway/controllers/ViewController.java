@@ -14,7 +14,6 @@ public class ViewController {
     @RequestMapping(value = "/index")
     public String getApp() {
         logger.trace("Received request for application.");
-
         return "index";
     }
 
