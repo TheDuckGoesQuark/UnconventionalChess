@@ -120,8 +120,12 @@
   "<ReactFriendlyPieceEscaped>": [
     "Thank goodness, `getEscapingPiece()` is safe now!"
   ],
-  "<ReactFriendlyPieceThreatenedOnTheirMove>": [],
-  "<ReactFriendlyPieceThreatenedOnOurMove>": [],
+  "<ReactFriendlyPieceThreatenedOnTheirMove>": [
+    "Oh no they're going after `getThreatenedPiece()`"
+  ],
+  "<ReactFriendlyPieceThreatenedOnOurMove>": [
+    "Wait no now `getThreatenedPiece()` could get hurt!"
+  ],
   "<ReactLastMoveDiscussedPerformed>": [],
   "<ReactPreviouslyDiscussedMovePerformed>": [],
   "//": "REACTION GRAMMAR END"
