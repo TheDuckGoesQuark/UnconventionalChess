@@ -4,7 +4,6 @@ import chessagents.ontology.schemas.concepts.PieceMove;
 
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
-import java.util.LinkedList;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
@@ -79,5 +78,9 @@ public class TurnDiscussion {
     public ConversationMessage getLastMessageSent() {
         var currentMoveDiscussion = moveDiscussions.get(getLastMoveDiscussed());
         return currentMoveDiscussion.getLastMessageSent();
+    }
+
+    public MoveDiscussion getDiscussionForMove(PieceMove move) {
+        return moveDiscussions.get(move);
     }
 }

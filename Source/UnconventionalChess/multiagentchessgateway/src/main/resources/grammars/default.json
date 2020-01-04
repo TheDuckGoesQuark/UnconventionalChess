@@ -126,7 +126,11 @@
   "<ReactFriendlyPieceThreatenedOnOurMove>": [
     "Wait no now `getThreatenedPiece()` could get hurt!"
   ],
-  "<ReactLastMoveDiscussedPerformed>": [],
-  "<ReactPreviouslyDiscussedMovePerformed>": [],
+  "<ReactLastMoveDiscussedPerformedLIKE>": [],
+  "<ReactLastMoveDiscussedPerformedDISLIKE>": [],
+  "<ReactLastMoveDiscussedPerformedNEUTRAL>": [],
+  "<ReactPreviouslyDiscussedMovePerformedLIKE>": [],
+  "<ReactPreviouslyDiscussedMovePerformedDISLIKE>": [],
+  "<ReactPreviouslyDiscussedMovePerformedNEUTRAL>": [],
   "//": "REACTION GRAMMAR END"
 }

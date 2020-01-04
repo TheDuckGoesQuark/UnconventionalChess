@@ -14,4 +14,10 @@ public interface GrammarVariableProvider {
 
     String getAlternativeJustification();
 
+    String getCapturedPiece();
+
+    String getEscapingPiece();
+
+    String getThreatenedPiece();
+
 }

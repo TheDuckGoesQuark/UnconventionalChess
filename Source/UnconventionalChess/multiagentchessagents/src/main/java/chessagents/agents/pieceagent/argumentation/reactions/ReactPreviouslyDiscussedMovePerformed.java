@@ -1,11 +1,9 @@
 package chessagents.agents.pieceagent.argumentation.reactions;
 
-import chessagents.agents.pieceagent.argumentation.ConversationAction;
-import chessagents.agents.pieceagent.argumentation.ConversationMessage;
+import chessagents.agents.pieceagent.PieceAgent;
 
-public class ReactPreviouslyDiscussedMovePerformed extends ConversationAction {
-    @Override
-    public ConversationMessage perform() {
-        return null;
+public class ReactPreviouslyDiscussedMovePerformed extends ReactLastMoveDiscussedPerformed {
+    public ReactPreviouslyDiscussedMovePerformed(PieceAgent pieceAgent) {
+        super(pieceAgent);
     }
 }

@@ -179,12 +179,15 @@ public class ConversationPlannerImpl implements ConversationPlanner {
      */
     private Set<ConversationAction> reactToOurMoveActions() {
         var actions = new HashSet<ConversationAction>();
+
         if (performedMoveWasCurrentlyBeingDiscussed()) {
-            actions.add(new ReactLastMoveDiscussedPerformed());
+            actions.add(new ReactLastMoveDiscussedPerformed(agent));
+        } else if (performedMoveWasDiscussedAtSomePoint()) {
+            actions.add(new ReactPreviouslyDiscussedMovePerformed(agent));
+        } else {
+            actions.add(new ReactUndiscussedMovePerformed(agent));
         }
-        if (performedMoveWasDiscussedAtSomePoint()) {
-            actions.add(new ReactPreviouslyDiscussedMovePerformed());
-        }
+
         if (enemyPieceWasCaptured()) {
             actions.add(new ReactEnemyPieceCaptured(agent));
         }
