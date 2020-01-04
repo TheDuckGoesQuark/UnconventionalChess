@@ -26,6 +26,7 @@ public class ReactEnemyPieceEscaped extends ConversationAction {
         var escapingPiece = getEscapingPiece(gameStateBeforeMove, gameStateAfterMove);
         var movingPiece = gameStateBeforeMove.getPieceAtPosition(movePerformed.getSource()).get();
 
+        // we dont want to always call out protective pieces, so 50/50 it
         if (!escapingPiece.equals(movingPiece) && RandomUtil.randBool()) {
             return new ReactEnemyPieceProtecting(pieceAgent, movingPiece.getType(), escapingPiece.getType()).perform();
         }

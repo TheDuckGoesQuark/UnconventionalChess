@@ -1,11 +1,9 @@
 package chessagents.agents.pieceagent.argumentation.reactions;
 
-import chessagents.agents.pieceagent.argumentation.ConversationAction;
-import chessagents.agents.pieceagent.argumentation.ConversationMessage;
+import chessagents.agents.pieceagent.PieceAgent;
 
-public class InsultEnemyMove extends ConversationAction {
-    @Override
-    public ConversationMessage perform() {
-        return null;
+public class InsultEnemyMove extends PreviousEnemyMoveReaction {
+    public InsultEnemyMove(PieceAgent pieceAgent) {
+        super(pieceAgent);
     }
 }

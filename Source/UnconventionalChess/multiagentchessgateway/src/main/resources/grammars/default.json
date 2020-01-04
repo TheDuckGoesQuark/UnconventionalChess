@@ -90,9 +90,15 @@
   ],
   "//": "ACTION GRAMMAR END",
   "//": "REACTION GRAMMAR START",
-  "<ComplimentEnemyMove>": [],
-  "<InsultEnemyMove>": [],
-  "<QuestionEnemyMove>": [],
+  "<ComplimentEnemyMove>": [
+    "Ok, that was a good move by their `getMovingPiece()`"
+  ],
+  "<InsultEnemyMove>": [
+    "What a stupid move `getMovingPiece()`!"
+  ],
+  "<QuestionEnemyMove>": [
+    "... why did `getMovingPiece()` move there?"
+  ],
   "<ReactEnemyPieceCaptured>": [
     "Haha! We captured your `getCapturedPiece()`",
     "Nice work, `getMovingPiece()`!"
@@ -107,7 +113,8 @@
   ],
   "<ReactFriendlyPieceCaptured>": [],
   "<ReactFriendlyPieceEscaped>": [],
-  "<ReactFriendlyPieceThreatened>": [],
+  "<ReactFriendlyPieceThreatenedOnTheirMove>": [],
+  "<ReactFriendlyPieceThreatenedOnOurMove>": [],
   "<ReactLastMoveDiscussedPerformed>": [],
   "<ReactPreviouslyDiscussedMovePerformed>": [],
   "//": "REACTION GRAMMAR END"
