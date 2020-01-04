@@ -93,7 +93,10 @@
   "<ComplimentEnemyMove>": [],
   "<InsultEnemyMove>": [],
   "<QuestionEnemyMove>": [],
-  "<ReactEnemyPieceCaptured>": [],
+  "<ReactEnemyPieceCaptured>": [
+    "Haha! We captured your `getCapturedPiece()`",
+    "Nice work, `getMovingPiece()!`"
+  ],
   "<ReactEnemyPieceThreatened>": [],
   "<ReactEnemyPieceEscaped>": [],
   "<ReactFriendlyPieceCaptured>": [],

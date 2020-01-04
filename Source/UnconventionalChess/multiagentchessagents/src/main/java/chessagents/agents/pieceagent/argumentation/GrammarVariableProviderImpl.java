@@ -1,13 +1,20 @@
 package chessagents.agents.pieceagent.argumentation;
 
 import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 @AllArgsConstructor
+@NoArgsConstructor
+@Getter
+@Setter
 public class GrammarVariableProviderImpl implements GrammarVariableProvider {
 
-    private final MoveResponse moveResponse;
-    private final String movingPiece;
-    private final String alternativeMovingPiece;
+    private MoveResponse moveResponse;
+    private String movingPiece;
+    private String alternativeMovingPiece;
+    private String capturedPiece;
 
     @Override
     public String getMoveTarget() {

@@ -186,7 +186,7 @@ public class ConversationPlannerImpl implements ConversationPlanner {
             actions.add(new ReactPreviouslyDiscussedMovePerformed());
         }
         if (enemyPieceWasCaptured()) {
-            actions.add(new ReactEnemyPieceCaptured());
+            actions.add(new ReactEnemyPieceCaptured(agent));
         }
         if (enemyPieceBecameThreatened()) {
             actions.add(new ReactEnemyPieceThreatened());
