@@ -195,7 +195,7 @@ public class ConversationPlannerImpl implements ConversationPlanner {
             actions.add(new ReactFriendlyPieceEscaped(agent));
         }
         if (friendlyPieceBecameThreatened()) {
-            actions.add(new ReactFriendlyPieceThreatenedOnOurMove());
+            actions.add(new ReactFriendlyPieceThreatenedOnOurMove(agent));
         }
 
         return actions;
@@ -292,7 +292,7 @@ public class ConversationPlannerImpl implements ConversationPlanner {
             actions.add(new ReactFriendlyPieceCaptured(agent));
         }
         if (ourPieceBecameThreatened()) {
-            actions.add(new ReactFriendlyPieceThreatenedOnOurMove());
+            actions.add(new ReactFriendlyPieceThreatenedOnTheirMove(agent));
         }
         if (enemyPieceEscapedThreat()) {
             actions.add(new ReactEnemyPieceEscaped(agent));
