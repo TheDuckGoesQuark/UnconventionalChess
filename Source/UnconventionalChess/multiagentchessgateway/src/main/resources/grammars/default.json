@@ -95,10 +95,16 @@
   "<QuestionEnemyMove>": [],
   "<ReactEnemyPieceCaptured>": [
     "Haha! We captured your `getCapturedPiece()`",
-    "Nice work, `getMovingPiece()!`"
+    "Nice work, `getMovingPiece()`!"
   ],
   "<ReactEnemyPieceThreatened>": [],
-  "<ReactEnemyPieceEscaped>": [],
+  "<ReactEnemyPieceEscaped>": [
+    "You can't hide, `getEscapingPiece()`!",
+    "You're safe for now, `getEscapingPiece()`!"
+  ],
+  "<ReactEnemyPieceProtecting>": [
+    "You're lucky that `getMovingPiece()` stepped in, `getEscapingPiece()`!"
+  ],
   "<ReactFriendlyPieceCaptured>": [],
   "<ReactFriendlyPieceEscaped>": [],
   "<ReactFriendlyPieceThreatened>": [],

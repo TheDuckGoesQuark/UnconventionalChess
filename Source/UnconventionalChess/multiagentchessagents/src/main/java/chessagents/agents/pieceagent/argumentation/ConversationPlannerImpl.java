@@ -294,7 +294,7 @@ public class ConversationPlannerImpl implements ConversationPlanner {
             actions.add(new ReactFriendlyPieceThreatened());
         }
         if (enemyPieceEscapedThreat()) {
-            actions.add(new ReactEnemyPieceEscaped());
+            actions.add(new ReactEnemyPieceEscaped(agent));
         }
         actions.add(new InsultEnemyMove());
         actions.add(new ComplimentEnemyMove());

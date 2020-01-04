@@ -15,6 +15,7 @@ public class GrammarVariableProviderImpl implements GrammarVariableProvider {
     private String movingPiece;
     private String alternativeMovingPiece;
     private String capturedPiece;
+    private String escapingPiece;
 
     @Override
     public String getMoveTarget() {

@@ -14,8 +14,20 @@ public class GameHistory extends LinkedHashMap<PieceMove, GameState> {
     @Override
     public GameState put(PieceMove transitioningMove, GameState updatedState) {
         this.lastMove = transitioningMove;
-        this.previousState = getLastEntry();
+        this.previousState = getCurrentState();
         return super.put(transitioningMove, updatedState);
+    }
+
+    public PieceMove getLastMove() {
+        return lastMove;
+    }
+
+    public GameState getPreviousState() {
+        return previousState;
+    }
+
+    public GameState getCurrentState() {
+        return this.getLastEntry();
     }
 
     private GameState getLastEntry() {
@@ -26,11 +38,4 @@ public class GameHistory extends LinkedHashMap<PieceMove, GameState> {
         return current != null ? current.getValue() : null;
     }
 
-    public PieceMove getLastMove() {
-        return lastMove;
-    }
-
-    public GameState getPreviousState() {
-        return previousState;
-    }
 }

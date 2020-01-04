@@ -37,7 +37,11 @@ public class VoiceOpinionProposeCompromise extends ConversationAction {
                 // adjust the grammar response so it gives the same wording as the previous message in the justification
                 grammarResponse.setAlternativeResponse(alternativeResponse);
                 response.setAlternativeResponse(alternativeResponse);
-                var grammarVariableProvider = new GrammarVariableProviderImpl(grammarResponse, getMovingPiece(grammarResponse, pieceAgent), getMovingPiece(grammarResponse.getAlternativeResponse().get(), pieceAgent));
+
+                var grammarVariableProvider = new GrammarVariableProviderImpl();
+                grammarVariableProvider.setMoveResponse(grammarResponse);
+                grammarVariableProvider.setMovingPiece(getMovingPiece(grammarResponse, pieceAgent));
+                grammarVariableProvider.setAlternativeMovingPiece(getMovingPiece(grammarResponse.getAlternativeResponse().get(), pieceAgent));
 
                 var personality = pieceAgent.getPieceContext().getPersonality();
                 var traitResponsible = new RandomUtil<Trait>().chooseRandom(personality.getTraits());
