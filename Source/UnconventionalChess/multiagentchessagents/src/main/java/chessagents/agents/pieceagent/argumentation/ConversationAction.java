@@ -1,8 +1,6 @@
-package chessagents.agents.pieceagent.argumentation.discussionactions;
+package chessagents.agents.pieceagent.argumentation;
 
 import chessagents.agents.pieceagent.PieceAgent;
-import chessagents.agents.pieceagent.argumentation.ConversationMessage;
-import chessagents.agents.pieceagent.argumentation.MoveResponse;
 import jade.util.Logger;
 
 public abstract class ConversationAction {
@@ -10,7 +8,7 @@ public abstract class ConversationAction {
     protected final Logger logger = Logger.getMyLogger(getClass().getName());
     public abstract ConversationMessage perform();
 
-    String grammarTag() {
+    protected String grammarTag() {
         return "<" + getClass().getSimpleName() + ">";
     }
 

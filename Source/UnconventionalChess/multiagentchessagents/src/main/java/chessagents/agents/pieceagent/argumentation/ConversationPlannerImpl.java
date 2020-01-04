@@ -3,6 +3,7 @@ package chessagents.agents.pieceagent.argumentation;
 import chessagents.agents.commonbehaviours.RequestGameAgentMove;
 import chessagents.agents.pieceagent.PieceAgent;
 import chessagents.agents.pieceagent.argumentation.discussionactions.*;
+import chessagents.agents.pieceagent.argumentation.reactions.*;
 import chessagents.ontology.schemas.actions.MakeMove;
 import chessagents.ontology.schemas.concepts.PieceMove;
 import chessagents.util.RandomUtil;
@@ -178,29 +179,24 @@ public class ConversationPlannerImpl implements ConversationPlanner {
     private Set<ConversationAction> reactToOurMoveActions() {
         var actions = new HashSet<ConversationAction>();
         if (performedMoveWasCurrentlyBeingDiscussed()) {
-            // - if it the move we wanted to happen
-            // - - react positively
-            // - else
-            // - - react negatively
+            actions.add(new ReactLastMoveDiscussedPerformed());
         }
         if (performedMoveWasDiscussedAtSomePoint()) {
-            // - if it the move we wanted to happen
-            // - - react positively
-            // - else
-            // - - react negatively
+            actions.add(new ReactPreviouslyDiscussedMovePerformed());
         }
         if (enemyPieceWasCaptured()) {
-            //
+            actions.add(new ReactEnemyPieceCaptured());
         }
         if (enemyPieceBecameThreatened()) {
-
+            actions.add(new ReactEnemyPieceThreatened());
         }
         if (friendlyPieceEscapedThreat()) {
-
+            actions.add(new ReactFriendlyPieceEscaped());
         }
         if (friendlyPieceBecameThreatened()) {
-
+            actions.add(new ReactFriendlyPieceThreatened());
         }
+
         return actions;
     }
 
@@ -280,14 +276,15 @@ public class ConversationPlannerImpl implements ConversationPlanner {
         var actions = new HashSet<ConversationAction>();
 
         if (ourPieceWasCaptured()) {
-
+            actions.add(new ReactFriendlyPieceCaptured());
         }
         if (ourPieceBecameThreatened()) {
-
+            actions.add(new ReactFriendlyPieceThreatened());
         }
-        // - insult move
-        // - compliment move
-        // - question move
+        actions.add(new InsultEnemyMove());
+        actions.add(new ComplimentEnemyMove());
+        actions.add(new QuestionEnemyMove());
+
         return actions;
     }
 

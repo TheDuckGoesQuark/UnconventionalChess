@@ -1,6 +1,7 @@
 package chessagents.agents.pieceagent.argumentation.discussionactions;
 
 import chessagents.agents.pieceagent.PieceAgent;
+import chessagents.agents.pieceagent.argumentation.ConversationAction;
 import chessagents.agents.pieceagent.argumentation.ConversationMessage;
 import chessagents.agents.pieceagent.argumentation.TurnDiscussion;
 import chessagents.agents.pieceagent.personality.Trait;
