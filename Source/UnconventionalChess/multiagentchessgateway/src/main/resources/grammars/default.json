@@ -103,7 +103,9 @@
     "Haha! We captured your `getCapturedPiece()`",
     "Nice work, `getMovingPiece()`!"
   ],
-  "<ReactEnemyPieceThreatened>": [],
+  "<ReactEnemyPieceThreatened>": [
+    "Looks like your `getThreatenedPiece()` is in trouble!"
+  ],
   "<ReactEnemyPieceEscaped>": [
     "You can't hide, `getEscapingPiece()`!",
     "You're safe for now, `getEscapingPiece()`!"
