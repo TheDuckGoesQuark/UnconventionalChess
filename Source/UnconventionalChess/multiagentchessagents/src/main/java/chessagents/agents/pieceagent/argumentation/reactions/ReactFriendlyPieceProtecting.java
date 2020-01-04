@@ -6,25 +6,23 @@ import chessagents.agents.pieceagent.argumentation.ConversationMessage;
 import chessagents.agents.pieceagent.argumentation.GrammarVariableProviderImpl;
 import chessagents.agents.pieceagent.personality.Trait;
 import chessagents.util.RandomUtil;
-import lombok.AllArgsConstructor;
 
-@AllArgsConstructor
-public class ReactFriendlyPieceCaptured extends ConversationAction {
-
+public class ReactFriendlyPieceProtecting extends ConversationAction {
     private final PieceAgent pieceAgent;
+    private final String protectorPieceName;
+    private final String protectedPieceName;
+
+    public ReactFriendlyPieceProtecting(PieceAgent pieceAgent, String protectorPieceName, String protectedPieceName) {
+        this.pieceAgent = pieceAgent;
+        this.protectorPieceName = protectorPieceName;
+        this.protectedPieceName = protectedPieceName;
+    }
 
     @Override
     public ConversationMessage perform() {
-        var gameHistory = pieceAgent.getPieceContext().getGameHistory();
-        var gameStateBeforeMove = gameHistory.getPreviousState();
-        var movePerformed = gameHistory.getLastMove();
-
-        var capturedPiece = gameStateBeforeMove.getPieceAtPosition(movePerformed.getTarget()).get();
-        var capturingPiece = gameStateBeforeMove.getPieceAtPosition(movePerformed.getSource()).get();
-
         var grammarVariableProvider = new GrammarVariableProviderImpl();
-        grammarVariableProvider.setCapturedPiece(capturedPiece.getAgentAID().getLocalName());
-        grammarVariableProvider.setMovingPiece(capturingPiece.getType());
+        grammarVariableProvider.setEscapingPiece(protectedPieceName);
+        grammarVariableProvider.setMovingPiece(protectorPieceName);
 
         var personality = pieceAgent.getPieceContext().getPersonality();
         var traitResponsible = new RandomUtil<Trait>().chooseRandom(personality.getTraits());

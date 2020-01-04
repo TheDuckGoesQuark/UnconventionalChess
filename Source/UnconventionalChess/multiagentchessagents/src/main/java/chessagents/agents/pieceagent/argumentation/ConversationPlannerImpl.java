@@ -189,10 +189,10 @@ public class ConversationPlannerImpl implements ConversationPlanner {
             actions.add(new ReactEnemyPieceCaptured(agent));
         }
         if (enemyPieceBecameThreatened()) {
-            actions.add(new ReactEnemyPieceThreatened());
+            actions.add(new ReactEnemyPieceThreatened(agent));
         }
         if (friendlyPieceEscapedThreat()) {
-            actions.add(new ReactFriendlyPieceEscaped());
+            actions.add(new ReactFriendlyPieceEscaped(agent));
         }
         if (friendlyPieceBecameThreatened()) {
             actions.add(new ReactFriendlyPieceThreatenedOnOurMove());
@@ -289,7 +289,7 @@ public class ConversationPlannerImpl implements ConversationPlanner {
         var actions = new HashSet<ConversationAction>();
 
         if (ourPieceWasCaptured()) {
-            actions.add(new ReactFriendlyPieceCaptured());
+            actions.add(new ReactFriendlyPieceCaptured(agent));
         }
         if (ourPieceBecameThreatened()) {
             actions.add(new ReactFriendlyPieceThreatenedOnOurMove());

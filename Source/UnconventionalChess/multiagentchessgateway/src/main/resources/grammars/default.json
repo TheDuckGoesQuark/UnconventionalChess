@@ -113,8 +113,13 @@
   "<ReactEnemyPieceProtecting>": [
     "You're lucky that `getMovingPiece()` stepped in, `getEscapingPiece()`!"
   ],
-  "<ReactFriendlyPieceCaptured>": [],
-  "<ReactFriendlyPieceEscaped>": [],
+  "<ReactFriendlyPieceCaptured>": [
+    "Oh no, they captured `getCapturedPiece()`!",
+    "I can't believe the `getMovingPiece()` captured `getCapturedPiece()`!"
+  ],
+  "<ReactFriendlyPieceEscaped>": [
+    "Thank goodness, `getEscapingPiece()` is safe now!"
+  ],
   "<ReactFriendlyPieceThreatenedOnTheirMove>": [],
   "<ReactFriendlyPieceThreatenedOnOurMove>": [],
   "<ReactLastMoveDiscussedPerformed>": [],
