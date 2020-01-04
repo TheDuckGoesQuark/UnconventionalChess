@@ -126,11 +126,32 @@
   "<ReactFriendlyPieceThreatenedOnOurMove>": [
     "Wait no now `getThreatenedPiece()` could get hurt!"
   ],
-  "<ReactLastMoveDiscussedPerformedLIKE>": [],
-  "<ReactLastMoveDiscussedPerformedDISLIKE>": [],
-  "<ReactLastMoveDiscussedPerformedNEUTRAL>": [],
-  "<ReactPreviouslyDiscussedMovePerformedLIKE>": [],
-  "<ReactPreviouslyDiscussedMovePerformedDISLIKE>": [],
-  "<ReactPreviouslyDiscussedMovePerformedNEUTRAL>": [],
+  "<ReactLastMoveDiscussedPerformedLIKE>": [
+    "I'm glad you agreed to move `getMovingPiece()`"
+  ],
+  "<ReactLastMoveDiscussedPerformedDISLIKE>": [
+    "I don't think you should have moved there `getMovingPiece()`"
+  ],
+  "<ReactLastMoveDiscussedPerformedNEUTRAL>": [
+    "Alright then I guess"
+  ],
+  "<ReactPreviouslyDiscussedMovePerformedLIKE>": [
+    "I'm glad you agreed to move `getMovingPiece()`"
+  ],
+  "<ReactPreviouslyDiscussedMovePerformedDISLIKE>": [
+    "I don't think we were done discussing `getMovingPiece()`!"
+  ],
+  "<ReactPreviouslyDiscussedMovePerformedNEUTRAL>": [
+    "You should really wait until we've agreed on something next time, `getMovingPiece()`."
+  ],
+  "<ReactUndiscussedMovePerformedLIKE>": [
+    "That was a great move `getMovingPiece()`, why didn't anyone suggest that?"
+  ],
+  "<ReactUndiscussedMovePerformedDISLIKE>": [
+    "I can't believe you would just do that without even asking first `getMovingPiece()`!"
+  ],
+  "<ReactUndiscussedMovePerformedNEUTRAL>": [
+    "You should really ask first next time, `getMovingPiece()`."
+  ],
   "//": "REACTION GRAMMAR END"
 }
