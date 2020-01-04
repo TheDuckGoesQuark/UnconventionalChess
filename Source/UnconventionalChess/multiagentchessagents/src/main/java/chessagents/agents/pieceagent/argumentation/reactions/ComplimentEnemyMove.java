@@ -1,4 +1,11 @@
 package chessagents.agents.pieceagent.argumentation.reactions;
 
-public class ComplimentEnemyMove extends chessagents.agents.pieceagent.argumentation.ConversationAction {
+import chessagents.agents.pieceagent.argumentation.ConversationAction;
+import chessagents.agents.pieceagent.argumentation.ConversationMessage;
+
+public class ComplimentEnemyMove extends ConversationAction {
+    @Override
+    public ConversationMessage perform() {
+        return null;
+    }
 }

@@ -5,6 +5,7 @@ import chessagents.agents.pieceagent.PieceAgent;
 import chessagents.agents.pieceagent.argumentation.discussionactions.*;
 import chessagents.agents.pieceagent.argumentation.reactions.*;
 import chessagents.ontology.schemas.actions.MakeMove;
+import chessagents.ontology.schemas.concepts.Colour;
 import chessagents.ontology.schemas.concepts.PieceMove;
 import chessagents.util.RandomUtil;
 
@@ -215,13 +216,24 @@ public class ConversationPlannerImpl implements ConversationPlanner {
 
     private boolean friendlyPieceEscapedThreat() {
         var pieceContext = agent.getPieceContext();
+        var myColour = pieceContext.getMyPiece().getColour();
+        return colourPieceEscapedThreat(myColour);
+    }
+
+    private boolean enemyPieceEscapedThreat() {
+        var pieceContext = agent.getPieceContext();
+        var enemyColour = pieceContext.getMyPiece().getColour().flip();
+        return colourPieceEscapedThreat(enemyColour);
+    }
+
+    private boolean colourPieceEscapedThreat(Colour colour) {
+        var pieceContext = agent.getPieceContext();
         var history = pieceContext.getGameHistory();
         var previousState = history.getPreviousState();
         var currentState = pieceContext.getGameState();
 
-        var myColour = pieceContext.getMyPiece().getColour();
-        var previouslyThreatened = previousState.getThreatenedForColour(myColour);
-        var nowThreatened = currentState.getThreatenedForColour(myColour);
+        var previouslyThreatened = previousState.getThreatenedForColour(colour);
+        var nowThreatened = currentState.getThreatenedForColour(colour);
 
         return previouslyThreatened.stream().anyMatch(p -> !nowThreatened.contains(p));
     }
@@ -280,6 +292,9 @@ public class ConversationPlannerImpl implements ConversationPlanner {
         }
         if (ourPieceBecameThreatened()) {
             actions.add(new ReactFriendlyPieceThreatened());
+        }
+        if (enemyPieceEscapedThreat()) {
+            actions.add(new ReactEnemyPieceEscaped());
         }
         actions.add(new InsultEnemyMove());
         actions.add(new ComplimentEnemyMove());

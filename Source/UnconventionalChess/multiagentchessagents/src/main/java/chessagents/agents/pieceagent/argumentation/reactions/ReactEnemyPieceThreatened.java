@@ -1,4 +1,11 @@
 package chessagents.agents.pieceagent.argumentation.reactions;
 
-public class ReactEnemyPieceThreatened extends chessagents.agents.pieceagent.argumentation.ConversationAction {
+import chessagents.agents.pieceagent.argumentation.ConversationAction;
+import chessagents.agents.pieceagent.argumentation.ConversationMessage;
+
+public class ReactEnemyPieceThreatened extends ConversationAction {
+    @Override
+    public ConversationMessage perform() {
+        return null;
+    }
 }
