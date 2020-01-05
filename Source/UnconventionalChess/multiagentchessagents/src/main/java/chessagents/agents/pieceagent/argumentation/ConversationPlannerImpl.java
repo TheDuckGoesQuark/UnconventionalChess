@@ -166,8 +166,8 @@ public class ConversationPlannerImpl implements ConversationPlanner {
     }
 
     private ConversationMessage notMyTurnAction() {
-        if (turnDiscussions.size() == 1) {
-            // nothing to react to yet
+        if (turnDiscussions.size() == 1 || getCurrentDiscussion().getNumberOfMessages() > 3) {
+            // nothing to react to yet or enough reactions given
             return new Quip(agent, getCurrentDiscussion()).perform();
         } else {
             return RANDOM_ACTION_CHOOSER.chooseRandom(reactToOurMoveActions()).perform();
