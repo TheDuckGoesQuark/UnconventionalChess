@@ -17,19 +17,23 @@ const isConfigurable = (square, humanPlays, humanPlaysAsWhite) => {
 
 const PieceConfigForm = ({props}) => {
     let currentConfig = props.pieceConfigs[props.configuringSquare];
+    console.log(props);
+    console.log(currentConfig);
 
     return <div>
         <h3>Configuring piece at {props.configuringSquare.toUpperCase()}</h3>
         <ul style={{listStyle: "none"}}>
             <li>
                 <label>Name
-                    <input type="text" value={currentConfig ? currentConfig.name : ''}
-                           onChange={event => props.updatePieceName(event.target.value)}/>
+                    <input type="text"
+                           value={currentConfig && currentConfig.name ? currentConfig.name : ''}
+                           onChange={event => props.updatePieceName(event.target.value)}
+                    />
                 </label>
             </li>
             <li>
                 <label>Personality Type
-                    <select value={currentConfig ? currentConfig.personality : ''}
+                    <select value={currentConfig ? props.personalityTypes.indexOf(currentConfig.personality) : ''}
                             onChange={(e) => props.updatePiecePersonality(props.personalityTypes[e.target.value])}>
                         <option value={''}>Select...</option>
                         {props.personalityTypes.map((pt, index) => <option key={pt.name}
