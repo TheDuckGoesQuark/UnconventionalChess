@@ -5738,3 +5738,501 @@ Agent container Container-1@192.168.0.82 is ready.
 2020-01-05 16:51:41.265  INFO 16863 --- [            Bob] c.a.p.b.c.statebehaviours.Listen         : STATE: LISTEN - CONVERSATIONID: conversation-8-24
 2020-01-05 16:51:41.265  INFO 16863 --- [            Jim] c.a.p.b.c.statebehaviours.Listen         : STATE: LISTEN - CONVERSATIONID: conversation-8-24
 2020-01-05 16:51:41.267  INFO 16863 --- [   Sean-Connery] c.a.p.b.c.statebehaviours.Speak          : sleeping...
+2020-01-05 16:51:44.268  INFO 16863 --- [   Sean-Connery] c.a.p.b.c.s.StartSpeakerElection         : STATE: START_SPEAKER_ELECTION - CONVERSATIONID: conversation-8-24
+2020-01-05 16:51:44.268  INFO 16863 --- [ichard-Harrison] c.a.p.b.c.s.WaitForSpeakerCFP            : STATE: WAIT_FOR_SPEAKER_CFP - CONVERSATIONID: conversation-8-24
+2020-01-05 16:51:44.268  INFO 16863 --- [        Freddie] c.a.p.b.c.s.WaitForSpeakerCFP            : STATE: WAIT_FOR_SPEAKER_CFP - CONVERSATIONID: conversation-8-24
+2020-01-05 16:51:44.269  INFO 16863 --- [ Austin-Russell] c.a.p.b.c.s.WaitForSpeakerCFP            : STATE: WAIT_FOR_SPEAKER_CFP - CONVERSATIONID: conversation-8-24
+2020-01-05 16:51:44.268  INFO 16863 --- [            Bob] c.a.p.b.c.s.WaitForSpeakerCFP            : STATE: WAIT_FOR_SPEAKER_CFP - CONVERSATIONID: conversation-8-24
+2020-01-05 16:51:44.269  INFO 16863 --- [    John-Bishop] c.a.p.b.c.s.WaitForSpeakerCFP            : STATE: WAIT_FOR_SPEAKER_CFP - CONVERSATIONID: conversation-8-24
+2020-01-05 16:51:44.268  INFO 16863 --- [       Margaret] c.a.p.b.c.s.WaitForSpeakerCFP            : STATE: WAIT_FOR_SPEAKER_CFP - CONVERSATIONID: conversation-8-24
+2020-01-05 16:51:44.268  INFO 16863 --- [            Jim] c.a.p.b.c.s.WaitForSpeakerCFP            : STATE: WAIT_FOR_SPEAKER_CFP - CONVERSATIONID: conversation-8-24
+2020-01-05 16:51:44.269  INFO 16863 --- [ichard-Harrison] c.a.p.b.c.s.WaitForSpeakerResults        : STATE: WAIT_FOR_SPEAKER_RESULTS - CONVERSATIONID: conversation-8-24
+2020-01-05 16:51:44.269  INFO 16863 --- [  Rick-Harrison] c.a.p.b.c.s.WaitForSpeakerCFP            : STATE: WAIT_FOR_SPEAKER_CFP - CONVERSATIONID: conversation-8-24
+2020-01-05 16:51:44.269  INFO 16863 --- [   Sean-Connery] c.a.p.b.c.statebehaviours.ChooseSpeaker  : STATE: CHOOSE_SPEAKER - CONVERSATIONID: conversation-8-24
+2020-01-05 16:51:44.269  INFO 16863 --- [ Keira-Knightly] c.a.p.b.c.s.WaitForSpeakerCFP            : STATE: WAIT_FOR_SPEAKER_CFP - CONVERSATIONID: conversation-8-24
+2020-01-05 16:51:44.270  INFO 16863 --- [   Rook-Sanchez] c.a.p.b.c.s.WaitForSpeakerCFP            : STATE: WAIT_FOR_SPEAKER_CFP - CONVERSATIONID: conversation-8-24
+2020-01-05 16:51:44.270  INFO 16863 --- [         Brooke] c.a.p.b.c.s.WaitForSpeakerCFP            : STATE: WAIT_FOR_SPEAKER_CFP - CONVERSATIONID: conversation-8-24
+2020-01-05 16:51:44.270  INFO 16863 --- [        Francis] c.a.p.b.c.s.WaitForSpeakerCFP            : STATE: WAIT_FOR_SPEAKER_CFP - CONVERSATIONID: conversation-8-24
+2020-01-05 16:51:44.270  INFO 16863 --- [    John-Bishop] c.a.p.b.c.s.WaitForSpeakerResults        : STATE: WAIT_FOR_SPEAKER_RESULTS - CONVERSATIONID: conversation-8-24
+2020-01-05 16:51:44.269  INFO 16863 --- [         Robert] c.a.p.b.c.s.WaitForSpeakerCFP            : STATE: WAIT_FOR_SPEAKER_CFP - CONVERSATIONID: conversation-8-24
+2020-01-05 16:51:44.270  INFO 16863 --- [            Ann] c.a.p.b.c.s.WaitForSpeakerCFP            : STATE: WAIT_FOR_SPEAKER_CFP - CONVERSATIONID: conversation-8-24
+2020-01-05 16:51:44.270  INFO 16863 --- [            Bob] c.a.p.b.c.s.WaitForSpeakerResults        : STATE: WAIT_FOR_SPEAKER_RESULTS - CONVERSATIONID: conversation-8-24
+2020-01-05 16:51:44.269  INFO 16863 --- [     John-Smith] c.a.p.b.c.s.WaitForSpeakerCFP            : STATE: WAIT_FOR_SPEAKER_CFP - CONVERSATIONID: conversation-8-24
+2020-01-05 16:51:44.269  INFO 16863 --- [ Austin-Russell] c.a.p.b.c.s.WaitForSpeakerResults        : STATE: WAIT_FOR_SPEAKER_RESULTS - CONVERSATIONID: conversation-8-24
+2020-01-05 16:51:44.270  INFO 16863 --- [         Robert] c.a.p.b.c.s.WaitForSpeakerResults        : STATE: WAIT_FOR_SPEAKER_RESULTS - CONVERSATIONID: conversation-8-24
+2020-01-05 16:51:44.269  INFO 16863 --- [        Freddie] c.a.p.b.c.s.WaitForSpeakerResults        : STATE: WAIT_FOR_SPEAKER_RESULTS - CONVERSATIONID: conversation-8-24
+2020-01-05 16:51:44.270  INFO 16863 --- [            Ann] c.a.p.b.c.s.WaitForSpeakerResults        : STATE: WAIT_FOR_SPEAKER_RESULTS - CONVERSATIONID: conversation-8-24
+2020-01-05 16:51:44.270  INFO 16863 --- [  Rick-Harrison] c.a.p.b.c.s.WaitForSpeakerResults        : STATE: WAIT_FOR_SPEAKER_RESULTS - CONVERSATIONID: conversation-8-24
+2020-01-05 16:51:44.270  INFO 16863 --- [       Margaret] c.a.p.b.c.s.WaitForSpeakerResults        : STATE: WAIT_FOR_SPEAKER_RESULTS - CONVERSATIONID: conversation-8-24
+2020-01-05 16:51:44.270  INFO 16863 --- [            Jim] c.a.p.b.c.s.WaitForSpeakerResults        : STATE: WAIT_FOR_SPEAKER_RESULTS - CONVERSATIONID: conversation-8-24
+2020-01-05 16:51:44.271  INFO 16863 --- [ Keira-Knightly] c.a.p.b.c.s.WaitForSpeakerResults        : STATE: WAIT_FOR_SPEAKER_RESULTS - CONVERSATIONID: conversation-8-24
+2020-01-05 16:51:44.270  INFO 16863 --- [        Francis] c.a.p.b.c.s.WaitForSpeakerResults        : STATE: WAIT_FOR_SPEAKER_RESULTS - CONVERSATIONID: conversation-8-24
+2020-01-05 16:51:44.271  INFO 16863 --- [         Brooke] c.a.p.b.c.s.WaitForSpeakerResults        : STATE: WAIT_FOR_SPEAKER_RESULTS - CONVERSATIONID: conversation-8-24
+2020-01-05 16:51:44.270  INFO 16863 --- [   Rook-Sanchez] c.a.p.b.c.s.WaitForSpeakerResults        : STATE: WAIT_FOR_SPEAKER_RESULTS - CONVERSATIONID: conversation-8-24
+2020-01-05 16:51:44.271  INFO 16863 --- [     John-Smith] c.a.p.b.c.s.WaitForSpeakerResults        : STATE: WAIT_FOR_SPEAKER_RESULTS - CONVERSATIONID: conversation-8-24
+2020-01-05 16:51:44.271  INFO 16863 --- [    GameAgent-1] c.a.g.behaviours.gameplay.WaitForMove    : No move received
+2020-01-05 16:51:44.272  INFO 16863 --- [            Jim] c.a.p.b.c.s.WaitForSpeakerResults        : Rejected for Speaker
+2020-01-05 16:51:44.272  INFO 16863 --- [ichard-Harrison] c.a.p.b.c.s.WaitForSpeakerResults        : Rejected for Speaker
+2020-01-05 16:51:44.272  INFO 16863 --- [   Rook-Sanchez] c.a.p.b.c.s.WaitForSpeakerResults        : Rejected for Speaker
+2020-01-05 16:51:44.272  INFO 16863 --- [ Keira-Knightly] c.a.p.b.c.s.WaitForSpeakerResults        : Rejected for Speaker
+2020-01-05 16:51:44.272  INFO 16863 --- [     John-Smith] c.a.p.b.c.s.WaitForSpeakerResults        : Rejected for Speaker
+2020-01-05 16:51:44.272  INFO 16863 --- [         Robert] c.a.p.b.c.s.WaitForSpeakerResults        : Rejected for Speaker
+2020-01-05 16:51:44.272  INFO 16863 --- [    GameAgent-1] c.a.g.b.chat.InformSubscribersOfChat     : ((= (iota (sequence ?speaker ?phrase) ("Said To" ?speaker ?phrase)) (sequence (agent-identifier :name Sean-Connery@chess-platform) "Wait no now PAWN could get hurt!")))
+2020-01-05 16:51:44.272  INFO 16863 --- [            Ann] c.a.p.b.c.s.WaitForSpeakerResults        : Rejected for Speaker
+2020-01-05 16:51:44.272  INFO 16863 --- [        Freddie] c.a.p.b.c.s.WaitForSpeakerResults        : Rejected for Speaker
+2020-01-05 16:51:44.272  INFO 16863 --- [       Margaret] c.a.p.b.c.s.WaitForSpeakerResults        : Rejected for Speaker
+2020-01-05 16:51:44.272  INFO 16863 --- [    John-Bishop] c.a.p.b.c.s.WaitForSpeakerResults        : Rejected for Speaker
+2020-01-05 16:51:44.272  INFO 16863 --- [        Francis] c.a.p.b.c.s.WaitForSpeakerResults        : Rejected for Speaker
+2020-01-05 16:51:44.273  INFO 16863 --- [  Rick-Harrison] c.a.p.b.c.s.WaitForSpeakerResults        : Rejected for Speaker
+2020-01-05 16:51:44.273  INFO 16863 --- [ Austin-Russell] c.a.p.b.c.s.WaitForSpeakerResults        : Rejected for Speaker
+2020-01-05 16:51:44.273  INFO 16863 --- [   Sean-Connery] c.a.p.b.c.s.WaitForSpeakerResults        : STATE: WAIT_FOR_SPEAKER_RESULTS - CONVERSATIONID: conversation-8-24
+2020-01-05 16:51:44.273  INFO 16863 --- [   Sean-Connery] c.a.p.b.c.s.WaitForSpeakerResults        : Rejected for Speaker
+2020-01-05 16:51:44.273  INFO 16863 --- [         Brooke] c.a.p.b.c.s.WaitForSpeakerResults        : Rejected for Speaker
+2020-01-05 16:51:44.273  INFO 16863 --- [            Bob] c.a.p.b.c.statebehaviours.Initial        : STATE: INITIAL - CONVERSATIONID: conversation-8-25
+2020-01-05 16:51:44.273  INFO 16863 --- [            Bob] c.a.p.b.c.statebehaviours.Speak          : STATE: SPEAK - CONVERSATIONID: conversation-8-25
+2020-01-05 16:51:44.273  INFO 16863 --- [ Keira-Knightly] c.a.p.b.c.statebehaviours.Initial        : STATE: INITIAL - CONVERSATIONID: conversation-8-25
+2020-01-05 16:51:44.273  INFO 16863 --- [ichard-Harrison] c.a.p.b.c.statebehaviours.Initial        : STATE: INITIAL - CONVERSATIONID: conversation-8-25
+2020-01-05 16:51:44.273  INFO 16863 --- [       Margaret] c.a.p.b.c.statebehaviours.Initial        : STATE: INITIAL - CONVERSATIONID: conversation-8-25
+2020-01-05 16:51:44.273  INFO 16863 --- [ Keira-Knightly] c.a.p.b.c.statebehaviours.Listen         : STATE: LISTEN - CONVERSATIONID: conversation-8-25
+2020-01-05 16:51:44.273  INFO 16863 --- [   Sean-Connery] c.a.p.b.c.statebehaviours.Initial        : STATE: INITIAL - CONVERSATIONID: conversation-8-25
+2020-01-05 16:51:44.273  INFO 16863 --- [ichard-Harrison] c.a.p.b.c.statebehaviours.Listen         : STATE: LISTEN - CONVERSATIONID: conversation-8-25
+2020-01-05 16:51:44.273  INFO 16863 --- [            Jim] c.a.p.b.c.statebehaviours.Initial        : STATE: INITIAL - CONVERSATIONID: conversation-8-25
+2020-01-05 16:51:44.274  INFO 16863 --- [   Sean-Connery] c.a.p.b.c.statebehaviours.Listen         : STATE: LISTEN - CONVERSATIONID: conversation-8-25
+2020-01-05 16:51:44.273  INFO 16863 --- [       Margaret] c.a.p.b.c.statebehaviours.Listen         : STATE: LISTEN - CONVERSATIONID: conversation-8-25
+2020-01-05 16:51:44.274  INFO 16863 --- [            Ann] c.a.p.b.c.statebehaviours.Initial        : STATE: INITIAL - CONVERSATIONID: conversation-8-25
+2020-01-05 16:51:44.274  INFO 16863 --- [    John-Bishop] c.a.p.b.c.statebehaviours.Initial        : STATE: INITIAL - CONVERSATIONID: conversation-8-25
+2020-01-05 16:51:44.274  INFO 16863 --- [         Brooke] c.a.p.b.c.statebehaviours.Initial        : STATE: INITIAL - CONVERSATIONID: conversation-8-25
+2020-01-05 16:51:44.274  INFO 16863 --- [  Rick-Harrison] c.a.p.b.c.statebehaviours.Initial        : STATE: INITIAL - CONVERSATIONID: conversation-8-25
+2020-01-05 16:51:44.274  INFO 16863 --- [        Freddie] c.a.p.b.c.statebehaviours.Initial        : STATE: INITIAL - CONVERSATIONID: conversation-8-25
+2020-01-05 16:51:44.274  INFO 16863 --- [        Francis] c.a.p.b.c.statebehaviours.Initial        : STATE: INITIAL - CONVERSATIONID: conversation-8-25
+2020-01-05 16:51:44.274  INFO 16863 --- [ Austin-Russell] c.a.p.b.c.statebehaviours.Initial        : STATE: INITIAL - CONVERSATIONID: conversation-8-25
+2020-01-05 16:51:44.274  INFO 16863 --- [            Jim] c.a.p.b.c.statebehaviours.Listen         : STATE: LISTEN - CONVERSATIONID: conversation-8-25
+2020-01-05 16:51:44.274  INFO 16863 --- [  Rick-Harrison] c.a.p.b.c.statebehaviours.Listen         : STATE: LISTEN - CONVERSATIONID: conversation-8-25
+2020-01-05 16:51:44.274  INFO 16863 --- [            Ann] c.a.p.b.c.statebehaviours.Listen         : STATE: LISTEN - CONVERSATIONID: conversation-8-25
+2020-01-05 16:51:44.274  INFO 16863 --- [    John-Bishop] c.a.p.b.c.statebehaviours.Listen         : STATE: LISTEN - CONVERSATIONID: conversation-8-25
+2020-01-05 16:51:44.274  INFO 16863 --- [        Freddie] c.a.p.b.c.statebehaviours.Listen         : STATE: LISTEN - CONVERSATIONID: conversation-8-25
+2020-01-05 16:51:44.274  INFO 16863 --- [        Francis] c.a.p.b.c.statebehaviours.Listen         : STATE: LISTEN - CONVERSATIONID: conversation-8-25
+2020-01-05 16:51:44.274  INFO 16863 --- [         Brooke] c.a.p.b.c.statebehaviours.Listen         : STATE: LISTEN - CONVERSATIONID: conversation-8-25
+2020-01-05 16:51:44.274  INFO 16863 --- [ Austin-Russell] c.a.p.b.c.statebehaviours.Listen         : STATE: LISTEN - CONVERSATIONID: conversation-8-25
+2020-01-05 16:51:44.274  INFO 16863 --- [         Robert] c.a.p.b.c.statebehaviours.Initial        : STATE: INITIAL - CONVERSATIONID: conversation-8-25
+2020-01-05 16:51:44.274  INFO 16863 --- [         Robert] c.a.p.b.c.statebehaviours.Listen         : STATE: LISTEN - CONVERSATIONID: conversation-8-25
+2020-01-05 16:51:44.274  INFO 16863 --- [     John-Smith] c.a.p.b.c.statebehaviours.Initial        : STATE: INITIAL - CONVERSATIONID: conversation-8-25
+2020-01-05 16:51:44.274  INFO 16863 --- [   Rook-Sanchez] c.a.p.b.c.statebehaviours.Initial        : STATE: INITIAL - CONVERSATIONID: conversation-8-25
+2020-01-05 16:51:44.274  INFO 16863 --- [     John-Smith] c.a.p.b.c.statebehaviours.Listen         : STATE: LISTEN - CONVERSATIONID: conversation-8-25
+2020-01-05 16:51:44.274  INFO 16863 --- [   Rook-Sanchez] c.a.p.b.c.statebehaviours.Listen         : STATE: LISTEN - CONVERSATIONID: conversation-8-25
+2020-01-05 16:51:44.274  INFO 16863 --- [            Bob] c.a.p.b.c.statebehaviours.Speak          : sleeping...
+2020-01-05 16:51:47.275  INFO 16863 --- [            Bob] c.a.p.b.c.s.StartSpeakerElection         : STATE: START_SPEAKER_ELECTION - CONVERSATIONID: conversation-8-25
+2020-01-05 16:51:47.276  INFO 16863 --- [     John-Smith] c.a.p.b.c.s.WaitForSpeakerCFP            : STATE: WAIT_FOR_SPEAKER_CFP - CONVERSATIONID: conversation-8-25
+2020-01-05 16:51:47.276  INFO 16863 --- [            Jim] c.a.p.b.c.s.WaitForSpeakerCFP            : STATE: WAIT_FOR_SPEAKER_CFP - CONVERSATIONID: conversation-8-25
+2020-01-05 16:51:47.276  INFO 16863 --- [    John-Bishop] c.a.p.b.c.s.WaitForSpeakerCFP            : STATE: WAIT_FOR_SPEAKER_CFP - CONVERSATIONID: conversation-8-25
+2020-01-05 16:51:47.276  INFO 16863 --- [ Austin-Russell] c.a.p.b.c.s.WaitForSpeakerCFP            : STATE: WAIT_FOR_SPEAKER_CFP - CONVERSATIONID: conversation-8-25
+2020-01-05 16:51:47.276  INFO 16863 --- [        Francis] c.a.p.b.c.s.WaitForSpeakerCFP            : STATE: WAIT_FOR_SPEAKER_CFP - CONVERSATIONID: conversation-8-25
+2020-01-05 16:51:47.276  INFO 16863 --- [  Rick-Harrison] c.a.p.b.c.s.WaitForSpeakerCFP            : STATE: WAIT_FOR_SPEAKER_CFP - CONVERSATIONID: conversation-8-25
+2020-01-05 16:51:47.276  INFO 16863 --- [       Margaret] c.a.p.b.c.s.WaitForSpeakerCFP            : STATE: WAIT_FOR_SPEAKER_CFP - CONVERSATIONID: conversation-8-25
+2020-01-05 16:51:47.276  INFO 16863 --- [ichard-Harrison] c.a.p.b.c.s.WaitForSpeakerCFP            : STATE: WAIT_FOR_SPEAKER_CFP - CONVERSATIONID: conversation-8-25
+2020-01-05 16:51:47.277  INFO 16863 --- [         Robert] c.a.p.b.c.s.WaitForSpeakerCFP            : STATE: WAIT_FOR_SPEAKER_CFP - CONVERSATIONID: conversation-8-25
+2020-01-05 16:51:47.277  INFO 16863 --- [        Freddie] c.a.p.b.c.s.WaitForSpeakerCFP            : STATE: WAIT_FOR_SPEAKER_CFP - CONVERSATIONID: conversation-8-25
+2020-01-05 16:51:47.277  INFO 16863 --- [     John-Smith] c.a.p.b.c.s.WaitForSpeakerResults        : STATE: WAIT_FOR_SPEAKER_RESULTS - CONVERSATIONID: conversation-8-25
+2020-01-05 16:51:47.277  INFO 16863 --- [    John-Bishop] c.a.p.b.c.s.WaitForSpeakerResults        : STATE: WAIT_FOR_SPEAKER_RESULTS - CONVERSATIONID: conversation-8-25
+2020-01-05 16:51:47.277  INFO 16863 --- [ Austin-Russell] c.a.p.b.c.s.WaitForSpeakerResults        : STATE: WAIT_FOR_SPEAKER_RESULTS - CONVERSATIONID: conversation-8-25
+2020-01-05 16:51:47.276  INFO 16863 --- [   Rook-Sanchez] c.a.p.b.c.s.WaitForSpeakerCFP            : STATE: WAIT_FOR_SPEAKER_CFP - CONVERSATIONID: conversation-8-25
+2020-01-05 16:51:47.277  INFO 16863 --- [   Sean-Connery] c.a.p.b.c.s.WaitForSpeakerCFP            : STATE: WAIT_FOR_SPEAKER_CFP - CONVERSATIONID: conversation-8-25
+2020-01-05 16:51:47.277  INFO 16863 --- [         Brooke] c.a.p.b.c.s.WaitForSpeakerCFP            : STATE: WAIT_FOR_SPEAKER_CFP - CONVERSATIONID: conversation-8-25
+2020-01-05 16:51:47.277  INFO 16863 --- [        Francis] c.a.p.b.c.s.WaitForSpeakerResults        : STATE: WAIT_FOR_SPEAKER_RESULTS - CONVERSATIONID: conversation-8-25
+2020-01-05 16:51:47.277  INFO 16863 --- [            Bob] c.a.p.b.c.statebehaviours.ChooseSpeaker  : STATE: CHOOSE_SPEAKER - CONVERSATIONID: conversation-8-25
+2020-01-05 16:51:47.277  INFO 16863 --- [            Jim] c.a.p.b.c.s.WaitForSpeakerResults        : STATE: WAIT_FOR_SPEAKER_RESULTS - CONVERSATIONID: conversation-8-25
+2020-01-05 16:51:47.277  INFO 16863 --- [ Keira-Knightly] c.a.p.b.c.s.WaitForSpeakerCFP            : STATE: WAIT_FOR_SPEAKER_CFP - CONVERSATIONID: conversation-8-25
+2020-01-05 16:51:47.277  INFO 16863 --- [    GameAgent-1] c.a.g.behaviours.gameplay.WaitForMove    : No move received
+2020-01-05 16:51:47.277  INFO 16863 --- [            Ann] c.a.p.b.c.s.WaitForSpeakerCFP            : STATE: WAIT_FOR_SPEAKER_CFP - CONVERSATIONID: conversation-8-25
+2020-01-05 16:51:47.277  INFO 16863 --- [   Rook-Sanchez] c.a.p.b.c.s.WaitForSpeakerResults        : STATE: WAIT_FOR_SPEAKER_RESULTS - CONVERSATIONID: conversation-8-25
+2020-01-05 16:51:47.277  INFO 16863 --- [        Freddie] c.a.p.b.c.s.WaitForSpeakerResults        : STATE: WAIT_FOR_SPEAKER_RESULTS - CONVERSATIONID: conversation-8-25
+2020-01-05 16:51:47.277  INFO 16863 --- [       Margaret] c.a.p.b.c.s.WaitForSpeakerResults        : STATE: WAIT_FOR_SPEAKER_RESULTS - CONVERSATIONID: conversation-8-25
+2020-01-05 16:51:47.277  INFO 16863 --- [ichard-Harrison] c.a.p.b.c.s.WaitForSpeakerResults        : STATE: WAIT_FOR_SPEAKER_RESULTS - CONVERSATIONID: conversation-8-25
+2020-01-05 16:51:47.278  INFO 16863 --- [         Robert] c.a.p.b.c.s.WaitForSpeakerResults        : STATE: WAIT_FOR_SPEAKER_RESULTS - CONVERSATIONID: conversation-8-25
+2020-01-05 16:51:47.278  INFO 16863 --- [  Rick-Harrison] c.a.p.b.c.s.WaitForSpeakerResults        : STATE: WAIT_FOR_SPEAKER_RESULTS - CONVERSATIONID: conversation-8-25
+2020-01-05 16:51:47.278  INFO 16863 --- [   Sean-Connery] c.a.p.b.c.s.WaitForSpeakerResults        : STATE: WAIT_FOR_SPEAKER_RESULTS - CONVERSATIONID: conversation-8-25
+2020-01-05 16:51:47.278  INFO 16863 --- [            Ann] c.a.p.b.c.s.WaitForSpeakerResults        : STATE: WAIT_FOR_SPEAKER_RESULTS - CONVERSATIONID: conversation-8-25
+2020-01-05 16:51:47.278  INFO 16863 --- [         Brooke] c.a.p.b.c.s.WaitForSpeakerResults        : STATE: WAIT_FOR_SPEAKER_RESULTS - CONVERSATIONID: conversation-8-25
+2020-01-05 16:51:47.278  INFO 16863 --- [ Keira-Knightly] c.a.p.b.c.s.WaitForSpeakerResults        : STATE: WAIT_FOR_SPEAKER_RESULTS - CONVERSATIONID: conversation-8-25
+2020-01-05 16:51:47.278  INFO 16863 --- [    GameAgent-1] c.a.g.b.chat.InformSubscribersOfChat     : ((= (iota (sequence ?speaker ?phrase) ("Said To" ?speaker ?phrase)) (sequence (agent-identifier :name Bob@chess-platform) "Wait no now BISHOP could get hurt!")))
+2020-01-05 16:51:47.279  INFO 16863 --- [ Austin-Russell] c.a.p.b.c.s.WaitForSpeakerResults        : Rejected for Speaker
+2020-01-05 16:51:47.279  INFO 16863 --- [  Rick-Harrison] c.a.p.b.c.s.WaitForSpeakerResults        : Rejected for Speaker
+2020-01-05 16:51:47.279  INFO 16863 --- [            Ann] c.a.p.b.c.s.WaitForSpeakerResults        : Rejected for Speaker
+2020-01-05 16:51:47.279  INFO 16863 --- [        Freddie] c.a.p.b.c.s.WaitForSpeakerResults        : Rejected for Speaker
+2020-01-05 16:51:47.279  INFO 16863 --- [ Keira-Knightly] c.a.p.b.c.s.WaitForSpeakerResults        : Rejected for Speaker
+2020-01-05 16:51:47.279  INFO 16863 --- [         Robert] c.a.p.b.c.s.WaitForSpeakerResults        : Rejected for Speaker
+2020-01-05 16:51:47.279  INFO 16863 --- [ichard-Harrison] c.a.p.b.c.s.WaitForSpeakerResults        : Rejected for Speaker
+2020-01-05 16:51:47.279  INFO 16863 --- [            Jim] c.a.p.b.c.s.WaitForSpeakerResults        : Rejected for Speaker
+2020-01-05 16:51:47.279  INFO 16863 --- [     John-Smith] c.a.p.b.c.s.WaitForSpeakerResults        : Rejected for Speaker
+2020-01-05 16:51:47.279  INFO 16863 --- [       Margaret] c.a.p.b.c.s.WaitForSpeakerResults        : Rejected for Speaker
+2020-01-05 16:51:47.280  INFO 16863 --- [   Rook-Sanchez] c.a.p.b.c.s.WaitForSpeakerResults        : Rejected for Speaker
+2020-01-05 16:51:47.280  INFO 16863 --- [        Francis] c.a.p.b.c.s.WaitForSpeakerResults        : Rejected for Speaker
+2020-01-05 16:51:47.280  INFO 16863 --- [   Sean-Connery] c.a.p.b.c.s.WaitForSpeakerResults        : Rejected for Speaker
+2020-01-05 16:51:47.280  INFO 16863 --- [            Bob] c.a.p.b.c.s.WaitForSpeakerResults        : STATE: WAIT_FOR_SPEAKER_RESULTS - CONVERSATIONID: conversation-8-25
+2020-01-05 16:51:47.280  INFO 16863 --- [         Brooke] c.a.p.b.c.s.WaitForSpeakerResults        : Rejected for Speaker
+2020-01-05 16:51:47.280  INFO 16863 --- [            Bob] c.a.p.b.c.s.WaitForSpeakerResults        : Rejected for Speaker
+2020-01-05 16:51:47.281  INFO 16863 --- [ Austin-Russell] c.a.p.b.c.statebehaviours.Initial        : STATE: INITIAL - CONVERSATIONID: conversation-8-26
+2020-01-05 16:51:47.281  INFO 16863 --- [            Ann] c.a.p.b.c.statebehaviours.Initial        : STATE: INITIAL - CONVERSATIONID: conversation-8-26
+2020-01-05 16:51:47.281  INFO 16863 --- [            Ann] c.a.p.b.c.statebehaviours.Listen         : STATE: LISTEN - CONVERSATIONID: conversation-8-26
+2020-01-05 16:51:47.281  INFO 16863 --- [ Keira-Knightly] c.a.p.b.c.statebehaviours.Initial        : STATE: INITIAL - CONVERSATIONID: conversation-8-26
+2020-01-05 16:51:47.281  INFO 16863 --- [            Bob] c.a.p.b.c.statebehaviours.Initial        : STATE: INITIAL - CONVERSATIONID: conversation-8-26
+2020-01-05 16:51:47.282  INFO 16863 --- [     John-Smith] c.a.p.b.c.statebehaviours.Initial        : STATE: INITIAL - CONVERSATIONID: conversation-8-26
+2020-01-05 16:51:47.282  INFO 16863 --- [         Robert] c.a.p.b.c.statebehaviours.Initial        : STATE: INITIAL - CONVERSATIONID: conversation-8-26
+2020-01-05 16:51:47.282  INFO 16863 --- [            Bob] c.a.p.b.c.statebehaviours.Listen         : STATE: LISTEN - CONVERSATIONID: conversation-8-26
+2020-01-05 16:51:47.282  INFO 16863 --- [ Austin-Russell] c.a.p.b.c.statebehaviours.Listen         : STATE: LISTEN - CONVERSATIONID: conversation-8-26
+2020-01-05 16:51:47.282  INFO 16863 --- [    John-Bishop] c.a.p.b.c.statebehaviours.Initial        : STATE: INITIAL - CONVERSATIONID: conversation-8-26
+2020-01-05 16:51:47.282  INFO 16863 --- [  Rick-Harrison] c.a.p.b.c.statebehaviours.Initial        : STATE: INITIAL - CONVERSATIONID: conversation-8-26
+2020-01-05 16:51:47.282  INFO 16863 --- [   Sean-Connery] c.a.p.b.c.statebehaviours.Initial        : STATE: INITIAL - CONVERSATIONID: conversation-8-26
+2020-01-05 16:51:47.282  INFO 16863 --- [        Freddie] c.a.p.b.c.statebehaviours.Initial        : STATE: INITIAL - CONVERSATIONID: conversation-8-26
+2020-01-05 16:51:47.282  INFO 16863 --- [            Jim] c.a.p.b.c.statebehaviours.Initial        : STATE: INITIAL - CONVERSATIONID: conversation-8-26
+2020-01-05 16:51:47.282  INFO 16863 --- [         Robert] c.a.p.b.c.statebehaviours.Listen         : STATE: LISTEN - CONVERSATIONID: conversation-8-26
+2020-01-05 16:51:47.282  INFO 16863 --- [ Keira-Knightly] c.a.p.b.c.statebehaviours.Listen         : STATE: LISTEN - CONVERSATIONID: conversation-8-26
+2020-01-05 16:51:47.282  INFO 16863 --- [  Rick-Harrison] c.a.p.b.c.statebehaviours.Listen         : STATE: LISTEN - CONVERSATIONID: conversation-8-26
+2020-01-05 16:51:47.282  INFO 16863 --- [            Jim] c.a.p.b.c.statebehaviours.Listen         : STATE: LISTEN - CONVERSATIONID: conversation-8-26
+2020-01-05 16:51:47.282  INFO 16863 --- [        Freddie] c.a.p.b.c.statebehaviours.Listen         : STATE: LISTEN - CONVERSATIONID: conversation-8-26
+2020-01-05 16:51:47.282  INFO 16863 --- [     John-Smith] c.a.p.b.c.statebehaviours.Listen         : STATE: LISTEN - CONVERSATIONID: conversation-8-26
+2020-01-05 16:51:47.282  INFO 16863 --- [       Margaret] c.a.p.b.c.statebehaviours.Initial        : STATE: INITIAL - CONVERSATIONID: conversation-8-26
+2020-01-05 16:51:47.282  INFO 16863 --- [   Sean-Connery] c.a.p.b.c.statebehaviours.Listen         : STATE: LISTEN - CONVERSATIONID: conversation-8-26
+2020-01-05 16:51:47.282  INFO 16863 --- [   Rook-Sanchez] c.a.p.b.c.statebehaviours.Initial        : STATE: INITIAL - CONVERSATIONID: conversation-8-26
+2020-01-05 16:51:47.282  INFO 16863 --- [    John-Bishop] c.a.p.b.c.statebehaviours.Speak          : STATE: SPEAK - CONVERSATIONID: conversation-8-26
+2020-01-05 16:51:47.282  INFO 16863 --- [        Francis] c.a.p.b.c.statebehaviours.Initial        : STATE: INITIAL - CONVERSATIONID: conversation-8-26
+2020-01-05 16:51:47.282  INFO 16863 --- [         Brooke] c.a.p.b.c.statebehaviours.Initial        : STATE: INITIAL - CONVERSATIONID: conversation-8-26
+2020-01-05 16:51:47.282  INFO 16863 --- [ichard-Harrison] c.a.p.b.c.statebehaviours.Initial        : STATE: INITIAL - CONVERSATIONID: conversation-8-26
+2020-01-05 16:51:47.282  INFO 16863 --- [   Rook-Sanchez] c.a.p.b.c.statebehaviours.Listen         : STATE: LISTEN - CONVERSATIONID: conversation-8-26
+2020-01-05 16:51:47.283  INFO 16863 --- [        Francis] c.a.p.b.c.statebehaviours.Listen         : STATE: LISTEN - CONVERSATIONID: conversation-8-26
+2020-01-05 16:51:47.283  INFO 16863 --- [         Brooke] c.a.p.b.c.statebehaviours.Listen         : STATE: LISTEN - CONVERSATIONID: conversation-8-26
+2020-01-05 16:51:47.283  INFO 16863 --- [       Margaret] c.a.p.b.c.statebehaviours.Listen         : STATE: LISTEN - CONVERSATIONID: conversation-8-26
+2020-01-05 16:51:47.283  INFO 16863 --- [ichard-Harrison] c.a.p.b.c.statebehaviours.Listen         : STATE: LISTEN - CONVERSATIONID: conversation-8-26
+2020-01-05 16:51:47.286  INFO 16863 --- [    John-Bishop] c.a.p.b.c.statebehaviours.Speak          : sleeping...
+2020-01-05 16:51:50.287  INFO 16863 --- [    John-Bishop] c.a.p.b.c.s.StartSpeakerElection         : STATE: START_SPEAKER_ELECTION - CONVERSATIONID: conversation-8-26
+2020-01-05 16:51:50.287  INFO 16863 --- [     John-Smith] c.a.p.b.c.s.WaitForSpeakerCFP            : STATE: WAIT_FOR_SPEAKER_CFP - CONVERSATIONID: conversation-8-26
+2020-01-05 16:51:50.287  INFO 16863 --- [        Freddie] c.a.p.b.c.s.WaitForSpeakerCFP            : STATE: WAIT_FOR_SPEAKER_CFP - CONVERSATIONID: conversation-8-26
+2020-01-05 16:51:50.288  INFO 16863 --- [         Robert] c.a.p.b.c.s.WaitForSpeakerCFP            : STATE: WAIT_FOR_SPEAKER_CFP - CONVERSATIONID: conversation-8-26
+2020-01-05 16:51:50.288  INFO 16863 --- [            Jim] c.a.p.b.c.s.WaitForSpeakerCFP            : STATE: WAIT_FOR_SPEAKER_CFP - CONVERSATIONID: conversation-8-26
+2020-01-05 16:51:50.288  INFO 16863 --- [ichard-Harrison] c.a.p.b.c.s.WaitForSpeakerCFP            : STATE: WAIT_FOR_SPEAKER_CFP - CONVERSATIONID: conversation-8-26
+2020-01-05 16:51:50.288  INFO 16863 --- [   Sean-Connery] c.a.p.b.c.s.WaitForSpeakerCFP            : STATE: WAIT_FOR_SPEAKER_CFP - CONVERSATIONID: conversation-8-26
+2020-01-05 16:51:50.288  INFO 16863 --- [   Rook-Sanchez] c.a.p.b.c.s.WaitForSpeakerCFP            : STATE: WAIT_FOR_SPEAKER_CFP - CONVERSATIONID: conversation-8-26
+2020-01-05 16:51:50.288  INFO 16863 --- [ Austin-Russell] c.a.p.b.c.s.WaitForSpeakerCFP            : STATE: WAIT_FOR_SPEAKER_CFP - CONVERSATIONID: conversation-8-26
+2020-01-05 16:51:50.288  INFO 16863 --- [        Freddie] c.a.p.b.c.s.WaitForSpeakerResults        : STATE: WAIT_FOR_SPEAKER_RESULTS - CONVERSATIONID: conversation-8-26
+2020-01-05 16:51:50.288  INFO 16863 --- [  Rick-Harrison] c.a.p.b.c.s.WaitForSpeakerCFP            : STATE: WAIT_FOR_SPEAKER_CFP - CONVERSATIONID: conversation-8-26
+2020-01-05 16:51:50.288  INFO 16863 --- [         Robert] c.a.p.b.c.s.WaitForSpeakerResults        : STATE: WAIT_FOR_SPEAKER_RESULTS - CONVERSATIONID: conversation-8-26
+2020-01-05 16:51:50.288  INFO 16863 --- [        Francis] c.a.p.b.c.s.WaitForSpeakerCFP            : STATE: WAIT_FOR_SPEAKER_CFP - CONVERSATIONID: conversation-8-26
+2020-01-05 16:51:50.288  INFO 16863 --- [   Sean-Connery] c.a.p.b.c.s.WaitForSpeakerResults        : STATE: WAIT_FOR_SPEAKER_RESULTS - CONVERSATIONID: conversation-8-26
+2020-01-05 16:51:50.288  INFO 16863 --- [       Margaret] c.a.p.b.c.s.WaitForSpeakerCFP            : STATE: WAIT_FOR_SPEAKER_CFP - CONVERSATIONID: conversation-8-26
+2020-01-05 16:51:50.288  INFO 16863 --- [     John-Smith] c.a.p.b.c.s.WaitForSpeakerResults        : STATE: WAIT_FOR_SPEAKER_RESULTS - CONVERSATIONID: conversation-8-26
+2020-01-05 16:51:50.288  INFO 16863 --- [            Bob] c.a.p.b.c.s.WaitForSpeakerCFP            : STATE: WAIT_FOR_SPEAKER_CFP - CONVERSATIONID: conversation-8-26
+2020-01-05 16:51:50.288  INFO 16863 --- [         Brooke] c.a.p.b.c.s.WaitForSpeakerCFP            : STATE: WAIT_FOR_SPEAKER_CFP - CONVERSATIONID: conversation-8-26
+2020-01-05 16:51:50.289  INFO 16863 --- [   Rook-Sanchez] c.a.p.b.c.s.WaitForSpeakerResults        : STATE: WAIT_FOR_SPEAKER_RESULTS - CONVERSATIONID: conversation-8-26
+2020-01-05 16:51:50.289  INFO 16863 --- [            Ann] c.a.p.b.c.s.WaitForSpeakerCFP            : STATE: WAIT_FOR_SPEAKER_CFP - CONVERSATIONID: conversation-8-26
+2020-01-05 16:51:50.289  INFO 16863 --- [ Keira-Knightly] c.a.p.b.c.s.WaitForSpeakerCFP            : STATE: WAIT_FOR_SPEAKER_CFP - CONVERSATIONID: conversation-8-26
+2020-01-05 16:51:50.289  INFO 16863 --- [        Francis] c.a.p.b.c.s.WaitForSpeakerResults        : STATE: WAIT_FOR_SPEAKER_RESULTS - CONVERSATIONID: conversation-8-26
+2020-01-05 16:51:50.289  INFO 16863 --- [            Jim] c.a.p.b.c.s.WaitForSpeakerResults        : STATE: WAIT_FOR_SPEAKER_RESULTS - CONVERSATIONID: conversation-8-26
+2020-01-05 16:51:50.289  INFO 16863 --- [  Rick-Harrison] c.a.p.b.c.s.WaitForSpeakerResults        : STATE: WAIT_FOR_SPEAKER_RESULTS - CONVERSATIONID: conversation-8-26
+2020-01-05 16:51:50.289  INFO 16863 --- [       Margaret] c.a.p.b.c.s.WaitForSpeakerResults        : STATE: WAIT_FOR_SPEAKER_RESULTS - CONVERSATIONID: conversation-8-26
+2020-01-05 16:51:50.289  INFO 16863 --- [ichard-Harrison] c.a.p.b.c.s.WaitForSpeakerResults        : STATE: WAIT_FOR_SPEAKER_RESULTS - CONVERSATIONID: conversation-8-26
+2020-01-05 16:51:50.289  INFO 16863 --- [ Keira-Knightly] c.a.p.b.c.s.WaitForSpeakerResults        : STATE: WAIT_FOR_SPEAKER_RESULTS - CONVERSATIONID: conversation-8-26
+2020-01-05 16:51:50.289  INFO 16863 --- [ Austin-Russell] c.a.p.b.c.s.WaitForSpeakerResults        : STATE: WAIT_FOR_SPEAKER_RESULTS - CONVERSATIONID: conversation-8-26
+2020-01-05 16:51:50.289  INFO 16863 --- [            Bob] c.a.p.b.c.s.WaitForSpeakerResults        : STATE: WAIT_FOR_SPEAKER_RESULTS - CONVERSATIONID: conversation-8-26
+2020-01-05 16:51:50.289  INFO 16863 --- [         Brooke] c.a.p.b.c.s.WaitForSpeakerResults        : STATE: WAIT_FOR_SPEAKER_RESULTS - CONVERSATIONID: conversation-8-26
+2020-01-05 16:51:50.289  INFO 16863 --- [            Ann] c.a.p.b.c.s.WaitForSpeakerResults        : STATE: WAIT_FOR_SPEAKER_RESULTS - CONVERSATIONID: conversation-8-26
+2020-01-05 16:51:50.289  INFO 16863 --- [    John-Bishop] c.a.p.b.c.statebehaviours.ChooseSpeaker  : STATE: CHOOSE_SPEAKER - CONVERSATIONID: conversation-8-26
+2020-01-05 16:51:50.290  INFO 16863 --- [    GameAgent-1] c.a.g.behaviours.gameplay.WaitForMove    : No move received
+2020-01-05 16:51:50.290  INFO 16863 --- [    GameAgent-1] c.a.g.b.chat.InformSubscribersOfChat     : ((= (iota (sequence ?speaker ?phrase) ("Said To" ?speaker ?phrase)) (sequence (agent-identifier :name John-Bishop@chess-platform) "Wait no now PAWN could get hurt!")))
+2020-01-05 16:51:50.291  INFO 16863 --- [   Sean-Connery] c.a.p.b.c.s.WaitForSpeakerResults        : Rejected for Speaker
+2020-01-05 16:51:50.291  INFO 16863 --- [            Ann] c.a.p.b.c.s.WaitForSpeakerResults        : Rejected for Speaker
+2020-01-05 16:51:50.291  INFO 16863 --- [  Rick-Harrison] c.a.p.b.c.s.WaitForSpeakerResults        : Rejected for Speaker
+2020-01-05 16:51:50.291  INFO 16863 --- [        Freddie] c.a.p.b.c.s.WaitForSpeakerResults        : Rejected for Speaker
+2020-01-05 16:51:50.291  INFO 16863 --- [     John-Smith] c.a.p.b.c.s.WaitForSpeakerResults        : Rejected for Speaker
+2020-01-05 16:51:50.291  INFO 16863 --- [            Bob] c.a.p.b.c.s.WaitForSpeakerResults        : Rejected for Speaker
+2020-01-05 16:51:50.291  INFO 16863 --- [ichard-Harrison] c.a.p.b.c.s.WaitForSpeakerResults        : Rejected for Speaker
+2020-01-05 16:51:50.291  INFO 16863 --- [       Margaret] c.a.p.b.c.s.WaitForSpeakerResults        : Rejected for Speaker
+2020-01-05 16:51:50.291  INFO 16863 --- [ Keira-Knightly] c.a.p.b.c.s.WaitForSpeakerResults        : Rejected for Speaker
+2020-01-05 16:51:50.291  INFO 16863 --- [         Brooke] c.a.p.b.c.s.WaitForSpeakerResults        : Rejected for Speaker
+2020-01-05 16:51:50.291  INFO 16863 --- [        Francis] c.a.p.b.c.s.WaitForSpeakerResults        : Rejected for Speaker
+2020-01-05 16:51:50.292  INFO 16863 --- [ Austin-Russell] c.a.p.b.c.s.WaitForSpeakerResults        : Rejected for Speaker
+2020-01-05 16:51:50.292  INFO 16863 --- [            Jim] c.a.p.b.c.s.WaitForSpeakerResults        : Rejected for Speaker
+2020-01-05 16:51:50.292  INFO 16863 --- [    John-Bishop] c.a.p.b.c.s.WaitForSpeakerResults        : STATE: WAIT_FOR_SPEAKER_RESULTS - CONVERSATIONID: conversation-8-26
+2020-01-05 16:51:50.292  INFO 16863 --- [   Rook-Sanchez] c.a.p.b.c.s.WaitForSpeakerResults        : Rejected for Speaker
+2020-01-05 16:51:50.292  INFO 16863 --- [    John-Bishop] c.a.p.b.c.s.WaitForSpeakerResults        : Rejected for Speaker
+2020-01-05 16:51:50.292  INFO 16863 --- [         Robert] c.a.p.b.c.statebehaviours.Initial        : STATE: INITIAL - CONVERSATIONID: conversation-8-27
+2020-01-05 16:51:50.292  INFO 16863 --- [         Robert] c.a.p.b.c.statebehaviours.Speak          : STATE: SPEAK - CONVERSATIONID: conversation-8-27
+2020-01-05 16:51:50.292  INFO 16863 --- [   Sean-Connery] c.a.p.b.c.statebehaviours.Initial        : STATE: INITIAL - CONVERSATIONID: conversation-8-27
+2020-01-05 16:51:50.292  INFO 16863 --- [    John-Bishop] c.a.p.b.c.statebehaviours.Initial        : STATE: INITIAL - CONVERSATIONID: conversation-8-27
+2020-01-05 16:51:50.292  INFO 16863 --- [       Margaret] c.a.p.b.c.statebehaviours.Initial        : STATE: INITIAL - CONVERSATIONID: conversation-8-27
+2020-01-05 16:51:50.292  INFO 16863 --- [    John-Bishop] c.a.p.b.c.statebehaviours.Listen         : STATE: LISTEN - CONVERSATIONID: conversation-8-27
+2020-01-05 16:51:50.292  INFO 16863 --- [ Keira-Knightly] c.a.p.b.c.statebehaviours.Initial        : STATE: INITIAL - CONVERSATIONID: conversation-8-27
+2020-01-05 16:51:50.293  INFO 16863 --- [       Margaret] c.a.p.b.c.statebehaviours.Listen         : STATE: LISTEN - CONVERSATIONID: conversation-8-27
+2020-01-05 16:51:50.293  INFO 16863 --- [ Keira-Knightly] c.a.p.b.c.statebehaviours.Listen         : STATE: LISTEN - CONVERSATIONID: conversation-8-27
+2020-01-05 16:51:50.293  INFO 16863 --- [            Jim] c.a.p.b.c.statebehaviours.Initial        : STATE: INITIAL - CONVERSATIONID: conversation-8-27
+2020-01-05 16:51:50.293  INFO 16863 --- [   Sean-Connery] c.a.p.b.c.statebehaviours.Listen         : STATE: LISTEN - CONVERSATIONID: conversation-8-27
+2020-01-05 16:51:50.293  INFO 16863 --- [     John-Smith] c.a.p.b.c.statebehaviours.Initial        : STATE: INITIAL - CONVERSATIONID: conversation-8-27
+2020-01-05 16:51:50.293  INFO 16863 --- [            Jim] c.a.p.b.c.statebehaviours.Listen         : STATE: LISTEN - CONVERSATIONID: conversation-8-27
+2020-01-05 16:51:50.293  INFO 16863 --- [        Freddie] c.a.p.b.c.statebehaviours.Initial        : STATE: INITIAL - CONVERSATIONID: conversation-8-27
+2020-01-05 16:51:50.293  INFO 16863 --- [         Brooke] c.a.p.b.c.statebehaviours.Initial        : STATE: INITIAL - CONVERSATIONID: conversation-8-27
+2020-01-05 16:51:50.293  INFO 16863 --- [        Francis] c.a.p.b.c.statebehaviours.Initial        : STATE: INITIAL - CONVERSATIONID: conversation-8-27
+2020-01-05 16:51:50.293  INFO 16863 --- [            Bob] c.a.p.b.c.statebehaviours.Initial        : STATE: INITIAL - CONVERSATIONID: conversation-8-27
+2020-01-05 16:51:50.293  INFO 16863 --- [   Rook-Sanchez] c.a.p.b.c.statebehaviours.Initial        : STATE: INITIAL - CONVERSATIONID: conversation-8-27
+2020-01-05 16:51:50.293  INFO 16863 --- [ichard-Harrison] c.a.p.b.c.statebehaviours.Initial        : STATE: INITIAL - CONVERSATIONID: conversation-8-27
+2020-01-05 16:51:50.293  INFO 16863 --- [        Francis] c.a.p.b.c.statebehaviours.Listen         : STATE: LISTEN - CONVERSATIONID: conversation-8-27
+2020-01-05 16:51:50.293  INFO 16863 --- [        Freddie] c.a.p.b.c.statebehaviours.Listen         : STATE: LISTEN - CONVERSATIONID: conversation-8-27
+2020-01-05 16:51:50.293  INFO 16863 --- [     John-Smith] c.a.p.b.c.statebehaviours.Listen         : STATE: LISTEN - CONVERSATIONID: conversation-8-27
+2020-01-05 16:51:50.293  INFO 16863 --- [ Austin-Russell] c.a.p.b.c.statebehaviours.Initial        : STATE: INITIAL - CONVERSATIONID: conversation-8-27
+2020-01-05 16:51:50.293  INFO 16863 --- [   Rook-Sanchez] c.a.p.b.c.statebehaviours.Listen         : STATE: LISTEN - CONVERSATIONID: conversation-8-27
+2020-01-05 16:51:50.293  INFO 16863 --- [            Ann] c.a.p.b.c.statebehaviours.Initial        : STATE: INITIAL - CONVERSATIONID: conversation-8-27
+2020-01-05 16:51:50.293  INFO 16863 --- [ichard-Harrison] c.a.p.b.c.statebehaviours.Listen         : STATE: LISTEN - CONVERSATIONID: conversation-8-27
+2020-01-05 16:51:50.293  INFO 16863 --- [         Brooke] c.a.p.b.c.statebehaviours.Listen         : STATE: LISTEN - CONVERSATIONID: conversation-8-27
+2020-01-05 16:51:50.293  INFO 16863 --- [            Bob] c.a.p.b.c.statebehaviours.Listen         : STATE: LISTEN - CONVERSATIONID: conversation-8-27
+2020-01-05 16:51:50.293  INFO 16863 --- [            Ann] c.a.p.b.c.statebehaviours.Listen         : STATE: LISTEN - CONVERSATIONID: conversation-8-27
+2020-01-05 16:51:50.293  INFO 16863 --- [ Austin-Russell] c.a.p.b.c.statebehaviours.Listen         : STATE: LISTEN - CONVERSATIONID: conversation-8-27
+2020-01-05 16:51:50.294  INFO 16863 --- [  Rick-Harrison] c.a.p.b.c.statebehaviours.Initial        : STATE: INITIAL - CONVERSATIONID: conversation-8-27
+2020-01-05 16:51:50.294  INFO 16863 --- [  Rick-Harrison] c.a.p.b.c.statebehaviours.Listen         : STATE: LISTEN - CONVERSATIONID: conversation-8-27
+2020-01-05 16:51:50.296  INFO 16863 --- [         Robert] c.a.p.b.c.statebehaviours.Speak          : sleeping...
+2020-01-05 16:51:53.296  INFO 16863 --- [         Robert] c.a.p.b.c.s.StartSpeakerElection         : STATE: START_SPEAKER_ELECTION - CONVERSATIONID: conversation-8-27
+2020-01-05 16:51:53.297  INFO 16863 --- [    John-Bishop] c.a.p.b.c.s.WaitForSpeakerCFP            : STATE: WAIT_FOR_SPEAKER_CFP - CONVERSATIONID: conversation-8-27
+2020-01-05 16:51:53.297  INFO 16863 --- [        Freddie] c.a.p.b.c.s.WaitForSpeakerCFP            : STATE: WAIT_FOR_SPEAKER_CFP - CONVERSATIONID: conversation-8-27
+2020-01-05 16:51:53.297  INFO 16863 --- [ Keira-Knightly] c.a.p.b.c.s.WaitForSpeakerCFP            : STATE: WAIT_FOR_SPEAKER_CFP - CONVERSATIONID: conversation-8-27
+2020-01-05 16:51:53.297  INFO 16863 --- [     John-Smith] c.a.p.b.c.s.WaitForSpeakerCFP            : STATE: WAIT_FOR_SPEAKER_CFP - CONVERSATIONID: conversation-8-27
+2020-01-05 16:51:53.297  INFO 16863 --- [ Austin-Russell] c.a.p.b.c.s.WaitForSpeakerCFP            : STATE: WAIT_FOR_SPEAKER_CFP - CONVERSATIONID: conversation-8-27
+2020-01-05 16:51:53.297  INFO 16863 --- [         Brooke] c.a.p.b.c.s.WaitForSpeakerCFP            : STATE: WAIT_FOR_SPEAKER_CFP - CONVERSATIONID: conversation-8-27
+2020-01-05 16:51:53.297  INFO 16863 --- [ichard-Harrison] c.a.p.b.c.s.WaitForSpeakerCFP            : STATE: WAIT_FOR_SPEAKER_CFP - CONVERSATIONID: conversation-8-27
+2020-01-05 16:51:53.297  INFO 16863 --- [            Jim] c.a.p.b.c.s.WaitForSpeakerCFP            : STATE: WAIT_FOR_SPEAKER_CFP - CONVERSATIONID: conversation-8-27
+2020-01-05 16:51:53.297  INFO 16863 --- [            Bob] c.a.p.b.c.s.WaitForSpeakerCFP            : STATE: WAIT_FOR_SPEAKER_CFP - CONVERSATIONID: conversation-8-27
+2020-01-05 16:51:53.297  INFO 16863 --- [   Rook-Sanchez] c.a.p.b.c.s.WaitForSpeakerCFP            : STATE: WAIT_FOR_SPEAKER_CFP - CONVERSATIONID: conversation-8-27
+2020-01-05 16:51:53.297  INFO 16863 --- [  Rick-Harrison] c.a.p.b.c.s.WaitForSpeakerCFP            : STATE: WAIT_FOR_SPEAKER_CFP - CONVERSATIONID: conversation-8-27
+2020-01-05 16:51:53.297  INFO 16863 --- [        Francis] c.a.p.b.c.s.WaitForSpeakerCFP            : STATE: WAIT_FOR_SPEAKER_CFP - CONVERSATIONID: conversation-8-27
+2020-01-05 16:51:53.297  INFO 16863 --- [   Sean-Connery] c.a.p.b.c.s.WaitForSpeakerCFP            : STATE: WAIT_FOR_SPEAKER_CFP - CONVERSATIONID: conversation-8-27
+2020-01-05 16:51:53.297  INFO 16863 --- [       Margaret] c.a.p.b.c.s.WaitForSpeakerCFP            : STATE: WAIT_FOR_SPEAKER_CFP - CONVERSATIONID: conversation-8-27
+2020-01-05 16:51:53.297  INFO 16863 --- [            Ann] c.a.p.b.c.s.WaitForSpeakerCFP            : STATE: WAIT_FOR_SPEAKER_CFP - CONVERSATIONID: conversation-8-27
+2020-01-05 16:51:53.297  INFO 16863 --- [     John-Smith] c.a.p.b.c.s.WaitForSpeakerResults        : STATE: WAIT_FOR_SPEAKER_RESULTS - CONVERSATIONID: conversation-8-27
+2020-01-05 16:51:53.297  INFO 16863 --- [ Keira-Knightly] c.a.p.b.c.s.WaitForSpeakerResults        : STATE: WAIT_FOR_SPEAKER_RESULTS - CONVERSATIONID: conversation-8-27
+2020-01-05 16:51:53.297  INFO 16863 --- [    John-Bishop] c.a.p.b.c.s.WaitForSpeakerResults        : STATE: WAIT_FOR_SPEAKER_RESULTS - CONVERSATIONID: conversation-8-27
+2020-01-05 16:51:53.297  INFO 16863 --- [        Freddie] c.a.p.b.c.s.WaitForSpeakerResults        : STATE: WAIT_FOR_SPEAKER_RESULTS - CONVERSATIONID: conversation-8-27
+2020-01-05 16:51:53.297  INFO 16863 --- [            Jim] c.a.p.b.c.s.WaitForSpeakerResults        : STATE: WAIT_FOR_SPEAKER_RESULTS - CONVERSATIONID: conversation-8-27
+2020-01-05 16:51:53.297  INFO 16863 --- [        Francis] c.a.p.b.c.s.WaitForSpeakerResults        : STATE: WAIT_FOR_SPEAKER_RESULTS - CONVERSATIONID: conversation-8-27
+2020-01-05 16:51:53.297  INFO 16863 --- [         Brooke] c.a.p.b.c.s.WaitForSpeakerResults        : STATE: WAIT_FOR_SPEAKER_RESULTS - CONVERSATIONID: conversation-8-27
+2020-01-05 16:51:53.297  INFO 16863 --- [   Sean-Connery] c.a.p.b.c.s.WaitForSpeakerResults        : STATE: WAIT_FOR_SPEAKER_RESULTS - CONVERSATIONID: conversation-8-27
+2020-01-05 16:51:53.297  INFO 16863 --- [       Margaret] c.a.p.b.c.s.WaitForSpeakerResults        : STATE: WAIT_FOR_SPEAKER_RESULTS - CONVERSATIONID: conversation-8-27
+2020-01-05 16:51:53.297  INFO 16863 --- [ Austin-Russell] c.a.p.b.c.s.WaitForSpeakerResults        : STATE: WAIT_FOR_SPEAKER_RESULTS - CONVERSATIONID: conversation-8-27
+2020-01-05 16:51:53.297  INFO 16863 --- [   Rook-Sanchez] c.a.p.b.c.s.WaitForSpeakerResults        : STATE: WAIT_FOR_SPEAKER_RESULTS - CONVERSATIONID: conversation-8-27
+2020-01-05 16:51:53.297  INFO 16863 --- [ichard-Harrison] c.a.p.b.c.s.WaitForSpeakerResults        : STATE: WAIT_FOR_SPEAKER_RESULTS - CONVERSATIONID: conversation-8-27
+2020-01-05 16:51:53.297  INFO 16863 --- [            Ann] c.a.p.b.c.s.WaitForSpeakerResults        : STATE: WAIT_FOR_SPEAKER_RESULTS - CONVERSATIONID: conversation-8-27
+2020-01-05 16:51:53.298  INFO 16863 --- [            Bob] c.a.p.b.c.s.WaitForSpeakerResults        : STATE: WAIT_FOR_SPEAKER_RESULTS - CONVERSATIONID: conversation-8-27
+2020-01-05 16:51:53.298  INFO 16863 --- [  Rick-Harrison] c.a.p.b.c.s.WaitForSpeakerResults        : STATE: WAIT_FOR_SPEAKER_RESULTS - CONVERSATIONID: conversation-8-27
+2020-01-05 16:51:53.298  INFO 16863 --- [         Robert] c.a.p.b.c.statebehaviours.ChooseSpeaker  : STATE: CHOOSE_SPEAKER - CONVERSATIONID: conversation-8-27
+2020-01-05 16:51:53.298  INFO 16863 --- [    GameAgent-1] c.a.g.behaviours.gameplay.WaitForMove    : No move received
+2020-01-05 16:51:53.298  INFO 16863 --- [    GameAgent-1] c.a.g.b.chat.InformSubscribersOfChat     : ((= (iota (sequence ?speaker ?phrase) ("Said To" ?speaker ?phrase)) (sequence (agent-identifier :name Robert@chess-platform) "Looks like your PAWN is in trouble!")))
+2020-01-05 16:51:53.298  INFO 16863 --- [   Rook-Sanchez] c.a.p.b.c.s.WaitForSpeakerResults        : Rejected for Speaker
+2020-01-05 16:51:53.298  INFO 16863 --- [            Ann] c.a.p.b.c.s.WaitForSpeakerResults        : Rejected for Speaker
+2020-01-05 16:51:53.298  INFO 16863 --- [         Brooke] c.a.p.b.c.s.WaitForSpeakerResults        : Rejected for Speaker
+2020-01-05 16:51:53.298  INFO 16863 --- [     John-Smith] c.a.p.b.c.s.WaitForSpeakerResults        : Rejected for Speaker
+2020-01-05 16:51:53.298  INFO 16863 --- [   Sean-Connery] c.a.p.b.c.s.WaitForSpeakerResults        : Rejected for Speaker
+2020-01-05 16:51:53.298  INFO 16863 --- [        Francis] c.a.p.b.c.s.WaitForSpeakerResults        : Rejected for Speaker
+2020-01-05 16:51:53.298  INFO 16863 --- [       Margaret] c.a.p.b.c.s.WaitForSpeakerResults        : Rejected for Speaker
+2020-01-05 16:51:53.298  INFO 16863 --- [            Jim] c.a.p.b.c.s.WaitForSpeakerResults        : Rejected for Speaker
+2020-01-05 16:51:53.298  INFO 16863 --- [    John-Bishop] c.a.p.b.c.s.WaitForSpeakerResults        : Rejected for Speaker
+2020-01-05 16:51:53.298  INFO 16863 --- [            Bob] c.a.p.b.c.s.WaitForSpeakerResults        : Rejected for Speaker
+2020-01-05 16:51:53.298  INFO 16863 --- [  Rick-Harrison] c.a.p.b.c.s.WaitForSpeakerResults        : Rejected for Speaker
+2020-01-05 16:51:53.298  INFO 16863 --- [ Austin-Russell] c.a.p.b.c.s.WaitForSpeakerResults        : Rejected for Speaker
+2020-01-05 16:51:53.299  INFO 16863 --- [         Robert] c.a.p.b.c.s.WaitForSpeakerResults        : STATE: WAIT_FOR_SPEAKER_RESULTS - CONVERSATIONID: conversation-8-27
+2020-01-05 16:51:53.299  INFO 16863 --- [         Robert] c.a.p.b.c.s.WaitForSpeakerResults        : Rejected for Speaker
+2020-01-05 16:51:53.299  INFO 16863 --- [ichard-Harrison] c.a.p.b.c.s.WaitForSpeakerResults        : Rejected for Speaker
+2020-01-05 16:51:53.299  INFO 16863 --- [ Keira-Knightly] c.a.p.b.c.s.WaitForSpeakerResults        : Rejected for Speaker
+2020-01-05 16:51:53.299  INFO 16863 --- [        Freddie] c.a.p.b.c.statebehaviours.Initial        : STATE: INITIAL - CONVERSATIONID: conversation-8-28
+2020-01-05 16:51:53.299  INFO 16863 --- [        Freddie] c.a.p.b.c.statebehaviours.Speak          : STATE: SPEAK - CONVERSATIONID: conversation-8-28
+2020-01-05 16:51:53.299  INFO 16863 --- [   Rook-Sanchez] c.a.p.b.c.statebehaviours.Initial        : STATE: INITIAL - CONVERSATIONID: conversation-8-28
+2020-01-05 16:51:53.299  INFO 16863 --- [         Brooke] c.a.p.b.c.statebehaviours.Initial        : STATE: INITIAL - CONVERSATIONID: conversation-8-28
+2020-01-05 16:51:53.299  INFO 16863 --- [    John-Bishop] c.a.p.b.c.statebehaviours.Initial        : STATE: INITIAL - CONVERSATIONID: conversation-8-28
+2020-01-05 16:51:53.299  INFO 16863 --- [       Margaret] c.a.p.b.c.statebehaviours.Initial        : STATE: INITIAL - CONVERSATIONID: conversation-8-28
+2020-01-05 16:51:53.299  INFO 16863 --- [         Brooke] c.a.p.b.c.statebehaviours.Listen         : STATE: LISTEN - CONVERSATIONID: conversation-8-28
+2020-01-05 16:51:53.299  INFO 16863 --- [   Rook-Sanchez] c.a.p.b.c.statebehaviours.Listen         : STATE: LISTEN - CONVERSATIONID: conversation-8-28
+2020-01-05 16:51:53.299  INFO 16863 --- [       Margaret] c.a.p.b.c.statebehaviours.Listen         : STATE: LISTEN - CONVERSATIONID: conversation-8-28
+2020-01-05 16:51:53.299  INFO 16863 --- [    John-Bishop] c.a.p.b.c.statebehaviours.Listen         : STATE: LISTEN - CONVERSATIONID: conversation-8-28
+2020-01-05 16:51:53.299  INFO 16863 --- [ Austin-Russell] c.a.p.b.c.statebehaviours.Initial        : STATE: INITIAL - CONVERSATIONID: conversation-8-28
+2020-01-05 16:51:53.299  INFO 16863 --- [            Jim] c.a.p.b.c.statebehaviours.Initial        : STATE: INITIAL - CONVERSATIONID: conversation-8-28
+2020-01-05 16:51:53.299  INFO 16863 --- [  Rick-Harrison] c.a.p.b.c.statebehaviours.Initial        : STATE: INITIAL - CONVERSATIONID: conversation-8-28
+2020-01-05 16:51:53.299  INFO 16863 --- [ Keira-Knightly] c.a.p.b.c.statebehaviours.Initial        : STATE: INITIAL - CONVERSATIONID: conversation-8-28
+2020-01-05 16:51:53.299  INFO 16863 --- [ Austin-Russell] c.a.p.b.c.statebehaviours.Listen         : STATE: LISTEN - CONVERSATIONID: conversation-8-28
+2020-01-05 16:51:53.299  INFO 16863 --- [            Bob] c.a.p.b.c.statebehaviours.Initial        : STATE: INITIAL - CONVERSATIONID: conversation-8-28
+2020-01-05 16:51:53.299  INFO 16863 --- [            Jim] c.a.p.b.c.statebehaviours.Listen         : STATE: LISTEN - CONVERSATIONID: conversation-8-28
+2020-01-05 16:51:53.299  INFO 16863 --- [  Rick-Harrison] c.a.p.b.c.statebehaviours.Listen         : STATE: LISTEN - CONVERSATIONID: conversation-8-28
+2020-01-05 16:51:53.299  INFO 16863 --- [ Keira-Knightly] c.a.p.b.c.statebehaviours.Listen         : STATE: LISTEN - CONVERSATIONID: conversation-8-28
+2020-01-05 16:51:53.299  INFO 16863 --- [            Bob] c.a.p.b.c.statebehaviours.Listen         : STATE: LISTEN - CONVERSATIONID: conversation-8-28
+2020-01-05 16:51:53.300  INFO 16863 --- [         Robert] c.a.p.b.c.statebehaviours.Initial        : STATE: INITIAL - CONVERSATIONID: conversation-8-28
+2020-01-05 16:51:53.300  INFO 16863 --- [ichard-Harrison] c.a.p.b.c.statebehaviours.Initial        : STATE: INITIAL - CONVERSATIONID: conversation-8-28
+2020-01-05 16:51:53.300  INFO 16863 --- [         Robert] c.a.p.b.c.statebehaviours.Listen         : STATE: LISTEN - CONVERSATIONID: conversation-8-28
+2020-01-05 16:51:53.300  INFO 16863 --- [            Ann] c.a.p.b.c.statebehaviours.Initial        : STATE: INITIAL - CONVERSATIONID: conversation-8-28
+2020-01-05 16:51:53.300  INFO 16863 --- [        Francis] c.a.p.b.c.statebehaviours.Initial        : STATE: INITIAL - CONVERSATIONID: conversation-8-28
+2020-01-05 16:51:53.300  INFO 16863 --- [   Sean-Connery] c.a.p.b.c.statebehaviours.Initial        : STATE: INITIAL - CONVERSATIONID: conversation-8-28
+2020-01-05 16:51:53.300  INFO 16863 --- [ichard-Harrison] c.a.p.b.c.statebehaviours.Listen         : STATE: LISTEN - CONVERSATIONID: conversation-8-28
+2020-01-05 16:51:53.300  INFO 16863 --- [        Francis] c.a.p.b.c.statebehaviours.Listen         : STATE: LISTEN - CONVERSATIONID: conversation-8-28
+2020-01-05 16:51:53.300  INFO 16863 --- [            Ann] c.a.p.b.c.statebehaviours.Listen         : STATE: LISTEN - CONVERSATIONID: conversation-8-28
+2020-01-05 16:51:53.300  INFO 16863 --- [   Sean-Connery] c.a.p.b.c.statebehaviours.Listen         : STATE: LISTEN - CONVERSATIONID: conversation-8-28
+2020-01-05 16:51:53.300  INFO 16863 --- [        Freddie] c.a.p.b.c.statebehaviours.Speak          : sleeping...
+2020-01-05 16:51:53.301  INFO 16863 --- [     John-Smith] c.a.p.b.c.statebehaviours.Initial        : STATE: INITIAL - CONVERSATIONID: conversation-8-28
+2020-01-05 16:51:53.301  INFO 16863 --- [     John-Smith] c.a.p.b.c.statebehaviours.Listen         : STATE: LISTEN - CONVERSATIONID: conversation-8-28
+2020-01-05 16:51:56.302  INFO 16863 --- [        Freddie] c.a.p.b.c.s.StartSpeakerElection         : STATE: START_SPEAKER_ELECTION - CONVERSATIONID: conversation-8-28
+2020-01-05 16:51:56.302  INFO 16863 --- [ichard-Harrison] c.a.p.b.c.s.WaitForSpeakerCFP            : STATE: WAIT_FOR_SPEAKER_CFP - CONVERSATIONID: conversation-8-28
+2020-01-05 16:51:56.302  INFO 16863 --- [            Jim] c.a.p.b.c.s.WaitForSpeakerCFP            : STATE: WAIT_FOR_SPEAKER_CFP - CONVERSATIONID: conversation-8-28
+2020-01-05 16:51:56.302  INFO 16863 --- [   Sean-Connery] c.a.p.b.c.s.WaitForSpeakerCFP            : STATE: WAIT_FOR_SPEAKER_CFP - CONVERSATIONID: conversation-8-28
+2020-01-05 16:51:56.302  INFO 16863 --- [        Francis] c.a.p.b.c.s.WaitForSpeakerCFP            : STATE: WAIT_FOR_SPEAKER_CFP - CONVERSATIONID: conversation-8-28
+2020-01-05 16:51:56.302  INFO 16863 --- [            Bob] c.a.p.b.c.s.WaitForSpeakerCFP            : STATE: WAIT_FOR_SPEAKER_CFP - CONVERSATIONID: conversation-8-28
+2020-01-05 16:51:56.303  INFO 16863 --- [    John-Bishop] c.a.p.b.c.s.WaitForSpeakerCFP            : STATE: WAIT_FOR_SPEAKER_CFP - CONVERSATIONID: conversation-8-28
+2020-01-05 16:51:56.303  INFO 16863 --- [         Brooke] c.a.p.b.c.s.WaitForSpeakerCFP            : STATE: WAIT_FOR_SPEAKER_CFP - CONVERSATIONID: conversation-8-28
+2020-01-05 16:51:56.303  INFO 16863 --- [ Austin-Russell] c.a.p.b.c.s.WaitForSpeakerCFP            : STATE: WAIT_FOR_SPEAKER_CFP - CONVERSATIONID: conversation-8-28
+2020-01-05 16:51:56.303  INFO 16863 --- [            Ann] c.a.p.b.c.s.WaitForSpeakerCFP            : STATE: WAIT_FOR_SPEAKER_CFP - CONVERSATIONID: conversation-8-28
+2020-01-05 16:51:56.303  INFO 16863 --- [        Freddie] c.a.p.b.c.statebehaviours.ChooseSpeaker  : STATE: CHOOSE_SPEAKER - CONVERSATIONID: conversation-8-28
+2020-01-05 16:51:56.303  INFO 16863 --- [  Rick-Harrison] c.a.p.b.c.s.WaitForSpeakerCFP            : STATE: WAIT_FOR_SPEAKER_CFP - CONVERSATIONID: conversation-8-28
+2020-01-05 16:51:56.303  INFO 16863 --- [       Margaret] c.a.p.b.c.s.WaitForSpeakerCFP            : STATE: WAIT_FOR_SPEAKER_CFP - CONVERSATIONID: conversation-8-28
+2020-01-05 16:51:56.303  INFO 16863 --- [ Austin-Russell] c.a.p.b.c.s.WaitForSpeakerResults        : STATE: WAIT_FOR_SPEAKER_RESULTS - CONVERSATIONID: conversation-8-28
+2020-01-05 16:51:56.303  INFO 16863 --- [    GameAgent-1] c.a.g.behaviours.gameplay.WaitForMove    : No move received
+2020-01-05 16:51:56.303  INFO 16863 --- [   Sean-Connery] c.a.p.b.c.s.WaitForSpeakerResults        : STATE: WAIT_FOR_SPEAKER_RESULTS - CONVERSATIONID: conversation-8-28
+2020-01-05 16:51:56.304  INFO 16863 --- [ Keira-Knightly] c.a.p.b.c.s.WaitForSpeakerCFP            : STATE: WAIT_FOR_SPEAKER_CFP - CONVERSATIONID: conversation-8-28
+2020-01-05 16:51:56.304  INFO 16863 --- [         Brooke] c.a.p.b.c.s.WaitForSpeakerResults        : STATE: WAIT_FOR_SPEAKER_RESULTS - CONVERSATIONID: conversation-8-28
+2020-01-05 16:51:56.304  INFO 16863 --- [         Robert] c.a.p.b.c.s.WaitForSpeakerCFP            : STATE: WAIT_FOR_SPEAKER_CFP - CONVERSATIONID: conversation-8-28
+2020-01-05 16:51:56.304  INFO 16863 --- [ichard-Harrison] c.a.p.b.c.s.WaitForSpeakerResults        : STATE: WAIT_FOR_SPEAKER_RESULTS - CONVERSATIONID: conversation-8-28
+2020-01-05 16:51:56.304  INFO 16863 --- [  Rick-Harrison] c.a.p.b.c.s.WaitForSpeakerResults        : STATE: WAIT_FOR_SPEAKER_RESULTS - CONVERSATIONID: conversation-8-28
+2020-01-05 16:51:56.304  INFO 16863 --- [   Rook-Sanchez] c.a.p.b.c.s.WaitForSpeakerCFP            : STATE: WAIT_FOR_SPEAKER_CFP - CONVERSATIONID: conversation-8-28
+2020-01-05 16:51:56.304  INFO 16863 --- [        Francis] c.a.p.b.c.s.WaitForSpeakerResults        : STATE: WAIT_FOR_SPEAKER_RESULTS - CONVERSATIONID: conversation-8-28
+2020-01-05 16:51:56.304  INFO 16863 --- [            Jim] c.a.p.b.c.s.WaitForSpeakerResults        : STATE: WAIT_FOR_SPEAKER_RESULTS - CONVERSATIONID: conversation-8-28
+2020-01-05 16:51:56.304  INFO 16863 --- [    John-Bishop] c.a.p.b.c.s.WaitForSpeakerResults        : STATE: WAIT_FOR_SPEAKER_RESULTS - CONVERSATIONID: conversation-8-28
+2020-01-05 16:51:56.304  INFO 16863 --- [            Bob] c.a.p.b.c.s.WaitForSpeakerResults        : STATE: WAIT_FOR_SPEAKER_RESULTS - CONVERSATIONID: conversation-8-28
+2020-01-05 16:51:56.304  INFO 16863 --- [            Ann] c.a.p.b.c.s.WaitForSpeakerResults        : STATE: WAIT_FOR_SPEAKER_RESULTS - CONVERSATIONID: conversation-8-28
+2020-01-05 16:51:56.304  INFO 16863 --- [         Robert] c.a.p.b.c.s.WaitForSpeakerResults        : STATE: WAIT_FOR_SPEAKER_RESULTS - CONVERSATIONID: conversation-8-28
+2020-01-05 16:51:56.304  INFO 16863 --- [     John-Smith] c.a.p.b.c.s.WaitForSpeakerCFP            : STATE: WAIT_FOR_SPEAKER_CFP - CONVERSATIONID: conversation-8-28
+2020-01-05 16:51:56.304  INFO 16863 --- [ Keira-Knightly] c.a.p.b.c.s.WaitForSpeakerResults        : STATE: WAIT_FOR_SPEAKER_RESULTS - CONVERSATIONID: conversation-8-28
+2020-01-05 16:51:56.304  INFO 16863 --- [   Rook-Sanchez] c.a.p.b.c.s.WaitForSpeakerResults        : STATE: WAIT_FOR_SPEAKER_RESULTS - CONVERSATIONID: conversation-8-28
+2020-01-05 16:51:56.304  INFO 16863 --- [       Margaret] c.a.p.b.c.s.WaitForSpeakerResults        : STATE: WAIT_FOR_SPEAKER_RESULTS - CONVERSATIONID: conversation-8-28
+2020-01-05 16:51:56.305  INFO 16863 --- [    GameAgent-1] c.a.g.b.chat.InformSubscribersOfChat     : ((= (iota (sequence ?speaker ?phrase) ("Said To" ?speaker ?phrase)) (sequence (agent-identifier :name Freddie@chess-platform) "Wait no now BISHOP could get hurt!")))
+2020-01-05 16:51:56.305  INFO 16863 --- [     John-Smith] c.a.p.b.c.s.WaitForSpeakerResults        : STATE: WAIT_FOR_SPEAKER_RESULTS - CONVERSATIONID: conversation-8-28
+2020-01-05 16:51:56.306  INFO 16863 --- [            Ann] c.a.p.b.c.s.WaitForSpeakerResults        : Rejected for Speaker
+2020-01-05 16:51:56.306  INFO 16863 --- [   Sean-Connery] c.a.p.b.c.s.WaitForSpeakerResults        : Rejected for Speaker
+2020-01-05 16:51:56.306  INFO 16863 --- [            Bob] c.a.p.b.c.s.WaitForSpeakerResults        : Rejected for Speaker
+2020-01-05 16:51:56.306  INFO 16863 --- [ Austin-Russell] c.a.p.b.c.s.WaitForSpeakerResults        : Rejected for Speaker
+2020-01-05 16:51:56.306  INFO 16863 --- [    John-Bishop] c.a.p.b.c.s.WaitForSpeakerResults        : Rejected for Speaker
+2020-01-05 16:51:56.306  INFO 16863 --- [   Rook-Sanchez] c.a.p.b.c.s.WaitForSpeakerResults        : Rejected for Speaker
+2020-01-05 16:51:56.306  INFO 16863 --- [ Keira-Knightly] c.a.p.b.c.s.WaitForSpeakerResults        : Rejected for Speaker
+2020-01-05 16:51:56.306  INFO 16863 --- [         Robert] c.a.p.b.c.s.WaitForSpeakerResults        : Rejected for Speaker
+2020-01-05 16:51:56.306  INFO 16863 --- [         Brooke] c.a.p.b.c.s.WaitForSpeakerResults        : Rejected for Speaker
+2020-01-05 16:51:56.306  INFO 16863 --- [            Jim] c.a.p.b.c.s.WaitForSpeakerResults        : Rejected for Speaker
+2020-01-05 16:51:56.307  INFO 16863 --- [  Rick-Harrison] c.a.p.b.c.s.WaitForSpeakerResults        : Rejected for Speaker
+2020-01-05 16:51:56.307  INFO 16863 --- [ichard-Harrison] c.a.p.b.c.s.WaitForSpeakerResults        : Rejected for Speaker
+2020-01-05 16:51:56.307  INFO 16863 --- [        Freddie] c.a.p.b.c.s.WaitForSpeakerResults        : STATE: WAIT_FOR_SPEAKER_RESULTS - CONVERSATIONID: conversation-8-28
+2020-01-05 16:51:56.307  INFO 16863 --- [        Francis] c.a.p.b.c.s.WaitForSpeakerResults        : Rejected for Speaker
+2020-01-05 16:51:56.307  INFO 16863 --- [       Margaret] c.a.p.b.c.s.WaitForSpeakerResults        : Rejected for Speaker
+2020-01-05 16:51:56.307  INFO 16863 --- [        Freddie] c.a.p.b.c.s.WaitForSpeakerResults        : Rejected for Speaker
+2020-01-05 16:51:56.308  INFO 16863 --- [     John-Smith] c.a.p.b.c.statebehaviours.Initial        : STATE: INITIAL - CONVERSATIONID: conversation-8-29
+2020-01-05 16:51:56.308  INFO 16863 --- [            Ann] c.a.p.b.c.statebehaviours.Initial        : STATE: INITIAL - CONVERSATIONID: conversation-8-29
+2020-01-05 16:51:56.308  INFO 16863 --- [        Freddie] c.a.p.b.c.statebehaviours.Initial        : STATE: INITIAL - CONVERSATIONID: conversation-8-29
+2020-01-05 16:51:56.308  INFO 16863 --- [ Austin-Russell] c.a.p.b.c.statebehaviours.Initial        : STATE: INITIAL - CONVERSATIONID: conversation-8-29
+2020-01-05 16:51:56.308  INFO 16863 --- [    John-Bishop] c.a.p.b.c.statebehaviours.Initial        : STATE: INITIAL - CONVERSATIONID: conversation-8-29
+2020-01-05 16:51:56.308  INFO 16863 --- [   Sean-Connery] c.a.p.b.c.statebehaviours.Initial        : STATE: INITIAL - CONVERSATIONID: conversation-8-29
+2020-01-05 16:51:56.308  INFO 16863 --- [            Ann] c.a.p.b.c.statebehaviours.Listen         : STATE: LISTEN - CONVERSATIONID: conversation-8-29
+2020-01-05 16:51:56.308  INFO 16863 --- [        Freddie] c.a.p.b.c.statebehaviours.Listen         : STATE: LISTEN - CONVERSATIONID: conversation-8-29
+2020-01-05 16:51:56.308  INFO 16863 --- [   Rook-Sanchez] c.a.p.b.c.statebehaviours.Initial        : STATE: INITIAL - CONVERSATIONID: conversation-8-29
+2020-01-05 16:51:56.308  INFO 16863 --- [ Austin-Russell] c.a.p.b.c.statebehaviours.Listen         : STATE: LISTEN - CONVERSATIONID: conversation-8-29
+2020-01-05 16:51:56.309  INFO 16863 --- [   Sean-Connery] c.a.p.b.c.statebehaviours.Listen         : STATE: LISTEN - CONVERSATIONID: conversation-8-29
+2020-01-05 16:51:56.308  INFO 16863 --- [    John-Bishop] c.a.p.b.c.statebehaviours.Listen         : STATE: LISTEN - CONVERSATIONID: conversation-8-29
+2020-01-05 16:51:56.309  INFO 16863 --- [   Rook-Sanchez] c.a.p.b.c.statebehaviours.Listen         : STATE: LISTEN - CONVERSATIONID: conversation-8-29
+2020-01-05 16:51:56.309  INFO 16863 --- [        Francis] c.a.p.b.c.statebehaviours.Initial        : STATE: INITIAL - CONVERSATIONID: conversation-8-29
+2020-01-05 16:51:56.309  INFO 16863 --- [        Francis] c.a.p.b.c.statebehaviours.Listen         : STATE: LISTEN - CONVERSATIONID: conversation-8-29
+2020-01-05 16:51:56.309  INFO 16863 --- [     John-Smith] c.a.p.b.c.statebehaviours.Speak          : STATE: SPEAK - CONVERSATIONID: conversation-8-29
+2020-01-05 16:51:56.309  INFO 16863 --- [         Robert] c.a.p.b.c.statebehaviours.Initial        : STATE: INITIAL - CONVERSATIONID: conversation-8-29
+2020-01-05 16:51:56.309  INFO 16863 --- [ Keira-Knightly] c.a.p.b.c.statebehaviours.Initial        : STATE: INITIAL - CONVERSATIONID: conversation-8-29
+2020-01-05 16:51:56.309  INFO 16863 --- [         Brooke] c.a.p.b.c.statebehaviours.Initial        : STATE: INITIAL - CONVERSATIONID: conversation-8-29
+2020-01-05 16:51:56.309  INFO 16863 --- [       Margaret] c.a.p.b.c.statebehaviours.Initial        : STATE: INITIAL - CONVERSATIONID: conversation-8-29
+2020-01-05 16:51:56.309  INFO 16863 --- [ichard-Harrison] c.a.p.b.c.statebehaviours.Initial        : STATE: INITIAL - CONVERSATIONID: conversation-8-29
+2020-01-05 16:51:56.309  INFO 16863 --- [  Rick-Harrison] c.a.p.b.c.statebehaviours.Initial        : STATE: INITIAL - CONVERSATIONID: conversation-8-29
+2020-01-05 16:51:56.309  INFO 16863 --- [         Robert] c.a.p.b.c.statebehaviours.Listen         : STATE: LISTEN - CONVERSATIONID: conversation-8-29
+2020-01-05 16:51:56.309  INFO 16863 --- [ Keira-Knightly] c.a.p.b.c.statebehaviours.Listen         : STATE: LISTEN - CONVERSATIONID: conversation-8-29
+2020-01-05 16:51:56.310  INFO 16863 --- [         Brooke] c.a.p.b.c.statebehaviours.Listen         : STATE: LISTEN - CONVERSATIONID: conversation-8-29
+2020-01-05 16:51:56.310  INFO 16863 --- [       Margaret] c.a.p.b.c.statebehaviours.Listen         : STATE: LISTEN - CONVERSATIONID: conversation-8-29
+2020-01-05 16:51:56.310  INFO 16863 --- [ichard-Harrison] c.a.p.b.c.statebehaviours.Listen         : STATE: LISTEN - CONVERSATIONID: conversation-8-29
+2020-01-05 16:51:56.310  INFO 16863 --- [            Bob] c.a.p.b.c.statebehaviours.Initial        : STATE: INITIAL - CONVERSATIONID: conversation-8-29
+2020-01-05 16:51:56.310  INFO 16863 --- [  Rick-Harrison] c.a.p.b.c.statebehaviours.Listen         : STATE: LISTEN - CONVERSATIONID: conversation-8-29
+2020-01-05 16:51:56.310  INFO 16863 --- [            Jim] c.a.p.b.c.statebehaviours.Initial        : STATE: INITIAL - CONVERSATIONID: conversation-8-29
+2020-01-05 16:51:56.310  INFO 16863 --- [            Bob] c.a.p.b.c.statebehaviours.Listen         : STATE: LISTEN - CONVERSATIONID: conversation-8-29
+2020-01-05 16:51:56.310  INFO 16863 --- [            Jim] c.a.p.b.c.statebehaviours.Listen         : STATE: LISTEN - CONVERSATIONID: conversation-8-29
+2020-01-05 16:51:56.312  INFO 16863 --- [     John-Smith] c.a.p.b.c.statebehaviours.Speak          : sleeping...
+2020-01-05 16:51:59.314  INFO 16863 --- [     John-Smith] c.a.p.b.c.s.StartSpeakerElection         : STATE: START_SPEAKER_ELECTION - CONVERSATIONID: conversation-8-29
+2020-01-05 16:51:59.314  INFO 16863 --- [        Freddie] c.a.p.b.c.s.WaitForSpeakerCFP            : STATE: WAIT_FOR_SPEAKER_CFP - CONVERSATIONID: conversation-8-29
+2020-01-05 16:51:59.314  INFO 16863 --- [            Jim] c.a.p.b.c.s.WaitForSpeakerCFP            : STATE: WAIT_FOR_SPEAKER_CFP - CONVERSATIONID: conversation-8-29
+2020-01-05 16:51:59.314  INFO 16863 --- [   Rook-Sanchez] c.a.p.b.c.s.WaitForSpeakerCFP            : STATE: WAIT_FOR_SPEAKER_CFP - CONVERSATIONID: conversation-8-29
+2020-01-05 16:51:59.314  INFO 16863 --- [         Robert] c.a.p.b.c.s.WaitForSpeakerCFP            : STATE: WAIT_FOR_SPEAKER_CFP - CONVERSATIONID: conversation-8-29
+2020-01-05 16:51:59.314  INFO 16863 --- [ichard-Harrison] c.a.p.b.c.s.WaitForSpeakerCFP            : STATE: WAIT_FOR_SPEAKER_CFP - CONVERSATIONID: conversation-8-29
+2020-01-05 16:51:59.315  INFO 16863 --- [            Ann] c.a.p.b.c.s.WaitForSpeakerCFP            : STATE: WAIT_FOR_SPEAKER_CFP - CONVERSATIONID: conversation-8-29
+2020-01-05 16:51:59.315  INFO 16863 --- [            Bob] c.a.p.b.c.s.WaitForSpeakerCFP            : STATE: WAIT_FOR_SPEAKER_CFP - CONVERSATIONID: conversation-8-29
+2020-01-05 16:51:59.315  INFO 16863 --- [         Brooke] c.a.p.b.c.s.WaitForSpeakerCFP            : STATE: WAIT_FOR_SPEAKER_CFP - CONVERSATIONID: conversation-8-29
+2020-01-05 16:51:59.315  INFO 16863 --- [ Austin-Russell] c.a.p.b.c.s.WaitForSpeakerCFP            : STATE: WAIT_FOR_SPEAKER_CFP - CONVERSATIONID: conversation-8-29
+2020-01-05 16:51:59.315  INFO 16863 --- [     John-Smith] c.a.p.b.c.statebehaviours.ChooseSpeaker  : STATE: CHOOSE_SPEAKER - CONVERSATIONID: conversation-8-29
+2020-01-05 16:51:59.315  INFO 16863 --- [    John-Bishop] c.a.p.b.c.s.WaitForSpeakerCFP            : STATE: WAIT_FOR_SPEAKER_CFP - CONVERSATIONID: conversation-8-29
+2020-01-05 16:51:59.315  INFO 16863 --- [   Rook-Sanchez] c.a.p.b.c.s.WaitForSpeakerResults        : STATE: WAIT_FOR_SPEAKER_RESULTS - CONVERSATIONID: conversation-8-29
+2020-01-05 16:51:59.314  INFO 16863 --- [       Margaret] c.a.p.b.c.s.WaitForSpeakerCFP            : STATE: WAIT_FOR_SPEAKER_CFP - CONVERSATIONID: conversation-8-29
+2020-01-05 16:51:59.315  INFO 16863 --- [ Keira-Knightly] c.a.p.b.c.s.WaitForSpeakerCFP            : STATE: WAIT_FOR_SPEAKER_CFP - CONVERSATIONID: conversation-8-29
+2020-01-05 16:51:59.315  INFO 16863 --- [  Rick-Harrison] c.a.p.b.c.s.WaitForSpeakerCFP            : STATE: WAIT_FOR_SPEAKER_CFP - CONVERSATIONID: conversation-8-29
+2020-01-05 16:51:59.316  INFO 16863 --- [            Bob] c.a.p.b.c.s.WaitForSpeakerResults        : STATE: WAIT_FOR_SPEAKER_RESULTS - CONVERSATIONID: conversation-8-29
+2020-01-05 16:51:59.315  INFO 16863 --- [        Francis] c.a.p.b.c.s.WaitForSpeakerCFP            : STATE: WAIT_FOR_SPEAKER_CFP - CONVERSATIONID: conversation-8-29
+2020-01-05 16:51:59.316  INFO 16863 --- [         Brooke] c.a.p.b.c.s.WaitForSpeakerResults        : STATE: WAIT_FOR_SPEAKER_RESULTS - CONVERSATIONID: conversation-8-29
+2020-01-05 16:51:59.316  INFO 16863 --- [        Freddie] c.a.p.b.c.s.WaitForSpeakerResults        : STATE: WAIT_FOR_SPEAKER_RESULTS - CONVERSATIONID: conversation-8-29
+2020-01-05 16:51:59.316  INFO 16863 --- [         Robert] c.a.p.b.c.s.WaitForSpeakerResults        : STATE: WAIT_FOR_SPEAKER_RESULTS - CONVERSATIONID: conversation-8-29
+2020-01-05 16:51:59.316  INFO 16863 --- [   Sean-Connery] c.a.p.b.c.s.WaitForSpeakerCFP            : STATE: WAIT_FOR_SPEAKER_CFP - CONVERSATIONID: conversation-8-29
+2020-01-05 16:51:59.316  INFO 16863 --- [    John-Bishop] c.a.p.b.c.s.WaitForSpeakerResults        : STATE: WAIT_FOR_SPEAKER_RESULTS - CONVERSATIONID: conversation-8-29
+2020-01-05 16:51:59.316  INFO 16863 --- [            Ann] c.a.p.b.c.s.WaitForSpeakerResults        : STATE: WAIT_FOR_SPEAKER_RESULTS - CONVERSATIONID: conversation-8-29
+2020-01-05 16:51:59.316  INFO 16863 --- [            Jim] c.a.p.b.c.s.WaitForSpeakerResults        : STATE: WAIT_FOR_SPEAKER_RESULTS - CONVERSATIONID: conversation-8-29
+2020-01-05 16:51:59.316  INFO 16863 --- [  Rick-Harrison] c.a.p.b.c.s.WaitForSpeakerResults        : STATE: WAIT_FOR_SPEAKER_RESULTS - CONVERSATIONID: conversation-8-29
+2020-01-05 16:51:59.316  INFO 16863 --- [ Keira-Knightly] c.a.p.b.c.s.WaitForSpeakerResults        : STATE: WAIT_FOR_SPEAKER_RESULTS - CONVERSATIONID: conversation-8-29
+2020-01-05 16:51:59.316  INFO 16863 --- [ichard-Harrison] c.a.p.b.c.s.WaitForSpeakerResults        : STATE: WAIT_FOR_SPEAKER_RESULTS - CONVERSATIONID: conversation-8-29
+2020-01-05 16:51:59.316  INFO 16863 --- [ Austin-Russell] c.a.p.b.c.s.WaitForSpeakerResults        : STATE: WAIT_FOR_SPEAKER_RESULTS - CONVERSATIONID: conversation-8-29
+2020-01-05 16:51:59.316  INFO 16863 --- [       Margaret] c.a.p.b.c.s.WaitForSpeakerResults        : STATE: WAIT_FOR_SPEAKER_RESULTS - CONVERSATIONID: conversation-8-29
+2020-01-05 16:51:59.316  INFO 16863 --- [    GameAgent-1] c.a.g.behaviours.gameplay.WaitForMove    : No move received
+2020-01-05 16:51:59.316  INFO 16863 --- [   Sean-Connery] c.a.p.b.c.s.WaitForSpeakerResults        : STATE: WAIT_FOR_SPEAKER_RESULTS - CONVERSATIONID: conversation-8-29
+2020-01-05 16:51:59.316  INFO 16863 --- [        Francis] c.a.p.b.c.s.WaitForSpeakerResults        : STATE: WAIT_FOR_SPEAKER_RESULTS - CONVERSATIONID: conversation-8-29
+2020-01-05 16:51:59.317  INFO 16863 --- [    GameAgent-1] c.a.g.b.chat.InformSubscribersOfChat     : ((= (iota (sequence ?speaker ?phrase) ("Said To" ?speaker ?phrase)) (sequence (agent-identifier :name John-Smith@chess-platform) "Looks like your PAWN is in trouble!")))
+2020-01-05 16:51:59.317  INFO 16863 --- [ichard-Harrison] c.a.p.b.c.s.WaitForSpeakerResults        : Rejected for Speaker
+2020-01-05 16:51:59.317  INFO 16863 --- [ Keira-Knightly] c.a.p.b.c.s.WaitForSpeakerResults        : Rejected for Speaker
+2020-01-05 16:51:59.317  INFO 16863 --- [   Rook-Sanchez] c.a.p.b.c.s.WaitForSpeakerResults        : Rejected for Speaker
+2020-01-05 16:51:59.317  INFO 16863 --- [         Brooke] c.a.p.b.c.s.WaitForSpeakerResults        : Rejected for Speaker
+2020-01-05 16:51:59.317  INFO 16863 --- [ Austin-Russell] c.a.p.b.c.s.WaitForSpeakerResults        : Rejected for Speaker
+2020-01-05 16:51:59.317  INFO 16863 --- [   Sean-Connery] c.a.p.b.c.s.WaitForSpeakerResults        : Rejected for Speaker
+2020-01-05 16:51:59.318  INFO 16863 --- [        Freddie] c.a.p.b.c.s.WaitForSpeakerResults        : Rejected for Speaker
+2020-01-05 16:51:59.318  INFO 16863 --- [         Robert] c.a.p.b.c.s.WaitForSpeakerResults        : Rejected for Speaker
+2020-01-05 16:51:59.318  INFO 16863 --- [        Francis] c.a.p.b.c.s.WaitForSpeakerResults        : Rejected for Speaker
+2020-01-05 16:51:59.318  INFO 16863 --- [            Jim] c.a.p.b.c.s.WaitForSpeakerResults        : Rejected for Speaker
+2020-01-05 16:51:59.318  INFO 16863 --- [            Bob] c.a.p.b.c.s.WaitForSpeakerResults        : Rejected for Speaker
+2020-01-05 16:51:59.318  INFO 16863 --- [    John-Bishop] c.a.p.b.c.s.WaitForSpeakerResults        : Rejected for Speaker
+2020-01-05 16:51:59.318  INFO 16863 --- [            Ann] c.a.p.b.c.s.WaitForSpeakerResults        : Rejected for Speaker
+2020-01-05 16:51:59.318  INFO 16863 --- [     John-Smith] c.a.p.b.c.s.WaitForSpeakerResults        : STATE: WAIT_FOR_SPEAKER_RESULTS - CONVERSATIONID: conversation-8-29
+2020-01-05 16:51:59.318  INFO 16863 --- [  Rick-Harrison] c.a.p.b.c.s.WaitForSpeakerResults        : Rejected for Speaker
+2020-01-05 16:51:59.318  INFO 16863 --- [     John-Smith] c.a.p.b.c.s.WaitForSpeakerResults        : Rejected for Speaker
+2020-01-05 16:51:59.319  INFO 16863 --- [       Margaret] c.a.p.b.c.statebehaviours.Initial        : STATE: INITIAL - CONVERSATIONID: conversation-8-30
+2020-01-05 16:51:59.319  INFO 16863 --- [         Brooke] c.a.p.b.c.statebehaviours.Initial        : STATE: INITIAL - CONVERSATIONID: conversation-8-30
+2020-01-05 16:51:59.319  INFO 16863 --- [ichard-Harrison] c.a.p.b.c.statebehaviours.Initial        : STATE: INITIAL - CONVERSATIONID: conversation-8-30
+2020-01-05 16:51:59.319  INFO 16863 --- [        Francis] c.a.p.b.c.statebehaviours.Initial        : STATE: INITIAL - CONVERSATIONID: conversation-8-30
+2020-01-05 16:51:59.319  INFO 16863 --- [         Brooke] c.a.p.b.c.statebehaviours.Listen         : STATE: LISTEN - CONVERSATIONID: conversation-8-30
+2020-01-05 16:51:59.319  INFO 16863 --- [        Francis] c.a.p.b.c.statebehaviours.Listen         : STATE: LISTEN - CONVERSATIONID: conversation-8-30
+2020-01-05 16:51:59.319  INFO 16863 --- [       Margaret] c.a.p.b.c.statebehaviours.Speak          : STATE: SPEAK - CONVERSATIONID: conversation-8-30
+2020-01-05 16:51:59.319  INFO 16863 --- [   Sean-Connery] c.a.p.b.c.statebehaviours.Initial        : STATE: INITIAL - CONVERSATIONID: conversation-8-30
+2020-01-05 16:51:59.319  INFO 16863 --- [    John-Bishop] c.a.p.b.c.statebehaviours.Initial        : STATE: INITIAL - CONVERSATIONID: conversation-8-30
+2020-01-05 16:51:59.319  INFO 16863 --- [ichard-Harrison] c.a.p.b.c.statebehaviours.Listen         : STATE: LISTEN - CONVERSATIONID: conversation-8-30
+2020-01-05 16:51:59.319  INFO 16863 --- [ Keira-Knightly] c.a.p.b.c.statebehaviours.Initial        : STATE: INITIAL - CONVERSATIONID: conversation-8-30
+2020-01-05 16:51:59.319  INFO 16863 --- [   Rook-Sanchez] c.a.p.b.c.statebehaviours.Initial        : STATE: INITIAL - CONVERSATIONID: conversation-8-30
+2020-01-05 16:51:59.319  INFO 16863 --- [            Bob] c.a.p.b.c.statebehaviours.Initial        : STATE: INITIAL - CONVERSATIONID: conversation-8-30
+2020-01-05 16:51:59.319  INFO 16863 --- [   Sean-Connery] c.a.p.b.c.statebehaviours.Listen         : STATE: LISTEN - CONVERSATIONID: conversation-8-30
+2020-01-05 16:51:59.319  INFO 16863 --- [         Robert] c.a.p.b.c.statebehaviours.Initial        : STATE: INITIAL - CONVERSATIONID: conversation-8-30
+2020-01-05 16:51:59.319  INFO 16863 --- [ Austin-Russell] c.a.p.b.c.statebehaviours.Initial        : STATE: INITIAL - CONVERSATIONID: conversation-8-30
+2020-01-05 16:51:59.319  INFO 16863 --- [            Jim] c.a.p.b.c.statebehaviours.Initial        : STATE: INITIAL - CONVERSATIONID: conversation-8-30
+2020-01-05 16:51:59.319  INFO 16863 --- [        Freddie] c.a.p.b.c.statebehaviours.Initial        : STATE: INITIAL - CONVERSATIONID: conversation-8-30
+2020-01-05 16:51:59.319  INFO 16863 --- [  Rick-Harrison] c.a.p.b.c.statebehaviours.Initial        : STATE: INITIAL - CONVERSATIONID: conversation-8-30
+2020-01-05 16:51:59.319  INFO 16863 --- [     John-Smith] c.a.p.b.c.statebehaviours.Initial        : STATE: INITIAL - CONVERSATIONID: conversation-8-30
+2020-01-05 16:51:59.319  INFO 16863 --- [            Bob] c.a.p.b.c.statebehaviours.Listen         : STATE: LISTEN - CONVERSATIONID: conversation-8-30
+2020-01-05 16:51:59.319  INFO 16863 --- [    John-Bishop] c.a.p.b.c.statebehaviours.Listen         : STATE: LISTEN - CONVERSATIONID: conversation-8-30
+2020-01-05 16:51:59.319  INFO 16863 --- [ Austin-Russell] c.a.p.b.c.statebehaviours.Listen         : STATE: LISTEN - CONVERSATIONID: conversation-8-30
+2020-01-05 16:51:59.319  INFO 16863 --- [   Rook-Sanchez] c.a.p.b.c.statebehaviours.Listen         : STATE: LISTEN - CONVERSATIONID: conversation-8-30
+2020-01-05 16:51:59.319  INFO 16863 --- [        Freddie] c.a.p.b.c.statebehaviours.Listen         : STATE: LISTEN - CONVERSATIONID: conversation-8-30
+2020-01-05 16:51:59.319  INFO 16863 --- [  Rick-Harrison] c.a.p.b.c.statebehaviours.Listen         : STATE: LISTEN - CONVERSATIONID: conversation-8-30
+2020-01-05 16:51:59.319  INFO 16863 --- [ Keira-Knightly] c.a.p.b.c.statebehaviours.Listen         : STATE: LISTEN - CONVERSATIONID: conversation-8-30
+2020-01-05 16:51:59.319  INFO 16863 --- [            Jim] c.a.p.b.c.statebehaviours.Listen         : STATE: LISTEN - CONVERSATIONID: conversation-8-30
+2020-01-05 16:51:59.319  INFO 16863 --- [         Robert] c.a.p.b.c.statebehaviours.Listen         : STATE: LISTEN - CONVERSATIONID: conversation-8-30
+2020-01-05 16:51:59.319  INFO 16863 --- [     John-Smith] c.a.p.b.c.statebehaviours.Listen         : STATE: LISTEN - CONVERSATIONID: conversation-8-30
+2020-01-05 16:51:59.320  INFO 16863 --- [            Ann] c.a.p.b.c.statebehaviours.Initial        : STATE: INITIAL - CONVERSATIONID: conversation-8-30
+2020-01-05 16:51:59.320  INFO 16863 --- [            Ann] c.a.p.b.c.statebehaviours.Listen         : STATE: LISTEN - CONVERSATIONID: conversation-8-30
+2020-01-05 16:51:59.320  INFO 16863 --- [       Margaret] c.a.p.b.c.statebehaviours.Speak          : sleeping...

@@ -156,7 +156,7 @@ public class ConversationPlannerImpl implements ConversationPlanner {
         }
     }
 
-    private boolean containsMoveICanPerform(Set<MoveResponse> moveResponses) {
+    private boolean containsMoveICanPerform(Collection<MoveResponse> moveResponses) {
         var myPos = agent.getPieceContext().getMyPiece().getPosition();
         return moveResponses.stream()
                 .map(MoveResponse::getMove)
