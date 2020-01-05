@@ -7,8 +7,6 @@ import chessagents.chess.GameState;
 import chessagents.ontology.schemas.concepts.ChessPiece;
 import chessagents.ontology.schemas.concepts.PieceMove;
 
-import java.util.function.Predicate;
-
 public class MaximiseEnemyThreatenedPieces extends Value {
     public MaximiseEnemyThreatenedPieces() {
         super("Maximise enemy threatened pieces");

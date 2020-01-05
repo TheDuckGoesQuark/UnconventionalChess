@@ -33,7 +33,8 @@ public class VoiceOpinionProposeAlternative extends ConversationAction {
                 alternativeMoveResponse = new ProposeMove(pieceAgent, turnDiscussion).perform().getMoveResponse().get();
                 break;
             case 1:
-                alternativeMoveResponse = new ProposeMoveWithJustification(pieceAgent, turnDiscussion).perform().getMoveResponse().get();
+                alternativeMoveResponse = new ProposeMoveWithJustification(pieceAgent, turnDiscussion).perform().getMoveResponse()
+                        .orElseGet(() -> new RevisitMove(pieceAgent, turnDiscussion).perform().getMoveResponse().get());
                 break;
         }
 

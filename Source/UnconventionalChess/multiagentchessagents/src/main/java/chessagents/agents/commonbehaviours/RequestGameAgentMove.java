@@ -50,11 +50,13 @@ public class RequestGameAgentMove extends SimpleBehaviour {
     }
 
     private void handleRefuse(ACLMessage refuse) {
-        logger.warning("Game agent refused to make move! Reason: " + refuse.getContent());
+        logger.warning("Game agent refused to make move" + move.getMove().toString() + "! Reason: " + refuse.getContent());
+        this.reset();
     }
 
     private void handleNotUnderstood(ACLMessage notUnderstood) {
         logger.warning("Game agent couldn't understand request to make move! Reason: " + notUnderstood.getContent());
+        this.reset();
     }
 
     private void handleInform(ACLMessage inform) {
@@ -62,7 +64,8 @@ public class RequestGameAgentMove extends SimpleBehaviour {
     }
 
     private void handleFailure(ACLMessage failure) {
-        logger.warning("Game agent failed to make move: " + failure.getContent());
+        logger.warning("Game agent failed to make move: " + move.getMove().toString() + failure.getContent());
+        this.reset();
     }
 
     @Override
@@ -116,13 +119,23 @@ public class RequestGameAgentMove extends SimpleBehaviour {
                 break;
             case ACLMessage.REFUSE:
                 this.handleRefuse(response);
-                state = DONE;
                 break;
             case ACLMessage.NOT_UNDERSTOOD:
                 this.handleNotUnderstood(response);
-                state = DONE;
                 break;
         }
+    }
+
+    @Override
+    public void reset() {
+        try {
+            Thread.sleep(1000);
+        } catch (Exception e) {
+
+        }
+        state = SENDING_REQUEST;
+        super.reset();
+
     }
 
     @Override

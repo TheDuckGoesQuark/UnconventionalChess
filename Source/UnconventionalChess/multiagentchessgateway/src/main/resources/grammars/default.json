@@ -120,6 +120,9 @@
   "<ReactFriendlyPieceEscaped>": [
     "Thank goodness, `getEscapingPiece()` is safe now!"
   ],
+  "<ReactFriendlyPieceProtecting>": [
+    "Nice move `getMovingPiece()`, `getEscapingPiece()` is safe now!"
+  ],
   "<ReactFriendlyPieceThreatenedOnTheirMove>": [
     "Oh no they're going after `getThreatenedPiece()`"
   ],

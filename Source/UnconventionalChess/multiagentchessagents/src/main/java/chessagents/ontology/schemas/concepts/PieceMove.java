@@ -50,4 +50,6 @@ public class PieceMove implements Concept {
     public int hashCode() {
         return Objects.hash(source, target);
     }
+
+
 }

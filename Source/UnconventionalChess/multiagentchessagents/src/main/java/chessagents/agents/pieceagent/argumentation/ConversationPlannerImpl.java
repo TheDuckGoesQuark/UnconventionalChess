@@ -8,11 +8,14 @@ import chessagents.ontology.schemas.actions.MakeMove;
 import chessagents.ontology.schemas.concepts.Colour;
 import chessagents.ontology.schemas.concepts.PieceMove;
 import chessagents.util.RandomUtil;
+import jade.util.Logger;
+import rita.wordnet.jwnl.wndata.Exc;
 
 import java.util.*;
 
 public class ConversationPlannerImpl implements ConversationPlanner {
 
+    private final Logger logger = Logger.getMyLogger(getClass().getName());
     /**
      * Agent that this planner is for
      */
@@ -51,14 +54,21 @@ public class ConversationPlannerImpl implements ConversationPlanner {
 
     @Override
     public ConversationMessage produceMessage() {
-        final ConversationMessage conversationMessage;
+        ConversationMessage conversationMessage = null;
 
         // if not our turn, then we can react to last move or just say things
         if (!isMyTurnToGo()) {
             conversationMessage = notMyTurnAction();
         } else {
-            var action = chooseNextAction();
-            conversationMessage = action.perform();
+            try {
+                var action = chooseNextAction();
+                conversationMessage = action.perform();
+            } catch (Exception e) {
+                logger.warning(e.toString());
+                e.printStackTrace();
+                System.out.println("SAD");
+                throw e;
+            }
         }
 
         // if choice of next message involves agreeing and performing the move,
@@ -314,7 +324,7 @@ public class ConversationPlannerImpl implements ConversationPlanner {
         var previousState = history.getPreviousState();
         var currentState = pieceContext.getGameState();
 
-        var myColour = pieceContext.getMyPiece().getColour().flip();
+        var myColour = pieceContext.getMyPiece().getColour();
         return previousState.getThreatenedForColour(myColour).size()
                 < currentState.getThreatenedForColour(myColour).size();
     }

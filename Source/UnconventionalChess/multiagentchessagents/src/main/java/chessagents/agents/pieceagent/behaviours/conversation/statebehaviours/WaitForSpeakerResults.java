@@ -45,7 +45,6 @@ public class WaitForSpeakerResults extends ConversationStateBehaviour {
                     setTransition(ConversationTransition.SPEAKER_CONFIRMED);
                     break;
                 case ACLMessage.REJECT_PROPOSAL:
-                    logger.info("Rejected for Speaker");
                     break;
                 case ACLMessage.INFORM:
                     convContext.setSpeaker(extractNewSpeaker(message));

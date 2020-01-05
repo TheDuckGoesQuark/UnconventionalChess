@@ -8,12 +8,13 @@ import chessagents.agents.pieceagent.behaviours.conversation.ConversationTransit
 import chessagents.agents.pieceagent.behaviours.conversation.SendChatMessage;
 import chessagents.ontology.schemas.concepts.ChessPiece;
 import jade.lang.acl.ACLMessage;
+import rita.wordnet.jwnl.wndata.Exc;
 
 import java.io.IOException;
 
 public class Speak extends ConversationStateBehaviour {
 
-    private static final long SPEAK_DELAY = 3000;
+    private static final long SPEAK_DELAY = 200;
 
     public Speak(PieceAgent a, ConversationContext conversationContext) {
         super(a, ConversationState.SPEAK, conversationContext);
@@ -25,6 +26,7 @@ public class Speak extends ConversationStateBehaviour {
         syntheticDelay();
         sendChat(message.getStatement());
         sendToAllMyAgents(message);
+        sendToAllMyAgents(new ConversationMessage("", myAgent.getAID()));
         setTransition(ConversationTransition.SPOKE);
     }
 

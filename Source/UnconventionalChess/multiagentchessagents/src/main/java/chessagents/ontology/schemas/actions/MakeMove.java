@@ -21,4 +21,5 @@ public class MakeMove implements AgentAction {
     public void setMove(PieceMove move) {
         this.move = move;
     }
+
 }

@@ -14,7 +14,7 @@ public class MaximiseMyMoves extends Value {
 
     @Override
     public MoveResponse getMoveResponse(ChessPiece chessPiece, GameState gameState, PieceMove action) {
-        var myPosition = chessPiece.getPosition().getCoordinates();
+        var myPosition = chessPiece.getPosition();
 
         if (action.getSource().equals(myPosition)) {
             return MoveResponse.buildResponse(action, Opinion.LIKE, new Reasoning(this, "involve me"));

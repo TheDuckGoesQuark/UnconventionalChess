@@ -29,7 +29,7 @@ public class StartSpeakerElection extends ConversationStateBehaviour {
         var myAgent = getAgent();
         var context = myAgent.getPieceContext();
         var gameState = context.getGameState();
-        gameState.getAllAgentPiecesForColour(context.getMyPiece().getColour())
+        gameState.getAllAgentPiecesForColourOnBoard(context.getMyPiece().getColour())
                 .stream()
                 .map(ChessPiece::getAgentAID)
                 .forEach(cfp::addReceiver);
