@@ -36,7 +36,8 @@ public class ProposeMove extends ConversationAction {
         var possibleMoves = getProposableMoves();
         var pieceContext = pieceAgent.getPieceContext();
         var personality = pieceContext.getPersonality();
-        var responses = personality.getResponseToMoves(pieceContext.getMyPiece(), possibleMoves, pieceContext.getGameState());
+        var gameState = pieceContext.getGameState();
+        var responses = personality.getResponseToMoves(pieceContext.getMyPiece(), possibleMoves, gameState);
 
         var responsesByOpinion = new HashMap<Opinion, Set<MoveResponse>>();
         responsesByOpinion.put(Opinion.LIKE, new HashSet<>());
@@ -64,7 +65,7 @@ public class ProposeMove extends ConversationAction {
         var randomTraitChooser = new RandomUtil<Trait>();
         var reasoning = chosenResponse.getReasoning();
         var traitResponsible = randomTraitChooser.chooseRandom(personality.getTraitsThatHaveValue(reasoning.getValue()));
-        var movingPiece = getMovingPiece(chosenResponse, pieceAgent);
+        var movingPiece = getMovingPiece(chosenResponse, pieceAgent, gameState);
         var grammarVariableProvider = new GrammarVariableProviderImpl();
         grammarVariableProvider.setMoveResponse(chosenResponse);
         grammarVariableProvider.setMovingPiece(movingPiece);

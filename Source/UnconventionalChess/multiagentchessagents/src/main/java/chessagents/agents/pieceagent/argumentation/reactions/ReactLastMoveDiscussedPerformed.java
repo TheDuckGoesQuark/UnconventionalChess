@@ -35,7 +35,7 @@ public class ReactLastMoveDiscussedPerformed extends ConversationAction {
 
         var grammarVariableProvider = new GrammarVariableProviderImpl();
         grammarVariableProvider.setMoveResponse(responseToLastMove);
-        grammarVariableProvider.setMovingPiece(getMovingPiece(responseToLastMove, pieceAgent));
+        grammarVariableProvider.setMovingPiece(getMovingPiece(responseToLastMove, pieceAgent, previousGameState));
 
         var personality = pieceAgent.getPieceContext().getPersonality();
         var traitResponsible = new RandomUtil<Trait>().chooseRandom(personality.getTraits());

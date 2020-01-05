@@ -24,7 +24,8 @@ public class PerformMove extends ConversationAction {
         var move = turnDiscussion.getLastMoveDiscussed();
 
         var myPos = pieceAgent.getPieceContext().getMyPiece().getPosition();
-        var possibleMoves = pieceAgent.getPieceContext().getGameState().getAllLegalMoves()
+        var gameState = pieceAgent.getPieceContext().getGameState();
+        var possibleMoves = gameState.getAllLegalMoves()
                 .stream()
                 .filter(m -> m.getSource().equals(myPos))
                 .collect(Collectors.toSet());
@@ -35,7 +36,7 @@ public class PerformMove extends ConversationAction {
 
         var pieceContext = pieceAgent.getPieceContext();
         var personality = pieceContext.getPersonality();
-        var responses = personality.getResponseToMoves(pieceContext.getMyPiece(), Collections.singleton(move), pieceContext.getGameState());
+        var responses = personality.getResponseToMoves(pieceContext.getMyPiece(), Collections.singleton(move), gameState);
 
         var responsesByOpinion = new HashMap<Opinion, Set<MoveResponse>>();
         responsesByOpinion.put(Opinion.LIKE, new HashSet<>());
@@ -63,7 +64,7 @@ public class PerformMove extends ConversationAction {
 
         chosenResponse.setPerformed(true);
 
-        var movingPiece = getMovingPiece(chosenResponse, pieceAgent);
+        var movingPiece = getMovingPiece(chosenResponse, pieceAgent, gameState);
         var grammarVariableProvider = new GrammarVariableProviderImpl();
         grammarVariableProvider.setMoveResponse(chosenResponse);
         grammarVariableProvider.setMovingPiece(movingPiece);

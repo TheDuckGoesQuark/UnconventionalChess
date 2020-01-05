@@ -40,8 +40,10 @@ public class VoiceOpinionProposeCompromise extends ConversationAction {
 
                 var grammarVariableProvider = new GrammarVariableProviderImpl();
                 grammarVariableProvider.setMoveResponse(grammarResponse);
-                grammarVariableProvider.setMovingPiece(getMovingPiece(grammarResponse, pieceAgent));
-                grammarVariableProvider.setAlternativeMovingPiece(getMovingPiece(grammarResponse.getAlternativeResponse().get(), pieceAgent));
+
+                var gameState = pieceAgent.getPieceContext().getGameState();
+                grammarVariableProvider.setMovingPiece(getMovingPiece(grammarResponse, pieceAgent, gameState));
+                grammarVariableProvider.setAlternativeMovingPiece(getMovingPiece(grammarResponse.getAlternativeResponse().get(), pieceAgent, gameState));
 
                 var personality = pieceAgent.getPieceContext().getPersonality();
                 var traitResponsible = new RandomUtil<Trait>().chooseRandom(personality.getTraits());

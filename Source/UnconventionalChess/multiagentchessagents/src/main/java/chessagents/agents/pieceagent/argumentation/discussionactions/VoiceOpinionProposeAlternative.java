@@ -41,8 +41,10 @@ public class VoiceOpinionProposeAlternative extends ConversationAction {
 
         var grammarVariableProvider = new GrammarVariableProviderImpl();
         grammarVariableProvider.setMoveResponse(response);
-        grammarVariableProvider.setMovingPiece(getMovingPiece(response, pieceAgent));
-        grammarVariableProvider.setAlternativeMovingPiece(getMovingPiece(response.getAlternativeResponse().get(), pieceAgent));
+
+        var gameState = pieceAgent.getPieceContext().getGameState();
+        grammarVariableProvider.setMovingPiece(getMovingPiece(response, pieceAgent, gameState));
+        grammarVariableProvider.setAlternativeMovingPiece(getMovingPiece(response.getAlternativeResponse().get(), pieceAgent, gameState));
 
         return new ConversationMessage(traitResponsible.getRiGrammar().expandFrom(grammarTag(), grammarVariableProvider), response, pieceAgent.getAID());
     }

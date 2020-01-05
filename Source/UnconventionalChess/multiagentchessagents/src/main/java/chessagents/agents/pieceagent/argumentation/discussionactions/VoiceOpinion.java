@@ -24,7 +24,7 @@ public class VoiceOpinion extends ConversationAction {
         var randomTraitChooser = new RandomUtil<Trait>();
         var reasoning = response.getReasoning();
         var traitResponsible = randomTraitChooser.chooseRandom(personality.getTraitsThatHaveValue(reasoning.getValue()));
-        var movingPiece = getMovingPiece(response, pieceAgent);
+        var movingPiece = getMovingPiece(response, pieceAgent, pieceAgent.getPieceContext().getGameState());
         var grammarVariableProvider = new GrammarVariableProviderImpl();
         grammarVariableProvider.setMoveResponse(response);
         grammarVariableProvider.setMovingPiece(movingPiece);
