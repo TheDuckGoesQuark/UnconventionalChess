@@ -30,12 +30,11 @@ public class KeepAwayFromOtherPieces extends Value {
     private boolean piecesNearMe(GameState gameState, ChessPiece me) {
         var myPos = me.getPosition().getCoordinates();
 
-        return gameState.getAllPieces().stream()
+        return gameState.getAllPiecesOnBoard().stream()
                 .map(ChessPiece::getPosition)
                 .map(Position::getCoordinates)
                 .filter(p -> !p.equals(myPos))
-                .filter(otherPosition -> isAdjacent(myPos, otherPosition))
-                .count() > 0;
+                .anyMatch(otherPosition -> isAdjacent(myPos, otherPosition));
     }
 
     static class Coordinate {

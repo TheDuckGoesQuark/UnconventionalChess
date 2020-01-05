@@ -4,7 +4,10 @@ import chessagents.agents.pieceagent.PieceAgent;
 import chessagents.agents.pieceagent.argumentation.*;
 import chessagents.agents.pieceagent.personality.Trait;
 import chessagents.util.RandomUtil;
+import jade.util.Logger;
 import lombok.AllArgsConstructor;
+
+import java.util.NoSuchElementException;
 
 @AllArgsConstructor
 public class VoiceOpinionProposeCompromise extends ConversationAction {
@@ -23,7 +26,7 @@ public class VoiceOpinionProposeCompromise extends ConversationAction {
         // choose alternative using only moves that satisfy the other agents constraint
         // TODO consider all previous constraints??
         var otherAgentReasoning = lastMessage.getMoveResponse().get().getReasoning();
-        var optAltResponse = new ProposeCompromise(pieceAgent, turnDiscussion, otherAgentReasoning.getValue()).perform();
+        var optAltResponse = new ProposeCompromise(pieceAgent, turnDiscussion, otherAgentReasoning.getValue(), response).perform();
 
         return optAltResponse.getMoveResponse().map(alternativeResponse -> {
             // construct new move response with other agent reasoning for grammar variable provider

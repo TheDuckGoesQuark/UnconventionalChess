@@ -6,6 +6,7 @@ import chessagents.ontology.schemas.concepts.PieceMove;
 import chessagents.ontology.schemas.concepts.Position;
 import jade.content.OntoAID;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
@@ -153,5 +154,11 @@ public class GameState {
 
     public boolean isValidMove(PieceMove move) {
         return board.isValidMove(move);
+    }
+
+    public Set<ChessPiece> getAllPiecesOnBoard() {
+        return board.getPiecesFiltered(List.of(
+                PieceFilter.isNotCaptured()
+        ));
     }
 }

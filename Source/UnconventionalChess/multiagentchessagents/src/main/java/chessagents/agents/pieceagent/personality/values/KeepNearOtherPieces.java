@@ -30,7 +30,7 @@ public class KeepNearOtherPieces extends Value {
     private int countPiecesNearMe(GameState gameState, ChessPiece me) {
         var myPos = me.getPosition().getCoordinates();
 
-        return (int) gameState.getAllPieces().stream()
+        return (int) gameState.getAllPiecesOnBoard().stream()
                 .map(ChessPiece::getPosition)
                 .map(Position::getCoordinates)
                 .filter(p -> !p.equals(myPos))

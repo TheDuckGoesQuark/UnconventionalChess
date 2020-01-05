@@ -227,26 +227,14 @@ public class ChessBoard {
         return chessPieces;
     }
 
-    public Set<ChessPiece> getPiecesFiltered(List<Predicate<ChessPiece>> filterPredicates) {
+    public Set<ChessPiece> getPiecesFiltered(Collection<Predicate<ChessPiece>> filterPredicates) {
         var compositePredicate = filterPredicates.stream().reduce(w -> true, Predicate::and);
         return chessPieces.stream().filter(compositePredicate).collect(Collectors.toSet());
-    }
-
-    public Optional<PieceMove> getRandomMove() {
-        try {
-            MoveList moves = MoveGenerator.generateLegalMoves(board);
-            Move move = moves.get(random.nextInt(moves.size()));
-
-            return Optional.of(constructPieceMove(move));
-        } catch (MoveGeneratorException e) {
-            return Optional.empty();
-        }
     }
 
     public boolean gameIsOver() {
         return board.isMated() || board.isDraw() || board.isStaleMate() || board.isInsufficientMaterial();
     }
-
 
     public Optional<ChessPiece> getPieceAtPosition(Position position) {
         return getAllPieces().stream().filter(ChessPiece::isOnTheBoard).filter(p -> p.getPosition().equals(position)).findFirst();
