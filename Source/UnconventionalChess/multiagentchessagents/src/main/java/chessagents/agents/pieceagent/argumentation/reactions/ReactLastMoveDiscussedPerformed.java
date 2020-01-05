@@ -3,6 +3,7 @@ package chessagents.agents.pieceagent.argumentation.reactions;
 import chessagents.agents.pieceagent.PieceAgent;
 import chessagents.agents.pieceagent.argumentation.*;
 import chessagents.agents.pieceagent.personality.Trait;
+import chessagents.chess.GameState;
 import chessagents.ontology.schemas.concepts.PieceMove;
 import chessagents.util.RandomUtil;
 
@@ -25,10 +26,11 @@ public class ReactLastMoveDiscussedPerformed extends ConversationAction {
     @Override
     public ConversationMessage perform() {
         var moveMade = getMoveMade();
+        var previousGameState = getPreviousGameState();
         var pieceContext = pieceAgent.getPieceContext();
 
         // choose random from our responses to this move
-        var responses = pieceContext.getPersonality().getResponseToMoves(pieceContext.getMyPiece(), Set.of(moveMade), pieceContext.getGameState());
+        var responses = pieceContext.getPersonality().getResponseToMoves(pieceContext.getMyPiece(), Set.of(moveMade), previousGameState);
         responseToLastMove = new RandomUtil<MoveResponse>().chooseRandom(responses);
 
         var grammarVariableProvider = new GrammarVariableProviderImpl();
@@ -38,6 +40,10 @@ public class ReactLastMoveDiscussedPerformed extends ConversationAction {
         var personality = pieceAgent.getPieceContext().getPersonality();
         var traitResponsible = new RandomUtil<Trait>().chooseRandom(personality.getTraits());
         return new ConversationMessage(traitResponsible.getRiGrammar().expandFrom(grammarTag(), grammarVariableProvider), pieceAgent.getAID());
+    }
+
+    private GameState getPreviousGameState() {
+        return pieceAgent.getPieceContext().getGameHistory().getPreviousState();
     }
 
     private PieceMove getMoveMade() {

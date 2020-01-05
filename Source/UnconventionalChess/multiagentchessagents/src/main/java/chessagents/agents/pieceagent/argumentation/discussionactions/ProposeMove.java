@@ -65,7 +65,9 @@ public class ProposeMove extends ConversationAction {
         var reasoning = chosenResponse.getReasoning();
         var traitResponsible = randomTraitChooser.chooseRandom(personality.getTraitsThatHaveValue(reasoning.getValue()));
         var movingPiece = getMovingPiece(chosenResponse, pieceAgent);
-        var grammarVariableProvider = new GrammarVariableProviderImpl(chosenResponse, movingPiece, null);
+        var grammarVariableProvider = new GrammarVariableProviderImpl();
+        grammarVariableProvider.setMoveResponse(chosenResponse);
+        grammarVariableProvider.setMovingPiece(movingPiece);
 
         return new ConversationMessage(traitResponsible.getRiGrammar().expandFrom(grammarTag(), grammarVariableProvider), chosenResponse, pieceAgent.getAID());
     }

@@ -24,7 +24,7 @@ public class AskForProposals extends ConversationAction {
         var personality = pieceAgent.getPieceContext().getPersonality();
         var randomTraitChooser = new RandomUtil<Trait>();
         var traitResponsible = randomTraitChooser.chooseRandom(personality.getTraits());
-        var grammarVariableProvider = new GrammarVariableProviderImpl(null, null, null);
+        var grammarVariableProvider = new GrammarVariableProviderImpl();
         return new ConversationMessage(traitResponsible.getRiGrammar().expandFrom(grammarTag(), grammarVariableProvider), null, pieceAgent.getAID());
     }
 }

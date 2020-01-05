@@ -38,17 +38,26 @@ public class Personality {
      * @return the set of actions considered with this personalities response to them
      */
     public Set<MoveResponse> getResponseToMoves(ChessPiece chessPiece, Set<PieceMove> actions, GameState gameState) {
-        return actions.stream()
-                .map(action -> getMoveResponses(chessPiece, gameState, action))
-                .flatMap(Collection::stream)
-                .collect(Collectors.toSet());
+        Set<MoveResponse> set = new HashSet<>();
+        for (PieceMove action : actions) {
+            Set<MoveResponse> moveResponses = getMoveResponses(chessPiece, gameState, action);
+            for (MoveResponse moveRespons : moveResponses) {
+                set.add(moveRespons);
+            }
+        }
+        return set;
     }
 
     private Set<MoveResponse> getMoveResponses(ChessPiece chessPiece, GameState gameState, PieceMove action) {
-        return traits.stream()
-                .map(Trait::getAppealingValues)
-                .flatMap(values -> values.stream().map(value -> value.getMoveResponse(chessPiece, gameState, action)))
-                .collect(Collectors.toSet());
+        Set<MoveResponse> set = new HashSet<>();
+        for (Trait trait : traits) {
+            Set<Value> values = trait.getAppealingValues();
+            for (Value value : values) {
+                MoveResponse moveResponse = value.getMoveResponse(chessPiece, gameState, action);
+                set.add(moveResponse);
+            }
+        }
+        return set;
     }
 
     public Collection<Trait> getTraits() {

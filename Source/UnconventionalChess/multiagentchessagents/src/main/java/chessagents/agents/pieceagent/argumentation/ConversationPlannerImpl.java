@@ -100,6 +100,11 @@ public class ConversationPlannerImpl implements ConversationPlanner {
             setOfNextActions.add(new ProposeMove(agent, currentDiscussion));
             setOfNextActions.add(new ProposeMoveWithJustification(agent, currentDiscussion));
             setOfNextActions.add(new InitialAskForProposals(agent, currentDiscussion));
+
+            // if there are moves to respond to then we can do that too
+            if (turnDiscussions.size() > 1) {
+                setOfNextActions.addAll(reactToEnemyMoveActions());
+            }
         } else {
             if (currentDiscussion.proposalsCalledFor()) {
                 // allow agent to propose new or revisit previous move
@@ -132,10 +137,6 @@ public class ConversationPlannerImpl implements ConversationPlanner {
             }
         }
 
-        // if there are moves to respond to then we can do that too
-        if (turnDiscussions.size() > 1) {
-            setOfNextActions.addAll(reactToEnemyMoveActions());
-        }
 
         return RANDOM_ACTION_CHOOSER.chooseRandom(setOfNextActions);
     }

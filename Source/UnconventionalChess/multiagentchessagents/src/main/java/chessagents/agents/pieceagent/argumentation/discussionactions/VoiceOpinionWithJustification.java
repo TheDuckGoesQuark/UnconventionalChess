@@ -25,7 +25,11 @@ public class VoiceOpinionWithJustification extends ConversationAction {
         var reasoning = response.getReasoning();
         var traitResponsible = randomTraitChooser.chooseRandom(personality.getTraitsThatHaveValue(reasoning.getValue()));
         var movingPiece = getMovingPiece(response, pieceAgent);
-        var grammarVariableProvider = new GrammarVariableProviderImpl(response, movingPiece, null);
+
+        var grammarVariableProvider = new GrammarVariableProviderImpl();
+        grammarVariableProvider.setMoveResponse(response);
+        grammarVariableProvider.setMovingPiece(movingPiece);
+
         return new ConversationMessage(traitResponsible.getRiGrammar().expandFrom(grammarTag(), grammarVariableProvider), response, pieceAgent.getAID());
     }
 }

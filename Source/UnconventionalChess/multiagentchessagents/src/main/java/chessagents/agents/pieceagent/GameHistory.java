@@ -2,40 +2,33 @@ package chessagents.agents.pieceagent;
 
 import chessagents.chess.GameState;
 import chessagents.ontology.schemas.concepts.PieceMove;
+import com.sun.jdi.connect.spi.TransportService;
 
 import java.util.LinkedHashMap;
+import java.util.LinkedList;
 import java.util.Map;
 
-public class GameHistory extends LinkedHashMap<PieceMove, GameState> {
+public class GameHistory {
 
-    private PieceMove lastMove;
-    private GameState previousState = null;
+    private LinkedList<GameState> states = new LinkedList<>();
+    private LinkedList<PieceMove> moves = new LinkedList<>();
 
-    @Override
     public GameState put(PieceMove transitioningMove, GameState updatedState) {
-        this.lastMove = transitioningMove;
-        this.previousState = getCurrentState();
-        return super.put(transitioningMove, updatedState);
+        this.moves.add(transitioningMove);
+        this.states.add(updatedState);
+        return updatedState;
     }
 
     public PieceMove getLastMove() {
-        return lastMove;
+        return moves.getLast();
     }
 
     public GameState getPreviousState() {
-        return previousState;
+        if (states.size() < 2) return null;
+        else return states.get(states.size() - 2);
     }
 
     public GameState getCurrentState() {
-        return this.getLastEntry();
+        return states.getLast();
     }
-
-    private GameState getLastEntry() {
-        var iter = this.entrySet().iterator();
-        Map.Entry<PieceMove, GameState> current = null;
-        while (iter.hasNext()) current = iter.next();
-
-        return current != null ? current.getValue() : null;
-    }
-
 }
