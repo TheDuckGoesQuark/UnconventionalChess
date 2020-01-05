@@ -380,6 +380,8 @@ The reasoning field in move responses are populated by the Value of an agent ass
 
 This argumentation feature could be improved by expressing the value as a predicate that other agents could unpack instead of being tied to the Value classes in our chess agent library. 
 
+% TODO talk about reactions implementation
+
 \subsubsection{Natural Language Generation}
 
 The natural language generation was a crucial part of this project, as it had to tie together all other features correctly in order to make their effect visible to the user. The phrases spoke by pieces had to:
@@ -418,8 +420,7 @@ The strings between backticks within the grammars are slots that are express the
 
 The success of the resulting software was ascertained by analysis its performance ourselves and by gathering user feedback. Issues raised by these assessments were later addressed to produce the final artefact that was included with this submission.
 
-\subsection{Analysis}
-
+\subsection{Conversation Analysis}
 % TODO 
 Assessment of features
 Agent vs Agent examples
@@ -428,10 +429,19 @@ Graph of how many pieces like the chosen move
 Graph of length of discussion at each turn
 Other comments
 
+\subsection{Strategic Analysis}
+
+In order to test the strategic performance of the implementation, the Stockfish API was used to score the move chosen at each turn by the agents. This was repeated over the course of fifty games to account for the randomness used by agents during the choice of action.
+
+Stockfish is one implementation of the universal chess interface and one of the best chess AIs in the world. It uses a complex set of rules to score board positions, which can be used to identify the next best move to make. In our case, we can use it to compare the score of our chosen move and the highest rated score and take the difference as a rating of how good our choice was. 
+
+We then used this metric over many games to produce graphs of our agents performance.
+
 \subsection{User Feedback}
 
+% TODO 
 Description of user feedback process
-Explaination of questionnaire contents
+Explanation of questionnaire contents
 Results
 Analysis of frequent comments or interesting issues noticed
 

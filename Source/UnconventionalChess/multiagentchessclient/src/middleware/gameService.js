@@ -7,9 +7,9 @@ import Chess from 'chess.js';
 const chess = new Chess();
 
 const namesForPieceType = {
-    'p': ['Rick-Harrison', 'Richard-Harrison', 'Austin-Russell', 'John-Smith', 'Bob', 'Jim', 'Ann', 'Margaret'],
+    'p': ['Rick-Harrison', 'Richard-Harrison', 'Austin-Russell', 'John-Smith', 'Bob', 'Jim', 'Ann', 'Margaret', 'Tom', 'Jeff', 'Janet', 'Lucas', 'Rachel', 'Lucy', 'Steve', 'Kate'],
     'n': ['Knight-that-says-Ni', 'Keira-Knightly', 'Sean-Connery', 'Michael-Caine'],
-    'b': ['Francis', 'John-Bishop'],
+    'b': ['Francis', 'John-Bishop', 'Flanders', 'Ted'],
     'r': ['Abraham-Brook', 'Rook-Astley', 'Rook-Sanchez', 'Brooke', 'Brooklyn', 'Rooky'],
     'q': ['Victoria', 'Elizabeth', 'Freddie', 'Cleopatra', 'Mary', 'Daenerys'],
     'k': ['Robert', 'George', 'Robb', ' The-King-of-the-Norf', 'Bran', 'Alfred', 'Viserys'],

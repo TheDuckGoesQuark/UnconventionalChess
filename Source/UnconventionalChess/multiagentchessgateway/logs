@@ -7,15 +7,15 @@
  =========|_|==============|___/=/_/_/_/
  :: Spring Boot ::        (v2.1.8.RELEASE)
 
-2020-01-05 18:26:48.043  INFO 28396 --- [           main] s.chessgateway.ChessgatewayApplication   : Starting ChessgatewayApplication on jordan-G5-5587 with PID 28396 (/home/jordan/Documents/Uni/UnconventionalChess/Source/UnconventionalChess/multiagentchessgateway/build/classes/java/main started by jordan in /home/jordan/Documents/Uni/UnconventionalChess/Source/UnconventionalChess)
-2020-01-05 18:26:48.050  INFO 28396 --- [           main] s.chessgateway.ChessgatewayApplication   : No active profile set, falling back to default profiles: default
-2020-01-05 18:26:49.680  INFO 28396 --- [           main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port(s): 8080 (http)
-2020-01-05 18:26:49.739  INFO 28396 --- [           main] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
-2020-01-05 18:26:49.740  INFO 28396 --- [           main] org.apache.catalina.core.StandardEngine  : Starting Servlet engine: [Apache Tomcat/9.0.24]
-2020-01-05 18:26:49.889  INFO 28396 --- [           main] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring embedded WebApplicationContext
-2020-01-05 18:26:49.889  INFO 28396 --- [           main] o.s.web.context.ContextLoader            : Root WebApplicationContext: initialization completed in 1777 ms
-2020-01-05 18:26:50.157  INFO 28396 --- [           main] o.s.s.concurrent.ThreadPoolTaskExecutor  : Initializing ExecutorService 'clientInboundChannelExecutor'
-2020-01-05 18:26:50.163  INFO 28396 --- [           main] o.s.s.concurrent.ThreadPoolTaskExecutor  : Initializing ExecutorService 'clientOutboundChannelExecutor'
+2020-01-05 20:09:59.411  INFO 3655 --- [           main] s.chessgateway.ChessgatewayApplication   : Starting ChessgatewayApplication on jordan-G5-5587 with PID 3655 (/home/jordan/Documents/Uni/UnconventionalChess/Source/UnconventionalChess/multiagentchessgateway/build/classes/java/main started by jordan in /home/jordan/Documents/Uni/UnconventionalChess/Source/UnconventionalChess)
+2020-01-05 20:09:59.414  INFO 3655 --- [           main] s.chessgateway.ChessgatewayApplication   : No active profile set, falling back to default profiles: default
+2020-01-05 20:10:01.399  INFO 3655 --- [           main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port(s): 8080 (http)
+2020-01-05 20:10:01.476  INFO 3655 --- [           main] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2020-01-05 20:10:01.477  INFO 3655 --- [           main] org.apache.catalina.core.StandardEngine  : Starting Servlet engine: [Apache Tomcat/9.0.24]
+2020-01-05 20:10:01.697  INFO 3655 --- [           main] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring embedded WebApplicationContext
+2020-01-05 20:10:01.698  INFO 3655 --- [           main] o.s.web.context.ContextLoader            : Root WebApplicationContext: initialization completed in 2236 ms
+2020-01-05 20:10:01.998  INFO 3655 --- [           main] o.s.s.concurrent.ThreadPoolTaskExecutor  : Initializing ExecutorService 'clientInboundChannelExecutor'
+2020-01-05 20:10:02.004  INFO 3655 --- [           main] o.s.s.concurrent.ThreadPoolTaskExecutor  : Initializing ExecutorService 'clientOutboundChannelExecutor'
 [INFO] RiTa.version [1.3.94]
 null
 null
@@ -23,15 +23,44 @@ null
 null
 null
 null
-2020-01-05 18:26:50.532  INFO 28396 --- [           main] s.chessgateway.gateway.GatewayInitiator  : JadeGateway initialised.
-2020-01-05 18:26:50.555  INFO 28396 --- [           main] o.s.s.c.ThreadPoolTaskScheduler          : Initializing ExecutorService 'messageBrokerTaskScheduler'
-2020-01-05 18:26:50.597  INFO 28396 --- [           main] o.s.s.concurrent.ThreadPoolTaskExecutor  : Initializing ExecutorService 'brokerChannelExecutor'
-2020-01-05 18:26:50.925  INFO 28396 --- [           main] o.s.b.a.w.s.WelcomePageHandlerMapping    : Adding welcome page template: index
-2020-01-05 18:26:51.153  INFO 28396 --- [           main] o.s.m.s.b.SimpleBrokerMessageHandler     : Starting...
-2020-01-05 18:26:51.153  INFO 28396 --- [           main] o.s.m.s.b.SimpleBrokerMessageHandler     : BrokerAvailabilityEvent[available=true, SimpleBrokerMessageHandler [DefaultSubscriptionRegistry[cache[0 destination(s)], registry[0 sessions]]]]
-2020-01-05 18:26:51.154  INFO 28396 --- [           main] o.s.m.s.b.SimpleBrokerMessageHandler     : Started.
-2020-01-05 18:26:51.199  INFO 28396 --- [           main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat started on port(s): 8080 (http) with context path ''
-2020-01-05 18:26:51.207  INFO 28396 --- [           main] s.chessgateway.ChessgatewayApplication   : Started ChessgatewayApplication in 3.694 seconds (JVM running for 5.01)
-2020-01-05 18:26:51.415  INFO 28396 --- [nio-8080-exec-1] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring DispatcherServlet 'dispatcherServlet'
-2020-01-05 18:26:51.417  INFO 28396 --- [nio-8080-exec-1] o.s.web.servlet.DispatcherServlet        : Initializing Servlet 'dispatcherServlet'
-2020-01-05 18:26:51.428  INFO 28396 --- [nio-8080-exec-1] o.s.web.servlet.DispatcherServlet        : Completed initialization in 11 ms
+2020-01-05 20:10:02.499  INFO 3655 --- [           main] s.chessgateway.gateway.GatewayInitiator  : JadeGateway initialised.
+2020-01-05 20:10:02.527  INFO 3655 --- [           main] o.s.s.c.ThreadPoolTaskScheduler          : Initializing ExecutorService 'messageBrokerTaskScheduler'
+2020-01-05 20:10:02.584  INFO 3655 --- [           main] o.s.s.concurrent.ThreadPoolTaskExecutor  : Initializing ExecutorService 'brokerChannelExecutor'
+2020-01-05 20:10:03.113  INFO 3655 --- [           main] o.s.b.a.w.s.WelcomePageHandlerMapping    : Adding welcome page template: index
+2020-01-05 20:10:03.381  INFO 3655 --- [           main] o.s.m.s.b.SimpleBrokerMessageHandler     : Starting...
+2020-01-05 20:10:03.382  INFO 3655 --- [           main] o.s.m.s.b.SimpleBrokerMessageHandler     : BrokerAvailabilityEvent[available=true, SimpleBrokerMessageHandler [DefaultSubscriptionRegistry[cache[0 destination(s)], registry[0 sessions]]]]
+2020-01-05 20:10:03.384  INFO 3655 --- [           main] o.s.m.s.b.SimpleBrokerMessageHandler     : Started.
+2020-01-05 20:10:03.461  INFO 3655 --- [           main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat started on port(s): 8080 (http) with context path ''
+2020-01-05 20:10:03.473  INFO 3655 --- [           main] s.chessgateway.ChessgatewayApplication   : Started ChessgatewayApplication in 4.494 seconds (JVM running for 5.241)
+2020-01-05 20:10:03.885  INFO 3655 --- [nio-8080-exec-1] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring DispatcherServlet 'dispatcherServlet'
+2020-01-05 20:10:03.886  INFO 3655 --- [nio-8080-exec-1] o.s.web.servlet.DispatcherServlet        : Initializing Servlet 'dispatcherServlet'
+2020-01-05 20:10:03.901  INFO 3655 --- [nio-8080-exec-1] o.s.web.servlet.DispatcherServlet        : Completed initialization in 14 ms
+2020-01-05 20:10:08.342  INFO 3655 --- [nio-8080-exec-6] s.c.controllers.GameController           : Received request to create game: Message(timestamp=null, type=GAME_CONFIGURATION_MESSAGE, body=GameConfiguration(humanPlays=false, humanPlaysAsWhite=true, pieceConfigs={a7=PieceConfig(name=Rick-Harrison, personality=PersonalityType(name=PROTECTIVE)), b7=PieceConfig(name=Austin-Russell, personality=PersonalityType(name=EXTROVERT)), c7=PieceConfig(name=Jim, personality=PersonalityType(name=AGGRESSIVE)), d7=PieceConfig(name=Richard-Harrison, personality=PersonalityType(name=PROTECTIVE)), e7=PieceConfig(name=Margaret, personality=PersonalityType(name=BULLY)), f7=PieceConfig(name=Bob, personality=PersonalityType(name=AGGRESSIVE)), g7=PieceConfig(name=John-Smith, personality=PersonalityType(name=EGOTISTIC)), h7=PieceConfig(name=Ann, personality=PersonalityType(name=EXTROVERT)), a8=PieceConfig(name=Rooky, personality=PersonalityType(name=PROTECTIVE)), b8=PieceConfig(name=Keira-Knightly, personality=PersonalityType(name=AGGRESSIVE)), c8=PieceConfig(name=John-Bishop, personality=PersonalityType(name=INTROVERT)), d8=PieceConfig(name=Daenerys, personality=PersonalityType(name=BULLY)), e8=PieceConfig(name=Robb, personality=PersonalityType(name=BULLY)), f8=PieceConfig(name=Francis, personality=PersonalityType(name=EGOTISTIC)), g8=PieceConfig(name=Sean-Connery, personality=PersonalityType(name=EGOTISTIC)), h8=PieceConfig(name=Brooklyn, personality=PersonalityType(name=BULLY)), a1=PieceConfig(name=Rook-Sanchez, personality=PersonalityType(name=AGGRESSIVE)), b1=PieceConfig(name=Knight-that-says-Ni, personality=PersonalityType(name=BULLY)), c1=PieceConfig(name=null, personality=PersonalityType(name=INTROVERT)), d1=PieceConfig(name=Elizabeth, personality=PersonalityType(name=AGGRESSIVE)), e1=PieceConfig(name=Alfred, personality=PersonalityType(name=BULLY)), f1=PieceConfig(name=null, personality=PersonalityType(name=INTROVERT)), g1=PieceConfig(name=Michael-Caine, personality=PersonalityType(name=BULLY)), h1=PieceConfig(name=Rook-Astley, personality=PersonalityType(name=BULLY)), a2=PieceConfig(name=null, personality=PersonalityType(name=PROTECTIVE)), b2=PieceConfig(name=null, personality=PersonalityType(name=INTROVERT)), c2=PieceConfig(name=null, personality=PersonalityType(name=BULLY)), d2=PieceConfig(name=null, personality=PersonalityType(name=BULLY)), e2=PieceConfig(name=null, personality=PersonalityType(name=PROTECTIVE)), f2=PieceConfig(name=null, personality=PersonalityType(name=INTROVERT)), g2=PieceConfig(name=null, personality=PersonalityType(name=EGOTISTIC)), h2=PieceConfig(name=null, personality=PersonalityType(name=AGGRESSIVE))}, gameId=null))
+2020-01-05 20:10:08.352  INFO 3655 --- [nio-8080-exec-6] jade.core.Runtime                        : ----------------------------------
+    This is JADE 4.5.0 - revision 6825 of 23-05-2017 10:06:04
+    downloaded in Open Source, under LGPL restrictions,
+    at http://jade.tilab.com/
+----------------------------------------
+2020-01-05 20:10:08.374  INFO 3655 --- [nio-8080-exec-6] jade.imtp.leap.LEAPIMTPManager           : Listening for intra-platform commands on address:
+- jicp://192.168.0.82:37633
+
+2020-01-05 20:10:08.469  INFO 3655 --- [nio-8080-exec-6] jade.core.management.AgentManagement     : Service jade.core.management.AgentManagement initialized
+2020-01-05 20:10:08.476  INFO 3655 --- [nio-8080-exec-6] jade.core.messaging.Messaging            : Service jade.core.messaging.Messaging initialized
+2020-01-05 20:10:08.485  INFO 3655 --- [nio-8080-exec-6] jade.core.resource.ResourceManagement    : Service jade.core.resource.ResourceManagement initialized
+2020-01-05 20:10:08.494  INFO 3655 --- [nio-8080-exec-6] jade.core.mobility.AgentMobility         : Service jade.core.mobility.AgentMobility initialized
+2020-01-05 20:10:08.500  INFO 3655 --- [nio-8080-exec-6] jade.core.event.Notification             : Service jade.core.event.Notification initialized
+2020-01-05 20:10:08.562  INFO 3655 --- [nio-8080-exec-6] jade.core.AgentContainerImpl             : --------------------------------------
+Agent container Container-1@192.168.0.82 is ready.
+--------------------------------------------
+2020-01-05 20:10:08.607  INFO 3655 --- [nio-8080-exec-6] jade.wrapper.gateway.DynamicJadeGateway  : Requesting execution of command chessagents.agents.gatewayagent.behaviours.CreateGameAgent@5407c0f5
+2020-01-05 20:10:08.609  INFO 3655 --- [trolContainer-1] c.agents.gatewayagent.ChessGatewayAgent  : Started GatewayAgent ControlContainer-1
+2020-01-05 20:10:08.618  INFO 3655 --- [trolContainer-1] jade.wrapper.gateway.GatewayAgent$2      : ControlContainer-1 started execution of command chessagents.agents.gatewayagent.behaviours.CreateGameAgent@5407c0f5
+2020-01-05 20:10:08.618  INFO 3655 --- [      Thread-15] s.c.gateway.GatewayPollingDaemon         : Gateway connected
+2020-01-05 20:10:08.620  INFO 3655 --- [pool-1-thread-1] s.c.gateway.GatewayPollingDaemon         : Listening for messages from gateway
+2020-01-05 20:10:08.621  INFO 3655 --- [pool-1-thread-1] jade.wrapper.gateway.DynamicJadeGateway  : Requesting execution of command chessagents.agents.gatewayagent.behaviours.ListenForGameAgentMessages@262c5626
+2020-01-05 20:10:08.623  INFO 3655 --- [trolContainer-1] jade.wrapper.gateway.GatewayAgent$2      : ControlContainer-1 started execution of command chessagents.agents.gatewayagent.behaviours.ListenForGameAgentMessages@262c5626
+2020-01-05 20:10:08.645  INFO 3655 --- [trolContainer-1] jade.wrapper.gateway.GatewayAgent$2      : ControlContainer-1 terminated execution of command chessagents.agents.gatewayagent.behaviours.CreateGameAgent@5407c0f5
+2020-01-05 20:10:08.652  INFO 3655 --- [nio-8080-exec-6] jade.wrapper.gateway.DynamicJadeGateway  : Requesting execution of command chessagents.agents.gatewayagent.behaviours.RequestCreateGame@7b624f5f
+2020-01-05 20:10:08.654  INFO 3655 --- [trolContainer-1] jade.wrapper.gateway.GatewayAgent$2      : ControlContainer-1 started execution of command chessagents.agents.gatewayagent.behaviours.RequestCreateGame@7b624f5f
+2020-01-05 20:10:08.677  WARN 3655 --- [trolContainer-1] c.a.g.behaviours.RequestCreateGame       : Error: Missing value for mandatory slot Name. Schema is jade.content.schema.ConceptSchema-Piece Configuration
+2020-01-05 20:11:02.579  INFO 3655 --- [MessageBroker-1] o.s.w.s.c.WebSocketMessageBrokerStats    : WebSocketSession[0 current WS(0)-HttpStream(0)-HttpPoll(0), 0 total, 0 closed abnormally (0 connect failure, 0 send limit, 0 transport error)], stompSubProtocol[processed CONNECT(0)-CONNECTED(0)-DISCONNECT(0)], stompBrokerRelay[null], inboundChannel[pool size = 0, active threads = 0, queued tasks = 0, completed tasks = 0], outboundChannel[pool size = 0, active threads = 0, queued tasks = 0, completed tasks = 0], sockJsScheduler[pool size = 1, active threads = 1, queued tasks = 0, completed tasks = 0]
