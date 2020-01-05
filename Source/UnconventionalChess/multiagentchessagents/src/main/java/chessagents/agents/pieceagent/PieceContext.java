@@ -1,8 +1,10 @@
 package chessagents.agents.pieceagent;
 
+import chessagents.agents.pieceagent.personality.Trait;
 import chessagents.chess.GameState;
 import chessagents.agents.pieceagent.personality.Personality;
 import chessagents.ontology.schemas.concepts.ChessPiece;
+import chessagents.ontology.schemas.concepts.PieceConfiguration;
 import chessagents.ontology.schemas.concepts.PieceMove;
 import chessagents.ontology.schemas.concepts.Position;
 import jade.content.OntoAID;
@@ -33,11 +35,11 @@ public class PieceContext {
         myAID = null;
     }
 
-    public PieceContext(Position myPosition, AID myAID, int gameId, AID gameAgentAID, int maxDebateCycle) {
+    public PieceContext(Position myPosition, AID myAID, int gameId, AID gameAgentAID, int maxDebateCycle, PieceConfiguration pieceConfiguration) {
         this.gameState = new GameState(gameId);
         this.gameAgentAID = gameAgentAID;
         this.maxDebateCycle = maxDebateCycle;
-        this.personality = Personality.random();
+        this.personality = Personality.fromTrait(Trait.valueOf(pieceConfiguration.getPersonality()));
         this.myAID = new OntoAID(myAID.getName(), AID.ISGUID);
 
         // register this piece as an agent

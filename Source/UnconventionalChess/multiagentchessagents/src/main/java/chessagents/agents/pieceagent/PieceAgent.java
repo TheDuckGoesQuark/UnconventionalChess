@@ -6,9 +6,12 @@ import chessagents.agents.pieceagent.behaviours.initial.SubscribeToGameStatus;
 import chessagents.agents.pieceagent.behaviours.initial.SubscribeToMoves;
 import chessagents.agents.pieceagent.behaviours.Play;
 import chessagents.ontology.schemas.concepts.Colour;
+import chessagents.ontology.schemas.concepts.PieceConfiguration;
 import chessagents.ontology.schemas.concepts.Position;
 import jade.core.AID;
 import jade.core.behaviours.SequentialBehaviour;
+
+import java.util.Set;
 
 public class PieceAgent extends ChessAgent {
 
@@ -37,7 +40,11 @@ public class PieceAgent extends ChessAgent {
         var gameAgentAID = (String) args[2];
         var gameId = Integer.parseInt((String) args[3]);
         var maxDebateCycle = Integer.parseInt((String) args[4]);
-        context = new PieceContext(myPosition, getAID(), gameId, new AID(gameAgentAID, AID.ISGUID), maxDebateCycle);
+        var myPieceConfig = ((Set<PieceConfiguration>) args[5]).stream()
+                .filter(p -> p.getStartingPosition().equals(myPosition.getCoordinates()))
+                .findFirst()
+                .get();
+        context = new PieceContext(myPosition, getAID(), gameId, new AID(gameAgentAID, AID.ISGUID), maxDebateCycle, myPieceConfig);
     }
 
     /**

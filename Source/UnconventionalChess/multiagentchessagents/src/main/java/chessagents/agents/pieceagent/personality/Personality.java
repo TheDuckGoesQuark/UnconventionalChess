@@ -25,6 +25,10 @@ public class Personality {
         return new Personality(new HashSet<>(options.subList(0, numOfTraits)));
     }
 
+    public static Personality fromTrait(Trait trait) {
+        return new Personality(Set.of(trait));
+    }
+
     public Set<Trait> getTraitsThatHaveValue(Value value) {
         return traits.stream().filter(trait -> trait.getAppealingValues().contains(value)).collect(Collectors.toSet());
     }
