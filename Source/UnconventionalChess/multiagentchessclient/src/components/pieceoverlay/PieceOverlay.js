@@ -72,8 +72,8 @@ const renderPieceOverlay = (mostRecentMessage, boardWidth, coord, pieceConfigs) 
 
     let piece = getPieceAtPosition(pieceConfigs, coord);
     if (piece) {
-        return (<div>
-            <div style={pieceBoxStyle} key={coord}>
+        return (<div key={coord}>
+            <div style={pieceBoxStyle}>
                 <div style={nametagStyle}>{piece.name}</div>
             </div>
             {mostRecentMessage && (mostRecentMessage.fromId === piece.name) ? renderSpeech(mostRecentMessage) : null}
