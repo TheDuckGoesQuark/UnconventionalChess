@@ -8,6 +8,8 @@ import chessagents.ontology.schemas.concepts.ChessPiece;
 import chessagents.ontology.schemas.concepts.PieceMove;
 import chessagents.ontology.schemas.concepts.Position;
 
+import static chessagents.chess.ChessUtil.areAdjacentCoordinates;
+
 public class KeepAwayFromOtherPieces extends Value {
     public KeepAwayFromOtherPieces() {
         super("Keep away from other pieces");
@@ -34,25 +36,6 @@ public class KeepAwayFromOtherPieces extends Value {
                 .map(ChessPiece::getPosition)
                 .map(Position::getCoordinates)
                 .filter(p -> !p.equals(myPos))
-                .anyMatch(otherPosition -> isAdjacent(myPos, otherPosition));
-    }
-
-    static class Coordinate {
-        private char col;
-        private int row;
-
-        public Coordinate(String coord) {
-            var tokens = coord.toCharArray();
-            col = tokens[0];
-            row = Character.getNumericValue(tokens[1]);
-        }
-
-        public boolean isAdjacent(Coordinate b) {
-            return Math.abs(col - b.col) == 1 && Math.abs(row - b.row) == 1;
-        }
-    }
-
-    private static boolean isAdjacent(String a, String b) {
-        return new Coordinate(a).isAdjacent(new Coordinate(b));
+                .anyMatch(otherPosition -> areAdjacentCoordinates(myPos, otherPosition));
     }
 }

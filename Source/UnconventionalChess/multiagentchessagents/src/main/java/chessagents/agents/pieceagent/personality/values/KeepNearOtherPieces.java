@@ -8,6 +8,8 @@ import chessagents.ontology.schemas.concepts.ChessPiece;
 import chessagents.ontology.schemas.concepts.PieceMove;
 import chessagents.ontology.schemas.concepts.Position;
 
+import static chessagents.chess.ChessUtil.areAdjacentCoordinates;
+
 public class KeepNearOtherPieces extends Value {
     public KeepNearOtherPieces() {
         super("Keep near other pieces");
@@ -34,11 +36,7 @@ public class KeepNearOtherPieces extends Value {
                 .map(ChessPiece::getPosition)
                 .map(Position::getCoordinates)
                 .filter(p -> !p.equals(myPos))
-                .filter(otherPosition -> isAdjacent(myPos, otherPosition))
+                .filter(otherPosition -> areAdjacentCoordinates(myPos, otherPosition))
                 .count();
-    }
-
-    private static boolean isAdjacent(String a, String b) {
-        return new KeepAwayFromOtherPieces.Coordinate(a).isAdjacent(new KeepAwayFromOtherPieces.Coordinate(b));
     }
 }

@@ -8,12 +8,13 @@ import com.github.bhlangonijr.chesslib.*;
 import com.github.bhlangonijr.chesslib.move.Move;
 import com.github.bhlangonijr.chesslib.move.MoveGenerator;
 import com.github.bhlangonijr.chesslib.move.MoveGeneratorException;
-import com.github.bhlangonijr.chesslib.move.MoveList;
 import jade.content.OntoAID;
 
 import java.util.*;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
+
+import static chessagents.chess.ChessUtil.areAdjacentCoordinates;
 
 /**
  * Wrapper for translating from ontological chess classes and chess library classes and managing game logic
@@ -112,11 +113,58 @@ public class ChessBoard {
 
         // clone and update position of piece that moved
         getPieceAtPosition(move.getSource()).ifPresent(p -> {
-            var clone = p.clone();
-            clone.setPosition(move.getTarget());
-            chessPieces.remove(p); // remove current version
-            chessPieces.add(clone); // replace with clone that has updated position
+            movePiece(p, move);
+            // check for castling i.e. if we need to update multiple pieces
+            if (castlingMove(p, move)) applyCastlingToRook(p, move);
         });
+    }
+
+    /**
+     * Determines which rook is being castled with using the king and the direction of the kings movement, and
+     * updates the position of the corresponding rook
+     *
+     * @param king     piece moving
+     * @param kingMove move made
+     */
+    private void applyCastlingToRook(ChessPiece king, PieceMove kingMove) {
+        final ChessPiece rook;
+        final PieceMove rookMove;
+        if (king.getColour().equals(Colour.WHITE)) {
+            if (kingMove.getTarget().getCoordinates().equals("g1")) {
+                var rookPos = new Position("h1");
+                rook = getPieceAtPosition(rookPos).get();
+                rookMove = new PieceMove(rookPos.getCoordinates(), "f1");
+            } else {
+                var rookPos = new Position("a1");
+                rook = getPieceAtPosition(rookPos).get();
+                rookMove = new PieceMove(rookPos.getCoordinates(), "d1");
+            }
+        } else {
+            if (kingMove.getTarget().getCoordinates().equals("g8")) {
+                var rookPos = new Position("h8");
+                rook = getPieceAtPosition(rookPos).get();
+                rookMove = new PieceMove(rookPos.getCoordinates(), "f8");
+            } else {
+                var rookPos = new Position("a8");
+                rook = getPieceAtPosition(rookPos).get();
+                rookMove = new PieceMove(rookPos.getCoordinates(), "d8");
+            }
+        }
+
+        movePiece(rook, rookMove);
+    }
+
+    private boolean castlingMove(ChessPiece p, PieceMove move) {
+        // if the king has move more than one square, then castling must have occurred
+        return p.getType().equals(PieceType.KING.name())
+                && !areAdjacentCoordinates(move.getSource().getCoordinates(), move.getTarget().getCoordinates());
+    }
+
+    private void movePiece(ChessPiece piece, PieceMove move) {
+        var clone = piece.clone();
+        clone.setPosition(move.getTarget());
+        chessPieces.remove(piece); // remove current version
+        chessPieces.add(clone); // replace with clone that has updated position
     }
 
     /**
