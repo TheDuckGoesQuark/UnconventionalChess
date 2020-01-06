@@ -23,7 +23,7 @@ public class ConversationMessage implements Serializable {
         this.moveResponse = moveResponse;
     }
 
-    boolean movePerformed() {
+    public boolean movePerformed() {
         return getMoveResponse()
                 .map(MoveResponse::isPerformed)
                 .orElse(false);

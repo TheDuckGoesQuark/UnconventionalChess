@@ -27,8 +27,13 @@ const initialState = {
 };
 
 const adjacent = (sourceSquare, targetSquare) => {
-    return Math.abs(sourceSquare.charCodeAt(0) - targetSquare.charCodeAt(0)) === 1
-        && Math.abs(sourceSquare.charCodeAt(1) - targetSquare.charCodeAt(1)) === 1
+    let sameCol = sourceSquare.charCodeAt(0) === targetSquare.charCodeAt(0);
+    let sameRow = sourceSquare.charCodeAt(1) === targetSquare.charCodeAt(1);
+    let colsAdjacent = Math.abs(sourceSquare.charCodeAt(0) - targetSquare.charCodeAt(0)) === 1;
+    let rowsAdjacent = Math.abs(sourceSquare.charCodeAt(1) - targetSquare.charCodeAt(1)) === 1;
+    return (sameCol && rowsAdjacent)
+        || (sameRow && colsAdjacent)
+        || (colsAdjacent && rowsAdjacent);
 };
 
 const castlingOccurred = (configAtSource, move) => {

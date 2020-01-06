@@ -20,6 +20,7 @@ public class ConversationalAgentFSM extends FSMBehaviour {
 
         var init = new Initial(pieceAgent, conversationContext);
         var speak = new Speak(pieceAgent, conversationContext);
+        var makeMove = new MakeMove(pieceAgent, conversationContext);
         var startSpeakerElection = new StartSpeakerElection(pieceAgent, conversationContext);
         var chooseSpeaker = new ChooseSpeaker(pieceAgent, conversationContext);
         var listen = new Listen(pieceAgent, conversationContext);
@@ -32,6 +33,10 @@ public class ConversationalAgentFSM extends FSMBehaviour {
 
         registerState(speak);
         registerTransition(speak, startSpeakerElection, ConversationTransition.SPOKE);
+        registerTransition(speak, makeMove, ConversationTransition.MAKING_MOVE);
+
+        registerState(makeMove);
+        registerTransition(makeMove, startSpeakerElection, ConversationTransition.MOVE_MADE);
 
         registerState(listen);
         registerTransition(listen, waitForSpeakerCFP, ConversationTransition.LISTENED);

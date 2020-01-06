@@ -5,6 +5,7 @@ import chessagents.ontology.schemas.actions.MakeMove;
 import jade.content.onto.OntologyException;
 import jade.content.onto.basic.Action;
 import jade.core.AID;
+import jade.core.behaviours.Behaviour;
 import jade.core.behaviours.SimpleBehaviour;
 import jade.domain.FIPANames;
 import jade.lang.acl.ACLMessage;
@@ -25,6 +26,7 @@ public class RequestGameAgentMove extends SimpleBehaviour {
 
     private int state = SENDING_REQUEST;
     private boolean moveMade = false;
+    private Behaviour callbackBehaviour = null;
 
     public RequestGameAgentMove(MakeMove move, AID gameAgentName) {
         this.move = move;
@@ -51,12 +53,10 @@ public class RequestGameAgentMove extends SimpleBehaviour {
 
     private void handleRefuse(ACLMessage refuse) {
         logger.warning("Game agent refused to make move" + move.getMove().toString() + "! Reason: " + refuse.getContent());
-        this.reset();
     }
 
     private void handleNotUnderstood(ACLMessage notUnderstood) {
         logger.warning("Game agent couldn't understand request to make move! Reason: " + notUnderstood.getContent());
-        this.reset();
     }
 
     private void handleInform(ACLMessage inform) {
@@ -65,7 +65,6 @@ public class RequestGameAgentMove extends SimpleBehaviour {
 
     private void handleFailure(ACLMessage failure) {
         logger.warning("Game agent failed to make move: " + move.getMove().toString() + failure.getContent());
-        this.reset();
     }
 
     @Override
@@ -119,23 +118,19 @@ public class RequestGameAgentMove extends SimpleBehaviour {
                 break;
             case ACLMessage.REFUSE:
                 this.handleRefuse(response);
+                state = DONE;
                 break;
             case ACLMessage.NOT_UNDERSTOOD:
                 this.handleNotUnderstood(response);
+                state = DONE;
                 break;
         }
     }
 
     @Override
     public void reset() {
-        try {
-            Thread.sleep(1000);
-        } catch (Exception e) {
-
-        }
         state = SENDING_REQUEST;
         super.reset();
-
     }
 
     @Override
@@ -143,7 +138,20 @@ public class RequestGameAgentMove extends SimpleBehaviour {
         return state == DONE;
     }
 
+    @Override
+    public int onEnd() {
+        if (callbackBehaviour != null) {
+            callbackBehaviour.restart();
+        }
+
+        return super.onEnd();
+    }
+
     public boolean wasSuccessful() {
         return moveMade;
+    }
+
+    public void addCallbackBehaviour(Behaviour behaviour) {
+        callbackBehaviour = behaviour;
     }
 }

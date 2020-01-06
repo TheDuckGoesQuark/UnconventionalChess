@@ -12,7 +12,13 @@ public class ChessUtil {
         }
 
         public boolean isAdjacent(Coordinate b) {
-            return Math.abs(col - b.col) == 1 && Math.abs(row - b.row) == 1;
+            var sameCol = col == b.col;
+            var sameRow = row == b.row;
+            var colsAdjacent = Math.abs(col - b.col) == 1;
+            var rowsAdjacent = Math.abs(row - b.row) == 1;
+            return (sameCol && rowsAdjacent)
+                    || (sameRow && colsAdjacent)
+                    || (colsAdjacent && rowsAdjacent);
         }
     }
 

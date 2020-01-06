@@ -60,23 +60,8 @@ public class ConversationPlannerImpl implements ConversationPlanner {
         if (!isMyTurnToGo()) {
             conversationMessage = notMyTurnAction();
         } else {
-            try {
-                var action = chooseNextAction();
-                conversationMessage = action.perform();
-            } catch (Exception e) {
-                logger.warning(e.toString());
-                e.printStackTrace();
-                System.out.println("SAD");
-                throw e;
-            }
-        }
-
-        // if choice of next message involves agreeing and performing the move,
-        // then send the move to the game agent to be processed
-        if (conversationMessage.movePerformed()) {
-            var makeMove = new MakeMove(conversationMessage.getMoveResponse().get().getMove().get());
-            var gameAgentAID = agent.getPieceContext().getGameAgentAID();
-            agent.addBehaviour(new RequestGameAgentMove(makeMove, gameAgentAID));
+            var action = chooseNextAction();
+            conversationMessage = action.perform();
         }
 
         // record our message

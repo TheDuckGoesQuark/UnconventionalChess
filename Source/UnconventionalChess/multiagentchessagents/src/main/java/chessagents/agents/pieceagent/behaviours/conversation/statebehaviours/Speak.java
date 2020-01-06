@@ -23,11 +23,17 @@ public class Speak extends ConversationStateBehaviour {
     @Override
     public void action() {
         var message = getConversationContext().produceMessage();
+
         syntheticDelay();
+
+        if (!message.movePerformed()) {
+            setTransition(ConversationTransition.SPOKE);
+        } else {
+            setTransition(ConversationTransition.MAKING_MOVE);
+        }
+
         sendChat(message.getStatement());
         sendToAllMyAgents(message);
-        sendToAllMyAgents(new ConversationMessage("", myAgent.getAID()));
-        setTransition(ConversationTransition.SPOKE);
     }
 
     private void sendToAllMyAgents(ConversationMessage conversationMessage) {
