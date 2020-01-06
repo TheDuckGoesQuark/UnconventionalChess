@@ -41,10 +41,12 @@ def score(row):
     for el in board.legal_moves:
         result = engine.play(board, root_moves=[el], limit=chess.engine.Limit(time=0.1), info=chess.engine.INFO_SCORE)
         legal_move_score_map[el] = abs(result.info.score.relative)
+        return TurnScore(source, target, fen, legal_move_score_map)
 
 
 def analyse_games(game_data):
     scores = [[score(row) for row in game] for game in game_data]
+    # evaluate average score, and score over the course of a game (i.e. do they get worse or better)
 
 
 games = read_games(number_of_experiments)
