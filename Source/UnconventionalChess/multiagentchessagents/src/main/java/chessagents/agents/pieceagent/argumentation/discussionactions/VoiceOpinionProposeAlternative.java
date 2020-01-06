@@ -6,6 +6,8 @@ import chessagents.agents.pieceagent.personality.Trait;
 import chessagents.util.RandomUtil;
 import lombok.AllArgsConstructor;
 
+import java.util.NoSuchElementException;
+
 @AllArgsConstructor
 public class VoiceOpinionProposeAlternative extends ConversationAction {
     private final PieceAgent pieceAgent;
@@ -30,11 +32,20 @@ public class VoiceOpinionProposeAlternative extends ConversationAction {
         switch (randomInt) {
             default:
             case 0:
-                alternativeMoveResponse = new ProposeMove(pieceAgent, turnDiscussion).perform().getMoveResponse().get();
+                try {
+                    alternativeMoveResponse = new ProposeMove(pieceAgent, turnDiscussion).perform().getMoveResponse()
+                            .orElseGet(() -> new RevisitMove(pieceAgent, turnDiscussion).perform().getMoveResponse().get());
+                } catch (NoSuchElementException e) {
+                    return new Quip(pieceAgent, turnDiscussion).perform();
+                }
                 break;
             case 1:
-                alternativeMoveResponse = new ProposeMoveWithJustification(pieceAgent, turnDiscussion).perform().getMoveResponse()
-                        .orElseGet(() -> new RevisitMove(pieceAgent, turnDiscussion).perform().getMoveResponse().get());
+                try {
+                    alternativeMoveResponse = new ProposeMoveWithJustification(pieceAgent, turnDiscussion).perform().getMoveResponse()
+                            .orElseGet(() -> new RevisitMove(pieceAgent, turnDiscussion).perform().getMoveResponse().get());
+                } catch (NoSuchElementException e) {
+                    return new Quip(pieceAgent, turnDiscussion).perform();
+                }
                 break;
         }
 
