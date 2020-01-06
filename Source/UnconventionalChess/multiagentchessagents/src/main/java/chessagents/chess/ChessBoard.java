@@ -312,4 +312,8 @@ public class ChessBoard {
     public int hashCode() {
         return Objects.hash(board);
     }
+
+    public String getFen() {
+        return board.getFen();
+    }
 }

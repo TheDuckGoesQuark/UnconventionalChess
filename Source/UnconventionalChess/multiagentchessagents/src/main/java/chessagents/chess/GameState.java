@@ -161,4 +161,8 @@ public class GameState {
                 PieceFilter.isNotCaptured()
         ));
     }
+
+    public String getFen() {
+        return board.getFen();
+    }
 }
