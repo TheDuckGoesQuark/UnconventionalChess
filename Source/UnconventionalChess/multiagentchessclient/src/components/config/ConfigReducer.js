@@ -26,10 +26,59 @@ const initialState = {
     error: null
 };
 
+const adjacent = (sourceSquare, targetSquare) => {
+    return Math.abs(sourceSquare.charCodeAt(0) - targetSquare.charCodeAt(0)) === 1
+        && Math.abs(sourceSquare.charCodeAt(1) - targetSquare.charCodeAt(1)) === 1
+};
+
+const castlingOccurred = (configAtSource, move) => {
+    console.log("HERE");
+    return (configAtSource.type === 'k' || configAtSource.type === 'K')
+        && !adjacent(move.sourceSquare, move.targetSquare)
+};
+
+const applyCastingToRook = (kingConfig, kingMove, pieceConfigs) => {
+    let {targetSquare} = kingMove;
+    let rookSource;
+    let rookTarget;
+
+    // white king uppercase
+    if (kingConfig.type === 'K') {
+        if (targetSquare === 'g1') {
+            rookSource = 'h1';
+            rookTarget = 'f1';
+        } else {
+            rookSource = 'a1';
+            rookTarget = 'd1';
+        }
+    } else {
+        if (targetSquare === 'g8') {
+            rookSource = 'h8';
+            rookTarget = 'f8';
+        } else {
+            rookSource = 'a8';
+            rookTarget = 'd8';
+        }
+    }
+
+    return movePiece(rookSource, rookTarget, pieceConfigs[rookSource], pieceConfigs)
+};
+
 const applyMoveToPieceConfigs = (pieceConfigs, move) => {
     let {sourceSquare, targetSquare} = move;
     let configAtSource = pieceConfigs[sourceSquare];
+    let newConfig = movePiece(sourceSquare, targetSquare, configAtSource, pieceConfigs);
 
+    if (castlingOccurred(configAtSource, move)) {
+        console.log("U HERE");
+        return applyCastingToRook(configAtSource, move);
+    } else {
+        console.log("N HERE");
+    }
+    return newConfig;
+};
+
+const movePiece = (sourceSquare, targetSquare, configAtSource, pieceConfigs) => {
     return {
         ...pieceConfigs,
         [targetSquare]: {
@@ -38,6 +87,7 @@ const applyMoveToPieceConfigs = (pieceConfigs, move) => {
         [sourceSquare]: undefined,
     };
 };
+
 
 export default function configReducer(state = initialState, action) {
 

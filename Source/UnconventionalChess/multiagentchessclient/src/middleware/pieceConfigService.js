@@ -7,6 +7,7 @@ import {
     CONFIG_FETCH_PERSONALITIES
 } from "../components/config/ConfigActions";
 
+
 const fetchPersonalityTypes = (dispatch) => {
     fetch('/personalities', {
         headers: {

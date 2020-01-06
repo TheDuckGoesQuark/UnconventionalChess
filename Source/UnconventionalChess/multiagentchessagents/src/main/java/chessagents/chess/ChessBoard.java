@@ -130,24 +130,24 @@ public class ChessBoard {
         final ChessPiece rook;
         final PieceMove rookMove;
         if (king.getColour().equals(Colour.WHITE)) {
-            if (kingMove.getTarget().getCoordinates().equals("g1")) {
-                var rookPos = new Position("h1");
+            if (kingMove.getTarget().getCoordinates().equals("G1")) {
+                var rookPos = new Position("H1");
                 rook = getPieceAtPosition(rookPos).get();
-                rookMove = new PieceMove(rookPos.getCoordinates(), "f1");
+                rookMove = new PieceMove(rookPos.getCoordinates(), "F1");
             } else {
-                var rookPos = new Position("a1");
+                var rookPos = new Position("A1");
                 rook = getPieceAtPosition(rookPos).get();
-                rookMove = new PieceMove(rookPos.getCoordinates(), "d1");
+                rookMove = new PieceMove(rookPos.getCoordinates(), "D1");
             }
         } else {
-            if (kingMove.getTarget().getCoordinates().equals("g8")) {
-                var rookPos = new Position("h8");
+            if (kingMove.getTarget().getCoordinates().equals("G8")) {
+                var rookPos = new Position("H8");
                 rook = getPieceAtPosition(rookPos).get();
                 rookMove = new PieceMove(rookPos.getCoordinates(), "f8");
             } else {
-                var rookPos = new Position("a8");
+                var rookPos = new Position("A8");
                 rook = getPieceAtPosition(rookPos).get();
-                rookMove = new PieceMove(rookPos.getCoordinates(), "d8");
+                rookMove = new PieceMove(rookPos.getCoordinates(), "D8");
             }
         }
 

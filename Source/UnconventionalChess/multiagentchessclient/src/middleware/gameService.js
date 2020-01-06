@@ -90,8 +90,18 @@ const fillInPieceConfigBlanks = (state) => {
     state.pieceConfigs = fillInBlanksRandomly(state.pieceConfigs, rowsToCheck, personalityTypes)
 };
 
+const fillInPieceTypes = (pieceConfigs) => {
+    let chess = new Chess();
+    for (let position in pieceConfigs) {
+        if (pieceConfigs.hasOwnProperty(position)) {
+            pieceConfigs[position].type = chess.get(position).type;
+        }
+    }
+};
+
 const createGame = (config, dispatch) => {
     fillInPieceConfigBlanks(config);
+    fillInPieceTypes(config.pieceConfigs);
     console.log(config);
 
     const configurationMessage = new GameConfigurationMessage(
