@@ -39,13 +39,26 @@ class TurnScore:
         self.fen = fen
         self.legal_move_score_map = legal_move_score_map
 
+    def get_chosen_move_score(self):
+        return self.legal_move_score_map[self.source + self.target]
+
     def get_diff(self):
         max_score = max(list(self.legal_move_score_map.values()))
-        chosen_move_score = self.legal_move_score_map[self.source + self.target]
+        chosen_move_score = self.get_chosen_move_score()
         return max_score - chosen_move_score
 
+    def get_bin_index(self, num_bins):
+        _, bins, _ = plt.hist(self.legal_move_score_map.values(), bins=num_bins)
 
-def score(row):
+        chosen_move_score = self.get_chosen_move_score()
+        for idx, lower_limit in enumerate(bins):
+            if idx == len(bins) - 1:
+                return idx
+            elif lower_limit <= chosen_move_score < bins[idx + 1]:
+                return idx
+
+
+def score_move_in_row(row):
     global count
     source = row[0]
     target = row[1]
@@ -83,17 +96,28 @@ def plot_score_over_game(game_scores):
         ax1.scatter(x, y, marker='o', label=f'Game {idx + 1}')
 
     plt.legend(loc='upper left')
-    plt.title("Difference between best move at each turn for multiple games")
     plt.savefig("score_over_game.png")
+    plt.xlabel("Turn")
+    plt.ylabel("CP Score")
     plt.show()
 
 
 def plot_move_choice_histogram(scores):
-    pass
+    num_bins = 5
+    flattened_scores = [turn_score for game_scores in scores for turn_score in game_scores]
+    bin_indices = [score.get_bin_index(num_bins) for score in flattened_scores]
+
+    plt.cla()
+    plt.hist(bin_indices, bins=np.arange(num_bins + 1) - 0.5, rwidth=0.9)
+    plt.xlabel("Chosen Move Score Pentile")
+    plt.ylabel("Frequency")
+    plt.xticks([x for x in range(num_bins)])
+    plt.savefig("frequency.png")
+    plt.show()
 
 
 def analyse_games(game_data):
-    scores = [[score(row) for row in game] for game in game_data]
+    scores = [[score_move_in_row(row) for row in game] for game in game_data]
     plot_score_over_game(scores)
     plot_move_choice_histogram(scores)
 
