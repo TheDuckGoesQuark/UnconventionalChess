@@ -5,6 +5,7 @@
 \usepackage{amsmath,amssymb,amsfonts}
 \usepackage{algorithmic}
 \usepackage{graphicx}
+\usepackage{subcaption}
 \usepackage{textcomp}
 \usepackage{xcolor}
 \usepackage{csquotes}
@@ -519,7 +520,7 @@ Their survey also highlighted that most chatbot research was aimed at goal-based
 
 \cite{convdrama} provided the closest work to agent-agent interaction evaluation that we could find. They implemented a conversation centered drama that involved a human user, where agents would also interact in front of the human and express emotion and try emulate personalities. An interesting point raised by their study was how often users would rely on the scroll bar of the conversation transcript to contextualise themselves during the drama. Usage of the scrollbar would suggest that the user was not able to keep track of the conversation, and was something we wanted to look out for when participants were given the oppertunity to play our game.
 
-With all the above considered, we created the questionnaire as described by table \ref{tbl:questions}. 11 participants from the school of computer science helped by taking part in the feedback exercise. The exercise involved showing the participant three shorts videos of gameplay in different situations to try highlight features such as reactions and piece argumentation. They were then given a few minutes to play themselves. Finally, the user was asked to complete our questionnaire. Some wanted to continue playing after this stage to try and explore the range of conversation possible, and comments made from this period were noted for future improvement.
+With all the above considered, we created the questionnaire as described by table \ref{tbl:questions}. 11 participants from the school of computer science helped by taking part in the feedback exercise. The exercise involved showing the participant three short videos of gameplay in different situations to try highlight features such as reactions and piece argumentation. They were then given a few minutes to play themselves. Finally, the user was asked to complete our questionnaire. Some wanted to continue playing after this stage to try and explore the range of conversation possible, and comments made from this period were noted for future improvement.
 
 \begin{table}[!ht]
 	\caption{Questionnaire content with the question statement, the answer format (Likert meaning 5 point scale composed of strongly disagree, disagree, neutral, agree, strongly agree), and the justification for including the question in the questionnaire.} 
@@ -569,13 +570,101 @@ With all the above considered, we created the questionnaire as described by tabl
 \end{tabular}}}
 \end{table}
 
+The results from the questionnaire were taken from paper to csv, and the frequency of each answer for each question plotted. Figures \ref{fig:qfirst} to \ref{fig:qlast} show the results for each question in order.
 
+\begin{figure}[b]
+\centering
+\begin{subfigure}{.5\textwidth}
+    \centering
+    \includegraphics[width=\textwidth]{images/questions/0}
+\end{subfigure}%
+\begin{subfigure}{.5\textwidth}
+    \centering
+    \includegraphics[width=\textwidth]{images/questions/1}
+\end{subfigure}
+\begin{subfigure}{.5\textwidth}
+    \centering
+    \includegraphics[width=\textwidth]{images/questions/2}
+\end{subfigure}%
+\begin{subfigure}{.5\textwidth}
+    \centering
+    \includegraphics[width=\textwidth]{images/questions/3}
+\end{subfigure}
+\begin{subfigure}{.5\textwidth}
+    \centering
+    \includegraphics[width=\textwidth]{images/questions/4}
+\end{subfigure}%
+\begin{subfigure}{.5\textwidth}
+    \centering
+    \includegraphics[width=\textwidth]{images/questions/5}
+\end{subfigure}
+\begin{subfigure}{.5\textwidth}
+    \centering
+    \includegraphics[width=\textwidth]{images/questions/6}
+\end{subfigure}%
+\begin{subfigure}{.5\textwidth}
+    \centering
+    \includegraphics[width=\textwidth]{images/questions/7}
+\end{subfigure}
+\caption[short]{Questions 1-8 in Questionnaire}\label{fig:qfirst}
+\end{figure}
+
+\begin{figure}[b]
+\centering
+\begin{subfigure}{.5\textwidth}
+    \centering
+    \includegraphics[width=\textwidth]{images/questions/8}
+\end{subfigure}%
+\begin{subfigure}{.5\textwidth}
+    \centering
+    \includegraphics[width=\textwidth]{images/questions/9}
+\end{subfigure}
+\begin{subfigure}{.5\textwidth}
+    \centering
+    \includegraphics[width=\textwidth]{images/questions/10}
+\end{subfigure}%
+\begin{subfigure}{.5\textwidth}
+    \centering
+    \includegraphics[width=\textwidth]{images/questions/11}
+\end{subfigure}
+\begin{subfigure}{.5\textwidth}
+    \centering
+    \includegraphics[width=\textwidth]{images/questions/12}
+\end{subfigure}%
+\begin{subfigure}{.5\textwidth}
+    \centering
+    \includegraphics[width=\textwidth]{images/questions/13}
+\end{subfigure}
+\begin{subfigure}{.5\textwidth}
+    \centering
+    \includegraphics[width=\textwidth]{images/questions/14}
+\end{subfigure}%
+\begin{subfigure}{.5\textwidth}
+    \centering
+    \includegraphics[width=\textwidth]{images/questions/15}
+\end{subfigure}
+\caption[short]{Questions 9-16 in Questionnaire}\label{fig:qmiddel}
+\end{figure}
+
+\begin{figure}[b]
+\centering
+\begin{subfigure}{.5\textwidth}
+    \centering
+    \includegraphics[width=\textwidth]{images/questions/16}
+\end{subfigure}%
+\begin{subfigure}{.5\textwidth}
+    \centering
+    \includegraphics[width=\textwidth]{images/questions/17}
+\end{subfigure}
+\caption[short]{Questions 17 and 18 in Questionnaire} \label{fig:qlast}
+\end{figure}
 
 % TODO 
-Results
 Analysis of frequent comments or interesting issues noticed
 
 With more time, a more thorough study that would compare player enjoyment with dialogue disabled and then enabled would shed more light on the benefits of the conversational agents. If we were able to make those who dislike chess or have not played before consider the game again, or provide a novel experience for those who enjoy the game already, then the project could definitely be deemed a success.
+
+
 
 \subsection{Improvements}
 
