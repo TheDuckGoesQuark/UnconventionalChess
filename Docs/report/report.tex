@@ -1,5 +1,4 @@
-\documentclass[conference]{IEEEtran}
-\IEEEoverridecommandlockouts
+\documentclass{article}
 \usepackage{cite}
 \usepackage[hyphens,spaces,obeyspaces]{url}
 \usepackage{amsmath,amssymb,amsfonts}
@@ -9,21 +8,21 @@
 \usepackage{xcolor}
 \usepackage{csquotes}
 \usepackage{listings}
-\def\BibTeX{{\rm B\kern-.05em{\sc i\kern-.025em b}\kern-.08em
-    T\kern-.1667em\lower.7ex\hbox{E}\kern-.125emX}}
+
 \begin{document}
 
 \title{A Strategy Video-Game for Collaborative Agents with a Personality and Humoristic Dialogues\\
 }
 
-\author{\IEEEauthorblockN{Jordan Mackie}
-\IEEEauthorblockA{\textit{Student}}
+\author{
+Jordan Mackie \\
+\textit{Student}
 \and
-\IEEEauthorblockN{Alice Toniolo}
-\IEEEauthorblockA{\textit{Supervisor}}
+Alice Toniolo \\
+\textit{Supervisor}
 \and
-\IEEEauthorblockN{Christopher Stone}
-\IEEEauthorblockA{\textit{Supervisor}}
+Christopher Stone \\
+\textit{Supervisor}
 }
 
 \maketitle
@@ -116,15 +115,13 @@ However, JAPE does not allow for much user interaction, and most textual humour 
 
 These probabilistic models currently appear more hopeful than the rule based models used by older implementations such as JAPE. Instead, \cite{humourrnn} used an existing corpus of jokes and a recurrent neural network to produce a system capable of generating jokes and even anti-jokes (jokes without an actual punchline). 
 
-%TODO how did our system achieve the funny?
-
 \section{System Design}
 
 An existing multiagent development framework was chosen instead of rolling our own in order to abstract away matters such as message delivery and agent life-cycle management. As mentioned earlier, JADE was chosen specifically due to its flexibility and its extensive coverage of the FIPA standard that could allow our agents to interact with other implementations with ease. 
 
 With the intention of possibly serving the game over the internet once complete, the system had to be designed to allow for communication with agents from outside of the agent platform. The 'JadeGateway' API was used with a Spring Boot server and React UI to to achieve this. Figure \ref{fig:highlevelarchitecture} provides a high level overview of the technologies at each layer.
 
-\begin{figure}[h]
+\begin{figure}[!ht]
 	\centering
 	\includegraphics[width=\linewidth]{images/highlevelarchitecture}
 	\caption{Technologies used at each layer.}
@@ -137,7 +134,7 @@ React \cite{reactjs} was chosen due to it being the most familiar web framework 
 
 As the project grew, Redux \cite{redux} was introduced in order to help with state management of components. Redux provides a single global state which components 'connect' to in order to receive updates. Updates are 'dispatched' as actions, which are then passed through a pipeline of reducers which update parts of the global state depending on the action and its payload. Middleware can also be introduced to allow certain actions to create chains of updates (e.g. making an asynchronously API call, then dispatching another action when the response is received), but the reducers themselves are always pure functions. This functional approach to managing components made the project easier to test and errors easier to trace and correct. Figure \ref{fig:reducers} shows the parts of the state that are managed by each reducer.
 
-\begin{figure}[!h]
+\begin{figure}[!ht]
 	\centering
 	\includegraphics[width=\linewidth]{images/reducers}
 	\caption{Redux reducer tree showing which parts of the state are managed by which reducers.}
@@ -151,7 +148,7 @@ The configuration view (Figure \ref{fig:configview}) allows the user to choose i
 
 \begin{figure}[!h]
 	\centering
-	\includegraphics[width=\linewidth]{images/configview}
+	\includegraphics[width=0.9\linewidth]{images/configview}
 	\caption{Configuration view.}
 	\label{fig:configview}
 \end{figure}
@@ -171,7 +168,7 @@ The game view (Figure \ref{fig:gameview}) also shows the game board with name ta
 
 \begin{figure}[!h]
 	\centering
-	\includegraphics[width=\linewidth]{images/gameview}
+	\includegraphics[width=0.8\linewidth]{images/gameview}
 	\caption{Game view.}
 	\label{fig:gameview}
 \end{figure}
@@ -196,7 +193,7 @@ JADE does have support for agents serving web resources directly, but the JadeGa
 
 On start-up, the server uses the details in a configuration file to connect to the JADE platform. It also exposes a limited set of HTTP endpoints to allow the client to create games and to query available personality types. An in-memory message broker is used for handling websocket sessions once a game is set up so that clients can subscribe to chat and move messages, and send their own moves. 
 
-The JadeGateway polls for incoming messages using the \lstinline{ListenForGameAgentMessages} behaviour, which is provided a message translator and a message handler for translating \lstinline{ACLMessage}s from agents to a data model the server can work with and passing the message to the correct handler. This behaviour allowed the server to utilise JADEs scheduling system which would only run the behaviour if a new message was received, instead of busy waiting for incoming messages.
+In order to receive messages from agents within the container , the JadeGateway polls for incoming messages using the \lstinline{ListenForGameAgentMessages} behaviour, which is provided a message translator and a message handler for translating \lstinline{ACLMessage}s from agents to a data model the server can work with and passing the message to the correct handler. This behaviour allowed the server to utilise JADEs scheduling system which would only run the behaviour if a new message was received, instead of busy waiting for incoming messages. 
 
 \subsection{Jade Agent Platform}
 
@@ -208,9 +205,9 @@ Behaviours are scheduled such that they are executed repeatedly round-robin unti
 
 Behaviours can filter the messages that are received using the \lstinline{MessageTemplate} class, which uses pattern matching to only allow for messages containing features such as a specific performative (e.g. REQUEST, PROPOSE) or a specific conversation ID. This ensures that behaviours do not consume messages that were not intended be consumed by them. 
 
-\begin{figure}[!h]
+\begin{figure}[!ht]
 	\centering
-	\includegraphics[width=\linewidth]{images/behaviour}
+	\includegraphics[width=0.8\linewidth]{images/behaviour}
 	\caption{JADE Agent behaviour scheduling and life-cycle \cite{jade}.}
 	\label{fig:behaviour}
 \end{figure}
@@ -239,9 +236,9 @@ This will then be replied to every time a new move occurs with the variables giv
 
 Once the game has started, the game agent adheres to the FSA shown in figure \ref{fig:gameagentfsa}. 
 
-\begin{figure}[!h]
+\begin{figure}[!ht]
 	\centering
-	\includegraphics[width=\linewidth]{images/gameagentfsa}
+	\includegraphics[width=0.8\linewidth]{images/gameagentfsa}
 	\caption{Game Agent game handling FSA.}
 	\label{fig:gameagentfsa}
 \end{figure}
@@ -262,9 +259,9 @@ In order to reduce the amount of objects being created and destroyed by this pro
 
 Agent personalities were designed based on the goal-based trait/value model defined by \cite{hetrogenousagents}. Figure \ref{fig:personalityuml} shows the UML class diagram for our implementation. The personality is initialised with a set of traits (e.g. shy, aggressive) which each have a set of values. Values define what the agent will interpret as good and bad moves based on some criteria (avoid other pieces, maxmise captures). The value class is abstract and is extended by implementations that when given a witnessing piece, the current game state, and a move, are able to produce a response to that move.
 
-\begin{figure}[!h]
+\begin{figure}[]
 	\centering
-	\includegraphics[width=\linewidth]{images/personality}
+	\includegraphics[width=0.8\linewidth]{images/personality}
 	\caption{UML Diagram of Agent Personalities.}
 	\label{fig:personalityuml}
 \end{figure}
@@ -275,9 +272,9 @@ This implementation allows different traits to share goals. The move most prefer
 
 In order to make the conversation between agents seem natural and remain easy to follow, a protocol had to be established to ensure that one agent would speak at a time. The project was initially constructed with conversation flow dictated strictly by a finite state machine. This solution was incredibly restrictive as it required providing a transition path for any conversation path that we wanted to support. After reviewing the work by \cite{tartan} and finding that this strict FSA approach was inherently detrimental to producing natural conversation flows, the original design was thrown out and replaced with the simpler and far more flexible model shown in Figure \ref{fig:conversationfsa}.
 
-\begin{figure}[!h]
+\begin{figure}[]
 	\centering
-	\includegraphics[width=\linewidth]{images/conversationfsa}
+	\includegraphics[width=0.8\linewidth]{images/conversationfsa}
 	\caption{Conversation protocol FSA}
 	\label{fig:conversationfsa}
 \end{figure}
@@ -285,6 +282,8 @@ In order to make the conversation between agents seem natural and remain easy to
 The conversation FSA designed by \cite{tartan} was for a human-agent chatbot, and so was adapted to include a token-passing protocol to determine which agent would speak next. One of the benefits of this design is that it allowed for the agents to chat throughout the game, not just during their turn. This meant that the agents could provide ambient conversations and respond to events like the previously made move while the human player chose their next move.
 
 At the start of each turn (i.e. when a new move is received or the very first turn of the game), each agent returns to the initial state to ensure that they are all synchronised. The king is assumed first to speak. The other pieces listen for any messages from the speaker and the speaker chooses what to say. Once sent, the speaker begins the new speaker election by sending a call for proposal (CFP) message to all alive pieces (and themselves), and waits until every pieces has submitted a proposal to be the next speaker. Finally the speaker chooses from the set of proposals, sends a rejection to all but the chosen speaker, and then the cycle begins anew.
+
+If the agent chooses to make a move while they are speaker, they transition into the corresponding state as shown in figure \ref{fig:conversationfsa}. They remain here until they receive either a refuse or agree response from the game agent and then return to the normal conversation cycle. 
 
 The requirement that all agents reset to the initial state at the start of each turn was necessary to avoid race conditions during the speaker election. For example, if a move was received that resulted in one of the agents being captured, that agent would immediately remove themselves from the game. However, if that agent was the speaker during an election, then all other agents would be stuck waiting for the next speaker to be chosen. Whilst other solutions would allow for the conversation flow to continue, it was deemed much simpler to reset the conversation FSA during each turn.
 
@@ -296,9 +295,9 @@ The turn and speaker rotation counters is provided by the ConversationContext cl
 
 Each agent maintains a conversation planner which tracks what moves have been discussed so far, and produces a response for this agent once it has its turn to speak. Figure \ref{fig:movediscussion} shows the classes used to maintain this information.
 
-\begin{figure}[!h]
+\begin{figure}[]
 	\centering
-	\includegraphics[width=\linewidth]{images/movediscussion}
+	\includegraphics[width=0.8\linewidth]{images/movediscussion}
 	\caption{Move Discussion Class Diagram}
 	\label{fig:movediscussion}
 \end{figure}
@@ -336,9 +335,9 @@ The output of \lstinline{chooseNextAction()} in the \lstinline{ConversationPlann
 
 Each of these actions are implemented as classes that extend the ConversationAction class shown in Figure \ref{fig:conversationmessage}, and once performed they return a ConversationMessage instance with all the information needed for other agents to update their own understanding of the conversation context. The actions can also extend each other if their affect on the conversation flow is the same but the natural language representation needs to differ (for example, revisiting a previously discussed move and proposing a new move both begin a new move discussion but would be expressed differently in english).
 
-\begin{figure}[!h]
+\begin{figure}[]
 	\centering
-	\includegraphics[width=\linewidth]{images/conversationmessage}
+	\includegraphics[width=0.8\linewidth]{images/conversationmessage}
 	\caption{Conversation Message Class Diagram}
 	\label{fig:conversationmessage}
 \end{figure}
@@ -380,7 +379,25 @@ The reasoning field in move responses are populated by the Value of an agent ass
 
 This argumentation feature could be improved by expressing the value as a predicate that other agents could unpack instead of being tied to the Value classes in our chess agent library. 
 
-% TODO talk about reactions implementation
+The conversation planner was extended to support reactions as well as discussion actions. This allowed agents to respond both to their moves and to the users moves to try and improve immersion.  A hard limit was placed on the number of reactions to the enemies moves on the start of a turn to avoid discussion being delayed by an unrealistic number of reactions from different pieces. The type of reactions that could be performed managed by checking previous conversation frames and the game state resulting from the move performed.
+
+\begin{table} 
+\centering
+\caption{Reactions with verbalised examples.} 
+\label{tbl:reactions}
+	\begin{tabular}{ p{0.4\linewidth}|p{0.6\linewidth} }
+	Reaction & Example \\
+ \hline
+	Compliment Enemy Move & "Oh no, that was a pretty good move by their Knight" \\ 
+	React to Enemy Piece Captured & "Haha! We have your Bishop!" \\ 
+	React to Friendly Piece Escaping & "Good, John is safe now!" \\ 
+	React to Last Move Discussed Being Performed & "I'm glad you agreed to that move!" \\ 
+	React to Undiscussed Move Being Performed & "...Maybe ask next time before moving, Kate." \\ 
+ \hline
+\end{tabular}
+\end{table}
+
+These reactions required slightly more complex checks to the discussion actions as they were dependant on very specific changes in the game occurring to make sense.
 
 \subsubsection{Natural Language Generation}
 
@@ -390,7 +407,7 @@ The natural language generation was a crucial part of this project, as it had to
 	\item vary enough to not appear scripted
 	\item make grammatical sense when combined 
 	\item make sense with respect to previous statements by other agents and themselves
-	\item be consistent with the personalities of the indidivual pieces
+	\item be consistent with the personalities of the individual pieces
 \end{itemize}
 
 As mentioned in the context survey, the development of the natural language generation aspect of this project was greatly slowed down by starting off with likely the wrong technology for the problem. SimpleNLG appeared to be useful given a better understanding of linguistics, and so a lot of time was spent understanding the technical terms of this field. However, the tool seemed better suited to tasks like report generation than conversation, and so with assistance from the project supervisors, the RiTa libary was adopted instead.
@@ -420,30 +437,144 @@ The strings between backticks within the grammars are slots that are express the
 
 The success of the resulting software was ascertained by analysis its performance ourselves and by gathering user feedback. Issues raised by these assessments were later addressed to produce the final artefact that was included with this submission.
 
-\subsection{Conversation Analysis}
-% TODO 
-Assessment of features
-Agent vs Agent examples
-Graph of how often offered compromises are accepted
-Graph of how many pieces like the chosen move
-Graph of length of discussion at each turn
-Other comments
-
 \subsection{Strategic Analysis}
 
-In order to test the strategic performance of the implementation, the Stockfish API was used to score the move chosen at each turn by the agents. This was repeated over the course of fifty games to account for the randomness used by agents during the choice of action.
+In order to test the strategic performance of the implementation, the Stockfish engine \cite{stockfish} was used to score the move chosen at each turn by the agents. This was repeated over the course of five games to account for the randomness used by agents during the choice of action. Different configurations of personalities for pieces were used for each game.
 
-Stockfish is one implementation of the universal chess interface and one of the best chess AIs in the world. It uses a complex set of rules to score board positions, which can be used to identify the next best move to make. In our case, we can use it to compare the score of our chosen move and the highest rated score and take the difference as a rating of how good our choice was. 
+Stockfish is one implementation of the universal chess interface and one of the best chess AIs in the world. It uses a complex set of rules to score board positions, which can be used to identify the next best move to make. Centipawns are the unit used for the score produced, which represent one hundredth the value of a pawn (1 point). The king is essentially of infinite value, and so for our data we translate mating moves to centipawns by assigning these moves an arbitrarily large number, as recommended in the \lstinline{python-chess} documentation \cite{pythonchess}. 
 
-We then used this metric over many games to produce graphs of our agents performance.
+The moves were tracked by adding a logger to the game agent which would record the current position in the standard Forsyth-Edwards Notation (FEN), and the source and target of the move being made. Both teams were represented by agents and the conversation delay set to a much lower number to increase the rate of discussion. The comma separated value dataset produced was then parsed by a python script. For each position recorded, all legal moves were considered by Stockfish with a limit on the computation time of one hundred milliseconds per move. This produced a score for all legal moves at each position including the chosen move.
+
+In figure \ref{fig:scoreovergame}, the difference between the maximum possible scoring move and the score given to the chosen move is plotted for each turn and for each game. Points closer to the x-axis represent moves that could be considered good. Due to mating moves being of very high value, whenever these moves were not chosen the difference is much higher, and so figure \ref{fig:scoreovergamefiltered} was also plotted with these moves filtered to give a better visualisation of the agents performance over time.
+
+\begin{figure}[]
+	\centering
+	\includegraphics[width=0.8\linewidth]{images/score_over_game}
+	\caption{Differences between best move and chosen move score over the course of five games}
+	\label{fig:scoreovergame}
+\end{figure}
+
+\begin{figure}[]
+	\centering
+	\includegraphics[width=0.8\linewidth]{images/score_over_game_filtered}
+	\caption{Figure \ref{fig:scoreovergame} with differences over 4000 removed}
+	\label{fig:scoreovergamefiltered}
+\end{figure}
+
+Figure \ref{fig:scoreovergame} shows that often the mating moves were not taken, and this was likely due to the fact that no value was implemented that would trigger a LIKE reaction if the threatened piece was the enemy king specifically. This highlighted the need for piece value to also be accounted for when choosing moves if the agents were to have any strategic advantage, but this would likely also require introduced a numerical scoring of moves by agents instead of the three value (LIKE, NEUTRAL, DISLIKE) approach taken.
+
+Interestingly, certain games seemed to have produced better moves which could suggest that either 
+\begin{enumerate}
+	\item Certain personalities were more effective at choosing good moves and these personalities were more represented for that game. For example, the aggressive personality type would maximise captures, reducing the number of opponents, which would be evaluated as high scoring moves due to capturing pieces being worth a large number of centipawns.
+
+	\item Certain combinations of personalities were more effective when combined in a given ratio. For example, having a balance of aggressive and defensive personalities would result in moves that would capture pieces whilst maintaining the least number of threatened friendly pieces.
+\end{enumerate}
+
+\begin{figure}[]
+	\centering
+	\includegraphics[width=0.8\linewidth ]{images/frequency}
+	\caption{Frequency of chosen move being in each score pentile}
+	\label{fig:frequency}
+\end{figure}
+
+To give a general overview of how well the agents performed, the scores from all moves from all games played were all collected. For each position, all the legal moves were separated into equally sized pentiles by score. The zeroth pentile contained the lowest scoring moves and the fourth the highest scoring moves. For each move, we determined which pentile the move belonged to, then plotted the frequency of the moves occurring in each percentile, and the result is shown in figure \ref{fig:frequency}.
+
+This clearly shows that most moves taken were the least advantageous strategically, though there were still occurrences of good moves. However, if we assume that randomly chosen moves would produce an equal distribution in each percentile (though this is unlikely), then of the 496 moves considered 90 would have been in the highest percentile. Compared to our results where we have nearly half of that value, there is clearly a need to implement more strategic move evaluations if the game is to be more challenging.
+
+\subsection{Conversation Analysis}
+
+The fluidity of the conversations produced was challenged throughout development. Due to the complexity of natural conversation, testing for messages that made sense in series was difficult without simply rewriting the same logic being used to choose actions in the tests, and so most of the evaluation of this feature was done manual inspection.
+
+Assessment of features
+Agent vs Agent too much discussion
+Some grammatical errors required lots of trial runs to tease out, 
+but the grammar made it easy to trace their causes
 
 \subsection{User Feedback}
 
+Since the goal of this project was to essentially create a video game, it made sense to take inspiration from industry standard Game Engagement Questionnaire \cite{geq}. This questionnaire is often used during user feedback sessions to measure the absorption, flow, presence, and immersion a game provides. It is comprised of a series of statements such as "I lose track of time" and "Things seem to happen automatically". For each statement, the user completes a Likert scale ranking of how much they agree with it.
+
+Presence is a measure of how much the player feels part of the game. Due to the players pieces being fairly static, the game was not expected to score well in this area. Similarly, flow is a measure of much the players movement and interactions with entities within the game feel natural. Again, chess does not cater to this metric well due to essentially one method of interaction: moving a piece. 
+
+On the other hand, absorption and immersion try to capture how much players become unaware of their actual surroundings due to a game. If the dialogue and conversation flow is believable enough, it is possible that the game could score fairly high in this regard.
+
+Due to the short length of time that user feedback sessions could take, some questions were removed from the questionnaire to allow for other types of questions to be asked specific to this project.
+
+For example, we also ask some questions that would help us evaluate the linguistic accuracy of the conversations produced. Unfortunately, we were unable to find past research evaluating agent to agent conversation for reference. With the growing popularity of voice controlled assistants, a lot of literature existed for evaluating conversational interfaces which, though our user does not talk directly to the agents, was incredibly helpful in determining an effective way to measure the quality of our natural language generation. 
+
+\cite{conveval} focused on the evaluation process for chatbots. Since their focus was on text-based conversational agents, it was especially relevant to our project. They surveyed quality attributes that were used to identify successful conversational agents, which included:
+\begin{itemize}
+	\item Linguistic accuracy of outputs
+	\item Convincing, satisfying, and natural interaction
+	\item Provide greetings, convey personality
+	\item Give conversational cues
+	\item Provide emotional information through tone, inflection, and expressivity
+	\item Make tasks more fun and interesting
+\end{itemize} 
+
+Their survey also highlighted that most chatbot research was aimed at goal-based chatbots. In other words, chatbots that aimed to extract information from users in order to perform some task, for example asking for arrival and departure dates to help book a flight for a user. 
+
+\cite{pervchess} created an opponent with emotional cues in the form of facial expressions to try and include the social aspects of a game. For example, the opponent could smirk when in a strong position or when they appear to have a good idea of what to do next. They did not provide a clear explanation of how they evaluated their implementation however so we were unable to learn from it. 
+
+\cite{convdrama} provided the closest work to agent-agent interaction evaluation that we could find. They implemented a conversation centered drama that involved a human user, where agents would also interact in front of the human and express emotion and try emulate personalities. An interesting point raised by their study was how often users would rely on the scroll bar of the conversation transcript to contextualise themselves during the drama. Usage of the scrollbar would suggest that the user was not able to keep track of the conversation, and was something we wanted to look out for when participants were given the oppertunity to play our game.
+
+With all the above considered, we created the questionnaire as described by table \ref{tbl:questions}. 11 participants from the school of computer science helped by taking part in the feedback exercise. The exercise involved showing the participant three shorts videos of gameplay in different situations to try highlight features such as reactions and piece argumentation. They were then given a few minutes to play themselves. Finally, the user was asked to complete our questionnaire. Some wanted to continue playing after this stage to try and explore the range of conversation possible, and comments made from this period were noted for future improvement.
+
+\begin{table} 
+\centering
+\caption{Questionnaire questions} 
+\label{tbl:questions}
+	\begin{tabular}{ p{0.35\linewidth}|c|p{0.6\linewidth} }
+		Statement & Format & Purpose \\
+ \hline
+		I have played chess before & Yes/No & May highlight the need for more visual cues to explain rules, or possible help identify if the game could be used to educate new players how to think tactically.  \\ 
+ \hline
+		I am good at chess & Likert & Players who are already very familiar with chess might have different experiences to those who rarely play, and this may be observable from what we collect. \\
+ \hline
+		I lose track of time & Likert & Measuring presence, do players find themselves 'hooked'. \\
+ \hline
+		I feel different & Likert & Measuring absorption, are they emotionally affected by the anthropomorphic pieces.  \\
+\hline
+		The game feels real & Likert & Measuring flow, do players really feel like they are against an army of other pieces. \\
+\hline
+		If someone talks to me, I don't hear them & Likert & Measuring flow, do players get involved enough to not be distracted by outside influences.  \\
+\hline
+		I get wound up & Likert & Measuring flow. Does the game frustrate the player, are they invested in it?  \\
+\hline
+		I lose track of where I am & Likert & game.  \\
+\hline
+		I play without thinking about how to play & Likert & \\
+\hline
+		Playing makes me feel calm & Likert & \\
+\hline
+		I play longer than I meant to & Likert & \\
+\hline
+		I really get into the game & Likert & \\
+\hline
+		I feel like I just can't stop playing & Likert & \\
+\hline
+		The pieces spoke with linguistic accuracy & Likert & \\
+\hline
+		The pieces had convincing, natural interactions & Likert & \\
+\hline
+		The pieces convey personality & Likert & \\
+\hline
+		The pieces provide emotional information through tone & Likert & \\
+\hline
+		The dialogue made the game more fun and interesting & Likert & \\
+\hline
+		Comments & Free text & \\
+ \hline
+\end{tabular}
+\end{table}
+
+
 % TODO 
 Description of user feedback process
-Explanation of questionnaire contents
 Results
 Analysis of frequent comments or interesting issues noticed
+
+With more time, a more thorough study that would compare player enjoyment with dialogue disabled and then enabled would shed more light on the benefits of the conversational agents. If we were able to make those who dislike chess or have not played before consider the game again, or provide a novel experience for those who enjoy the game already, then the project could definitely be deemed a success.
 
 \subsection{Improvements}
 
@@ -457,6 +588,8 @@ What was changed to address the issues raised by the above
 
 
 \section{Future Work}
+
+Chat bots being used to perform social engineering for unethical reasons. Conversational chatbots could be used for propoganda purposes for emulating real people on social networks to try and fake popularity of certain topics. \cite{conveval} refer to one case where a chatbot was convincing enough for someone to think it was romantically interested in them, if t
 
 Improvements that could be made, reference to use cases, how the approach could be made more generic
 

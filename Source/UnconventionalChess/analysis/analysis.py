@@ -89,16 +89,30 @@ def plot_score_over_game(game_scores):
     ys = [[turn_score.get_diff() for turn_score in game] for game in game_scores]
     ys = [match_length(game, max_length) for game in ys]
 
-    fig = plt.figure()
-    ax1 = fig.add_subplot(111)
+    fig1 = plt.figure()
+    ax1 = fig1.add_subplot(111)
 
     for idx, y in enumerate(ys):
         ax1.scatter(x, y, marker='o', label=f'Game {idx + 1}')
 
     plt.legend(loc='upper left')
-    plt.savefig("score_over_game.png")
     plt.xlabel("Turn")
-    plt.ylabel("CP Score")
+    plt.ylabel("Difference between max and chosen move CP Score")
+    plt.savefig("score_over_game.png")
+    plt.show()
+
+    # also plot with mating points filtered
+    fig2 = plt.figure()
+    ax2 = fig2.add_subplot(111)
+
+    for idx, y in enumerate(ys):
+        ax2.scatter(x, y, marker='o', label=f'Game {idx + 1}')
+
+    plt.legend(loc='upper left')
+    plt.xlabel("Turn")
+    plt.ylabel("Difference between max and chosen move CP Score")
+    plt.ylim((0, 4000))
+    plt.savefig("score_over_game_filtered.png")
     plt.show()
 
 
