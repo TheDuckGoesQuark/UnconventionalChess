@@ -1,5 +1,6 @@
 \documentclass{article}
 \usepackage{cite}
+\usepackage[export]{adjustbox}[2011/08/13]
 \usepackage[hyphens,spaces,obeyspaces]{url}
 \usepackage{amsmath,amssymb,amsfonts}
 \usepackage{algorithmic}
@@ -521,13 +522,13 @@ Their survey also highlighted that most chatbot research was aimed at goal-based
 With all the above considered, we created the questionnaire as described by table \ref{tbl:questions}. 11 participants from the school of computer science helped by taking part in the feedback exercise. The exercise involved showing the participant three shorts videos of gameplay in different situations to try highlight features such as reactions and piece argumentation. They were then given a few minutes to play themselves. Finally, the user was asked to complete our questionnaire. Some wanted to continue playing after this stage to try and explore the range of conversation possible, and comments made from this period were noted for future improvement.
 
 \begin{table} 
-\centering
-\caption{Questionnaire questions} 
+	\caption{Questionnaire content with the question statement, the answer format (Likert meaning 5 point scale composed of strongly disagree, disagree, neutral, agree, strongly agree), and the justification for including the question in the questionnaire.} 
 \label{tbl:questions}
-	\begin{tabular}{ p{0.35\linewidth}|c|p{0.6\linewidth} }
-		Statement & Format & Purpose \\
+	\makebox[\textwidth]{\resizebox{1.3\linewidth}{!}{\def\arraystretch{1.5}%
+	\begin{tabular}{ r|c|p{0.7\linewidth} }
+		\textbf{Statement} & \textbf{Format} & \textbf{Purpose} \\
  \hline
-		I have played chess before & Yes/No & May highlight the need for more visual cues to explain rules, or possible help identify if the game could be used to educate new players how to think tactically.  \\ 
+		I have played chess before & Yes /No & May highlight the need for more visual cues to explain rules, or possible help identify if the game could be used to educate new players how to think tactically.  \\ 
  \hline
 		I am good at chess & Likert & Players who are already very familiar with chess might have different experiences to those who rarely play, and this may be observable from what we collect. \\
  \hline
@@ -541,36 +542,35 @@ With all the above considered, we created the questionnaire as described by tabl
 \hline
 		I get wound up & Likert & Measuring flow. Does the game frustrate the player, are they invested in it?  \\
 \hline
-		I lose track of where I am & Likert & game.  \\
+		I lose track of where I am & Likert & Measuring presence. Is the player focused on the game? \\
 \hline
-		I play without thinking about how to play & Likert & \\
+		I play without thinking about how to play & Likert & Measuring flow. The difference between experienced and non-experienced chess players may be reflected by this question also. \\
 \hline
-		Playing makes me feel calm & Likert & \\
+		Playing makes me feel calm & Likert & Measuring presence. Do players enjoy their time. \\
 \hline
-		I play longer than I meant to & Likert & \\
+		I really get into the game & Likert & Measuring immersion. Do players really start considering the dialogue of the other pieces while playing.  \\
 \hline
-		I really get into the game & Likert & \\
+		I feel like I just can't stop playing & Likert & Measuring flow. Does the piece interaction interest players enough to make them keep playing. \\
 \hline
-		I feel like I just can't stop playing & Likert & \\
+		The pieces spoke with linguistic accuracy & Likert & Did the conversation make sense and not contain any gramamtical errors. \\
 \hline
-		The pieces spoke with linguistic accuracy & Likert & \\
+		The pieces had convincing, natural interactions & Likert & Did the flow of conversation feel natural and emulate human discussion.  \\
 \hline
-		The pieces had convincing, natural interactions & Likert & \\
+		The reactions of pieces affected me & Likert & Did the dialogue create an emotional response, for example when a piece cried out at the loss of its friend did the player feel guilt. \\
 \hline
-		The pieces convey personality & Likert & \\
+		The pieces convey personality & Likert & Is the player able to identify personality traits for each piece consistently. \\
 \hline
-		The pieces provide emotional information through tone & Likert & \\
+		The pieces provide emotional information through tone & Likert & Can the player tell if a piece has expressed anger, sadness, happiness through choice of words. \\
 \hline
-		The dialogue made the game more fun and interesting & Likert & \\
+		The dialogue made the game more fun and interesting & Likert & Did the dialogue add to the experience of playing chess, or just distract or detract from it. \\
 \hline
-		Comments & Free text & \\
+		Comments & Free text & Allow participants to highlight anything that was especially good or bad about the game. \\
  \hline
-\end{tabular}
+\end{tabular}}}
 \end{table}
 
 
 % TODO 
-Description of user feedback process
 Results
 Analysis of frequent comments or interesting issues noticed
 
