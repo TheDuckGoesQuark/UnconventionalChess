@@ -11,6 +11,8 @@
 \usepackage{csquotes}
 \usepackage{listings}
 
+\newcommand\descitem[1]{\item{\bfseries #1}\\}
+
 \begin{document}
 
 \begin{titlepage}
@@ -116,7 +118,7 @@ Due to time constraints and the wide range of complex problems being solved, we 
 
 Many modern video games involve the user managing multiple characters to achieve some goal, such as producing in-game resources or defending against an opponent. This sort of problem lends itself easily to multiagent systems. Instead of having one artificial intelligence engine driving the actions of all the characters, developers can create agents with a limited set of actions and some concept of progress towards their goals and allow emergent behaviour to find a solution to the problem, sometimes in surprising ways. 
 
-\cite{sandboxmas} discuss how multiagent systems can be applied to create more realistic worlds in sandbox games. By implementing the environment, objects, and non-playable characters (NPCs) as agents, developers can create a world that reacts and adapts the player, but also operates in isolation from the character to provide a realistic setting. The concept of personalities is also mentioned as a way of allowing similar NPCs to exhibit different slightly different behaviours, such as having aggressive or relaxed driving styles.
+Ocio and Brugos \cite{sandboxmas} discuss how multiagent systems can be applied to create more realistic worlds in sandbox games. By implementing the environment, objects, and non-playable characters (NPCs) as agents, developers can create a world that reacts and adapts the player, but also operates in isolation from the character to provide a realistic setting. The concept of personalities is also mentioned as a way of allowing similar NPCs to exhibit different slightly different behaviours, such as having aggressive or relaxed driving styles.
 
 Even in games with very simple rules and logic, multiagent systems can find interesting and complex solutions. OpenAI implemented hide-and-seek using agents, where hiders avoid the line-of-sight of the seekers \cite{openaiemergent}. The game was played in a world with randomly generated walls and objects such as ramps (for climbing over walls) and blocks (for forming barricades). What made this fascinating is that the agents were not incentivised to use these objects, but after repeatedly playing and learning, both the hiders and seekers created strategies such as blocking each other in a safe area, and even removing the objects from the other team before hiding.
 
@@ -132,15 +134,15 @@ Other frameworks provide APIs that encourage certain design patterns. For exampl
 
 \subsection{Models of Personality and Emotion}
 
-Creating a truly immersive video game requires characters that the player can empathise with. Robots have been shown to be able to influence human behaviour as an authority figure \cite{bossrobot} and when begging not to be turned off \cite{turnoffrobot} by expressing emotions. \cite{personalitymodel} created and demonstrated a model of personality and emotion that would allow agents to react differently to the same stimulation. For example, when a agent with an 'introverted' personality is offered help, they are less likely to accept it due to the prolonged interaction it would entail. 
+Creating a truly immersive video game requires characters that the player can empathise with. Robots have been shown to be able to influence human behaviour as an authority figure \cite{bossrobot} and when begging not to be turned off \cite{turnoffrobot} by expressing emotions. Egges, Kshirsagar, and Thalmann \cite{personalitymodel} created and demonstrated a model of personality and emotion that would allow agents to react differently to the same stimulation. For example, when a agent with an 'introverted' personality is offered help, they are less likely to accept it due to the prolonged interaction it would entail. 
 
-\cite{skyrim} also created a model that would use personality, emotion, and social relationships to determine the behaviour of NPCs in a video game. The frequency and tone of interactions between NPCs as well as the NPC and the player were accounted for when choosing facial expressions and tone of voice during conversations. Test subjects described feeling especially attached to the NPCs that utilised this model.
+Chowanda et al. \cite{skyrim} also created a model that would use personality, emotion, and social relationships to determine the behaviour of NPCs in a video game. The frequency and tone of interactions between NPCs as well as the NPC and the player were accounted for when choosing facial expressions and tone of voice during conversations. Test subjects described feeling especially attached to the NPCs that utilised this model.
 
-A useful aspect of multiagent systems is that agents can be developed in isolation but still interact (e.g. an agent that searches for cheap transport options and an agent responsible for auctioning train tickets could be developed separately with no knowledge of the logic being used by the other). \cite{hetrogenousagents} discuss how developing heterogeneous agent systems using personalities and social structures could help when dealing with third-party agents that have been constructed to lie and exhibit selfish or uncooperative behaviour.
+A useful aspect of multiagent systems is that agents can be developed in isolation but still interact (e.g. an agent that searches for cheap transport options and an agent responsible for auctioning train tickets could be developed separately with no knowledge of the logic being used by the other). Castelfranchi et al. \cite{hetrogenousagents} discuss how developing heterogeneous agent systems using personalities and social structures could help when dealing with third-party agents that have been constructed to lie and exhibit selfish or uncooperative behaviour.
 
 \subsection{Collaborative Argumentation}
 
-Knowledge is distributed in a multiagent system therefore specialist agents need to be able to alter the beliefs of others by appealing to their individual goals. \cite{argumentation} implemented a framework that achieves this based on a scheme given by \cite{reasoning}:
+Knowledge is distributed in a multiagent system therefore specialist agents need to be able to alter the beliefs of others by appealing to their individual goals. Black and Atkinson \cite{argumentation} implemented a framework that achieves this based on a scheme given by \cite{reasoning}:
 
 \begin{displayquote}
 	In the current circumstance R, we should perform action A, which will result in new circumstances S, which will realise goal G, which will promote some value V.
@@ -154,13 +156,13 @@ Previous work has shown that multiagent chess systems do not generally perform w
 
 \subsection{Natural Language Generation}
 
-In order to make the discussions between agents more entertaining and user-friendly to observe, our project involves using natural language generation (NLG) methods to translate the messages or agent intent to plain English. \cite{owlnlg} built an NLG system for a particular ontology language (W3C Ontology Language a.k.a. OWL), which is able to construct texts corresponding to objects and their properties in the ontology in English and Greek. \cite{rdfnlg} achieved similar results for one of the other Semantic Web Formalisms (specifically RDF) and were able to produce instructions for cooking recipes from a corpus of data in a far less human-friendly format. They were even able to adjust the level of technical jargon in the resulting text to accommodate for the readers familiarity with cooking. The ontology allowed for optimised searching of the parse trees but they also required a domain corpus (i.e. existing textual recipes) in order to properly train their natural language generator. Their solutions are specific to the Semantic Web project, and would not produce "conversations" like we are planning to do, but provide a good foundation for implementing this functionality.
+In order to make the discussions between agents more entertaining and user-friendly to observe, our project involves using natural language generation (NLG) methods to translate the messages or agent intent to plain English. Androutsopoulos, Lampouras, and Galanis \cite{owlnlg} built an NLG system for a particular ontology language (W3C Ontology Language a.k.a. OWL), which is able to construct texts corresponding to objects and their properties in the ontology in English and Greek. Cimiano et al. \cite{rdfnlg} achieved similar results for one of the other Semantic Web Formalisms (specifically RDF) and were able to produce instructions for cooking recipes from a corpus of data in a far less human-friendly format. They were even able to adjust the level of technical jargon in the resulting text to accommodate for the readers familiarity with cooking. The ontology allowed for optimised searching of the parse trees but they also required a domain corpus (i.e. existing textual recipes) in order to properly train their natural language generator. Their solutions are specific to the Semantic Web project, and would not produce "conversations" like we are planning to do, but provide a good foundation for implementing this functionality.
 
 Generic frameworks have also been created that are not based strictly on ontologies which were also considered. For example, SimpleNLG \cite{simplenlg} is an NLG engine that allows for valid English phrases to be constructed through a very simple Java API. However, after some time experimenting with this library, it was realised that it was very difficult to reliably produce a variety of phrases, though it was useful for controlling features such as grammatical person and tense.
 
-\cite{robotgame} created a robot capable of providing dialogue while playing against a human at tic-tac-toe, but used a slot-filling technique based on templates that suffered from little flexibility and left no room for personality in dialogue creation. Contrarily, systems such as Siri and Alexa are examples of successful dialogue systems that have been able to provide assistance to humans in the form of natural language conversations by avoiding the template based approaches.
+Cuayáhuitl \cite{robotgame} created a robot capable of providing dialogue while playing against a human at tic-tac-toe, but used a slot-filling technique based on templates that suffered from little flexibility and left no room for personality in dialogue creation. Contrarily, systems such as Siri and Alexa are examples of successful dialogue systems that have been able to provide assistance to humans in the form of natural language conversations by avoiding the template based approaches.
 
-These systems instead take advantage of machine learning techniques such as deep recurrent neural networks (DRNN). \cite{dialoguesystems} surveyed projects that applied these modern techniques for NLG, and concluded that in order to account for aspects such as current state of the program during the execution of conversation as our project requires, a hybrid of the machine learning and rule based approaches may be necessary. 
+These systems instead take advantage of machine learning techniques such as deep recurrent neural networks (DRNN). Ozaeta and Grana \cite{dialoguesystems} surveyed projects that applied these modern techniques for NLG, and concluded that in order to account for aspects such as current state of the program during the execution of conversation as our project requires, a hybrid of the machine learning and rule based approaches may be necessary. 
 
 The dynamic finite-state machine implementation of a chatbot called Tartan \cite{tartan} was also especially useful for the project, as it focused on natural conversation flows rather than the extraction of information from a human user like most other chatbot research. Their conversation state machine design was combined with the RiTa library's RiGrammar (a probabilistic context free grammar) in order to produce a variety of phrases and conversation flows. 
 
@@ -183,6 +185,87 @@ There are three main theories of humour that are used for computational humour: 
 However, JAPE does not allow for much user interaction, and most textual humour generation takes the form of simple puns and riddles. Our agents could instead generate situational humour by surprising the user by diverting suddenly from expected behaviour. The Suslov Model of humour accounts for the fact that we subconsciously predict expected conclusions to situations and phrases, and that contradictions in what is the most likely direction for a conversation or situation to what was previously predicted can create a humour response \cite{suslov}.
 
 These probabilistic models currently appear more hopeful than the rule based models used by older implementations such as JAPE. Instead, \cite{humourrnn} used an existing corpus of jokes and a recurrent neural network to produce a system capable of generating jokes and even anti-jokes (jokes without an actual punchline). 
+
+\subsection{Evaluation of Conversational Agents}
+
+As part of the user feedback gathering, we hoped to ask questions that would help us evaluate the linguistic accuracy of the conversations produced. Unfortunately, we were unable to find past research evaluating agent to agent conversation for reference. With the growing popularity of voice controlled assistants, a large amount of literature existed for evaluating conversational interfaces which, though our user does not talk directly to the agents, was incredibly helpful in determining an effective way to measure the quality of our natural language generation. 
+
+Radziwill and Benton \cite{conveval} focused on the evaluation process for chatbots. Since their focus was on text-based conversational agents, it was especially relevant to our project. They surveyed quality attributes that were used to identify successful conversational agents, which included:
+\begin{itemize}
+	\item Linguistic accuracy of outputs
+	\item Convincing, satisfying, and natural interaction
+	\item Provide greetings, convey personality
+	\item Give conversational cues
+	\item Provide emotional information through tone, inflection, and expressivity
+	\item Make tasks more fun and interesting
+\end{itemize} 
+
+Their survey also highlighted that most chatbot research was aimed at goal-based chatbots. In other words, chatbots that aimed to extract information from users in order to perform some task, for example asking for arrival and departure dates to help book a flight for a user. 
+
+Pereira et al. \cite{pervchess} created an opponent for chess with emotional cues in the form of facial expressions to try and include the social aspects of a game as would be present when playing against another human. For example, the opponent could smirk when in a strong position or when they appear to have a good idea of what to do next. They did not provide a clear explanation of how they evaluated their implementation however so we were unable to learn from it. 
+
+Mehta et al. \cite{convdrama} provided the closest work to agent-agent interaction evaluation that we could find. They implemented a conversation centered drama that involved a human user, where agents would also interact in front of the human and express emotion and try emulate personalities. An interesting point raised by their study was how often users would rely on the scroll bar of the conversation transcript to contextualise themselves during the drama. Usage of the scrollbar would suggest that the user was not able to keep track of the conversation, and was something we wanted to look out for when participants were given the oppertunity to play our game.
+
+\clearpage
+\section{Requirements Specification}
+
+After clarifying what we wanted to achieve at a higher level, we determined what would be our main goals. For each goal set, we determined how we can evaluate their success. 
+
+Our primary goals were what we considered to be the minimal set of features that would provide a proof of concept. Our secondary goals were improvements that we believed would enhance the game experience and also to provide thorough evaluation, and our tertiary goals were the most ambitious features in order to again enhance the game experience.
+
+\subsection*{Primary Goals}
+\begin{enumerate}
+		\descitem{Base infrastructure composed of agents representing pieces, which communicate between each other to choose the next move.}
+		The agents are capable of identifying optional moves at a point in the game, reaching a consensus on what piece is to move next, and each move reaches some form of textual interface.
+
+		\descitem{Agent decisions are driven by some form of 'personality' model.}
+		Possibly a set of static weightings that push them to have certain desires and be more likely to propose certain actions over others.
+
+		\descitem{Dialogue is generated related to the discussions between agents.}
+		Human-readable dialogue is generated to describe the discussions taking place between agents.
+
+		\descitem{Humour is achieved through either the human-readable dialogue, or from the actions of agents.}
+		A fixed set of rules inspired by computational models of humour that define how a character should behave in consecutive dialogues. For example, agents break from 'expected' behaviour to produce funny situations, or conversations between agents contain satirical comments related to the current state of the game.
+
+\end{enumerate}
+
+\subsection*{Secondary Goals}
+
+\begin{enumerate}
+		\descitem{Personalities and behaviours change over time in reaction to the actions of other agents or the current state of the game}
+		The weightings that drive individual agent decisions are affected by factors such as how cooperative other agents are being, or how often this piece is threatened.
+
+		\descitem{Dialogue continues throughout game, not just during the main decision making process.}
+		The agents will constantly produce dialogue even when not making decisions. This could be in reaction to the move just made, or be directed at the player.
+
+		\descitem{Thorough evaluation by human users}
+		The game is tested by a number of users, and feedback is collected as to how well the game achieves its goal of being entertaining. This feedback is used to describe possible next steps for the project.
+
+\end{enumerate}
+
+\subsection*{Tertiary Goals}
+
+\begin{enumerate}
+
+		\descitem{The 'hierarchical' nature of chess pieces is accounted for during the decision making process between agents}
+		For example, actions suggested by bishops and knights will be more likely to be accepted compared to that of a pawn. This hierarchy could also be dynamic, and make agents in more powerful positions (for example, a rook cornering the enemy king) also have more weighting during the decision making process.
+
+		\descitem{Detailed Graphical Interface}
+		The game has high quality visuals that reflect the state of the game, animations, and other aesthetic properties that make it more enjoyable to play.
+
+\end{enumerate}
+
+\clearpage
+
+\section{Software Engineering Process}
+
+The project was approached in an agile manner. Weekly meetings were arranged in order to discuss current progress and determine next steps, adjusting goals regularly depending on the accuracy of previous weeks. 
+
+This approach was taken to ensure that a minimum viable product was produced as early as possible, and encouraged the modularity of components by seperating each problem into individual, testable chunks. 
+
+\section{Ethics}
+
+Some short feedback tests were run with volunteers to evaluate the success of the project. Because of this, the preliminary self-assessment form and the artifact evaluation form were submitted, and can be found in the appendix.
 
 \section{System Design}
 
@@ -570,24 +653,7 @@ On the other hand, absorption and immersion try to capture how much players beco
 
 Due to the short length of time that user feedback sessions could take, some questions were removed from the questionnaire to allow for other types of questions to be asked specific to this project.
 
-For example, we also ask some questions that would help us evaluate the linguistic accuracy of the conversations produced. Unfortunately, we were unable to find past research evaluating agent to agent conversation for reference. With the growing popularity of voice controlled assistants, a lot of literature existed for evaluating conversational interfaces which, though our user does not talk directly to the agents, was incredibly helpful in determining an effective way to measure the quality of our natural language generation. 
-
-\cite{conveval} focused on the evaluation process for chatbots. Since their focus was on text-based conversational agents, it was especially relevant to our project. They surveyed quality attributes that were used to identify successful conversational agents, which included:
-\begin{itemize}
-	\item Linguistic accuracy of outputs
-	\item Convincing, satisfying, and natural interaction
-	\item Provide greetings, convey personality
-	\item Give conversational cues
-	\item Provide emotional information through tone, inflection, and expressivity
-	\item Make tasks more fun and interesting
-\end{itemize} 
-
-Their survey also highlighted that most chatbot research was aimed at goal-based chatbots. In other words, chatbots that aimed to extract information from users in order to perform some task, for example asking for arrival and departure dates to help book a flight for a user. 
-
-\cite{pervchess} created an opponent with emotional cues in the form of facial expressions to try and include the social aspects of a game. For example, the opponent could smirk when in a strong position or when they appear to have a good idea of what to do next. They did not provide a clear explanation of how they evaluated their implementation however so we were unable to learn from it. 
-
-\cite{convdrama} provided the closest work to agent-agent interaction evaluation that we could find. They implemented a conversation centered drama that involved a human user, where agents would also interact in front of the human and express emotion and try emulate personalities. An interesting point raised by their study was how often users would rely on the scroll bar of the conversation transcript to contextualise themselves during the drama. Usage of the scrollbar would suggest that the user was not able to keep track of the conversation, and was something we wanted to look out for when participants were given the oppertunity to play our game.
-
+% TODO refer to context survey content
 With all the above considered, we created the questionnaire as described by table \ref{tbl:questions}. 11 participants from the school of computer science helped by taking part in the feedback exercise. The exercise involved showing the participant three short videos of gameplay in different situations to try highlight features such as reactions and piece argumentation. They were then given a few minutes to play themselves. Finally, the user was asked to complete our questionnaire. Some wanted to continue playing after this stage to try and explore the range of conversation possible, and comments made from this period were noted for future improvement.
 
 \begin{table}[!ht]
@@ -640,7 +706,7 @@ With all the above considered, we created the questionnaire as described by tabl
 
 The results from the questionnaire were taken from paper to csv, and the frequency of each answer for each question plotted. Figures \ref{fig:qfirst} to \ref{fig:qlast} show the results for each question in order.
 
-\begin{figure}[b]
+\begin{figure}[!ht]
 \centering
 \begin{subfigure}{.5\textwidth}
     \centering
@@ -677,7 +743,7 @@ The results from the questionnaire were taken from paper to csv, and the frequen
 \caption[short]{Questions 1-8 in Questionnaire}\label{fig:qfirst}
 \end{figure}
 
-\begin{figure}[b]
+\begin{figure}[!ht]
 \centering
 \begin{subfigure}{.5\textwidth}
     \centering
@@ -714,7 +780,7 @@ The results from the questionnaire were taken from paper to csv, and the frequen
 \caption[short]{Questions 9-16 in Questionnaire}\label{fig:qmiddel}
 \end{figure}
 
-\begin{figure}[b]
+\begin{figure}[!ht]
 \centering
 \begin{subfigure}{.5\textwidth}
     \centering
@@ -783,8 +849,16 @@ I would also like to thank my fellow students for helping by taking part in the 
 
 Finally, I would also like to thank my family for getting me through the final stretch of work needed. 
 
+
 \bibliographystyle{unsrt}
 \bibliography{mybib}
+
+\section{Appendix}
+
+% TODO include testing description, user manual, and ethics forms in appendix
+\subsection{Testing Summary}
+\subsection{User Manual}
+\subsection{Ethics}
 
 \vspace{12pt}
 
