@@ -38,7 +38,6 @@
 %	AUTHOR SECTION
 %----------------------------------------------------------------------------------------
 
-
 \Large \emph{Author:}\\
  \textsc{Jordan Mackie}\\[1cm] % Your name
 \Large \emph{Supervisors:}\\
@@ -65,7 +64,7 @@
 
 \section*{Abstract}
 
-We built a system of collaborative agents with personality driven decisions and humoristic dialogues with the goal of providing entertainment and also providing a human friendly way of interpreting agent interactions in multiagent systems. The agents were designed to play chess and given goal-based personalities that would affect their decisions and how they would interact with other agents. We gathered feedback through allowing volunteers to play against our agents and asking questions covering usability and enjoyment. Finally, we present our results and discuss further work or areas of improvement that could be taken up.
+We built a system of collaborative agents with personality driven decisions and humoristic dialogues with the goal of providing entertainment and also providing a human friendly way of interpreting agent interactions in multiagent systems. The agents were designed to play chess, each representing a single piece, and given goal-based personalities that would affect their decisions and how they would interact with other agents. We gathered feedback through allowing volunteers to play against our agents and asking questions covering usability and enjoyment. Finally, we present our results and discuss further work or areas of improvement that could be taken up.
 
 \section*{Declaration}
 
@@ -97,9 +96,19 @@ copyright in this work.
 
 Multiagent systems are the next step to increase the level of autonomy that can be provided by technology. Agents that are able to learn, adapt, and negotiate with other agents to achieve their goals allow for complex problems to be solved or modelled without human intervention, such as monitoring and maintaining national power grids \cite{archon}. 
 
-Often, developers and users will anthropomorphise these agents when describing their behaviour. This project aims to encourage this by implementing agents with a model of personality that affects their choice of actions, by rendering the negotiations between agents in a natural language, and by using models of humour to make the interactions between agents entertaining. 
+Often, developers and users will anthropomorphise these agents when describing their behaviour. This project aimed to encourage this by implementing agents with a model of personality that affects their choice of actions, by rendering the negotiations between agents in a natural language, and by using models of humour to make the interactions between agents entertaining. 
+
+There is currently a great deal of research in improving conversational agents for human interaction, but little work in agent to agent interaction. As we discuss later, this work would be beneficial for game development by emulating realistic interactions in the world around the player. There are also possible applications in robotics and digital assistants. 
+
+Therefore, our main goal was to create a model of personalities that would be able to select actions for each agent, and to also reflect these personalities and the actions taken in the form of natural language. This would require what we later refer to as a conversation planner, a natural language generation system for mapping these actions to statements in English, and a system for determining which next actions were available and of these actions which would be preferred by an agents personality.
+
+In order to present these features in a user friendly manner, we also had to design and implement a system composed of a graphical interface for the user and a server that would maintain the life cycle of the game and all the agents involved in the game. 
 
 Chess was chosen as our strategy game as multiagent implementations have been previously investigated, though not in a configuration where agents could have conflicting goals in the same team. However, our model for determining agent actions can be applied to any other strategy game or multiagent system.
+
+We evaluated our system to determine how effective it was as a chess engine by scoring its moves using the open-source chess AI, Stockfish \cite{stockfish}. We also carried out our own assessment of the conversations and natural language generation features. Finally we also gathered user feedback from a group of participants, who after being presented videos of gameplay and given a chance to play against the agents themselves completed a questionnaire. The results of this questionnaire were analysed to allow us to identify the parts of the project that were successful and the parts that required further work.
+
+Due to time constraints and the wide range of complex problems being solved, we were not able to perfect each feature. However, our user feedback and personal evaluation of the final artefact suggested that our implementation was successful. Users were entertained by the discussions between agents and their reactions to events during the game, and many were keen to continue even outside of the feedback exercise. Though our strategic evaluation showed that as a chess AI, our agents were not particularly effective, the conversational planner and personality features which were the main problems we had hoped to tackle were well received.
 
 \section{Context Survey}
 
