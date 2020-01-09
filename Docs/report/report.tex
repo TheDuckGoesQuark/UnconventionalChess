@@ -13,27 +13,85 @@
 
 \begin{document}
 
-\title{A Strategy Video-Game for Collaborative Agents with a Personality and Humoristic Dialogues\\
-}
+\begin{titlepage}
 
-\author{
-Jordan Mackie \\
-\textit{Student}
-\and
-Alice Toniolo \\
-\textit{Supervisor}
-\and
-Christopher Stone \\
-\textit{Supervisor}
-}
+\newcommand{\HRule}{\rule{\linewidth}{0.5mm}} % Defines a new command for the horizontal lines, change thickness here
 
-\maketitle
+\center % Center everything on the page
+ 
+%----------------------------------------------------------------------------------------
+%	HEADING SECTIONS
+%----------------------------------------------------------------------------------------
 
-\begin{abstract}
+\textsc{\LARGE University of St Andrews}\\[1.5cm] % Name of your university/college
+\textsc{\large CS5199 Final Report}\\[0.5cm] % Minor heading such as course title
 
-	We built a system of collaborative agents with personality driven decisions and humoristic dialogues with the goal of providing entertainment and also providing a human friendly way of interpreting agent interactions in multiagent systems. The agents were designed to play chess and given goal-based personalities that would affect their decisions and how they would interact with other agents. We gathered feedback through allowing volunteers to play against our agents and asking questions covering usability and enjoyment. Finally, we present our results and discuss further work or areas of improvement that could be taken up.
+%----------------------------------------------------------------------------------------
+%	TITLE SECTION
+%----------------------------------------------------------------------------------------
 
-\end{abstract}
+\HRule \\[0.4cm]
+{ \huge \bfseries A Strategy Video-Game for Collaborative Agents with a Personality and Humoristic Dialogues}\\[0.4cm] % Title of your document
+\HRule \\[1.0cm]
+ 
+%----------------------------------------------------------------------------------------
+%	AUTHOR SECTION
+%----------------------------------------------------------------------------------------
+
+
+\Large \emph{Author:}\\
+ \textsc{Jordan Mackie}\\[1cm] % Your name
+\Large \emph{Supervisors:}\\
+ \textsc{Dr Alice Toniolo \hspace{0.8cm}}
+\textsc{Christopher Stone}\\[0.7cm] % Your name
+ 
+%----------------------------------------------------------------------------------------
+%	DATE SECTION
+%----------------------------------------------------------------------------------------
+
+{\large \today}\\[1cm] % Date, change the \today to a set date if you want to be precise
+
+%----------------------------------------------------------------------------------------
+%	LOGO SECTION
+%---------------------------------------------------------------------------------------
+
+\includegraphics[width = 4.3cm]{images/standrewslogo.png}
+ 
+%----------------------------------------------------------------------------------------
+
+\vfill % Fill the rest of the page with whitespace
+
+\end{titlepage}
+
+\section*{Abstract}
+
+We built a system of collaborative agents with personality driven decisions and humoristic dialogues with the goal of providing entertainment and also providing a human friendly way of interpreting agent interactions in multiagent systems. The agents were designed to play chess and given goal-based personalities that would affect their decisions and how they would interact with other agents. We gathered feedback through allowing volunteers to play against our agents and asking questions covering usability and enjoyment. Finally, we present our results and discuss further work or areas of improvement that could be taken up.
+
+\section*{Declaration}
+
+I declare that the material submitted for
+assessment is my own work except where credit is
+explicitly given to others by citation or
+acknowledgement. This work was performed during
+the current academic year except where otherwise
+stated.
+The main text of this project report is %TODO NN,NNN*
+words long, including project specification and plan.
+In submitting this project report to the University of
+St Andrews, I give permission for it to be made
+available for use in accordance with the regulations of
+the University Library. I also give permission for
+the title and abstract to be published and for copies of
+the report to be made and supplied at cost to any bona
+fide library or research worker, and to be made
+available on the World Wide Web. I retain the
+copyright in this work.
+
+\clearpage
+
+\tableofcontents
+
+\clearpage
 
 \section{Introduction}
 
@@ -439,7 +497,7 @@ The strings between backticks within the grammars are slots that are express the
 
 The success of the resulting software was ascertained by analysis its performance ourselves and by gathering user feedback. Issues raised by these assessments were later addressed to produce the final artefact that was included with this submission.
 
-\subsection{Strategic Analysis}
+\subsection{Strategic Analysis} \label{ss:sa}
 
 In order to test the strategic performance of the implementation, the Stockfish engine \cite{stockfish} was used to score the move chosen at each turn by the agents. This was repeated over the course of five games to account for the randomness used by agents during the choice of action. Different configurations of personalities for pieces were used for each game.
 
@@ -485,12 +543,13 @@ This clearly shows that most moves taken were the least advantageous strategical
 
 \subsection{Conversation Analysis}
 
-The fluidity of the conversations produced was challenged throughout development. Due to the complexity of natural conversation, testing for messages that made sense in series was difficult without simply rewriting the same logic being used to choose actions in the tests, and so most of the evaluation of this feature was done manual inspection.
+The fluidity of the conversations produced was challenged throughout development. Due to the complexity of natural conversation, testing for messages that made sense in series was difficult without simply rewriting the same logic being used to choose actions in the tests, and so most of the evaluation of this feature was done by manual inspection.
 
-Assessment of features
-Agent vs Agent too much discussion
-Some grammatical errors required lots of trial runs to tease out, 
-but the grammar made it easy to trace their causes
+During the agent-vs-agent experiments discussed in section \ref{ss:sa}, conversation dialogue was not disabled, which meant that at the end of each experiment a transcript was available. Due to the rate of messages coming in, it was impossible to read and follow the discussion in real time.  The level of noise when both sides were creating dialogue made it difficult to follow even with the rate of conversation greatly reduced which made it clear that this game mode would likely be improved by only showing the dialogue from one side.
+
+The transcripts showed more variety was likely needed in the speech corpus, as repetition was quite easy to spot when the number of messages were this large. For normal gameplay, this would be less of an issue, but it did not seem like there was enough variety in speech to make a full game entertaining. Unfortunately, this does identify a drawback with our approach: creating believable dialogue required manually curating the dataset which could take a large amount of time. However, the context free grammar approach meant that poorly formed sentences could be easily fixed as the pattern used to create the sentence could be traced.
+
+Determining if the discussions complimented gameplay required simply playing the game and allowing the pieces to talk for a while between turns. During development, this approach identified problems such as too many reactions in a row occuring, or moves being performed too early on in the dicussion and cutting it short.
 
 \subsection{User Feedback}
 
@@ -659,37 +718,61 @@ The results from the questionnaire were taken from paper to csv, and the frequen
 \caption[short]{Questions 17 and 18 in Questionnaire} \label{fig:qlast}
 \end{figure}
 
-% TODO 
-Analysis of frequent comments or interesting issues noticed
+Unfortunately the popularity of chess meant that only one of our participants had not played in either a very long time or never at all. The results mostly lean to the negative side, but only slightly, and there are some cases were participants were impressed.
 
-With more time, a more thorough study that would compare player enjoyment with dialogue disabled and then enabled would shed more light on the benefits of the conversational agents. If we were able to make those who dislike chess or have not played before consider the game again, or provide a novel experience for those who enjoy the game already, then the project could definitely be deemed a success.
+A majority of players said they lost track of time while playing. Without being able to compare results with chess without dialogues, it is difficult to state the cause of this. It is possible that the conversations provide enough of a narrative to make players lose focus on time. 
 
+The game also ranked highly for the question "Playing makes me feel calm". This was expected, as gameplay is mostly reading the dialogue without much other stimulation.
 
+In regards to the emotional response to the agents and the game, the results of the questions "I feel different" and "I get wound up" vary wildly. Players were definitely not 'wound up' or agitated by the game, which suggests that the player directed insults were ineffective or that the challenge was not sufficient for most players.
+
+The linguistic accuracy of the pieces were rated highly. However, some of the freetext comments mentioned that the justifications all sounded the same, and another comment did suggest that the dialogue was not perfectly fluid. These issues could be resolved through careful tailoring of the BNF grammars used. The original interface for values only provided a single string representation for each of the opinions when evaluating the response to a move, and so this comment highlighted the need for the values to be included in the grammars to increase the number of wordings used.
+
+The conversation planning seemed to be successful given the majority of players agreeing with the statement "The pieces had convincing and natural interactions". Given this was likely the part of the project that had taken the most time, it was rewarding to receive such a positive response.
+
+Piece reactions did not seem to have much of an effect on players with the majority of participants giving a neutral response. One of the comments mentioned the reactions seeming random, which could point to issues with conveying personality of the agents, or a lack of emotion in the generated text. This is further evidenced by the replies to the final question, where most players did not seem to get a sense of personality from each of the pieces.
+
+One of the reasons given for this in the comments were that maybe more exposure to the pieces were required to make the personalities recognisable, and another highlighted the problem that the similar appearance of the pieces made it difficult to track who said what and therefore remember which piece showed which personality traits. The nametags were implemented to avoid this issue, but clearly another solution is necessary to make each piece more unique.
+
+Another interesting comment was that the phrases spoken by pieces would sometimes appear too long which ruined the flow of conversation slightly. The participant suggested breaking up longer statements by placing a limit on the length of each piece of dialogue, and splitting any statements that overflowed this limit. All the participants did enjoy the novelty of the concept however, which definitely suggested that these conversational agents would worth investigating further.
+
+While continuing to play, one participant pointed out that it was hard to say if a piece had been 'convinced' to make a move, as the movement often seemed to come out of nowhere, even if it was the move currently being convinced. It is difficult to determine what change needed to be made to remedy this issue, but doing so would be likely to provide more satisfying gameplay. Further play also allowed some participants to begin to spot patterns and repetition in speech, which made it clear that the corpus of statements needed to be made larger. 
+
+Given one of the goals were to make the agent interactions humourous, participants were observed while playing to see if a smile or a laugh was given in reaction to agent behaviour. Fortunately, this did occur when agents caught the human player off guard by insulting their moves, or insulting each other. 
 
 \subsection{Improvements}
 
-What was changed to address the issues raised by the above
-\begin{itemize}
-	\item delay between messages too consistent, didn't feel natural
-	\item some messages were too long, would be better being split up into two consecutive messages
-	\item not very challenging to play against
-	\item reasons given were always in the same form 
-\end{itemize}
+Due to time constraints, only some of the issues raised were able to be attacked before the final artefact had to be submitted.
 
+The test coverage was greatly improved to try catch edge cases were the conversation planner would fail. The grammars used by each personality were also extended to try create more variation in the phrases produced during a game.
 
 \section{Future Work}
 
-Chat bots being used to perform social engineering for unethical reasons. Conversational chatbots could be used for propoganda purposes for emulating real people on social networks to try and fake popularity of certain topics. \cite{conveval} refer to one case where a chatbot was convincing enough for someone to think it was romantically interested in them, if t
+The user feedback suggested that though this implementation was far from perfect, the conversational agents were an interesting novelty that is worth exploring further. Many improvements to our own work have already been discussed, but other extensions exist that would improve conversational agents.
 
-Improvements that could be made, reference to use cases, how the approach could be made more generic
+With more time, a more thorough study that would compare player enjoyment with dialogue disabled and then enabled would shed more light on the benefits of the conversational agents. If we were able to make those who dislike chess or have not played before consider the game again, or provide a novel experience for those who enjoy the game already, then the project could definitely be deemed a success.
+
+Other work that would definitely improve the current implementation would be accounting for piece value when choosing moves and using typical chess AI approaches such as minmax searches to make the chosen moves slightly more strategic.
+
+The need to manually craft the grammars for agents is clearly a severely limiting factor for how an implementation like this could scale. Since any game wanting to include natural language generation will likely also require special domain knowledge to be accounted for, its unlikely a public database could be used. If the goal was to simply make conversational background characters for the sake of creating realism however, our approach could be useful.
+
+Unfortunately, chat bots been used to perform social engineering for unethical reasons. Conversational chatbots could be used for propaganda purposes for emulating real people on social networks to try and fake popularity of certain topics or spread lies. \cite{conveval} refer to one case where a chatbot was convincing enough for someone to think it was romantically interested in them. Agents that are able to create this level of realistic conversation could also be used to help identify when it is occurring, and simply researching how these agents could operate will help us identify patterns that such bots might follow.
 
 \section{Conclusion}
 
-Overall success of project, things learned, 
+By referring to the original project goals which - due to the wide range of topics being covered by this project - were definitely ambitious, it is clear that this project has been fairly successful.  All of the primary goals set were met fully, all of the secondary goals were either partially or fully implemented, and the tertiary goal of a detailed graphical interface was attempted. User feedback definitely highlighted the need for improvements to the graphical interface for the game.
+
+Researching this project was a fantastic opportunity to learn more about multiagent systems, natural language generation, and social artificial intelligence. Whilst progress definitely suffered due to the wrong approaches being taken early on in development for certain aspects of the if the project, the final product was able to include each of these topics to some degree. 
+
+Gathering user feedback was rewarding, and the constructive criticism given provided a clear guide of what work would be required to bring this project to its full potential, but I am nonetheless proud of what has been produced.
 
 \section{Acknowledgements}
 
-Awesome supervisors support, and my dog distracting me from working.
+I would like to thank my supervisors: Dr Alice Toniolo for her expert advice and support throughout the project and helping set realistic but still ambitious goals at each step of the way, and Christopher Stone for providing excellent guidance to help me understand and implement the natural language generation approaches used in industry and those adopted within this project. Your shared enthusiasm for the resulting project was thoroughly appreciated.
+
+I would also like to thank my fellow students for helping by taking part in the user feedback exercises, as well as providing great company during the development of the project.
+
+Finally, I would also like to thank my family for getting me through the final stretch of work needed. 
 
 \bibliographystyle{unsrt}
 \bibliography{mybib}
