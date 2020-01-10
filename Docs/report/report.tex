@@ -382,17 +382,22 @@ The gateway server has several purposes:
 	\item{Route messages between users and relevant agents}
 \end{itemize}
 
-% TODO
-
 JADE does have support for agents serving web resources directly, but the JadeGateway API was used instead as it was simpler to set up. The JadeGateway API effectively creates an Agent for the server, which can then send units of functionality called 'Behaviours' to be executed by the agent (e.g. sending messages to the agents within the platform). This could potentially be a bottleneck if the number of users of the server was to grow large enough due to agents being single-threaded by default, so an implementation at scale would likely need to change this interface. For the purposes of this project however, it was more than sufficient.
 
 On start-up, the server uses the details in a configuration file to connect to the JADE platform. It also exposes a limited set of HTTP endpoints to allow the client to create games and to query available personality types. An in-memory message broker is used for handling websocket sessions once a game is set up so that clients can subscribe to chat and move messages, and send their own moves. 
 
-In order to receive messages from agents within the container , the JadeGateway polls for incoming messages using the \lstinline{ListenForGameAgentMessages} behaviour, which is provided a message translator and a message handler for translating \lstinline{ACLMessage}s from agents to a data model the server can work with and passing the message to the correct handler. This behaviour allowed the server to utilise JADEs scheduling system which would only run the behaviour if a new message was received, instead of busy waiting for incoming messages. 
+In order to receive messages from agents within the container, the JadeGateway polls for incoming messages using the \lstinline{ListenForGameAgentMessages} behaviour, which is provided a message translator and a message handler for translating \lstinline{ACLMessage}s (explained later) from agents to a data model the server can work with and passing the message to the correct handler. This behaviour allowed the server to utilise JADEs scheduling system which would only run the behaviour if a new message was received, instead of busy waiting for incoming messages. This logic is also visualised in figure \ref{fig:translate}.
+
+\begin{figure}[!ht]
+	\centering
+	\includegraphics[width=0.45\linewidth]{images/translate}
+	\caption{Agent Gateway ListenForGameAgentMessages behaviour flowchart.}
+	\label{fig:translate}
+\end{figure}
 
 \subsection{Jade Agent Platform}
 
-Finally, the agent platform is where all of the agents are hosted. Here we will give a rough overview of how JADE agents schedule their functions, while in section \ref{sec:agentimpl} we discuss the actual logic that drives our agents.
+Finally, the agent platform is where all of the agents are hosted. Here we will give a rough overview of how JADE agents schedule their functions, while in section \ref{sec:agentimpl} we discuss the logic that drives our agents internally.
 
 JADE agents are single-threaded by default, and execute behaviours according to the flow diagram shown in Figure \ref{fig:behaviour}. The basic JADE behaviour implements the methods shown in figure \ref{fig:behaviour}, but the framework also provides some helper implementations such as the \lstinline{FSABehaviour} which was used heavily during this project. 
 
