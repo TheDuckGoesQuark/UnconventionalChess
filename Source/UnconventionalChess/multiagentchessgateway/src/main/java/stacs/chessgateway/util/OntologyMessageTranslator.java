@@ -54,7 +54,6 @@ public class OntologyMessageTranslator implements OntologyTranslator<Message> {
             var moveMessage = new MoveMessage();
             moveMessage.setSourceSquare(move.getSource().getCoordinates());
             moveMessage.setTargetSquare(move.getTarget().getCoordinates());
-            // TODO add promotion to move concept
 
             result = Optional.of(moveMessage);
         } catch (OntologyException | NotUnderstoodException e) {

@@ -26,24 +26,19 @@
     "Ok, what now?"
   ],
   "<PerformMove>": [
-    "CHARGING FORWARD!",
-    "FOR THE KING!",
+    "Can't believe I have to do this...",
     "I'm coming for you!",
-    "You're not safe from me!",
-    "Marching to `getMoveTarget()`",
-    "`getMoveTarget()` is mine."
+    "You're not safe from me!"
   ],
   "<VoiceLIKE>": [
     "HA! That is good.",
-    "I agree, we need to occupy `getMoveTarget()`",
-    "That's actually a good move, soldier.",
+    "`getMoveTarget()` does sound like a fun place.",
     "Moving to `getMoveTarget()` would be a good idea"
   ],
   "<VoiceDISLIKE>": [
-    "What a ridiculous idea, soldier!",
-    "I haven't survived five hundred battles by making wimpy moves like that!",
+    "What a ridiculous idea!",
     "Why are we listening to this person, that's a terrible idea.",
-    "`getMoveTarget()` is not useful to us.",
+    "Nah `getMoveTarget()` moving to is dumb idea.",
     " that doesn't sounds good ",
     " moving to `getMoveTarget()` would be an awful idea ",
     " I don't think we should do that"
@@ -64,10 +59,8 @@
     "<ProposeAlternativeMove> <AlternativeJustification>"
   ],
   "<ProposeMove>": [
-    "A truly strategic move would be for `getMovingPiece()` courageously approach `getMoveTarget()`",
-    "I propose `getMovingPiece()` marches on `getMoveTarget()`",
     "I think `getMovingPiece()` should move to `getMoveTarget()`",
-    "`getMovingPiece()`, the enemy would tremble if you were to approach `getMoveTarget()`"
+    "`getMovingPiece()` moving to `getMoveTarget()` is the best idea"
   ],
   "<VoiceLIKEProposeCompromise>": [
     "<VoiceLIKE> <ProposeCompromise>"
@@ -88,15 +81,14 @@
     "<ProposeMove> <Justification>"
   ],
   "<ProposeAlternativeMove>": [
-    "A truly strategic move would be for `getMovingPiece()` courageously approach `getMoveTarget()` instead",
-    "I propose `getMovingPiece()` marches on `getMoveTarget()` instead",
+    "`getMovingPiece()` moving to `getMoveTarget()` instead would *obviously* be the better idea",
+    "I would prefer if `getMovingPiece()` moved to `getMoveTarget()`",
     "I think `getMovingPiece()` should move to `getMoveTarget()` instead",
-    "`getMovingPiece()`, the enemy would tremble if you were to approach `getMoveTarget()` instead",
     "I think `getAlternativeMovingPiece()` should move to `getAlternativeMoveTarget()` instead"
   ],
   "<RevisitMove>": [
-    "I preferred our discussion regarding `getMovingPiece()` moving to `getMoveTarget()`",
-    "Let's not waste time, we already seemed to like the idea of `getMovingPiece()` moving to `getMoveTarget()`",
+    "Can't we just have `getMovingPiece()` move to `getMoveTarget()` like we said before?",
+    "This idea is dumb, `getMovingPiece()` moving to `getMoveTarget()` was a better idea?",
     "Can we go back to talking about `getMovingPiece()` moving to `getMoveTarget()`?",
     "I think `getMovingPiece()` moving to `getMoveTarget()` was a better idea, can we go back to that?"
   ],
@@ -109,111 +101,95 @@
     "because doing that could `getAlternativeJustification()`"
   ],
   "<Quip>": [
-    "None of these soldiers have truly seen battle before.",
-    "The enemy will tremble before our might",
-    "I can't wait to taste the blood of the enemy",
-    "I'll drop their pawns, one by one."
+    "God why am I helping these losers..",
+    "This is so boring...",
+    "I could definitely beat all of you in a fight..."
   ],
   "//": "ACTION GRAMMAR END",
   "//": "REACTION GRAMMAR START",
   "<ComplimentEnemyMove>": [
-    "Ah, a very tactical decision by their `getMovingPiece()`",
-    "A strong move. I respect it. I might capture you last, `getMovingPiece()`"
+    "I guess that was kind of a good move...",
+    "Hey their `getMovingPiece()` did something pretty smart. What a nerd.",
+    "That was alright..."
   ],
   "<InsultEnemyMove>": [
-    "HA! With moves like that we have nothing to fear!",
-    "They fell right into our trap...",
-    "`getMovingPiece()` has clearly never seen battle before...",
-    "What a stupid move `getMovingPiece()`!"
+    "Haha of course they would make a move like that",
+    "Haha of course they would make a move that bad",
+    "It's like their `getMovingPiece()` is just asking for it",
+    "What a stupid move by their `getMovingPiece()`!"
   ],
   "<QuestionEnemyMove>": [
-    "Strange move.",
-    "What on earth are they planning to do with that position...",
     "... why did `getMovingPiece()` move there?"
   ],
   "<ReactEnemyPieceCaptured>": [
-    "HUZZAH! WE HAVE ONE OF YOUR PEASANT SOLDIERS",
-    "Another conquest.",
-    "Our reign continues!",
-    "Haha! We captured your `getCapturedPiece()`",
-    "Nice work, `getMovingPiece()`!"
+    "Haha, imagine being dumb enough to get captured",
+    "Was their `getMovingPiece()` even trying?",
+    "Haha! We captured your `getCapturedPiece()`"
   ],
   "<ReactEnemyPieceThreatened>": [
-    "Looks like your `getThreatenedPiece()` is in trouble!",
-    "`getThreatenedPiece()`, your days are numbered.",
-    "I hope you know how to wield a sword, `getThreatenedPiece()`.",
-    "Your `getThreatenedPiece()` has walked right into our trap...."
+    "`getThreatenedPiece()` is about to have a bad time",
+    "Hey, your `getThreatenedPiece()` looks scared."
   ],
   "<ReactEnemyPieceEscaped>": [
-    "You can't hide, `getEscapingPiece()`!",
+    "I can't believe their `getEscapingPiece()` ran away!",
     "You're safe for now, `getEscapingPiece()`!",
-    "Of course, you can run for now `getEscapingPiece()`, but you only delay the inevitable",
-    "I have no respect for a coward like your `getEscapingPiece()`"
+    "wow, your `getEscapingPiece()` is such a wimp!"
   ],
   "<ReactEnemyPieceProtecting>": [
     "You're lucky that `getMovingPiece()` stepped in, `getEscapingPiece()`!",
-    "I hope you are ready to protect `getEscapingPiece()`, `getMovingPiece()`",
-    "So, `getEscapingPiece()`, you think you can protect `getMovingPiece()`?",
-    "Ah. So we will have to deal with `getEscapingPiece()` first then.  Don't worry,`getMovingPiece()`, you will be next."
+    "You think you can keep `getEscapingPiece()` safe, `getMovingPiece()`?",
+    "So, `getEscapingPiece()`, you think you can protect `getMovingPiece()`?"
   ],
   "<ReactFriendlyPieceCaptured>": [
-    "Battle takes many lives, `getCapturedPiece()`",
-    "We must avenge `getCapturedPiece()`!",
-    "`getCapturedPiece()` has fallen, but we will fight back!",
+    "C'mon, `getCapturedPiece()`, you're making us look bad!",
+    "Oh man, `getCapturedPiece()`!",
     "Oh no, they captured `getCapturedPiece()`!",
     "I can't believe the `getMovingPiece()` captured `getCapturedPiece()`!"
   ],
   "<ReactFriendlyPieceEscaped>": [
-    "`getEscapingPiece()`, why did you run from the enemy?",
-    "`getEscapingPiece()`, get back out there you coward!",
-    "Now that you're safe `getEscapingPiece()`, get back out there!"
+    "`getEscapingPiece()`, why did you run away?",
+    "`getEscapingPiece()`, why aren't you still facing them!"
   ],
   "<ReactFriendlyPieceProtecting>": [
-    "`getMovingPiece()`, it is brave of you to defend `getEscapingPiece()`.",
-    "`getMovingPiece()` is a worthy soldier, but `getEscapingPiece()`... not so much.",
-    "Nice move `getMovingPiece()`, `getEscapingPiece()` is safe now!"
+    "`getMovingPiece()` why are you helping `getEscapingPiece()`, they're fine!",
+    "`getMovingPiece()` don't get stop `getEscapingPiece()` from fighting back."
   ],
   "<ReactFriendlyPieceThreatenedOnTheirMove>": [
-    "`getThreatenedPiece()`, it appears it is your time to fight.",
-    "May your armour stay strong, `getThreatenedPiece()`",
-    "Raise your sword `getThreatenedPiece()`, it is your time for glory!"
+    "`getThreatenedPiece()`, time to show them what we've got.",
+    "Ooooh looks like `getThreatenedPiece()` is gonna fight!."
   ],
   "<ReactFriendlyPieceThreatenedOnOurMove>": [
     "`getThreatenedPiece()`, it is your time to fight.",
-    "May your armour stay strong, `getThreatenedPiece()`",
-    "Raise your sword `getThreatenedPiece()`, it is your time for glory!"
+    "I hope you've been going to the gym, `getThreatenedPiece()`",
+    "Woah `getThreatenedPiece()` didn't think you were the type to fight!"
   ],
   "<ReactLastMoveDiscussedPerformedLIKE>": [
-    "`getMovingPiece()` is a true solider.",
-    "`getMovingPiece()` acts while the rest of you do nothing but talk!."
+    "finally someone making cool decisions..., nice `getMovingPiece()`",
+    "hey `getMovingPiece()` that wa pretty good!"
   ],
   "<ReactLastMoveDiscussedPerformedDISLIKE>": [
-    "You idiot, `getMovingPiece()` why did you do that!",
-    "`getMovingPiece()` may as well just tell the enemy what our plan is!"
+    "That was such a dumb move, `getMovingPiece()`!",
+    "`getMovingPiece()` that was a pretty uncool thing to do."
   ],
   "<ReactLastMoveDiscussedPerformedNEUTRAL>": [
-    "Hmph. Sure.",
-    "We did not gain much from that move, `getMovingPiece()`"
+    "Meh. I guess we can do that",
+    "Boring move but sure whatever `getMovingPiece()`"
   ],
   "<ReactPreviouslyDiscussedMovePerformedLIKE>": [
-    "`getMovingPiece()` is a true solider.",
-    "`getMovingPiece()` acts while the rest of you do nothing but talk!."
+    "I thought that was a good idea too, `getMovingPiece()`."
   ],
   "<ReactPreviouslyDiscussedMovePerformedDISLIKE>": [
-    "You idiot, `getMovingPiece()` why did you do that!",
-    "`getMovingPiece()` may as well just tell the enemy what our plan is!",
-    "`getMovingPiece()`, I do not think we had agreed to do that!",
-    "Soldier, `getMovingPiece()`, you were not given an order!"
+    "Don't think that move was very smart personally, `getMovingPiece()`!",
+    "`getMovingPiece()` we weren't done talking!"
   ],
   "<ReactPreviouslyDiscussedMovePerformedNEUTRAL>": [
-    "You should really wait until we've agreed on something next time, `getMovingPiece()`.",
-    "I appreciate the initiative `getMovingPiece()`, but I'm not sure what was gained there."
+    "Not sure about that one `getMovingPiece()`, but I still had some good ideas to talk about."
   ],
   "<ReactUndiscussedMovePerformedLIKE>": [
-    "`getMovingPiece()`, a strong move. A shame none of you cowards suggested it."
+    "Aha nice, I was totally going to suggest that move `getMovingPiece()`"
   ],
   "<ReactUndiscussedMovePerformedDISLIKE>": [
-    "`getMovingPiece()` WHY WOULD YOU THROW YOUR FELLOW SOLDIERS UNDER THE BUS LIKE THAT."
+    "`getMovingPiece()` being totally lame, as always."
   ],
   "<ReactUndiscussedMovePerformedNEUTRAL>": [
     "You should really ask first next time, `getMovingPiece()`."

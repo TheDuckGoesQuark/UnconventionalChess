@@ -23,7 +23,7 @@ jar {
 dependencies {
     implementation group: 'com.tilab.jade', name: 'jade', version: '4.5.0'
     //http://rednoise.org/rita/download/rita.jar
-    implementation files("${buildDir}/../../../rita.jar")
+    implementation files("${buildDir}/../../libs/rita.jar")
     api 'com.github.bhlangonijr:chesslib:1.1.12'
 
     // Use JUnit test framework

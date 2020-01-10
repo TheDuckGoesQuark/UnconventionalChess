@@ -76,7 +76,6 @@ public class HandleGameCreationRequests extends SimpleBehaviour {
         var reply = request.createReply();
         var action = extractAction(request);
         CreateGame createGame;
-        // TODO extract piece configs
 
         var gameStatus = context.getGameCreationStatus();
         switch (gameStatus) {

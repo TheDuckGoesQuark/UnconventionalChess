@@ -26,7 +26,6 @@ import java.util.*;
 
 public class SpawnPieceAgents extends SimpleBehaviour {
 
-    // TODO make this variable in GUI
     private static final int MAX_DEBATE_CYCLES = 10;
 
     private enum CreationState {
@@ -140,7 +139,6 @@ public class SpawnPieceAgents extends SimpleBehaviour {
 
                 protected void handleFailure(ACLMessage failure) {
                     logger.warning("Error creating agent " + agentName + ":" + failure.getContent());
-                    // TODO inform user of failure, cancel game creation and cleanup
                 }
             };
         } catch (Exception e) {

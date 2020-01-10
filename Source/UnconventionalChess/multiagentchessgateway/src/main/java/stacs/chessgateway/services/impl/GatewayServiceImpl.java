@@ -79,7 +79,6 @@ public class GatewayServiceImpl implements GatewayService {
                     // don't need to send response now as we are subscribed to moves and will
                     // be informed again later
                 });
-        // TODO send error
     }
 
     @Override

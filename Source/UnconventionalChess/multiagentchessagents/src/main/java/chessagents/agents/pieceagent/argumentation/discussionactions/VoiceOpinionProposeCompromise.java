@@ -24,7 +24,6 @@ public class VoiceOpinionProposeCompromise extends ConversationAction {
     @Override
     public ConversationMessage perform() {
         // choose alternative using only moves that satisfy the other agents constraint
-        // TODO consider all previous constraints??
         var otherAgentReasoning = lastMessage.getMoveResponse().get().getReasoning();
         var optAltResponse = new ProposeCompromise(pieceAgent, turnDiscussion, otherAgentReasoning.getValue(), response).perform();
 

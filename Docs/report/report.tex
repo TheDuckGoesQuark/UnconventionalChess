@@ -11,6 +11,7 @@
 \usepackage{csquotes}
 \usepackage{listings}
 
+
 \newcommand\descitem[1]{\item{\bfseries #1}\\}
 
 \begin{document}
@@ -386,7 +387,7 @@ JADE does have support for agents serving web resources directly, but the JadeGa
 
 On start-up, the server uses the details in a configuration file to connect to the JADE platform. It also exposes a limited set of HTTP endpoints to allow the client to create games and to query available personality types. An in-memory message broker is used for handling websocket sessions once a game is set up so that clients can subscribe to chat and move messages, and send their own moves. 
 
-In order to receive messages from agents within the container, the JadeGateway polls for incoming messages using the \lstinline{ListenForGameAgentMessages} behaviour, which is provided a message translator and a message handler for translating \lstinline{ACLMessage}s (explained later) from agents to a data model the server can work with and passing the message to the correct handler. This behaviour allowed the server to utilise JADEs scheduling system which would only run the behaviour if a new message was received, instead of busy waiting for incoming messages. This logic is also visualised in figure \ref{fig:translate}.
+In order to receive messages from agents within the container, the JadeGateway polls for incoming messages using the \url{ListenForGameAgentMessages} behaviour, which is provided a message translator and a message handler for translating \url{ACLMessage}s (explained later) from agents to a data model the server can work with and passing the message to the correct handler. This behaviour allowed the server to utilise JADEs scheduling system which would only run the behaviour if a new message was received, instead of busy waiting for incoming messages. This logic is also visualised in figure \ref{fig:translate}.
 
 \begin{figure}[!ht]
 	\centering
@@ -399,11 +400,11 @@ In order to receive messages from agents within the container, the JadeGateway p
 
 Finally, the agent platform is where all of the agents are hosted. Here we will give a rough overview of how JADE agents schedule their functions, while in section \ref{sec:agentimpl} we discuss the logic that drives our agents internally.
 
-JADE agents are single-threaded by default, and execute behaviours according to the flow diagram shown in Figure \ref{fig:behaviour}. The basic JADE behaviour implements the methods shown in figure \ref{fig:behaviour}, but the framework also provides some helper implementations such as the \lstinline{FSABehaviour} which was used heavily during this project. 
+JADE agents are single-threaded by default, and execute behaviours according to the flow diagram shown in Figure \ref{fig:behaviour}. The basic JADE behaviour implements the methods shown in figure \ref{fig:behaviour}, but the framework also provides some helper implementations such as the \url{FSABehaviour} which was used heavily during this project. 
 
-Behaviours are scheduled such that they are executed repeatedly round-robin until either they are complete (\lstinline{done()} returns true) or \lstinline{block()} is called during the \lstinline{action()} method. The latter puts the behaviour into a waiting queue so that it is only triggered again once the agent receives a message. 
+Behaviours are scheduled such that they are executed repeatedly round-robin until either they are complete (\url{done()} returns true) or \url{block()} is called during the \url{action()} method. The latter puts the behaviour into a waiting queue so that it is only triggered again once the agent receives a message. 
 
-Behaviours can filter the messages that are received using the \lstinline{MessageTemplate} class, which uses pattern matching to only allow for messages containing features such as a specific performative (e.g. REQUEST, PROPOSE) or a specific conversation ID. This ensures that behaviours do not consume messages that were not intended be consumed by them. 
+Behaviours can filter the messages that are received using the \url{MessageTemplate} class, which uses pattern matching to only allow for messages containing features such as a specific performative (e.g. REQUEST, PROPOSE) or a specific conversation ID. This ensures that behaviours do not consume messages that were not intended be consumed by them. 
 
 \begin{figure}[!ht]
 	\centering
@@ -423,13 +424,13 @@ The game agent upon creation waits for a request to begin a chess game. It also 
 Requests for information are semantic logic expressions with variables which the game agent then populates in its reply. For example, agents wishing to receive updates whenever a new move is made will send a message with a SUBSCRIBE performative and the expression:
 
 \begin{equation} \label{eq:movesubscribe}
-	(\;iota\; ?Move\; ("Move Made"\; ?Move))	
+	(\;iota\; ?Move\; (`Move Made'\; ?Move))	
 \end{equation}
 
 This will then be replied to every time a new move occurs with the variables given values, for example when a piece moves from B8 to C6:
 
 \begin{multline} \label{eq:movesubscriberesponse}
-	((=\; (iota\; ?Move\; ("Move Made"\; ?Move))\;  \\
+	((=\; (iota\; ?Move\; (`Move Made'\; ?Move))\;  \\
 	(Move\; :Source\; (Position\; :Coordinates\; B8)\; \\
 	:Target\; (Position\; :Coordinates\; C6))))
 \end{multline}
@@ -451,7 +452,7 @@ The piece agent implementation is the focus of this project. They are initialise
 
 \subsubsection{Game State}
 
-The GameState class wraps our chessboard wrapper to provide another layer of abstraction in order for the state of the board to be an immutable object. This was done to avoid complicated undo logic when agents wanted to 'test' moves and evaluate the board after a move is made. Instead, when the \lstinline{applyMove(PieceMove move)} function is called, a copy of the board is made. This involved copying the set of alive and captured pieces, as well as updating the piece objects themselves if any changed position. 
+The GameState class wraps our chessboard wrapper to provide another layer of abstraction in order for the state of the board to be an immutable object. This was done to avoid complicated undo logic when agents wanted to 'test' moves and evaluate the board after a move is made. Instead, when the \url{applyMove(PieceMove move)} function is called, a copy of the board is made. This involved copying the set of alive and captured pieces, as well as updating the piece objects themselves if any changed position. 
 
 In order to reduce the amount of objects being created and destroyed by this process, piece instances would only be copied if they had changed state in some way (captured/changed position). 
 
@@ -502,15 +503,15 @@ Each agent maintains a conversation planner which tracks what moves have been di
 	\label{fig:movediscussion}
 \end{figure}
 
-Whenever an agent enters the speaker state shown in figure \ref{fig:conversationfsa}, they call the \lstinline{produceMessage()} function to choose their next action. If this action involves making a move, they'll queue a behaviour to send the move to the game agent. Regardless, they send their chosen conversation message to all the other agents (including themselves).
+Whenever an agent enters the speaker state shown in figure \ref{fig:conversationfsa}, they call the \url{produceMessage()} function to choose their next action. If this action involves making a move, they'll queue a behaviour to send the move to the game agent. Regardless, they send their chosen conversation message to all the other agents (including themselves).
 
-Listener agents receive the conversation message and record it by calling the \lstinline{handleConversationMessage(ConversationMessage)} method. The conversation planner delegates storing the message to the current turn discussion (the head in the list of discussions). The turn discussion will fetch the move discussion for the move in the given conversation message or create a new one if one doesn't already exist and add the message to the relevant move discussion. Once the message is added to the move discussion, the discussion is removed and re-added to the set of move discussions in order to move it back to the top of the converstation 'stack' (since insertion order is maintained by Java's LinkedHashSet implementation). 
+Listener agents receive the conversation message and record it by calling the \url{handleConversationMessage(ConversationMessage)} method. The conversation planner delegates storing the message to the current turn discussion (the head in the list of discussions). The turn discussion will fetch the move discussion for the move in the given conversation message or create a new one if one doesn't already exist and add the message to the relevant move discussion. Once the message is added to the move discussion, the discussion is removed and re-added to the set of move discussions in order to move it back to the top of the converstation 'stack' (since insertion order is maintained by Java's LinkedHashSet implementation). 
 
 By maintaining the order that moves have been discussed, agents are able to create arguments that better resemble human conversations by referring to previous discussions. \cite{tartan} uses a similiar technique to allow their chatbot to regress to previous topics of discussion once the user gives some kind of terminating statement to the current topic of conversation. 
 
 A move discussion with a null move is used to represent a request for move proposals, which is sent either to start up the argumentation process or when an agent is not satisfied with the move currently being discussed but is does not feel strongly about any moves themselves.
 
-The output of \lstinline{chooseNextAction()} in the \lstinline{ConversationPlannerImpl} is the next conversation action to be taken. These actions are essentially transitions which control the flow of the conversation and are based off the interruption FSMs in Tartan \cite{tartan}. Table \ref{tbl:conversationaction} lists examples of the conversation actions possible. The actions prefixed with wildcards can be used in conjuction with other actions. For example, an agent can voice opinion with justification, or voice their dislike and propose an alternative. 
+The output of \url{chooseNextAction()} in the \url{ConversationPlannerImpl} is the next conversation action to be taken. These actions are essentially transitions which control the flow of the conversation and are based off the interruption FSMs in Tartan \cite{tartan}. Table \ref{tbl:conversationaction} lists examples of the conversation actions possible. The actions prefixed with wildcards can be used in conjuction with other actions. For example, an agent can voice opinion with justification, or voice their dislike and propose an alternative. 
 
 % TODO give examples of sentences uttered and the set of acceptable responses 
 
@@ -643,7 +644,7 @@ The success of the resulting software was ascertained by analysis its performanc
 
 In order to test the strategic performance of the implementation, the Stockfish engine \cite{stockfish} was used to score the move chosen at each turn by the agents. This was repeated over the course of five games to account for the randomness used by agents during the choice of action. Different configurations of personalities for pieces were used for each game.
 
-Stockfish is one implementation of the universal chess interface and one of the best chess AIs in the world. It uses a complex set of rules to score board positions, which can be used to identify the next best move to make. Centipawns are the unit used for the score produced, which represent one hundredth the value of a pawn (1 point). The king is essentially of infinite value, and so for our data we translate mating moves to centipawns by assigning these moves an arbitrarily large number, as recommended in the \lstinline{python-chess} documentation \cite{pythonchess}. 
+Stockfish is one implementation of the universal chess interface and one of the best chess AIs in the world. It uses a complex set of rules to score board positions, which can be used to identify the next best move to make. Centipawns are the unit used for the score produced, which represent one hundredth the value of a pawn (1 point). The king is essentially of infinite value, and so for our data we translate mating moves to centipawns by assigning these moves an arbitrarily large number, as recommended in the \url{python-chess} documentation \cite{pythonchess}. 
 
 The moves were tracked by adding a logger to the game agent which would record the current position in the standard Forsyth-Edwards Notation (FEN), and the source and target of the move being made. Both teams were represented by agents and the conversation delay set to a much lower number to increase the rate of discussion. The comma separated value dataset produced was then parsed by a python script. For each position recorded, all legal moves were considered by Stockfish with a limit on the computation time of one hundred milliseconds per move. This produced a score for all legal moves at each position including the chosen move.
 
@@ -907,10 +908,19 @@ Finally, I would also like to thank my family for getting me through the final s
 
 \section{Appendix}
 
-% TODO include testing description, user manual, and ethics forms in appendix
 \subsection{Testing Summary}
+
+% TODO
+
 \subsection{User Manual}
+
+Before running the project, we need to create an instance of a JADE container for the server to connect to. This involves download the JADE library from \url{https://jade.tilab.com/dl.php?file=JADE-bin-4.5.0.zip}, extracting its contents, and running the jarfile contained within it using \url{java -jar jade.Boot -name chess-platform}.
+
+To compile the project, enter the directory \url{UnconventionalChess/multiagentchessgateway} and run the command \url{./gradlew build}. This will also run all the tests in the project. A jarfile will be created in \url{./build/libs} that you will be able to run using \url{java -jar <jarfile>}. The game will be available at \url{localhost:8080}.
+
 \subsection{Ethics}
+
+% TODO ethics forms in appendix
 
 \vspace{12pt}
 

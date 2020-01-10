@@ -244,7 +244,6 @@ public class ConversationPlannerImpl implements ConversationPlanner {
         var currentState = pieceContext.getGameState();
 
         var otherColour = pieceContext.getMyPiece().getColour().flip();
-        // TODO change to check for new piece in set after move rather than just counting
         return previousState.getThreatenedForColour(otherColour).size()
                 < currentState.getThreatenedForColour(otherColour).size();
     }
