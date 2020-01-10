@@ -207,7 +207,7 @@ Pereira et al. \cite{pervchess} created an opponent for chess with emotional cue
 Mehta et al. \cite{convdrama} provided the closest work to agent-agent interaction evaluation that we could find. They implemented a conversation centered drama that involved a human user, where agents would also interact in front of the human and express emotion and try emulate personalities. An interesting point raised by their study was how often users would rely on the scroll bar of the conversation transcript to contextualise themselves during the drama. Usage of the scrollbar would suggest that the user was not able to keep track of the conversation, and was something we wanted to look out for when participants were given the oppertunity to play our game.
 
 \clearpage
-\section{Requirements Specification}
+\section{Requirements Specification} \label{sec:reqspec}
 
 After clarifying what we wanted to achieve at a higher level, we determined what would be our main goals. For each goal set, we determined how we can evaluate their success. 
 
@@ -259,19 +259,44 @@ Our primary goals were what we considered to be the minimal set of features that
 
 \section{Software Engineering Process}
 
-The project was approached in an agile manner. Weekly meetings were arranged in order to discuss current progress and determine next steps, adjusting goals regularly depending on the accuracy of previous weeks. 
+The project was approached in an agile manner. Weekly meetings were arranged in order to discuss current progress and determine next steps, adjusting goals regularly depending on the accuracy of previous weeks. This approach was taken to ensure that a minimum viable product was produced as early as possible, and encouraged the modularity of components by seperating each problem into individual, testable chunks. 
 
-This approach was taken to ensure that a minimum viable product was produced as early as possible, and encouraged the modularity of components by seperating each problem into individual, testable chunks. 
+Git was used for version control for the entire project so that changes could be rolled back and backed up for recovery if needed.
 
 \section{Ethics}
 
-Some short feedback tests were run with volunteers to evaluate the success of the project. Because of this, the preliminary self-assessment form and the artifact evaluation form were submitted, and can be found in the appendix.
+Some short feedback tests were run with volunteers to evaluate the success of the project. Because of this, the preliminary self-assessment form and the artifact evaluation form were submitted and approved, and can be found in the appendix.
 
 \section{System Design}
 
-An existing multiagent development framework was chosen instead of rolling our own in order to abstract away matters such as message delivery and agent life-cycle management. As mentioned earlier, JADE was chosen specifically due to its flexibility and its extensive coverage of the FIPA standard that could allow our agents to interact with other implementations with ease. 
+In this section, we firstly outline the functional requirements of our project based on our objectives set earlier. We then explore these requirements to produce a basic description of the necessary architecture. Afterwards, we accounted for the technologies we chose to use and produce another slightly more in depth overview of our system describing the flow of messages from user to agents. We then give a summary of how different events and messages are processed to provide the functionality detailed in our objectives. Once this high level understanding of the system is established, we then finally explore each component in depth, explaining how they work internally.
 
-With the intention of possibly serving the game over the internet once complete, the system had to be designed to allow for communication with agents from outside of the agent platform. The 'JadeGateway' API was used with a Spring Boot server and React UI to to achieve this. Figure \ref{fig:highlevelarchitecture} provides a high level overview of the technologies at each layer.
+\paragraph{Requirements}
+The objectives stated in section \ref{sec:reqspec} were used to determine the overall requirements of the system. These included a graphical user interface to render the gameplay and dialogue to the player. The GUI would have to be able to send and receive messages from the agents in order to send moves and receive the dialogue being produced by the agents. Agents typically operate as individual threads or processes, and would need a way to send and recieve messages from each other and the user also. Figure \ref{fig:middleware} shows the architecture at the highest level that would be necessary to meet these requirements.
+
+\begin{figure}[!ht]
+	\centering
+	\includegraphics[width=0.5\linewidth]{images/middleware}
+	\caption{Basic architecture to satisfy requirements.}
+	\label{fig:middleware}
+\end{figure}
+
+\paragraph{High Level Architecture}
+
+Due to the developer being most familiar with web technologies for creating user interfaces, a server to provide the webapp had to be included within the architecture. To avoid having to implement our agent middleware and lifecycle handling, we also opted to use JADE as mentioned in the context survey. 
+
+JADEs agent platform (discussed in detail later) provided an API to allow other Java applications to communicate with the agents within the container. With the intention of supporting multiple simulataneous games in the future, it was decided that it made sense to have a main controlling agent as the single source of truth for each game. This main agent (later referred to as the Game agent) provides methods that allow any other agent (including the server) to subscribe to moves and chat messages.
+
+Therefore, the server would need to maintain a mapping of users to the game agent managing their game, and would route messages received from either side accordingly. 
+
+The final high level architecture is shown in figure \ref{fig:finalarchitecture}. To send a message from the webapp to an agent requires sending it to the server, which is able to forward the message to the corresponding game agent for a given game, which can then forward the message to the relevant pieces or just process it internally. This design was chosen as it isolated each component of the project to a single tier in the process, and could be extended to support multiple games easily. Figure \ref{fig:highlevelarchitecture} shows the same flow of data but with the technologies used at each tier, which are explained in depth later.
+
+\begin{figure}[!ht]
+	\centering
+	\includegraphics[width=\linewidth]{images/stacks}
+	\caption{Architecture describing message passing.}
+	\label{fig:finalarchitecture}
+\end{figure}
 
 \begin{figure}[!ht]
 	\centering
@@ -280,20 +305,27 @@ With the intention of possibly serving the game over the internet once complete,
 	\label{fig:highlevelarchitecture}
 \end{figure}
 
+\paragraph{Process}
+
+Our player requests the webapp from the gateway server at a known address using their browser. The player provides some initial configuration for the game (who plays as white, the personalities they would like to play against, etc), and submits this information. A POST request containing the configuration is sent to the server, which creates a game agent within the agent container which then in turn creates all the piece agents needed for the game using the configuration requested by the user. 
+
+Once all the resources are prepared, the server returns a game ID to be used by the client at a websocket endpoint which is then used for all future communication between the two components. 
+
+When the human makes a move using the client, the move is verified locally then pushed to the server using the websocket endpoint containing the game ID, which then routes the message to the corresponding game agent, who performs the move and broadcasts that the move has occurred to the player and all the piece agents.
+
+How agents process moves and messages is explained in more depth later, but at the highest level they are constantly in a state of discussion. One agent 'talks' at a time, either requesting the game agent to make a move, or sending a message to further the current discussion to all other piece agents in their game. These messages contain a natural language representation of the contents of the message which is forwarded to the client by the game agent. The messages have a number of fields containing information such as other moves to discuss, or justifications for choosing a certain move. 
+
+Agents internally decide how they would like to proceed with the discussion, and each track the current conversation context to help them make this discussion. 
+
 \subsection{Front-End}
 
-React \cite{reactjs} was chosen due to it being the most familiar web framework for the developer of this project, and because a component already existed for rendering chessboards \cite{chessboardjsx}. React uses a virtual DOM in order to efficiently re-render components based on changes in state. For example, when a new message arrives, the state of the chat transcript component is updated to contain the new message which triggers an update to only the chat transcript and its children that are also affected. 
+The front end had two roles: render the game and dialogue as messages arrive, and provide a way for the user to set the initial configuration for the game. 
 
-As the project grew, Redux \cite{redux} was introduced in order to help with state management of components. Redux provides a single global state which components 'connect' to in order to receive updates. Updates are 'dispatched' as actions, which are then passed through a pipeline of reducers which update parts of the global state depending on the action and its payload. Middleware can also be introduced to allow certain actions to create chains of updates (e.g. making an asynchronously API call, then dispatching another action when the response is received), but the reducers themselves are always pure functions. This functional approach to managing components made the project easier to test and errors easier to trace and correct. Figure \ref{fig:reducers} shows the parts of the state that are managed by each reducer.
+React \cite{reactjs} was chosen due to it being the most familiar web framework for the developer of this project. Fortunately, an open source component already existed for rendering chessboards \cite{chessboardjsx} implemented for the React framework. This library provided only the standard components of the game, and could be imported into our project and immediately provide visual elements such as the chessboard, pieces, and event handlers to allow us to perform our own processing on events such as pieces being clicked, dragged, and dropped into positions. 
 
-\begin{figure}[!ht]
-	\centering
-	\includegraphics[width=\linewidth]{images/reducers}
-	\caption{Redux reducer tree showing which parts of the state are managed by which reducers.}
-	\label{fig:reducers}
-\end{figure}
+We were also able to use the chess.js \cite{chessjs} library to perform tasks such as managing the local board state, and verifying moves being made by the user before sending them to the server. However, these libraries did not support features such dialogue boxes overlaid on pieces, individual nametagging of pieces, or handling of client-server communication. 
 
-One of the challenges faced were that the abstraction of the chessboard component provided by a third-party library did not allow for atypical visual elements such as adding name tags to each piece or dialogue boxes. This then required manually implementing an overlay that would draw another chessboard grid, track positions of pieces, and draw the name tags and dialogue boxes in the correct locations. 
+Our custom overlay for providing these extra features was implemented as individual react components. For example, a piece nametag would be considered a single component, and a piece overlay could also be a single component that would draw an array of piece nametags at the correct position on the board. Each component manages its own state and passes updates to child components (for example, the piece overlay would pass the name of the agent to each child nametag component).
 
 The UI is composed of two main views: configuration and gameplay. 
 The configuration view (Figure \ref{fig:configview}) allows the user to choose if they want to play against the agents or watch two sets of agents play against each other. By clicking on the pieces they will not be controlling, the user can also name the pieces and define their personality type. 
@@ -307,7 +339,7 @@ The configuration view (Figure \ref{fig:configview}) allows the user to choose i
 
 On submit, any unconfigured pieces are filled out at random from the set of available personalities and a set of names. The game configuration is then sent as a POST request to the gateway server, which verifies and creates the resources necessary for the game and returns its ID to allow the client to publish and subscribe to game events at the correct web socket endpoint.
 
-Figure \ref{fig:gamecreation} shows the sequence diagram for how resources are created once the user submits the game configuration
+Figure \ref{fig:gamecreation} shows the sequence diagram for how resources are created once the user submits the game configuration.
 
 \begin{figure}[!h]
 	\centering
@@ -316,7 +348,7 @@ Figure \ref{fig:gamecreation} shows the sequence diagram for how resources are c
 	\label{fig:gamecreation}
 \end{figure}
 
-The game view (Figure \ref{fig:gameview}) also shows the game board with name tags over the corresponding pieces and any dialogue next to the speaking piece. The chat and move history is also rendered in a scrolling transcript at the bottom of the page in alternating colours for clarity. When hovering over pieces the user is able to see all currently available moves to them. Moves are verified client side by the chess.js \cite{chessjs} engine before either being rejected or sent to the server. Figure \ref{fig:humanmove} shows how human moves are broadcast to all subscribers.
+The game view (Figure \ref{fig:gameview}) also shows the game board with name tags over the corresponding pieces and any dialogue next to the speaking piece. The chat and move history is also rendered in a scrolling transcript at the bottom of the page in alternating colours for clarity. When hovering over pieces the user is able to see all currently available moves to them.  Figure \ref{fig:humanmove} shows how human moves are broadcast to all subscribers.
 
 \begin{figure}[!h]
 	\centering
@@ -332,6 +364,15 @@ The game view (Figure \ref{fig:gameview}) also shows the game board with name ta
 	\label{fig:humanmove}
 \end{figure}
 
+As the project grew, Redux \cite{redux} was introduced in order to help with state management of components, as some updates would need to traverse a large number nested components. Redux provides a single global state which components 'connect' to in order to receive updates. Updates are 'dispatched' as actions, which are then passed through a pipeline of reducers which update parts of the global state depending on the action and its payload. Middleware can also be introduced to allow certain actions to create chains of updates (e.g. making an asynchronously API call, then dispatching another action when the response is received), but the reducers themselves are always pure functions. This functional approach to managing components made the project easier to test and errors easier to trace and correct. Figure \ref{fig:reducers} shows the parts of the state that are managed by each reducer.
+
+\begin{figure}[!ht]
+	\centering
+	\includegraphics[width=\linewidth]{images/reducers}
+	\caption{Redux reducer tree showing which parts of the state are managed by which reducers.}
+	\label{fig:reducers}
+\end{figure}
+
 \subsection{Agent Gateway Server}
 
 The gateway server has several purposes: 
@@ -340,6 +381,8 @@ The gateway server has several purposes:
 	\item{Handle game resources}
 	\item{Route messages between users and relevant agents}
 \end{itemize}
+
+% TODO
 
 JADE does have support for agents serving web resources directly, but the JadeGateway API was used instead as it was simpler to set up. The JadeGateway API effectively creates an Agent for the server, which can then send units of functionality called 'Behaviours' to be executed by the agent (e.g. sending messages to the agents within the platform). This could potentially be a bottleneck if the number of users of the server was to grow large enough due to agents being single-threaded by default, so an implementation at scale would likely need to change this interface. For the purposes of this project however, it was more than sufficient.
 
