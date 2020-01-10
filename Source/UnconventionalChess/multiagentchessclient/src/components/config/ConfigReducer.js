@@ -37,7 +37,6 @@ const adjacent = (sourceSquare, targetSquare) => {
 };
 
 const castlingOccurred = (configAtSource, move) => {
-    console.log("HERE");
     return (configAtSource.type === 'k' || configAtSource.type === 'K')
         && !adjacent(move.sourceSquare, move.targetSquare)
 };
@@ -74,13 +73,11 @@ const applyMoveToPieceConfigs = (pieceConfigs, move) => {
     let configAtSource = pieceConfigs[sourceSquare];
     let newConfig = movePiece(sourceSquare, targetSquare, configAtSource, pieceConfigs);
 
-    if (castlingOccurred(configAtSource, move)) {
-        console.log("U HERE");
+    if (configAtSource && castlingOccurred(configAtSource, move)) {
         return applyCastingToRook(configAtSource, move);
     } else {
-        console.log("N HERE");
+        return newConfig;
     }
-    return newConfig;
 };
 
 const movePiece = (sourceSquare, targetSquare, configAtSource, pieceConfigs) => {

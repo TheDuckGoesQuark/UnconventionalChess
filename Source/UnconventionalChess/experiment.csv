@@ -1,2 +1,10 @@
 
 source,target,fen
+source,target,fen
+source,target,fen
+F7,F5,rnbqkbnr/pppppppp/8/8/1P6/8/P1PPPPPP/RNBQKBNR b KQkq b3 0 1
+source,target,fen
+source,target,fen
+source,target,fen
+E7,E6,rnbqkbnr/pppppppp/8/8/1P6/8/P1PPPPPP/RNBQKBNR b KQkq b3 0 1
+B7,B6,rnbqkbnr/pppp1ppp/4p3/8/1P1P4/8/P1P1PPPP/RNBQKBNR b KQkq d3 0 2

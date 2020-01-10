@@ -512,6 +512,8 @@ A move discussion with a null move is used to represent a request for move propo
 
 The output of \lstinline{chooseNextAction()} in the \lstinline{ConversationPlannerImpl} is the next conversation action to be taken. These actions are essentially transitions which control the flow of the conversation and are based off the interruption FSMs in Tartan \cite{tartan}. Table \ref{tbl:conversationaction} lists examples of the conversation actions possible. The actions prefixed with wildcards can be used in conjuction with other actions. For example, an agent can voice opinion with justification, or voice their dislike and propose an alternative. 
 
+% TODO give examples of sentences uttered and the set of acceptable responses 
+
 \begin{table} 
 \centering
 \caption{Conversation actions with verbalised examples.} 
@@ -848,6 +850,8 @@ A majority of players said they lost track of time while playing. Without being 
 The game also ranked highly for the question "Playing makes me feel calm". This was expected, as gameplay is mostly reading the dialogue without much other stimulation.
 
 In regards to the emotional response to the agents and the game, the results of the questions "I feel different" and "I get wound up" vary wildly. Players were definitely not 'wound up' or agitated by the game, which suggests that the player directed insults were ineffective or that the challenge was not sufficient for most players.
+
+% TODO move results and questions to here, also highlight the positives!
 
 The linguistic accuracy of the pieces were rated highly. However, some of the freetext comments mentioned that the justifications all sounded the same, and another comment did suggest that the dialogue was not perfectly fluid. These issues could be resolved through careful tailoring of the BNF grammars used. The original interface for values only provided a single string representation for each of the opinions when evaluating the response to a move, and so this comment highlighted the need for the values to be included in the grammars to increase the number of wordings used.
 

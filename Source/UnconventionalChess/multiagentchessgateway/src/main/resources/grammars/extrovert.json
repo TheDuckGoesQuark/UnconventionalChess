@@ -1,0 +1,160 @@
+{
+  "//": "ACTION GRAMMAR START",
+  "<Acknowledge>": [
+    "cool."
+  ],
+  "<AcknowledgeAndAskForProposals>": [
+    "<Acknowledge>. <AskForProposals>"
+  ],
+  "<AskForProposals>": [
+    "Does anyone have any other suggestions?",
+    " What else could we do next?"
+  ],
+  "<InitialAskForProposals>": [
+    "Does anyone have any suggestions? ",
+    " What should we do now? ",
+    " Ideas? ",
+    " Ok, what now?"
+  ],
+  "<PerformMove>": [
+    "Moving ",
+    " Moving to `getMoveTarget()`"
+  ],
+  "<VoiceLIKE>": [
+    "I like that ",
+    " that sounds good ",
+    " moving to `getMoveTarget()` would be a good idea"
+  ],
+  "<VoiceDISLIKE>": [
+    "I don't like that ",
+    " that doesn't sounds good ",
+    " moving to `getMoveTarget()` would be an awful idea ",
+    " I don't think we should do that"
+  ],
+  "<VoiceLIKEProposeAlternative>": [
+    "<VoiceLIKE>, <ProposeAlternative>"
+  ],
+  "<VoiceDISLIKEProposeAlternative>": [
+    "<VoiceDISLIKE>, <ProposeAlternative>"
+  ],
+  "<VoiceDISLIKEWithJustification>": [
+    "<VoiceDISLIKE>, <Justification>"
+  ],
+  "<VoiceLIKEWithJustification>": [
+    "<VoiceLIKE>, <Justification>"
+  ],
+  "<ProposeAlternative>": [
+    "<ProposeAlternativeMove> <AlternativeJustification>"
+  ],
+  "<ProposeMove>": [
+    "I think `getMovingPiece()` should move to `getMoveTarget()`"
+  ],
+  "<VoiceLIKEProposeCompromise>": [
+    "<VoiceLIKE> <ProposeCompromise>"
+  ],
+  "<VoiceDISLIKEProposeCompromise>": [
+    "<VoiceDISLIKE> <ProposeCompromise>"
+  ],
+  "<ProposeCompromise>": [
+    "<ProposeAlternativeMove> <Justification> too, <CompromiseJustification>",
+    "<ProposeAlternativeMove> <Justification> also, <CompromiseJustification>",
+    "<ProposeAlternativeMove> <Justification> as well, <CompromiseJustification>"
+  ],
+  "<CompromiseJustification>": [
+    "but also <AlternativeJustification>",
+    "and <AlternativeJustification>"
+  ],
+  "<ProposeMoveWithJustification>": [
+    "<ProposeMove> <Justification>"
+  ],
+  "<ProposeAlternativeMove>": [
+    "I think `getAlternativeMovingPiece()` should move to `getAlternativeMoveTarget()` instead"
+  ],
+  "<RevisitMove>": [
+    "Can we go back to talking about `getMovingPiece()` moving to `getMoveTarget()`?",
+    "I think `getMovingPiece()` moving to `getMoveTarget()` was a better idea, can we go back to that?"
+  ],
+  "<Justification>": [
+    "because that move would `getJustification()`",
+    "because doing that could `getJustification()`"
+  ],
+  "<AlternativeJustification>": [
+    "because that move would `getAlternativeJustification()`",
+    "because doing that could `getAlternativeJustification()`"
+  ],
+  "<Quip>": [
+    "Do you think the other team look scared?",
+    " *yawn* ",
+    " *cough* ",
+    " I don't understand why we have to wait for them to move..."
+  ],
+  "//": "ACTION GRAMMAR END",
+  "//": "REACTION GRAMMAR START",
+  "<ComplimentEnemyMove>": [
+    "Ok, that was a good move by their `getMovingPiece()`"
+  ],
+  "<InsultEnemyMove>": [
+    "What a stupid move `getMovingPiece()`!"
+  ],
+  "<QuestionEnemyMove>": [
+    "... why did `getMovingPiece()` move there?"
+  ],
+  "<ReactEnemyPieceCaptured>": [
+    "Haha! We captured your `getCapturedPiece()`",
+    "Nice work, `getMovingPiece()`!"
+  ],
+  "<ReactEnemyPieceThreatened>": [
+    "Looks like your `getThreatenedPiece()` is in trouble!"
+  ],
+  "<ReactEnemyPieceEscaped>": [
+    "You can't hide, `getEscapingPiece()`!",
+    "You're safe for now, `getEscapingPiece()`!"
+  ],
+  "<ReactEnemyPieceProtecting>": [
+    "You're lucky that `getMovingPiece()` stepped in, `getEscapingPiece()`!"
+  ],
+  "<ReactFriendlyPieceCaptured>": [
+    "Oh no, they captured `getCapturedPiece()`!",
+    "I can't believe the `getMovingPiece()` captured `getCapturedPiece()`!"
+  ],
+  "<ReactFriendlyPieceEscaped>": [
+    "Thank goodness, `getEscapingPiece()` is safe now!"
+  ],
+  "<ReactFriendlyPieceProtecting>": [
+    "Nice move `getMovingPiece()`, `getEscapingPiece()` is safe now!"
+  ],
+  "<ReactFriendlyPieceThreatenedOnTheirMove>": [
+    "Oh no they're going after `getThreatenedPiece()`"
+  ],
+  "<ReactFriendlyPieceThreatenedOnOurMove>": [
+    "Wait no now `getThreatenedPiece()` could get hurt!"
+  ],
+  "<ReactLastMoveDiscussedPerformedLIKE>": [
+    "I'm glad you agreed to move `getMovingPiece()`"
+  ],
+  "<ReactLastMoveDiscussedPerformedDISLIKE>": [
+    "I don't think you should have moved there `getMovingPiece()`"
+  ],
+  "<ReactLastMoveDiscussedPerformedNEUTRAL>": [
+    "Alright then I guess"
+  ],
+  "<ReactPreviouslyDiscussedMovePerformedLIKE>": [
+    "I'm glad you agreed to move `getMovingPiece()`"
+  ],
+  "<ReactPreviouslyDiscussedMovePerformedDISLIKE>": [
+    "I don't think we were done discussing `getMovingPiece()`!"
+  ],
+  "<ReactPreviouslyDiscussedMovePerformedNEUTRAL>": [
+    "You should really wait until we've agreed on something next time, `getMovingPiece()`."
+  ],
+  "<ReactUndiscussedMovePerformedLIKE>": [
+    "That was a great move `getMovingPiece()`, why didn't anyone suggest that?"
+  ],
+  "<ReactUndiscussedMovePerformedDISLIKE>": [
+    "I can't believe you would just do that without even asking first `getMovingPiece()`!"
+  ],
+  "<ReactUndiscussedMovePerformedNEUTRAL>": [
+    "You should really ask first next time, `getMovingPiece()`."
+  ],
+  "//": "REACTION GRAMMAR END"
+}

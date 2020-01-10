@@ -14,7 +14,7 @@ import java.io.IOException;
 
 public class Speak extends ConversationStateBehaviour {
 
-    private static final long SPEAK_DELAY = 200;
+    private static final long SPEAK_DELAY = 3000;
 
     public Speak(PieceAgent a, ConversationContext conversationContext) {
         super(a, ConversationState.SPEAK, conversationContext);
