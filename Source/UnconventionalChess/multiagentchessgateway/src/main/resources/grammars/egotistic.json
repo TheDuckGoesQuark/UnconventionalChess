@@ -1,31 +1,40 @@
 {
   "//": "ACTION GRAMMAR START",
   "<Acknowledge>": [
+    "Nice.",
     "cool."
   ],
   "<AcknowledgeAndAskForProposals>": [
     "<Acknowledge>. <AskForProposals>"
   ],
   "<AskForProposals>": [
-    "Does anyone have any other suggestions?",
-    " What else could we do next?"
+    "So, while I've got plenty of good ideas, I'd like to hear yours?",
+    "Does anyone have any ideas for moves that would make me look good?",
+    "It doesn't matter, but what do you think?"
   ],
   "<InitialAskForProposals>": [
+    "So, while I've got plenty of good ideas, I'd like to hear yours?",
+    "Does anyone have any ideas for moves that would make me look good?",
+    "It doesn't matter, but what do you think?",
     "Does anyone have any suggestions? ",
-    " What should we do now? ",
-    " Ideas? ",
-    " Ok, what now?"
+    "What should we do now? ",
+    "Ideas? ",
+    "Ok, what now?"
   ],
   "<PerformMove>": [
     "Moving ",
-    " Moving to `getMoveTarget()`"
+    " Moving to `getMoveTarget()`",
+    "I hope everyone is watching this...",
+    "Don't worry guys, *I've*  got this",
+    "About to make a move that finally matters..."
   ],
   "<VoiceLIKE>": [
-    "I like that ",
-    " that sounds good ",
-    " moving to `getMoveTarget()` would be a good idea"
+    "That sounds like something I would do in your position",
+    "I like that. That means it's definitely good.",
+    "Moving to `getMoveTarget()` would be a good idea"
   ],
   "<VoiceDISLIKE>": [
+    "Nah I don't like that.",
     "I don't like that ",
     " that doesn't sounds good ",
     " moving to `getMoveTarget()` would be an awful idea ",
@@ -47,6 +56,8 @@
     "<ProposeAlternativeMove> <AlternativeJustification>"
   ],
   "<ProposeMove>": [
+    "I think I'm definitely right when I say that `getMovingPiece()` should move to `getMoveTarget()`",
+    "Don't worry everyone. I have a great idea, as always. `getMovingPiece()` should move to `getMoveTarget()`. Amazing right?",
     "I think `getMovingPiece()` should move to `getMoveTarget()`"
   ],
   "<VoiceLIKEProposeCompromise>": [
@@ -68,7 +79,9 @@
     "<ProposeMove> <Justification>"
   ],
   "<ProposeAlternativeMove>": [
-    "I think `getAlternativeMovingPiece()` should move to `getAlternativeMoveTarget()` instead"
+    "I think `getAlternativeMovingPiece()` should move to `getAlternativeMoveTarget()` instead",
+    "A much better idea would be for `getAlternativeMovingPiece()` to move to `getAlternativeMoveTarget()` instead",
+    "I definitely think `getAlternativeMovingPiece()` would be better off going to `getAlternativeMoveTarget()` instead"
   ],
   "<RevisitMove>": [
     "Can we go back to talking about `getMovingPiece()` moving to `getMoveTarget()`?",
@@ -83,21 +96,23 @@
     "because doing that could `getAlternativeJustification()`"
   ],
   "<Quip>": [
-    "Do you think the other team look scared?",
-    " *yawn* ",
-    " *cough* ",
-    " I don't understand why we have to wait for them to move..."
+    "Can't wait for my moment to shine...",
+    "Why can't you all just trust me, I know the right move every time"
   ],
   "//": "ACTION GRAMMAR END",
   "//": "REACTION GRAMMAR START",
   "<ComplimentEnemyMove>": [
+    "Not bad. I could've done it better, but not bad.",
     "Ok, that was a good move by their `getMovingPiece()`"
   ],
   "<InsultEnemyMove>": [
-    "What a stupid move `getMovingPiece()`!"
+    "What a stupid move `getMovingPiece()`!",
+    "That was a good attempt by their `getMovingPiece()`",
+    "Does their `getMovingPiece()` have any idea what they are doing?"
   ],
   "<QuestionEnemyMove>": [
-    "... why did `getMovingPiece()` move there?"
+    "... why did `getMovingPiece()` move there?",
+    "I'm usually three steps ahead, but I really don't know why their `getMovingPiece()` moved there."
   ],
   "<ReactEnemyPieceCaptured>": [
     "Haha! We captured your `getCapturedPiece()`",
@@ -115,13 +130,18 @@
   ],
   "<ReactFriendlyPieceCaptured>": [
     "Oh no, they captured `getCapturedPiece()`!",
+    "`getCapturedPiece()`, you're making us look bad!",
+    "Oh, they captured `getCapturedPiece()`? At least it wasn't someone important. Like me.",
     "I can't believe the `getMovingPiece()` captured `getCapturedPiece()`!"
   ],
   "<ReactFriendlyPieceEscaped>": [
-    "Thank goodness, `getEscapingPiece()` is safe now!"
+    "Thank goodness, `getEscapingPiece()` is safe now!",
+    "Can we all stop worrying about `getEscapingPiece()` and pay attention to me now?",
+    "Oh. Where you in trouble `getEscapingPiece()`? You're welcome for saving you."
   ],
   "<ReactFriendlyPieceProtecting>": [
-    "Nice move `getMovingPiece()`, `getEscapingPiece()` is safe now!"
+    "Nice move `getMovingPiece()`, `getEscapingPiece()` is safe now!",
+    "I hope you plan on doing the same for me `getMovingPiece()` that you just did for `getEscapingPiece()`"
   ],
   "<ReactFriendlyPieceThreatenedOnTheirMove>": [
     "Oh no they're going after `getThreatenedPiece()`"

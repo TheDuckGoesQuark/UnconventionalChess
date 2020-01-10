@@ -1,20 +1,25 @@
 {
   "//": "ACTION GRAMMAR START",
   "<Acknowledge>": [
-    "cool."
+    "uh.. cool.",
+    "... ok... .",
+    "... sure... .",
+    "... uh... ."
   ],
   "<AcknowledgeAndAskForProposals>": [
     "<Acknowledge>. <AskForProposals>"
   ],
   "<AskForProposals>": [
-    "Does anyone have any other suggestions?",
-    " What else could we do next?"
+    "I.. can.. does someone have.. can someone else say something",
+    ".. what.. what else could we do?"
   ],
   "<InitialAskForProposals>": [
-    "Does anyone have any suggestions? ",
-    " What should we do now? ",
-    " Ideas? ",
-    " Ok, what now?"
+    "..Does anyone have any .. uh.. suggestions? ",
+    "What should we do now?",
+    "I.. can.. does someone have.. can someone else say something",
+    ".. what.. what we could do?",
+    "Ideas? ",
+    "Ok, what now?"
   ],
   "<PerformMove>": [
     "Moving ",
